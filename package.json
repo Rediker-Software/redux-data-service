@@ -1,9 +1,10 @@
 {
   "name": "redux-data-service",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": false,
   "description": "",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/Rediker-Software/redux-data-service.git"
