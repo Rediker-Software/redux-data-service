@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var validate_js_1 = require("validate.js");
+exports.EmailField = {
+    serialize: true,
+    defaultValidationRules: { email: true },
+    defaultValue: "",
+    isValidType: function (value) { return value == null || validate_js_1.isString(value); },
+};
+//# sourceMappingURL=EmailField.js.map

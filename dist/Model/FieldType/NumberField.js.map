@@ -1,0 +1,1 @@
+{"version":3,"file":"NumberField.js","sourceRoot":"","sources":["../../../src/Model/FieldType/NumberField.ts"],"names":[],"mappings":";;AAAA,2CAAuC;AAG1B,QAAA,WAAW,GAAuB;IAC7C,SAAS,EAAE,IAAI;IACf,sBAAsB,EAAE,EAAE,YAAY,EAAE,IAAI,EAAE;IAC9C,YAAY,EAAE,CAAC;IACf,WAAW,EAAE,UAAC,KAAK,IAAK,OAAA,KAAK,IAAI,IAAI,IAAI,sBAAQ,CAAC,KAAK,CAAC,EAAhC,CAAgC;CACzD,CAAC"}

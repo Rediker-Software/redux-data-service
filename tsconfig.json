@@ -2,7 +2,7 @@
   "compilerOptions": {
     "sourceMap": true,
     "target": "ES5",
-    "module": "AMD",
+    "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -12,7 +12,6 @@
     "removeComments": true,
     "strictNullChecks": false,
     "outDir": "dist",
-    "outFile": "dist/index.js",
     "baseUrl": "src",
     "rootDir": "src",
     "skipLibCheck": true,
