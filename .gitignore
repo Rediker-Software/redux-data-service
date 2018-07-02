@@ -1,0 +1,16 @@
+# Add any directories, files, or patterns you don't want to be tracked by version control
+.vscode
+.idea
+.DS_STORE
+.awcache
+.module-cache
+.vagrant
+node_modules
+build
+dist
+tmp
+*.log*
+junit-results.xml
+package-lock.json
+.vs
+docs
