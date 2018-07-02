@@ -7,7 +7,7 @@
 .vagrant
 node_modules
 build
-dist
+test-dist
 tmp
 *.log*
 junit-results.xml

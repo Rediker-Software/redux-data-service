@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     "sourceMap": true,
-    "target": "es5",
-    "jsx": "react",
-    "module": "commonjs",
+    "target": "ES5",
+    "module": "AMD",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -12,8 +11,10 @@
     "noImplicitReturns": false,
     "removeComments": true,
     "strictNullChecks": false,
-    "outDir": "build",
+    "outDir": "dist",
+    "outFile": "dist/index.js",
     "baseUrl": "src",
+    "rootDir": "src",
     "skipLibCheck": true,
     "lib": [
       "es6",
@@ -25,7 +26,9 @@
   "exclude": [
     "dist",
     "build",
-    "node_modules"
+    "config",
+    "node_modules",
+    "webpack.config.ts"
   ],
   "types": ["intern"]
 }
