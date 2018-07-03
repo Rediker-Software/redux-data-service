@@ -1,4 +1,4 @@
-import { IModel, IModelData } from "Model";
+import { IModel, IModelData } from "../Model";
 import { BaseSerializer } from "./BaseSerializer";
 
 /**

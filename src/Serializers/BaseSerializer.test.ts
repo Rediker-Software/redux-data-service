@@ -6,9 +6,9 @@ import { spy, stub } from "sinon";
 import faker from "faker";
 import { parse, format } from "date-fns";
 
-import { DataService, registerService } from "Services";
-import { attr, belongsTo, DateField, Model, NumberField, StringField, TimeField, IModelFactory } from "Model";
-import { MockAdapter } from "Adapters";
+import { DataService, registerService } from "../Services";
+import { attr, belongsTo, DateField, Model, NumberField, StringField, TimeField, IModelFactory } from "../Model";
+import { MockAdapter } from "../Adapters";
 
 import { RestSerializer } from "./RestSerializer";
 

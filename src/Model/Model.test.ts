@@ -6,17 +6,17 @@ import { of as of$ } from "rxjs/observable/of";
 import { Subject } from "rxjs/Subject";
 import { lorem, random } from "faker";
 
-import { BaseService, DataService, registerService } from "Services";
-import { initializeValidateJS } from "Initializers";
+import { initializeTestServices, seedService } from "../TestUtils";
+import { modules } from "../TestUtils/Modules";
+
+import { BaseService, DataService, registerService } from "../Services";
+import { initializeValidateJS } from "../Initializers";
 
 import { Model } from "./Model";
 import { IModelData } from "./IModel";
 import { attr, belongsTo, hasMany, required } from "./Decorators";
 
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
-import { initializeTestServices, seedService } from "TestUtils";
-import { modules } from "TestUtils/Modules";
-
 import { IFakeModelData } from "./Model.mock";
 
 declare var intern;

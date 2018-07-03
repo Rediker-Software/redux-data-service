@@ -1,8 +1,8 @@
 // tslint:disable:no-unused-expression
 
-import { DataService, getService } from "Services";
-import { IFakeModelData } from "Model";
-import { modules } from "TestUtils/Modules";
+import { DataService, getService } from "../Services";
+import { IFakeModelData } from "../Model";
+import { modules } from "../TestUtils/Modules";
 
 import { getActionStubMap, getFakedXHRHistory, initializeTestServices, seedService, seedServiceList, seedServices } from "./Service";
 

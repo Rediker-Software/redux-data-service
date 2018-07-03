@@ -1,1 +1,0 @@
-{"version":3,"file":"PhoneNumberField.js","sourceRoot":"","sources":["../../../src/Model/FieldType/PhoneNumberField.ts"],"names":[],"mappings":";;AAAA,2CAAuC;AAG1B,QAAA,gBAAgB,GAAuB;IAClD,SAAS,EAAE,IAAI;IACf,sBAAsB,EAAE,EAAE,WAAW,EAAE,IAAI,EAAE;IAC7C,YAAY,EAAE,EAAE;IAChB,WAAW,EAAE,UAAC,KAAK,IAAK,OAAA,KAAK,IAAI,IAAI,IAAI,sBAAQ,CAAC,KAAK,CAAC,EAAhC,CAAgC;CACzD,CAAC"}

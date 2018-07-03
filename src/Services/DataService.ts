@@ -18,11 +18,12 @@ import { Store } from "redux";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 
-import { IModel, IModelData, IModelFactory, IModelMeta } from "Model";
-import { ISerializer, RestSerializer } from "Serializers";
-import { IAdapter, RestAdapter } from "Adapters";
+import { IModel, IModelData, IModelFactory, IModelMeta } from "../Model";
+import { ISerializer, RestSerializer } from "../Serializers";
+import { IAdapter, RestAdapter } from "../Adapters";
+
 import { BaseService } from "./BaseService";
-import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors } from "./IService";
+import { IAction, IActionEpic, IActionCreators, IActionTypes, IObserveableAction, ISelectors } from "./IService";
 
 export type IRequestCacheKey = string;
 
@@ -451,7 +452,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
   //        EPICS
   // ---------------------
 
-  public createEpics() {
+  public createEpics(): IActionEpic[] {
     const epics = super.createEpics();
 
     epics.push(

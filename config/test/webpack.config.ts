@@ -6,6 +6,7 @@ import * as glob from "fast-glob";
 
 import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import * as TSLintPlugin from "tslint-webpack-plugin";
+import { TsConfigPathsPlugin } from "awesome-typescript-loader";
 
 import { join } from "path";
 import { mapKeys } from "lodash";
@@ -51,11 +52,12 @@ export default new Config().extend({
       // .ts, .tsx
       {
         test: /\.tsx?$/,
-        use: "awesome-typescript-loader?useCache=true&module=es6",
+        use: "awesome-typescript-loader?useCache=true&module=es6&configFileName=config/test/tsconfig.json",
       },
     ],
   },
   plugins: [
+    new TsConfigPathsPlugin({configFileName: "config/test/tsconfig.json"}),
     new TSLintPlugin({ config: "tslint.json", files: "src/**/*.{ts,tsx}" }),
     new CleanWebpackPlugin([outPath], { verbose: true, allowExternal: true }),
     new webpack.optimize.CommonsChunkPlugin({

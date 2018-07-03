@@ -1,4 +1,4 @@
-import { IModel, IModelData, IModelFactory } from "Model";
+import { IModel, IModelData, IModelFactory } from "../Model";
 
 export interface ISerializer<T extends IModelData, S> {
   serialize: (modelData: IModel<T> | Partial<T>) => S;

@@ -1,1 +1,0 @@
-{"version":3,"file":"BooleanField.js","sourceRoot":"","sources":["../../../src/Model/FieldType/BooleanField.ts"],"names":[],"mappings":";;AACA,2CAAwC;AAE3B,QAAA,YAAY,GAAwB;IAC/C,SAAS,EAAE,IAAI;IACf,sBAAsB,EAAE,EAAE,IAAI,EAAE,SAAS,EAAE;IAC3C,YAAY,EAAE,KAAK;IACnB,WAAW,EAAE,UAAC,KAAK,IAAK,OAAA,KAAK,IAAI,IAAI,IAAI,uBAAS,CAAC,KAAK,CAAC,EAAjC,CAAiC;CAC1D,CAAC"}

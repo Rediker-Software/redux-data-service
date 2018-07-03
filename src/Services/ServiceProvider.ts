@@ -1,11 +1,12 @@
 import { forEach, mapValues, upperFirst } from "lodash";
 
-import { IActionEpic, IService, IServiceFactory } from "./IService";
-import { IModelData, IModelFactory } from "Model";
+import { IActionEpic, IReducers, IService, IServiceFactory } from "./IService";
 import { DataService } from "./DataService";
-import { isApplicationInitialized } from "Initialize";
-import { ISerializerFactory } from "Serializers/ISerializer";
-import { IAdapterFactory } from "Adapters";
+
+import { IModelData, IModelFactory } from "../Model";
+import { isApplicationInitialized } from "../Initialize";
+import { ISerializerFactory } from "../Serializers";
+import { IAdapterFactory } from "../Adapters";
 
 export interface IServiceMap {
   [name: string]: IService<any>;
@@ -88,12 +89,9 @@ export function registerService(service: IService<any>) {
 
 /**
  * Creates the root reducer to be added to the Redux store.
- *
  * Note: This method is called on startup. You should not need to call it directly except for testing purposes.
- *
- * @returns {IReducers}
  */
-export function getReducers() {
+export function getReducers(): IReducers<any> {
   return mapValues(serviceMap, (service) => service.reducer);
 }
 
@@ -101,10 +99,8 @@ export function getReducers() {
  * Creates the root epic which will be added to the redux-observable epic middleware
  *
  * Note: This method is called on startup. You should not need to call it directly except for testing purposes.
- *
- * @returns {IActionEpic[]}
  */
-export function getEpics() {
+export function getEpics(): IActionEpic[] {
   let epics: IActionEpic[] = [];
 
   forEach(serviceMap, (service: IService<any>) => {

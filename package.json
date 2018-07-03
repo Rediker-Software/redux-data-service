@@ -1,6 +1,6 @@
 {
   "name": "redux-data-service",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": false,
   "description": "",
   "main": "dist/index.js",
@@ -15,8 +15,7 @@
     "test:watch": "yarn test:build --watch",
     "test:web": "intern serveOnly",
     "test:ci": "cross-env NODE_ENV=test webpack && intern config=@ci",
-    "build": "cross-env NODE_ENV=production webpack --progress --colors",
-    "build:ci": "cross-env NODE_ENV=production webpack",
+    "build": "tsc",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "typedoc": "typedoc --options typedoc.json && http-server docs -p 9384 -c-1"
   },

@@ -3,13 +3,15 @@ import "rxjs/add/operator/take";
 import { of as of$ } from "rxjs/observable/of";
 
 import { spy, stub } from "sinon";
-import { MockAdapter } from "Adapters";
+import { createMockStore } from "redux-test-utils";
+
+import { MockAdapter } from "../Adapters";
+import { IFakeModelData } from "../Model";
+import { createMockServiceState } from "../TestUtils";
+
 import { BaseService } from "./BaseService";
 import { createMockTestService } from "./BaseService.mock";
 import { registerService } from "./ServiceProvider";
-import { createMockStore } from "redux-test-utils";
-import { IFakeModelData } from "Model";
-import { createMockServiceState } from "TestUtils";
 
 declare var intern;
 const { beforeEach, it, describe } = intern.getPlugin("interface.bdd");

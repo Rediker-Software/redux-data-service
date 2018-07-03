@@ -1,5 +1,5 @@
-import { createMockFakeModel, FakeModel } from "Model/Model.mock";
-import { FakeModelService } from "Services/DataService.mock";
+import { createMockFakeModel, FakeModel } from "../Model";
+import { FakeModelService } from "../Services";
 
 export const modules = {
   fakeModel: {

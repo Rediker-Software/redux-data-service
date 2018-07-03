@@ -3,7 +3,7 @@
 import { parse } from "date-fns";
 import { validate } from "validate.js";
 
-import { initializeDateTimeValidator } from "Validators";
+import { initializeDateTimeValidator } from "../../Validators";
 import { TimeField } from "./TimeField";
 
 declare var intern;

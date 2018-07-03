@@ -1,8 +1,9 @@
 // tslint:disable:max-classes-per-file
-import { random, lorem } from "faker";
+import { lorem, random } from "faker";
 import { merge } from "lodash";
 
-import { IModel, IModelData, Model } from "Model";
+import { IModel, IModelData } from "./IModel";
+import { Model } from "./Model";
 import { StringField } from "./FieldType";
 import { attr } from "./Decorators";
 

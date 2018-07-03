@@ -1,11 +1,11 @@
 {
   "browser": {
     "requires": [
-      "dist/test.bundle.js",
-      "dist/vendor.bundle.js"
+      "test-dist/test.bundle.js",
+      "test-dist/vendor.bundle.js"
     ],
     "suites": [
-      "dist/*.test.js"
+      "test-dist/*.test.js"
     ]
   },
   "tunnelOptions": {

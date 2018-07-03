@@ -93,7 +93,7 @@ export class MockTestService extends BaseService<MockTestServiceRecordState> {
     ];
   }
 
-  public bakeBaguettesEpic(action$: IObserveableAction) {
+  public bakeBaguettesEpic(action$: IObserveableAction): any {
     return action$.ofType(this.types.BAKE_BAGUETTES)
       .mergeMap((action) =>
         this.adapter.createItem("")
@@ -102,7 +102,7 @@ export class MockTestService extends BaseService<MockTestServiceRecordState> {
       );
   }
 
-  public eatBaguettesEpic(action$: IObserveableAction) {
+  public eatBaguettesEpic(action$: IObserveableAction): any {
     return action$.ofType(this.types.EAT_BAGUETTES)
       .mergeMap((action) =>
         this.adapter.deleteItem("0")

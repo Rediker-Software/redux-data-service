@@ -2,9 +2,9 @@ import { forEach, isEmpty, upperFirst } from "lodash";
 import { Store } from "redux";
 import { spy, stub, useFakeXMLHttpRequest } from "sinon";
 
-import { IModel, IModelData } from "Model";
-import { getDataService, IAction, IModuleMap, IService } from "Services";
-import { configure } from "Configure";
+import { IModel, IModelData } from "../Model";
+import { getDataService, IAction, IModuleMap, IService } from "../Services";
+import { configure } from "../Configure";
 
 export interface IModelDataCreatorMap {
   [name: string]: (overrideValues?: any) => IModel<any>;

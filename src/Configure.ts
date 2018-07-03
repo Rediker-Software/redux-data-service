@@ -1,9 +1,9 @@
 import { Store } from "redux";
 import { from as from$ } from "rxjs/observable/from";
 
-import { initialize } from "Initialize";
-import { BaseService, getEpics, getReducers, IModuleMap, initializeServices } from "Services";
-import { configureStore as defaultConfigureStore, IConfigureStore } from "Store";
+import { initialize } from "./Initialize";
+import { BaseService, getEpics, getReducers, IModuleMap, initializeServices } from "./Services";
+import { configureStore as defaultConfigureStore, IConfigureStore } from "./Store";
 
 export interface IConfiguration {
   modules: IModuleMap;

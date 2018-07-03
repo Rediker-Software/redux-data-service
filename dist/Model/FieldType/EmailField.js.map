@@ -1,1 +1,0 @@
-{"version":3,"file":"EmailField.js","sourceRoot":"","sources":["../../../src/Model/FieldType/EmailField.ts"],"names":[],"mappings":";;AACA,2CAAuC;AAE1B,QAAA,UAAU,GAAuB;IAC5C,SAAS,EAAE,IAAI;IACf,sBAAsB,EAAE,EAAE,KAAK,EAAE,IAAI,EAAE;IACvC,YAAY,EAAE,EAAE;IAChB,WAAW,EAAE,UAAC,KAAK,IAAK,OAAA,KAAK,IAAI,IAAI,IAAI,sBAAQ,CAAC,KAAK,CAAC,EAAhC,CAAgC;CACzD,CAAC"}

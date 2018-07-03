@@ -7,11 +7,10 @@ import { Subject } from "rxjs/Subject";
 
 import { Map, Record } from "immutable";
 import { createMockStore } from "redux-test-utils";
-import { createMockServiceState } from "TestUtils/Service";
 
-import { IModelMeta } from "Model/index";
-import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "Model/Model.mock";
-import { MockAdapter } from "Adapters/MockAdapter";
+import { createMockServiceState } from "../TestUtils";
+import { IModelMeta, createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model";
+import { MockAdapter } from "../Adapters";
 
 import { DataService, IDataServiceState, IRequestCacheKey } from "./DataService";
 import { BaseService } from "./BaseService";

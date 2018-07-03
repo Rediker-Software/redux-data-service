@@ -6,11 +6,12 @@ import { single, validate } from "validate.js";
 import { forEach, get, isEmpty, merge, omit } from "lodash";
 import { flow, mapValues, omitBy, assign } from "lodash/fp";
 
-import { getDataService } from "Services";
+import { getDataService } from "../Services";
+import { flattenObjectKeys } from "../Utils";
+
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
 import { DateTimeField, IFieldType, StringField } from "./FieldType";
 import { attr, IFieldRelationship, RelationshipType } from "./Decorators";
-import { flattenObjectKeys } from "Utils/Lodash";
 
 /**
  * # Model

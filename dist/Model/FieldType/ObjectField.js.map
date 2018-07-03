@@ -1,1 +1,0 @@
-{"version":3,"file":"ObjectField.js","sourceRoot":"","sources":["../../../src/Model/FieldType/ObjectField.ts"],"names":[],"mappings":";;AAAA,2CAAuC;AAG1B,QAAA,WAAW,GAAuB;IAC7C,SAAS,EAAE,IAAI;IACf,sBAAsB,EAAE,EAAE,IAAI,EAAE,QAAQ,EAAE;IAC1C,YAAY,EAAE,IAAI;IAClB,WAAW,EAAE,UAAC,KAAK,IAAK,OAAA,KAAK,IAAI,IAAI,IAAI,sBAAQ,CAAC,KAAK,CAAC,EAAhC,CAAgC;CACzD,CAAC"}

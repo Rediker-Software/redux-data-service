@@ -123,9 +123,6 @@ export abstract class BaseService<S> implements IService<S> {
 
   /**
    * Children classes should extend this method to handle new IAction types in the reducer.
-   *
-   * @protected
-   * @returns {IReducers<S>}
    */
   protected createReducers(): IReducers<S> {
     return {};
@@ -134,9 +131,6 @@ export abstract class BaseService<S> implements IService<S> {
   /**
    * Children classes should extend this method to perform
    * new side effects (such as loading data) in response to a given IAction.
-   *
-   * @protected
-   * @returns {IActionEpic[]}
    */
   protected createEpics(): IActionEpic[] {
     return [];
@@ -145,9 +139,6 @@ export abstract class BaseService<S> implements IService<S> {
   /**
    * Children classes should extend this method to efficiently
    * slice data from the Redux state in a composable manner.
-   *
-   * @protected
-   * @returns {ISelectors}
    */
   protected createSelectors(): ISelectors {
     return {
@@ -162,9 +153,6 @@ export abstract class BaseService<S> implements IService<S> {
    * Like a reducer, they are given the Redux `state` object and the `action` that was triggered and should
    * return a new copy of the immutable state. However, these are not individually added to Redux, but rather
    * through the single reducer function returned for this IService.
-   *
-   * @protected
-   * @returns IReducers<S>
    */
   protected get reducers(): IReducers<S> {
     if (!this.internalReducers) {
@@ -179,8 +167,6 @@ export abstract class BaseService<S> implements IService<S> {
    * mapped in the internal `reducers` object to the given IAction type.
    *
    * This is the function that is actually injected into and later triggered by Redux.
-   *
-   * @returns {IReducer<S>}
    */
   get reducer(): IReducer<S> {
     const reducers = this.reducers;

@@ -1,11 +1,10 @@
 import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
 
-import { mapValuesWithKeys } from "Utils/Lodash";
-import { IModel, IModelData, IModelFactory } from "Model";
-import { getDataService } from "Services";
+import { mapValuesWithKeys } from "../Utils";
+import { IModel, IModelData, IModelFactory, IFieldType } from "../Model";
+import { getDataService } from "../Services";
 
 import { ISerializer } from "./ISerializer";
-import { IFieldType } from "Model/FieldType";
 
 /**
  * The base class from which implementations of `ISerializer` should extend.
