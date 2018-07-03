@@ -33,7 +33,7 @@ var of_1 = require("rxjs/observable/of");
 var Subject_1 = require("rxjs/Subject");
 var faker_1 = require("faker");
 var TestUtils_1 = require("../TestUtils");
-var Modules_1 = require("../TestUtils/Modules");
+var FakeModelModule_1 = require("../TestUtils/FakeModelModule");
 var Services_1 = require("../Services");
 var Initializers_1 = require("../Initializers");
 var Model_1 = require("./Model");
@@ -983,32 +983,32 @@ describe("Model", function () {
     });
     describe("Model#isDirty", function () {
         it("considers the model to be dirty when a field has changed", function () {
-            TestUtils_1.initializeTestServices(Modules_1.modules);
+            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             model = model.applyUpdates({ fullText: faker_1.lorem.word() });
             expect(model.isDirty).to.be.true;
         });
         it("does not consider the model to be dirty when the model has not been changed", function () {
-            TestUtils_1.initializeTestServices(Modules_1.modules);
+            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             expect(model.isDirty).to.be.false;
         });
     });
     describe("Model#hasUnsavedChanges", function () {
         it("considers the model to have unsaved changes when one of its own fields has changed", function () {
-            TestUtils_1.initializeTestServices(Modules_1.modules);
+            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             model = model.applyUpdates({ fullText: faker_1.lorem.word() });
             expect(model.hasUnsavedChanges).to.be.true;
         });
         it("considers the model to have unsaved changes when one of its previously loaded related models has changed", function () {
-            TestUtils_1.initializeTestServices(Modules_1.modules);
+            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             model.relatedModels = { someRelatedModel: { isDirty: true } };
             expect(model.hasUnsavedChanges).to.be.true;
         });
         it("does not consider the model to have unsaved changes when the model and its relationships have not been changed", function () {
-            TestUtils_1.initializeTestServices(Modules_1.modules);
+            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             model.relatedModels = { someRelatedModel: { isDirty: false } };
             expect(model.hasUnsavedChanges).to.be.false;
