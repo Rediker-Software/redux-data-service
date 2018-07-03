@@ -57,7 +57,7 @@ describe("ServiceProvider", () => {
     });
   });
 
-  describe("initializing services from modules", () => {
+  describe("initializing services from fakeModelModule", () => {
 
     it(`registers services from modules whose service class name is the module name + "Service"`, () => {
       class OrganizationTypeService implements IService<any> {
@@ -112,7 +112,7 @@ describe("ServiceProvider", () => {
       expect(() => getService("lolCoolServiceBrah")).to.not.throw();
     });
 
-    it("registers services from multiple modules", () => {
+    it("registers services from multiple fakeModelModule", () => {
       class OrganizationTypeService implements IService<any> {
         public readonly name = "organizationType";
 
@@ -150,7 +150,7 @@ describe("ServiceProvider", () => {
       expect(service).to.be.an.instanceOf(StudentService);
     });
 
-    it("registers services from modules even if some modules do not have Services", () => {
+    it("registers services from fakeModelModule even if some fakeModelModule do not have Services", () => {
       class OrganizationTypeService implements IService<any> {
         public readonly name = "organizationType";
 

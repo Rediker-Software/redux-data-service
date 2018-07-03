@@ -45,7 +45,7 @@ describe("ServiceProvider", function () {
             expect(injectedService).to.equal(mockFakeService).but.to.not.equal(fakeService);
         });
     });
-    describe("initializing services from modules", function () {
+    describe("initializing services from fakeModelModule", function () {
         it("registers services from modules whose service class name is the module name + \"Service\"", function () {
             var OrganizationTypeService = (function () {
                 function OrganizationTypeService() {
@@ -82,7 +82,7 @@ describe("ServiceProvider", function () {
             Initialize_1.resetInitializationStatus();
             expect(function () { return ServiceProvider_1.getService("lolCoolServiceBrah"); }).to.not.throw();
         });
-        it("registers services from multiple modules", function () {
+        it("registers services from multiple fakeModelModule", function () {
             var OrganizationTypeService = (function () {
                 function OrganizationTypeService() {
                     this.name = "organizationType";
@@ -107,7 +107,7 @@ describe("ServiceProvider", function () {
             var service = ServiceProvider_1.getService("student");
             expect(service).to.be.an.instanceOf(StudentService);
         });
-        it("registers services from modules even if some modules do not have Services", function () {
+        it("registers services from fakeModelModule even if some fakeModelModule do not have Services", function () {
             var OrganizationTypeService = (function () {
                 function OrganizationTypeService() {
                     this.name = "organizationType";

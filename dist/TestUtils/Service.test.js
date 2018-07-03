@@ -1,54 +1,54 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Services_1 = require("../Services");
-var Modules_1 = require("../TestUtils/Modules");
+var FakeModelModule_1 = require("./FakeModelModule");
 var Service_1 = require("./Service");
 var _a = intern.getPlugin("interface.bdd"), describe = _a.describe, it = _a.it, beforeEach = _a.beforeEach;
 var expect = intern.getPlugin("chai").expect;
 describe("initializeServices", function () {
     it("builds all services", function () {
-        var store = Service_1.initializeTestServices(Modules_1.modules);
+        var store = Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
         var returnedKeys = Object.keys(store.getState());
-        var moduleKeys = Object.keys(Modules_1.modules);
-        expect(moduleKeys).to.have.all.members(returnedKeys, "actual modules and returned modules are same");
+        var moduleKeys = Object.keys(FakeModelModule_1.fakeModelModule);
+        expect(moduleKeys).to.have.all.members(returnedKeys, "actual fakeModelModule and returned fakeModelModule are same");
     });
     describe("stubbed xhr actions", function () {
         it("has a working spy on the invoke method", function () {
-            Service_1.initializeTestServices(Modules_1.modules);
+            Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var service = Services_1.getService("fakeModel");
             service.actions.fetchAll({}).invoke();
             expect(Service_1.getActionStubMap().fakeModel.fetchAll.base.calledOnce).to.be.true;
             expect(Service_1.getActionStubMap().fakeModel.fetchAll.invokeSpy.calledOnce).to.be.true;
         });
         it("has a working base stub", function () {
-            Service_1.initializeTestServices(Modules_1.modules);
+            Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var service = Services_1.getService("fakeModel");
             service.actions.fetchAll({});
             expect(Service_1.getActionStubMap().fakeModel.fetchAll.base.called).to.be.true;
             expect(Service_1.getActionStubMap().fakeModel.fetchAll.invokeSpy.called).to.be.false;
         });
         it("returns a valid IAction", function () {
-            Service_1.initializeTestServices(Modules_1.modules);
+            Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var service = Services_1.getService("fakeModel");
             var suspectedIAction = service.actions.fetchAll({});
             expect(suspectedIAction).to.have.all.keys(["invoke", "meta", "payload", "type"]);
         });
         it("resets the stubs when initializeTestServices is called again", function () {
-            Service_1.initializeTestServices(Modules_1.modules);
+            Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var service = Services_1.getService("fakeModel");
             service.actions.fetchAll({});
             expect(Service_1.getActionStubMap().fakeModel.fetchAll.base.calledOnce).to.be.true;
-            Service_1.initializeTestServices(Modules_1.modules);
+            Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
             var newService = Services_1.getService("fakeModel");
             newService.actions.fetchAll({});
             expect(Service_1.getActionStubMap().fakeModel.fetchAll.base.calledOnce).to.be.true;
         });
         it("takes an optional argument to bypass stubbing methods", function () {
-            Service_1.initializeTestServices(Modules_1.modules, false);
+            Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule, false);
             expect(Service_1.getActionStubMap()).to.be.empty;
         });
         it("uses fake xhr when stubs are not in use", function () {
-            Service_1.initializeTestServices(Modules_1.modules, false);
+            Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule, false);
             var service = Services_1.getService("fakeModel");
             var initHistorySize = Service_1.getFakedXHRHistory().length;
             service.actions.fetchAll({}).invoke();
@@ -58,7 +58,7 @@ describe("initializeServices", function () {
     describe("mock data", function () {
         var store;
         beforeEach(function () {
-            store = Service_1.initializeTestServices(Modules_1.modules);
+            store = Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
         });
         it("doesn't give mock data when not requested", function () {
             var state = store.getState();
@@ -127,7 +127,7 @@ describe("initializeServices", function () {
         });
         describe("seedServices", function () {
             it("seeds all registered services", function () {
-                store = Service_1.initializeTestServices(Modules_1.modules);
+                store = Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
                 Service_1.seedServices();
                 var state = store.getState();
                 Object.keys(state).forEach(function (moduleName) {
@@ -135,8 +135,8 @@ describe("initializeServices", function () {
                 });
             });
             it("returns the seeded data", function () {
-                var initServiceNames = Object.keys(Modules_1.modules).slice(0, 3);
-                store = Service_1.initializeTestServices(Modules_1.modules);
+                var initServiceNames = Object.keys(FakeModelModule_1.fakeModelModule).slice(0, 3);
+                store = Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
                 var seededData = Service_1.seedServices(initServiceNames);
                 var state = store.getState();
                 Object.keys(seededData).forEach(function (moduleName) {

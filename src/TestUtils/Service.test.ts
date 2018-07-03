@@ -2,7 +2,7 @@
 
 import { DataService, getService } from "../Services";
 import { IFakeModelData } from "../Model";
-import { modules } from "../TestUtils/Modules";
+import { fakeModelModule } from "./FakeModelModule";
 
 import { getActionStubMap, getFakedXHRHistory, initializeTestServices, seedService, seedServiceList, seedServices } from "./Service";
 
@@ -13,18 +13,18 @@ const { expect } = intern.getPlugin("chai");
 describe("initializeServices", () => {
 
   it("builds all services", () => {
-    const store = initializeTestServices(modules);
+    const store = initializeTestServices(fakeModelModule);
 
     // they should be in the same order
     const returnedKeys = Object.keys(store.getState());
-    const moduleKeys = Object.keys(modules);
+    const moduleKeys = Object.keys(fakeModelModule);
 
-    expect(moduleKeys).to.have.all.members(returnedKeys, "actual modules and returned modules are same");
+    expect(moduleKeys).to.have.all.members(returnedKeys, "actual fakeModelModule and returned fakeModelModule are same");
   });
 
   describe("stubbed xhr actions", () => {
     it("has a working spy on the invoke method", () => {
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
 
       const service = getService("fakeModel") as DataService<IFakeModelData>;
       service.actions.fetchAll({}).invoke();
@@ -33,7 +33,7 @@ describe("initializeServices", () => {
     });
 
     it("has a working base stub", () => {
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
 
       const service = getService("fakeModel") as DataService<IFakeModelData>;
       service.actions.fetchAll({});
@@ -42,7 +42,7 @@ describe("initializeServices", () => {
     });
 
     it("returns a valid IAction", () => {
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
 
       const service = getService("fakeModel") as DataService<IFakeModelData>;
       const suspectedIAction = service.actions.fetchAll({});
@@ -50,25 +50,25 @@ describe("initializeServices", () => {
     });
 
     it("resets the stubs when initializeTestServices is called again", () => {
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
       const service = getService("fakeModel") as DataService<IFakeModelData>;
       service.actions.fetchAll({});
       expect(getActionStubMap().fakeModel.fetchAll.base.calledOnce).to.be.true;
 
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
       const newService = getService("fakeModel") as DataService<IFakeModelData>;
       newService.actions.fetchAll({});
       expect(getActionStubMap().fakeModel.fetchAll.base.calledOnce).to.be.true;
     });
 
     it("takes an optional argument to bypass stubbing methods", () => {
-      initializeTestServices(modules, false);
+      initializeTestServices(fakeModelModule, false);
 
       expect(getActionStubMap()).to.be.empty;
     });
 
     it("uses fake xhr when stubs are not in use", () => {
-      initializeTestServices(modules, false);
+      initializeTestServices(fakeModelModule, false);
 
       const service = getService("fakeModel") as DataService<IFakeModelData>;
       const initHistorySize = getFakedXHRHistory().length;
@@ -80,7 +80,7 @@ describe("initializeServices", () => {
   describe("mock data", () => {
     let store;
     beforeEach(() => {
-      store = initializeTestServices(modules);
+      store = initializeTestServices(fakeModelModule);
     });
 
     it("doesn't give mock data when not requested", () => {
@@ -165,7 +165,7 @@ describe("initializeServices", () => {
 
     describe("seedServices", () => {
       it("seeds all registered services", () => {
-        store = initializeTestServices(modules);
+        store = initializeTestServices(fakeModelModule);
 
         seedServices();
 
@@ -177,8 +177,8 @@ describe("initializeServices", () => {
       });
 
       it("returns the seeded data", () => {
-        const initServiceNames = Object.keys(modules).slice(0, 3);
-        store = initializeTestServices(modules);
+        const initServiceNames = Object.keys(fakeModelModule).slice(0, 3);
+        store = initializeTestServices(fakeModelModule);
         const seededData = seedServices(initServiceNames);
 
         const state = store.getState();

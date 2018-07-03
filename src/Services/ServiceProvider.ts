@@ -51,8 +51,8 @@ export function getDataService<T extends IModelData = any>(name: string): DataSe
  * We assume each module exports a class which follows the naming convention: "<moduleName>Service"
  * For example: the "country" module should export a CountryService
  *
- * Note: This is called when the application boots up, pulling in the map from the "modules" directory to
- * automagically register all modules. Eventually, it would be nice to register services as they are requested
+ * Note: This is called when the application boots up, pulling in the map from the "fakeModelModule" directory to
+ * automagically register all fakeModelModule. Eventually, it would be nice to register services as they are requested
  * and dynamically update the redux store as they are needed. This would be especially ideal for code splitting.
  *
  * You should not need to call this method directly unless it is needed for testing.
