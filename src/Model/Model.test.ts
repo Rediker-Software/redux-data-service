@@ -7,7 +7,7 @@ import { Subject } from "rxjs/Subject";
 import { lorem, random } from "faker";
 
 import { initializeTestServices, seedService } from "../TestUtils";
-import { modules } from "../TestUtils/Modules";
+import { fakeModelModule } from "../TestUtils/FakeModelModule";
 
 import { BaseService, DataService, registerService } from "../Services";
 import { initializeValidateJS } from "../Initializers";
@@ -1029,7 +1029,7 @@ describe("Model", () => {
   describe("Model#isDirty", () => {
 
     it("considers the model to be dirty when a field has changed", () => {
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
 
       let model = seedService<IFakeModelData>("fakeModel");
       model = model.applyUpdates({ fullText: lorem.word() });
@@ -1038,7 +1038,7 @@ describe("Model", () => {
     });
 
     it("does not consider the model to be dirty when the model has not been changed", () => {
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
 
       const model = seedService<IFakeModelData>("fakeModel");
 
@@ -1050,7 +1050,7 @@ describe("Model", () => {
   describe("Model#hasUnsavedChanges", () => {
 
     it("considers the model to have unsaved changes when one of its own fields has changed", () => {
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
 
       let model = seedService<IFakeModelData>("fakeModel");
       model = model.applyUpdates({ fullText: lorem.word() });
@@ -1059,7 +1059,7 @@ describe("Model", () => {
     });
 
     it("considers the model to have unsaved changes when one of its previously loaded related models has changed", () => {
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
 
       const model = seedService<IFakeModelData>("fakeModel") as any;
       model.relatedModels = { someRelatedModel: { isDirty: true } };
@@ -1068,7 +1068,7 @@ describe("Model", () => {
     });
 
     it("does not consider the model to have unsaved changes when the model and its relationships have not been changed", () => {
-      initializeTestServices(modules);
+      initializeTestServices(fakeModelModule);
 
       const model = seedService<IFakeModelData>("fakeModel") as any;
       model.relatedModels = { someRelatedModel: { isDirty: false } };
