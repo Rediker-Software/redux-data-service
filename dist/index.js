@@ -9,5 +9,6 @@ __export(require("./Initializers"));
 __export(require("./Model"));
 __export(require("./Serializers"));
 __export(require("./Services"));
+__export(require("./TestUtils"));
 __export(require("./Utils"));
 __export(require("./Validators"));
