@@ -1,29 +1,32 @@
+import "rxjs/add/operator/auditTime";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/concat";
-import "rxjs/add/operator/distinct";
+import "rxjs/add/operator/distinctUntilChanged";
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/filter";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
+import "rxjs/add/operator/shareReplay";
+import "rxjs/add/operator/startWith";
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/take";
 
 import { Observable } from "rxjs/Observable";
 import { of as of$ } from "rxjs/observable/of";
+import { combineLatest as combineLatest$ } from "rxjs/observable/combineLatest";
 
 import { List, Map, Record } from "immutable";
-import { difference, uniqueId } from "lodash";
+import { uniqueId } from "lodash";
 import * as hash from "object-hash";
 import { Store } from "redux";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 
-import { IModel, IModelData, IModelFactory, IModelMeta } from "../Model";
+import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
 import { ISerializer, RestSerializer } from "../Serializers";
 import { IAdapter, RestAdapter } from "../Adapters";
-
 import { BaseService } from "./BaseService";
-import { IAction, IActionEpic, IActionCreators, IActionTypes, IObserveableAction, ISelectors } from "./IService";
+import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors } from "./IService";
 
 export type IRequestCacheKey = string;
 
@@ -101,9 +104,9 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
   protected _serializer: ISerializer<T, any>;
   protected _adapter: IAdapter<any>;
   protected shadowObject: IModel<T> = null;
-  protected observablesByIdCache: { [ id: string ]: Observable<IModel<T>> } = {};
-  protected observablesByIdsCache: { [ id: string ]: Observable<IModel<T>[]> } = {};
-  protected observablesByQueryCache: { [ id: string ]: Observable<IModel<T>[]> } = {};
+  protected observablesByIdCache: { [id: string]: Observable<IModel<T>> } = {};
+  protected observablesByIdsCache: { [id: string]: Observable<IModel<T>[]> } = {};
+  protected observablesByQueryCache: { [id: string]: Observable<IModel<T>[]> } = {};
 
   private readonly DataServiceStateRecord = Record<IDataServiceState<T>>({
     items: Map<string, IModel<T>>(),
@@ -157,20 +160,21 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
   public getById(id: string): Observable<IModel<T>> {
 
     if (id in this.observablesByIdCache) {
-      return this.observablesByIdCache[ id ];
+      return this.observablesByIdCache[id];
     }
 
     const observable = BaseService
       .getStateObservable()
       .map((state) => this.selectors.getItem(state, id) || this.getShadowObject())
-      .distinct();
+      .distinctUntilChanged()
+      .shareReplay(1);
 
     observable
       .take(1)
       .filter((item) => item.isShadow)
       .subscribe(() => this.actions.fetchRecord({ id }).invoke());
 
-    this.observablesByIdCache[ id ] = observable;
+    this.observablesByIdCache[id] = observable;
     return observable;
   }
 
@@ -178,45 +182,36 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
     const cacheKey = JSON.stringify(ids.sort());
 
     if (cacheKey in this.observablesByIdsCache) {
-      return this.observablesByIdsCache[ cacheKey ];
+      return this.observablesByIdsCache[cacheKey];
     }
 
-    const observable = BaseService
-      .getStateObservable()
-      .map((state) => this.selectors.getItemsByIds(state, ids))
-      .distinct();
+    const itemObservables = ids.map(id => this.getById(id));
 
-    observable
-      .take(1)
-      .filter((items) => items.length !== ids.length)
-      .subscribe((items) => {
-        const currentIds = items.map((item) => item.id);
-        difference(ids, currentIds).forEach((id) => {
-          this.actions.fetchRecord({ id }).invoke();
-        });
-      });
+    const observable = combineLatest$(...itemObservables)
+      .auditTime(25)
+      .startWith([]);
 
-    this.observablesByIdsCache[ cacheKey ] = observable;
+    this.observablesByIdsCache[cacheKey] = observable;
     return observable;
   }
 
   public getByQuery(queryParams): Observable<IModel<T>[]> {
     const hashParams = hash(queryParams || {});
     if (hashParams in this.observablesByQueryCache) {
-      return this.observablesByQueryCache[ hashParams ];
+      return this.observablesByQueryCache[hashParams];
     }
+
+    this.actions.fetchAll(queryParams).invoke();
 
     const observable = BaseService
       .getStateObservable()
       .map((state) => this.selectors.getItems(state, queryParams))
-      .distinct()
-      .map(items => (items != null && "toJS" in items) ? items.toJS() : items);
+      .distinctUntilChanged()
+      .map(items => (items != null && "toJS" in items) ? items.toJS() : items)
+      .shareReplay(1);
 
-    observable
-      .take(1)
-      .subscribe(() => this.actions.fetchAll(queryParams).invoke());
+    this.observablesByQueryCache[hashParams] = observable;
 
-    this.observablesByQueryCache[ hashParams ] = observable;
     return observable;
   }
 
@@ -224,7 +219,8 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
     const observable = BaseService
       .getStateObservable()
       .map((state) => this.selectors.getAllItems(state).valueSeq())
-      .distinct();
+      .distinctUntilChanged()
+      .shareReplay(1);
 
     observable
       .take(1)
@@ -234,12 +230,12 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
   }
 
   /**
-   * Get the default query params object to use when querying
+   * Get the default query params object to use when querying for the Model associated to this DataService.
    *
    * @returns any
    */
-  public getDefaultQueryParams(): any {
-    return {};
+  public getDefaultQueryParams(): Observable<any> {
+    return of$({});
   }
 
   // --------------------
@@ -263,6 +259,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
       UPDATE_RECORD: this.makeActionType("UPDATE_RECORD"),
       SET_FIELD: this.makeActionType("SET_FIELD"),
       SET_META_FIELD: this.makeActionType("SET_META_FIELD"),
+      SET_RELATIONSHIP: this.makeActionType("SET_RELATIONSHIP"),
     };
   }
 
@@ -288,6 +285,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
       updateRecord: this.makeActionCreator<IModelId, IPostActionHandlers>(this.types.UPDATE_RECORD),
       setField: this.makeActionCreator<ISetField<T>>(this.types.SET_FIELD),
       setMetaField: this.makeActionCreator<ISetMetaField<T>>(this.types.SET_META_FIELD),
+      setRelationship: this.makeActionCreator<ISetMetaField<T>>(this.types.SET_RELATIONSHIP),
     };
   }
 
@@ -314,10 +312,9 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
     )((state, queryParams) => hash(queryParams || {}));
 
     const getItemsByIds = createCachedSelector(
-      getServiceState,
       (state, ids) => ids,
       getAllItems,
-      (state, ids, items) =>
+      (ids, items) =>
         ids
           .map((id) => items.get(id))
           .filter((item) => item != null)
@@ -349,13 +346,14 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
 
     return {
       ...reducers,
-      [ this.types.FETCH_ALL ]: this.fetchAllReducer,
-      [ this.types.PUSH_ALL ]: this.pushAllReducer,
-      [ this.types.PUSH_RECORD ]: this.pushRecordReducer,
-      [ this.types.UNLOAD_ALL ]: this.unloadAllReducer,
-      [ this.types.UNLOAD_RECORD ]: this.unloadRecordReducer,
-      [ this.types.SET_FIELD ]: this.setFieldReducer,
-      [ this.types.SET_META_FIELD ]: this.setMetaFieldReducer,
+      [this.types.FETCH_ALL]: this.fetchAllReducer,
+      [this.types.PUSH_ALL]: this.pushAllReducer,
+      [this.types.PUSH_RECORD]: this.pushRecordReducer,
+      [this.types.UNLOAD_ALL]: this.unloadAllReducer,
+      [this.types.UNLOAD_RECORD]: this.unloadRecordReducer,
+      [this.types.SET_FIELD]: this.setFieldReducer,
+      [this.types.SET_META_FIELD]: this.setMetaFieldReducer,
+      [this.types.SET_RELATIONSHIP]: this.setRelationshipReducer,
     };
   }
 
@@ -376,12 +374,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
     const ids = [];
     record.update("items", (items) => items.withMutations((itemsMap) => {
       action.payload.items.forEach((item) => {
-        itemsMap.update(item.id, (oldModel) => {
-          if (oldModel) {
-            oldModel.markForDestruction();
-          }
-          return item;
-        });
+        itemsMap.update(item.id, () => item);
         ids.push(item.id);
       });
     }));
@@ -392,12 +385,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
 
   public pushRecordReducer = (state: DataServiceStateRecord<T>, action: IAction<IModel<T>>) => state.withMutations((record) => {
     const item = action.payload;
-    record.set("items", record.items.update(item.id, (oldModel) => {
-      if (oldModel) {
-        oldModel.markForDestruction();
-      }
-      return item;
-    }));
+    record.set("items", record.items.update(item.id, () => item));
   })
 
   public unloadAllReducer = (state: DataServiceStateRecord<T>) => {
@@ -431,9 +419,11 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
       const { id, fieldName, value } = action.payload;
       if (record.items.has(id)) {
         record.update("items", (items) => items.update(id, (item: IModel<T>) => {
-          item.markForDestruction();
-          return item.applyUpdates({ [ fieldName ]: value } as Partial<T>);
+          return item.applyUpdates({ [fieldName]: value } as Partial<T>);
         }));
+      } else if (process.env.NODE_ENV !== "production") {
+        // tslint:disable-next-line
+        console.warn(`${this.name}: setFieldReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
       }
     })
 
@@ -442,9 +432,21 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
       const { id, fieldName, value } = action.payload;
       if (record.items.has(id)) {
         record.update("items", (items) => items.update(id, (item: IModel<T>) => {
-          item.markForDestruction();
-          return item.applyUpdates(null, { [ fieldName ]: value });
+          return item.applyUpdates(null, { [fieldName]: value });
         }));
+      }
+    })
+
+  public setRelationshipReducer = (state: DataServiceStateRecord<T>, action: IAction<ISetField<T>>) =>
+    state.withMutations((record) => {
+      const { id, fieldName, value } = action.payload;
+      if (record.items.has(id)) {
+        record.update("items", (items) => items.update(id, (item: IModel<T>) => {
+          return item.applyUpdates(undefined, undefined, { [fieldName]: value });
+        }));
+      } else if (process.env.NODE_ENV !== "production") {
+        // tslint:disable-next-line
+        console.warn(`${this.name}: setRelationshipReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
       }
     })
 
@@ -452,7 +454,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
   //        EPICS
   // ---------------------
 
-  public createEpics(): IActionEpic[] {
+  public createEpics() {
     const epics = super.createEpics();
 
     epics.push(

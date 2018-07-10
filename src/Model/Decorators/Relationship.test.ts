@@ -3,7 +3,7 @@
 import { stub } from "sinon";
 
 import { IRelationship, relationship, RelationshipType } from "./Relationship";
-import { ArrayField, BelongsToField, HasManyField, StringField } from "../FieldType";
+import { ArrayField, BelongsToField, StringField } from "../FieldType";
 import { attr } from "./Attr";
 
 declare var intern;
@@ -130,9 +130,13 @@ describe("@relationship", () => {
     });
 
     it("builds the IFieldRelationship object using the property name as the service name by default", () => {
-      expect(myClass.relationships).to.have.property("student").to.deep.equal(
-        { field: "student", serviceName: "student", relatedFieldName: "studentId", type: RelationshipType.BelongsTo },
-      );
+      expect(myClass.relationships).to.have.property("student").to.deep.equal({
+        field: "student",
+        serviceName: "student",
+        relatedFieldName: "studentId",
+        modelRelatedFieldName: undefined,
+        type: RelationshipType.BelongsTo,
+      });
     });
 
     it("requires the default related field name to be defined on the Model", () => {
@@ -161,9 +165,13 @@ describe("@relationship", () => {
 
       const myClass = new MyClass();
 
-      expect(myClass.relationships).to.have.property("someKid").to.deep.equal(
-        { field: "someKid", serviceName: "student", relatedFieldName: "someKidId", type: RelationshipType.BelongsTo },
-      );
+      expect(myClass.relationships).to.have.property("someKid").to.deep.equal({
+        field: "someKid",
+        serviceName: "student",
+        relatedFieldName: "someKidId",
+        modelRelatedFieldName: undefined,
+        type: RelationshipType.BelongsTo,
+      });
     });
 
     it("builds the IFieldRelationship object using a custom service name and custom relatedFieldName", () => {
@@ -187,9 +195,13 @@ describe("@relationship", () => {
 
       const myClass = new MyClass();
 
-      expect(myClass.relationships).to.have.property("someKid").to.deep.equal(
-        { field: "someKid", serviceName: "student", relatedFieldName: "studentFK", type: RelationshipType.BelongsTo },
-      );
+      expect(myClass.relationships).to.have.property("someKid").to.deep.equal({
+        field: "someKid",
+        serviceName: "student",
+        relatedFieldName: "studentFK",
+        modelRelatedFieldName: undefined,
+        type: RelationshipType.BelongsTo,
+      });
     });
 
     it("requires the custom related field name to be defined on the Model", () => {
@@ -245,9 +257,13 @@ describe("@relationship", () => {
 
       const myClass = new MyClass();
 
-      expect(myClass.relationships).to.have.property("student").to.deep.equal(
-        { field: "student", serviceName: "student", relatedFieldName: "studentId", type: RelationshipType.BelongsTo },
-      );
+      expect(myClass.relationships).to.have.property("student").to.deep.equal({
+        field: "student",
+        serviceName: "student",
+        relatedFieldName: "studentId",
+        modelRelatedFieldName: undefined,
+        type: RelationshipType.BelongsTo,
+      });
     });
 
     it("builds the IFieldRelationship object with the correct type and relatedFieldName for HasMany", () => {
@@ -272,9 +288,13 @@ describe("@relationship", () => {
 
       const myClass = new MyClass();
 
-      expect(myClass.relationships).to.have.property("students").to.deep.equal(
-        { field: "students", serviceName: "student", relatedFieldName: "studentIds", type: RelationshipType.HasMany },
-      );
+      expect(myClass.relationships).to.have.property("students").to.deep.equal({
+        field: "students",
+        serviceName: "student",
+        relatedFieldName: "studentIds",
+        modelRelatedFieldName: undefined,
+        type: RelationshipType.HasMany,
+      });
     });
   });
 

@@ -1,13 +1,15 @@
 import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
 
 import { mapValuesWithKeys } from "../Utils";
-import { IModel, IModelData, IModelFactory, IFieldType } from "../Model";
+import { IModel, IModelData, IModelFactory } from "../Model";
 import { getDataService } from "../Services";
 
 import { ISerializer } from "./ISerializer";
+import { IFieldType } from "../Model/FieldType";
+import { IFieldRelationship, RelationshipType } from "../Model/Decorators";
 
 /**
- * The base class from which implementations of `ISerializer` should extend.
+ * The base class from which implementations of `IDataSerializer` should extend.
  *
  * This class implements the `transform` and `normalize` methods on the interface, to provide a default mechanism
  * to transform a model instance into a ready-to-serialize object, and to normalize a raw data object back into a model instance.
@@ -18,6 +20,7 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
   public readonly ModelClass: IModelFactory<T>;
 
   public abstract deserialize(data: S): IModel<T>;
+
   public abstract serialize(modelData: Partial<T>): S;
 
   public constructor(ModelClass: IModelFactory<T>) {
@@ -107,19 +110,60 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
       partition(this.isRelationship),
     )(data);
 
-    // Side-load each nested relationship
-    for (const key of relationshipKeys) {
-      const service = getDataService(this.relationships[key].serviceName);
-      const relatedModel = service.serializer.normalize(data[key]);
-      service.actions.pushRecord(relatedModel).invoke();
-    }
-
     // Build the model's data
     const modelData: T = flow(
       pick(fieldKeys),
       mapValuesWithKeys(this.normalizeField(data)),
     )(this.fields) as T;
 
-    return new this.ModelClass(modelData);
+    const model = new this.ModelClass(modelData);
+
+    // Side-load each nested relationship
+    for (const key of relationshipKeys) {
+      const relationship = this.relationships[key];
+      const relatedModelData = data[key];
+      const relatedIdOrIds = this.processNestedRelationship(model, relatedModelData, relationship);
+
+      if (!modelData.hasOwnProperty(relationship.relatedFieldName)) {
+        modelData[relationship.relatedFieldName] = relatedIdOrIds;
+      }
+    }
+
+    return model;
+  }
+
+  /**
+   * Process the nestedData for the given relationship.
+   * - If it is a BelongsTo relationship, its data is normalized into a Model instance, added to its store and its id is returned.
+   * - If it is a HasMany relationship, the above is done for each nested object and the ids of the models are returned.
+   */
+  protected processNestedRelationship(model: IModel<T>, nestedData: any, relationship: IFieldRelationship) {
+    if (relationship.type === RelationshipType.BelongsTo) {
+      const relatedModel = this.loadRelatedModel(model, nestedData, relationship);
+      return relatedModel.id;
+    } else if (relationship.type === RelationshipType.HasMany && nestedData instanceof Array) {
+      const relatedModels = nestedData.map((relatedModelData) => this.loadRelatedModel(model, relatedModelData, relationship));
+      return relatedModels.map(relatedModel => relatedModel.id);
+    }
+  }
+
+  /**
+   * Given the relatedModelData of a single item, normalize the data using the relationship's own serializer,
+   * converting it into a Model instance, then dispatch that related Model to its data service and return the Model.
+   */
+  protected loadRelatedModel(model: IModel<T>, relatedModelData: any, relationship: IFieldRelationship) {
+    const modelRelatedFieldName: string = relationship.modelRelatedFieldName != null
+      ? relationship.modelRelatedFieldName
+      : model.serviceName + "Id";
+
+    if (!relatedModelData.hasOwnProperty(modelRelatedFieldName)) {
+      relatedModelData[modelRelatedFieldName] = model.id;
+    }
+
+    const service = getDataService(relationship.serviceName);
+    const relatedModel = service.serializer.normalize(relatedModelData);
+    service.actions.pushRecord(relatedModel).invoke();
+
+    return relatedModel;
   }
 }

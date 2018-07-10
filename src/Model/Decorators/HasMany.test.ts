@@ -51,6 +51,7 @@ describe("@hasMany", () => {
       type: RelationshipType.HasMany,
       field: "students",
       relatedFieldName: "studentIds",
+      modelRelatedFieldName: undefined,
       serviceName: "student",
     });
   });

@@ -6,9 +6,6 @@ import { of as of$ } from "rxjs/observable/of";
 import { Subject } from "rxjs/Subject";
 import { lorem, random } from "faker";
 
-import { initializeTestServices, seedService } from "../TestUtils";
-import { fakeModelModule } from "../TestUtils/FakeModelModule";
-
 import { BaseService, DataService, registerService } from "../Services";
 import { initializeValidateJS } from "../Initializers";
 
@@ -17,6 +14,7 @@ import { IModelData } from "./IModel";
 import { attr, belongsTo, hasMany, required } from "./Decorators";
 
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
+import { initializeTestServices, seedService, fakeModelModule } from "../TestUtils";
 import { IFakeModelData } from "./Model.mock";
 
 declare var intern;
@@ -913,9 +911,9 @@ describe("Model", () => {
         expect(shadowModel.getRelated("organization")).to.have.property("isShadow").to.be.true;
       });
 
-      it("returns null for a belongsTo relationship if the related id field is empty", () => {
+      it("returns undefined for a belongsTo relationship if the related id field is empty", () => {
         const model = new ExampleModelClass({ id, organizationId: null });
-        expect(model.getRelated("organization")).to.be.null;
+        expect(model.getRelated("organization")).to.be.undefined;
       });
 
       it("returns an empty array for a hasMany relationship if the related ids field is empty", () => {
@@ -941,7 +939,8 @@ describe("Model", () => {
         expect(model).to.have.property("students").to.deep.equal(students);
       });
 
-      it("listens for new changes from the related Observable", () => {
+      it("dispatches a setRelationship action when the Observable updates more than once", () => {
+        const stubSetRelationship = stub(exampleService.actions, "setRelationship").returns({ invoke: spy() });
         const organizationObservable = new Subject();
         stub(organizationService, "getById").returns(organizationObservable.publishReplay(1).refCount());
 
@@ -954,7 +953,7 @@ describe("Model", () => {
         organizationObservable.next(organization1);
         organizationObservable.next(organization2);
 
-        expect(model).to.have.property("organization").to.equal(organization2).but.to.not.equal(organization1);
+        expect(stubSetRelationship.firstCall.args[0]).to.have.property("value").to.equal(organization2);
       });
 
       it("stops listening to new changes when the Model is being torn down", () => {
@@ -993,7 +992,7 @@ describe("Model", () => {
 
         const model = new ExampleModelClass({ id, organizationId });
         model.markForDestruction();
-        expect(model).to.have.property("organization").to.be.null;
+        expect(model).to.have.property("organization").to.be.undefined;
       });
     });
 

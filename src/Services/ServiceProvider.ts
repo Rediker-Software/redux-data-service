@@ -14,7 +14,7 @@ export interface IServiceMap {
 
 export interface IModuleMap {
   [module: string]: {
-    [name: string]: IModelFactory<any> | IServiceFactory | ISerializerFactory<any> | IAdapterFactory<any> | { (data: any): any };
+    [name: string]: IModelFactory<any> | IServiceFactory | ISerializerFactory<any> | IAdapterFactory<any> | { (data: any): any } | any;
   };
 }
 

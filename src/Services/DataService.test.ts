@@ -813,6 +813,7 @@ describe("DataService", () => {
 
       it("should not call BaseService.getStateObservable when using a cached Observable", () => {
         stubGetStateObservable = stub(BaseService, "getStateObservable").returns(state$);
+
         const itemData = fakeModels[2];
 
         fakeService.getById(itemData.id);
@@ -912,7 +913,7 @@ describe("DataService", () => {
         fakeService.getByIds(indexes);
         fakeService.getByIds(indexes);
 
-        expect(stubGetStateObservable).to.have.property("callCount").to.equal(1);
+        expect(stubGetStateObservable).to.have.property("callCount").to.equal(fakeModels.length);
       });
 
       it("should create a fetchRecord action if the requested Ids are not in the state already", () => {

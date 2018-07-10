@@ -28,13 +28,13 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   reset(): void;
   unload(): void;
   forceReload(): void;
-  applyUpdates(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>): IModel<T>;
+  applyUpdates(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>, relationships?: any): IModel<T>;
   initializeNewModel(): void;
   markForDestruction(): void;
 }
 
 export interface IModelFactory<T extends IModelData> {
-  new(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>): IModel<T>;
+  new(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>, relatedModels?: IModelsMap): IModel<T>;
 }
 
 export interface IModelsMap {

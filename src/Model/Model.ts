@@ -1,17 +1,17 @@
 import "rxjs/add/operator/takeUntil";
+import "rxjs/add/operator/skip";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 
 import { single, validate } from "validate.js";
 import { forEach, get, isEmpty, merge, omit } from "lodash";
-import { flow, mapValues, omitBy, assign } from "lodash/fp";
+import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
 import { getDataService } from "../Services";
-import { flattenObjectKeys } from "../Utils";
-
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
 import { DateTimeField, IFieldType, StringField } from "./FieldType";
 import { attr, IFieldRelationship, RelationshipType } from "./Decorators";
+import { flattenObjectKeys } from "../Utils";
 
 /**
  * # Model
@@ -81,12 +81,13 @@ export class Model<T extends IModelData> implements IModel<T> {
 
   protected readonly modelData: Partial<T>;
   protected readonly meta: IModelMeta<T>;
-  protected readonly relatedModels: IModelsMap = {};
+  protected readonly relatedModels: IModelsMap;
   protected _isDestroying: boolean = false;
   protected _willDestroyObservable$: Subject<boolean>;
 
-  constructor(modelData: Partial<T> & { id: string }, meta: Partial<IModelMeta<T>> = {}) {
+  constructor(modelData: Partial<T> & { id: string }, meta: Partial<IModelMeta<T>> = {}, relatedModels: IModelsMap = {}) {
     this.modelData = modelData;
+    this.relatedModels = relatedModels;
     this.meta = {
       isLoading: false,
       isShadow: false,
@@ -288,12 +289,8 @@ export class Model<T extends IModelData> implements IModel<T> {
    *
    * Note that this is applied locally. Chances are you will want to dispatch an action instead, via one of the magic setters
    * (so your components will know to update).
-   *
-   * @param {Partial<T extends IModelData>} modelData
-   * @param {Partial<IModelMeta<T extends IModelData>>} meta
-   * @returns {IModel<T extends IModelData>}
    */
-  public applyUpdates(modelData: Partial<T> = null, meta: Partial<IModelMeta<T>> = {}): IModel<T> {
+  public applyUpdates(modelData: Partial<T> = null, meta: Partial<IModelMeta<T>> = {}, relatedModels: any = {}): IModel<T> {
 
     if (!isEmpty(modelData)) {
       // Validate the input
@@ -310,9 +307,10 @@ export class Model<T extends IModelData> implements IModel<T> {
     }
 
     meta = { ...this.meta, ...(meta as any) };
+    relatedModels = { ...this.relatedModels, ...(relatedModels as any) };
 
     const service = getDataService(this.serviceName);
-    return new service.ModelClass(modelData || this.modelData, meta);
+    return new service.ModelClass(modelData || this.modelData, meta, relatedModels);
   }
 
   /**
@@ -396,14 +394,17 @@ export class Model<T extends IModelData> implements IModel<T> {
     const relatedService = getDataService(relationship.serviceName);
     const relatedIDorIDs = this.getField(relationship.relatedFieldName);
 
-    // Cache and return an empty result:
+    // Initialize the cache to an empty value
+    if (this.isShadow && relationship.type === RelationshipType.BelongsTo) {
+      this.relatedModels[fieldName] = relatedService.getShadowObject();
+    } else if (relationship.type === RelationshipType.HasMany && isEmpty(relatedIDorIDs)) {
+      this.relatedModels[fieldName] = [];
+    }
+
+    // Return an empty result:
     // if the related id/ids field is empty
     // OR the current model is being destroyed (we do not want to add more subscriptions as they are being torn down)
     if (isEmpty(relatedIDorIDs) || this.isDestroying) {
-      this.relatedModels[fieldName] = (relationship.type === RelationshipType.BelongsTo)
-        ? ((this.isShadow) ? relatedService.getShadowObject() : null)
-        : [];
-
       return this.relatedModels[fieldName];
     }
 
@@ -412,11 +413,19 @@ export class Model<T extends IModelData> implements IModel<T> {
       ? relatedService.getById(relatedIDorIDs)
       : relatedService.getByIds(relatedIDorIDs);
 
-    // Subscribe to the Observable until this Model instance will be destroyed
+    // Dispatch an action to update the Model's relationships when the Observable updates
+    const service = getDataService(this.serviceName);
     observable
       .takeUntil(this.getWillDestroyObservable$())
-      .subscribe((newValue) => {
-        this.relatedModels[fieldName] = newValue;
+      .subscribe((value) => {
+        if (!this.relatedModels.hasOwnProperty(fieldName)) {
+          this.relatedModels[fieldName] = value;
+        } else if (this.relatedModels[fieldName] !== value) {
+          service
+            .actions
+            .setRelationship({ id: this.id, fieldName, value })
+            .invoke();
+        }
       });
 
     return this.relatedModels[fieldName];

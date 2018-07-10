@@ -51,6 +51,7 @@ describe("@belongsTo", () => {
       type: RelationshipType.BelongsTo,
       field: "student",
       relatedFieldName: "studentId",
+      modelRelatedFieldName: undefined,
       serviceName: "student",
     });
   });

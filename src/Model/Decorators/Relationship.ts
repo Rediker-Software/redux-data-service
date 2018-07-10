@@ -17,6 +17,7 @@ export interface IFieldRelationship {
   field: string;
   serviceName: string;
   relatedFieldName: string;
+  modelRelatedFieldName?: string;
   type: RelationshipType;
 }
 
@@ -32,8 +33,14 @@ export interface IRelationship extends IFieldTypes {
 }
 
 export interface IRelationshipOptions extends IFieldOptions {
+  /** The service associated to the related field */
   serviceName?: string;
+
+  /** The field on THIS model which provides the ID or IDs to identify the OTHER model */
   relatedFieldName?: string;
+
+  /** The name of the field on the OTHER model which provides the ID of THIS model */
+  modelRelatedFieldName?: string;
 }
 
 /**
@@ -98,7 +105,7 @@ export function relationship(relationshipType: RelationshipType, options: IRelat
       options.relatedFieldName = getRelatedFieldNameForRelationship(relationshipType, singularKey);
     }
 
-    if (process.env.NODE_ENV !== "production" && !(options.relatedFieldName in target)) {
+    if (process.env.NODE_ENV !== "production" && !options.serialize && !(options.relatedFieldName in target)) {
       throw new ReferenceError(`Related field name "${options.relatedFieldName}" missing for relationship "${key}". Did you forget to add an @attr decorator?`);
     }
 
@@ -108,6 +115,7 @@ export function relationship(relationshipType: RelationshipType, options: IRelat
       [key]: {
         serviceName: options.serviceName,
         relatedFieldName: options.relatedFieldName,
+        modelRelatedFieldName: options.modelRelatedFieldName,
         field: key,
         type: relationshipType,
       },

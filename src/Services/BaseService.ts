@@ -11,7 +11,7 @@ import {
 } from "./IService";
 
 import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/publishReplay";
+import "rxjs/add/operator/shareReplay";
 
 /**
  * `IService` takes an Object-Oriented approach to
@@ -82,8 +82,7 @@ export abstract class BaseService<S> implements IService<S> {
   public static getStateObservable(): Observable<any> {
     return BaseService
       .state$
-      .publishReplay(1)
-      .refCount();
+      .shareReplay(1);
   }
 
   /**

@@ -4,13 +4,15 @@ import "rxjs/add/observable/of";
 import { spy, stub } from "sinon";
 
 import faker from "faker";
-import { parse, format } from "date-fns";
+import { format, parse } from "date-fns";
+import { omit } from "lodash";
 
-import { DataService, registerService } from "../Services";
-import { attr, belongsTo, DateField, Model, NumberField, StringField, TimeField, IModelFactory } from "../Model";
+import { BaseService, DataService, registerService } from "../Services";
+import { attr, belongsTo, hasMany, DateField, IModelFactory, Model, NumberField, StringField, TimeField } from "../Model";
 import { MockAdapter } from "../Adapters";
 
 import { RestSerializer } from "./RestSerializer";
+import { ArrayField } from "../Model/FieldType";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -36,6 +38,12 @@ class MockModel extends Model<any> {
 
   @belongsTo({ serviceName: "fakeRelatedModel" })
   public organization: any;
+
+  @attr(ArrayField)
+  public fakeItemIds: string[];
+
+  @hasMany({ serviceName: "fakeRelatedModel"})
+  public fakeItems: any[];
 }
 
 class FakeService extends DataService<any> {
@@ -50,6 +58,9 @@ class FakeRelatedModel extends Model<any> {
 
   @attr(StringField)
   public fullText: string;
+
+  @attr(StringField)
+  public fakeModelId: string;
 }
 
 class FakeRelatedService extends DataService<any> {
@@ -65,8 +76,8 @@ describe("BaseSerializer", () => {
     let mockModelData;
     let fakeService;
     let fakeRelatedService;
+    let fakeRelatedModelData;
     let fakeRelatedModel;
-    let stubRelatedSerializerTransform;
     let fakeModel;
     let mockSerializer;
     let fakeRelatedModelId;
@@ -76,6 +87,15 @@ describe("BaseSerializer", () => {
     let startTimeString;
 
     beforeEach(() => {
+      BaseService.registerDispatch(spy());
+
+      mockSerializer = new RestSerializer(MockModel);
+      fakeService = new FakeService();
+      fakeRelatedService = new FakeRelatedService();
+
+      registerService(fakeService);
+      registerService(fakeRelatedService);
+
       age = faker.random.number();
       fullText = faker.lorem.word();
       startDateString = format(faker.date.recent(), "YYYY-MM-DD");
@@ -84,10 +104,15 @@ describe("BaseSerializer", () => {
       fakeRelatedModelId = faker.random.number().toString();
       const modelId = faker.random.number().toString();
 
-      fakeRelatedModel = new FakeRelatedModel({
+      fakeRelatedModelData = {
         id: fakeRelatedModelId,
         fullText: faker.lorem.word(),
-      });
+        fakeModelId: modelId,
+      };
+
+      fakeRelatedModel = new FakeRelatedModel(fakeRelatedModelData);
+
+      stub(fakeRelatedService, "getById").returns(Observable.of(fakeRelatedModel));
 
       mockModelData = {
         id: modelId,
@@ -98,16 +123,6 @@ describe("BaseSerializer", () => {
         organizationId: fakeRelatedModelId,
       };
       fakeModel = new MockModel(mockModelData);
-
-      mockSerializer = new RestSerializer(MockModel);
-      fakeService = new FakeService();
-      fakeRelatedService = new FakeRelatedService();
-
-      stub(fakeRelatedService, "getById").returns(Observable.of(fakeRelatedModel));
-      stubRelatedSerializerTransform = stub(fakeRelatedService.serializer, "transform").callThrough();
-
-      registerService(fakeService);
-      registerService(fakeRelatedService);
     });
 
     it("transforms the model into a plain javascript object based on each field's FieldType", () => {
@@ -119,6 +134,7 @@ describe("BaseSerializer", () => {
         startDate: startDateString,
         startTime: startTimeString,
         organizationId: fakeRelatedModelId,
+        fakeItemIds: [],
       });
     });
 
@@ -137,18 +153,21 @@ describe("BaseSerializer", () => {
     });
 
     it("transforms relationships on the model when serialize = true", () => {
+      stub(fakeRelatedService.serializer, "transform").callThrough();
+
       fakeModel.fields.organization.serialize = true;
       const transformedModelData = mockSerializer.transform(fakeModel);
 
-      expect(fakeModel).to.have.property("organization");
-      expect(transformedModelData).to.have.property("organization");
+      expect(transformedModelData).to.have.property("organization").to.deep.equal(omit(fakeRelatedModelData, "id"));
     });
 
     it("uses the relationship's own data service to transform it when serialize = true", () => {
+      const stubRelatedSerializerTransform = stub(fakeRelatedService.serializer, "transform").returns(fakeRelatedModelData);
+
       fakeModel.fields.organization.serialize = true;
       mockSerializer.transform(fakeModel);
 
-      expect(stubRelatedSerializerTransform.firstCall.args[0]).to.equal(fakeRelatedModel);
+      expect(stubRelatedSerializerTransform.firstCall.args[0]).to.equal(fakeModel.organization);
     });
   });
 
@@ -206,7 +225,7 @@ describe("BaseSerializer", () => {
       });
     });
 
-    describe("side loads nested related models", () => {
+    describe("side loads nested related models - belongsTo", () => {
       let relatedModelData;
       let rawModelData;
       let invokeSpy;
@@ -216,6 +235,7 @@ describe("BaseSerializer", () => {
         relatedModelData = {
           id: fakeRelatedModelId,
           fullText: fakeRelatedModel.fullText,
+          fakeModelId: modelId,
         };
 
         rawModelData = {
@@ -233,7 +253,7 @@ describe("BaseSerializer", () => {
       });
 
       it("normalizes nested related data", () => {
-        const normalizeStub = stub(fakeRelatedService.serializer, "normalize");
+        const normalizeStub = stub(fakeRelatedService.serializer, "normalize").callThrough();
         mockSerializer.normalize(rawModelData);
 
         expect(normalizeStub.firstCall.args[0]).to.equal(relatedModelData);
@@ -242,12 +262,71 @@ describe("BaseSerializer", () => {
       it("creates a pushRecord action with related data", () => {
         mockSerializer.normalize(rawModelData);
 
-        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(fakeRelatedModel);
+        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel(relatedModelData));
       });
 
       it("invokes a pushRecord action with related data", () => {
         mockSerializer.normalize(rawModelData);
         expect(invokeSpy.calledOnce).to.be.true;
+      });
+    });
+
+    describe("side loads nested related models - hasMany", () => {
+      let relatedModelsData;
+      let rawModelData;
+      let invokeSpy;
+      let pushRecordStub;
+
+      beforeEach(() => {
+        relatedModelsData = [
+          {
+            id: fakeRelatedModelId,
+            fullText: faker.lorem.word(),
+          },
+          {
+            id: faker.random.number.toString(),
+            fullText: faker.lorem.word(),
+          },
+          {
+            id: faker.random.number.toString(),
+            fullText: faker.lorem.word(),
+          },
+        ];
+
+        rawModelData = {
+          id: modelId,
+          fakeItemIds: relatedModelsData.map(item => item.id),
+          fakeItems: relatedModelsData,
+        };
+
+        invokeSpy = spy();
+        pushRecordStub = stub(fakeRelatedService.actions, "pushRecord").returns({ invoke: invokeSpy });
+      });
+
+      afterEach(() => {
+        pushRecordStub.restore();
+      });
+
+      it("normalizes nested related data for each item", () => {
+        const normalizeStub = stub(fakeRelatedService.serializer, "normalize").callThrough();
+        mockSerializer.normalize(rawModelData);
+
+        relatedModelsData.forEach((itemData, index) => {
+          expect(normalizeStub.getCall(index).args[0]).to.equal(itemData);
+        });
+      });
+
+      it("creates a pushRecord action for each item", () => {
+        mockSerializer.normalize(rawModelData);
+
+        relatedModelsData.forEach((itemData, index) => {
+          expect(pushRecordStub.getCall(index).args[0]).to.deep.equal(new FakeRelatedModel(itemData));
+        });
+      });
+
+      it("invokes a pushRecord action for each item", () => {
+        mockSerializer.normalize(rawModelData);
+        expect(invokeSpy.callCount).to.equal(relatedModelsData.length);
       });
     });
 
