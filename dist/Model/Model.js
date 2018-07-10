@@ -62,20 +62,22 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("rxjs/add/operator/takeUntil");
+require("rxjs/add/operator/skip");
 var Subject_1 = require("rxjs/Subject");
 var validate_js_1 = require("validate.js");
 var lodash_1 = require("lodash");
 var fp_1 = require("lodash/fp");
 var Services_1 = require("../Services");
-var Utils_1 = require("../Utils");
 var FieldType_1 = require("./FieldType");
 var Decorators_1 = require("./Decorators");
+var Utils_1 = require("../Utils");
 var Model = (function () {
-    function Model(modelData, meta) {
+    function Model(modelData, meta, relatedModels) {
         if (meta === void 0) { meta = {}; }
-        this.relatedModels = {};
+        if (relatedModels === void 0) { relatedModels = {}; }
         this._isDestroying = false;
         this.modelData = modelData;
+        this.relatedModels = relatedModels;
         this.meta = __assign({ isLoading: false, isShadow: false, errors: null, original: null }, meta);
     }
     Model.prototype.save = function () {
@@ -176,9 +178,10 @@ var Model = (function () {
                 .invoke();
         }
     };
-    Model.prototype.applyUpdates = function (modelData, meta) {
+    Model.prototype.applyUpdates = function (modelData, meta, relatedModels) {
         if (modelData === void 0) { modelData = null; }
         if (meta === void 0) { meta = {}; }
+        if (relatedModels === void 0) { relatedModels = {}; }
         if (!lodash_1.isEmpty(modelData)) {
             for (var key in modelData) {
                 this.checkFieldUpdateIsAllowed(key, modelData[key]);
@@ -189,8 +192,9 @@ var Model = (function () {
             modelData = lodash_1.merge({}, this.modelData, modelData);
         }
         meta = __assign({}, this.meta, meta);
+        relatedModels = __assign({}, this.relatedModels, relatedModels);
         var service = Services_1.getDataService(this.serviceName);
-        return new service.ModelClass(modelData || this.modelData, meta);
+        return new service.ModelClass(modelData || this.modelData, meta, relatedModels);
     };
     Model.prototype.initializeNewModel = function () {
         return;
@@ -224,19 +228,31 @@ var Model = (function () {
         var relationship = this.relationships[fieldName];
         var relatedService = Services_1.getDataService(relationship.serviceName);
         var relatedIDorIDs = this.getField(relationship.relatedFieldName);
+        if (this.isShadow && relationship.type === Decorators_1.RelationshipType.BelongsTo) {
+            this.relatedModels[fieldName] = relatedService.getShadowObject();
+        }
+        else if (relationship.type === Decorators_1.RelationshipType.HasMany && lodash_1.isEmpty(relatedIDorIDs)) {
+            this.relatedModels[fieldName] = [];
+        }
         if (lodash_1.isEmpty(relatedIDorIDs) || this.isDestroying) {
-            this.relatedModels[fieldName] = (relationship.type === Decorators_1.RelationshipType.BelongsTo)
-                ? ((this.isShadow) ? relatedService.getShadowObject() : null)
-                : [];
             return this.relatedModels[fieldName];
         }
         var observable = (relationship.type === Decorators_1.RelationshipType.BelongsTo)
             ? relatedService.getById(relatedIDorIDs)
             : relatedService.getByIds(relatedIDorIDs);
+        var service = Services_1.getDataService(this.serviceName);
         observable
             .takeUntil(this.getWillDestroyObservable$())
-            .subscribe(function (newValue) {
-            _this.relatedModels[fieldName] = newValue;
+            .subscribe(function (value) {
+            if (!_this.relatedModels.hasOwnProperty(fieldName)) {
+                _this.relatedModels[fieldName] = value;
+            }
+            else if (_this.relatedModels[fieldName] !== value) {
+                service
+                    .actions
+                    .setRelationship({ id: _this.id, fieldName: fieldName, value: value })
+                    .invoke();
+            }
         });
         return this.relatedModels[fieldName];
     };

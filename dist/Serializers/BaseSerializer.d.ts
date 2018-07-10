@@ -1,5 +1,7 @@
-import { IModel, IModelData, IModelFactory, IFieldType } from "../Model";
+import { IModel, IModelData, IModelFactory } from "../Model";
 import { ISerializer } from "./ISerializer";
+import { IFieldType } from "../Model/FieldType";
+import { IFieldRelationship } from "../Model/Decorators";
 export declare abstract class BaseSerializer<T extends IModelData, S> implements ISerializer<T, S> {
     readonly ModelClass: IModelFactory<T>;
     abstract deserialize(data: S): IModel<T>;
@@ -12,4 +14,6 @@ export declare abstract class BaseSerializer<T extends IModelData, S> implements
     normalizeField(data: Partial<T>): (fieldType: IFieldType<any>, fieldName: string) => any;
     transform(model: IModel<T> | Partial<T>): Partial<T>;
     normalize(data: any): IModel<T>;
+    protected processNestedRelationship(model: IModel<T>, nestedData: any, relationship: IFieldRelationship): string | string[];
+    protected loadRelatedModel(model: IModel<T>, relatedModelData: any, relationship: IFieldRelationship): IModel<any>;
 }

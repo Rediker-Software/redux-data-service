@@ -49,6 +49,7 @@ describe("@hasMany", function () {
             type: Relationship_1.RelationshipType.HasMany,
             field: "students",
             relatedFieldName: "studentIds",
+            modelRelatedFieldName: undefined,
             serviceName: "student",
         });
     });

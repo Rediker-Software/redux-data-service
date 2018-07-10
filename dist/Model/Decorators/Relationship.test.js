@@ -118,7 +118,13 @@ describe("@relationship", function () {
             expect(myClass.fields).to.have.property("student").to.deep.contain(FieldType_1.BelongsToField, "it keeps track of the field's FieldType correctly");
         });
         it("builds the IFieldRelationship object using the property name as the service name by default", function () {
-            expect(myClass.relationships).to.have.property("student").to.deep.equal({ field: "student", serviceName: "student", relatedFieldName: "studentId", type: Relationship_1.RelationshipType.BelongsTo });
+            expect(myClass.relationships).to.have.property("student").to.deep.equal({
+                field: "student",
+                serviceName: "student",
+                relatedFieldName: "studentId",
+                modelRelatedFieldName: undefined,
+                type: Relationship_1.RelationshipType.BelongsTo,
+            });
         });
         it("requires the default related field name to be defined on the Model", function () {
             expect(function () { return Relationship_1.relationship(Relationship_1.RelationshipType.BelongsTo)(myClass, "organization"); }).to.throw(ReferenceError, "missing for relationship");
@@ -145,7 +151,13 @@ describe("@relationship", function () {
                 return MyClass;
             }());
             var myClass = new MyClass();
-            expect(myClass.relationships).to.have.property("someKid").to.deep.equal({ field: "someKid", serviceName: "student", relatedFieldName: "someKidId", type: Relationship_1.RelationshipType.BelongsTo });
+            expect(myClass.relationships).to.have.property("someKid").to.deep.equal({
+                field: "someKid",
+                serviceName: "student",
+                relatedFieldName: "someKidId",
+                modelRelatedFieldName: undefined,
+                type: Relationship_1.RelationshipType.BelongsTo,
+            });
         });
         it("builds the IFieldRelationship object using a custom service name and custom relatedFieldName", function () {
             var MyClass = (function () {
@@ -167,7 +179,13 @@ describe("@relationship", function () {
                 return MyClass;
             }());
             var myClass = new MyClass();
-            expect(myClass.relationships).to.have.property("someKid").to.deep.equal({ field: "someKid", serviceName: "student", relatedFieldName: "studentFK", type: Relationship_1.RelationshipType.BelongsTo });
+            expect(myClass.relationships).to.have.property("someKid").to.deep.equal({
+                field: "someKid",
+                serviceName: "student",
+                relatedFieldName: "studentFK",
+                modelRelatedFieldName: undefined,
+                type: Relationship_1.RelationshipType.BelongsTo,
+            });
         });
         it("requires the custom related field name to be defined on the Model", function () {
             var MyClass = (function () {
@@ -217,7 +235,13 @@ describe("@relationship", function () {
                 return MyClass;
             }());
             var myClass = new MyClass();
-            expect(myClass.relationships).to.have.property("student").to.deep.equal({ field: "student", serviceName: "student", relatedFieldName: "studentId", type: Relationship_1.RelationshipType.BelongsTo });
+            expect(myClass.relationships).to.have.property("student").to.deep.equal({
+                field: "student",
+                serviceName: "student",
+                relatedFieldName: "studentId",
+                modelRelatedFieldName: undefined,
+                type: Relationship_1.RelationshipType.BelongsTo,
+            });
         });
         it("builds the IFieldRelationship object with the correct type and relatedFieldName for HasMany", function () {
             var expectedValue = { name: "Bob" };
@@ -240,7 +264,13 @@ describe("@relationship", function () {
                 return MyClass;
             }());
             var myClass = new MyClass();
-            expect(myClass.relationships).to.have.property("students").to.deep.equal({ field: "students", serviceName: "student", relatedFieldName: "studentIds", type: Relationship_1.RelationshipType.HasMany });
+            expect(myClass.relationships).to.have.property("students").to.deep.equal({
+                field: "students",
+                serviceName: "student",
+                relatedFieldName: "studentIds",
+                modelRelatedFieldName: undefined,
+                type: Relationship_1.RelationshipType.HasMany,
+            });
         });
     });
     describe("@relationship - memory efficiency", function () {

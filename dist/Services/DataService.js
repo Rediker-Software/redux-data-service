@@ -27,16 +27,20 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+require("rxjs/add/operator/auditTime");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/concat");
-require("rxjs/add/operator/distinct");
+require("rxjs/add/operator/distinctUntilChanged");
 require("rxjs/add/operator/do");
 require("rxjs/add/operator/filter");
 require("rxjs/add/operator/map");
 require("rxjs/add/operator/mergeMap");
+require("rxjs/add/operator/shareReplay");
+require("rxjs/add/operator/startWith");
 require("rxjs/add/operator/switchMap");
 require("rxjs/add/operator/take");
 var of_1 = require("rxjs/observable/of");
+var combineLatest_1 = require("rxjs/observable/combineLatest");
 var immutable_1 = require("immutable");
 var lodash_1 = require("lodash");
 var hash = require("object-hash");
@@ -73,12 +77,7 @@ var DataService = (function (_super) {
             var ids = [];
             record.update("items", function (items) { return items.withMutations(function (itemsMap) {
                 action.payload.items.forEach(function (item) {
-                    itemsMap.update(item.id, function (oldModel) {
-                        if (oldModel) {
-                            oldModel.markForDestruction();
-                        }
-                        return item;
-                    });
+                    itemsMap.update(item.id, function () { return item; });
                     ids.push(item.id);
                 });
             }); });
@@ -88,12 +87,7 @@ var DataService = (function (_super) {
         }); };
         _this.pushRecordReducer = function (state, action) { return state.withMutations(function (record) {
             var item = action.payload;
-            record.set("items", record.items.update(item.id, function (oldModel) {
-                if (oldModel) {
-                    oldModel.markForDestruction();
-                }
-                return item;
-            }));
+            record.set("items", record.items.update(item.id, function () { return item; }));
         }); };
         _this.unloadAllReducer = function (state) {
             state.items.forEach(function (oldModel) {
@@ -126,9 +120,11 @@ var DataService = (function (_super) {
                 if (record.items.has(id)) {
                     record.update("items", function (items) { return items.update(id, function (item) {
                         var _a;
-                        item.markForDestruction();
                         return item.applyUpdates((_a = {}, _a[fieldName] = value, _a));
                     }); });
+                }
+                else if (process.env.NODE_ENV !== "production") {
+                    console.warn(_this.name + ": setFieldReducer - attempted to set \"" + value + "\" on field \"" + fieldName + "\" for unknown id \"" + id + "\"");
                 }
             });
         };
@@ -138,9 +134,22 @@ var DataService = (function (_super) {
                 if (record.items.has(id)) {
                     record.update("items", function (items) { return items.update(id, function (item) {
                         var _a;
-                        item.markForDestruction();
                         return item.applyUpdates(null, (_a = {}, _a[fieldName] = value, _a));
                     }); });
+                }
+            });
+        };
+        _this.setRelationshipReducer = function (state, action) {
+            return state.withMutations(function (record) {
+                var _a = action.payload, id = _a.id, fieldName = _a.fieldName, value = _a.value;
+                if (record.items.has(id)) {
+                    record.update("items", function (items) { return items.update(id, function (item) {
+                        var _a;
+                        return item.applyUpdates(undefined, undefined, (_a = {}, _a[fieldName] = value, _a));
+                    }); });
+                }
+                else if (process.env.NODE_ENV !== "production") {
+                    console.warn(_this.name + ": setRelationshipReducer - attempted to set \"" + value + "\" on field \"" + fieldName + "\" for unknown id \"" + id + "\"");
                 }
             });
         };
@@ -195,7 +204,8 @@ var DataService = (function (_super) {
         var observable = BaseService_1.BaseService
             .getStateObservable()
             .map(function (state) { return _this.selectors.getItem(state, id) || _this.getShadowObject(); })
-            .distinct();
+            .distinctUntilChanged()
+            .shareReplay(1);
         observable
             .take(1)
             .filter(function (item) { return item.isShadow; })
@@ -209,19 +219,9 @@ var DataService = (function (_super) {
         if (cacheKey in this.observablesByIdsCache) {
             return this.observablesByIdsCache[cacheKey];
         }
-        var observable = BaseService_1.BaseService
-            .getStateObservable()
-            .map(function (state) { return _this.selectors.getItemsByIds(state, ids); })
-            .distinct();
-        observable
-            .take(1)
-            .filter(function (items) { return items.length !== ids.length; })
-            .subscribe(function (items) {
-            var currentIds = items.map(function (item) { return item.id; });
-            lodash_1.difference(ids, currentIds).forEach(function (id) {
-                _this.actions.fetchRecord({ id: id }).invoke();
-            });
-        });
+        var itemObservables = ids.map(function (id) { return _this.getById(id); });
+        var observable = combineLatest_1.combineLatest.apply(void 0, itemObservables).auditTime(25)
+            .startWith([]);
         this.observablesByIdsCache[cacheKey] = observable;
         return observable;
     };
@@ -231,14 +231,13 @@ var DataService = (function (_super) {
         if (hashParams in this.observablesByQueryCache) {
             return this.observablesByQueryCache[hashParams];
         }
+        this.actions.fetchAll(queryParams).invoke();
         var observable = BaseService_1.BaseService
             .getStateObservable()
             .map(function (state) { return _this.selectors.getItems(state, queryParams); })
-            .distinct()
-            .map(function (items) { return (items != null && "toJS" in items) ? items.toJS() : items; });
-        observable
-            .take(1)
-            .subscribe(function () { return _this.actions.fetchAll(queryParams).invoke(); });
+            .distinctUntilChanged()
+            .map(function (items) { return (items != null && "toJS" in items) ? items.toJS() : items; })
+            .shareReplay(1);
         this.observablesByQueryCache[hashParams] = observable;
         return observable;
     };
@@ -247,22 +246,23 @@ var DataService = (function (_super) {
         var observable = BaseService_1.BaseService
             .getStateObservable()
             .map(function (state) { return _this.selectors.getAllItems(state).valueSeq(); })
-            .distinct();
+            .distinctUntilChanged()
+            .shareReplay(1);
         observable
             .take(1)
             .subscribe(function () { return _this.actions.fetchAll(); });
         return observable;
     };
     DataService.prototype.getDefaultQueryParams = function () {
-        return {};
+        return of_1.of({});
     };
     DataService.prototype.createTypes = function () {
         var types = _super.prototype.createTypes.call(this);
-        return __assign({}, types, { CREATE_RECORD: this.makeActionType("CREATE_RECORD"), DELETE_RECORD: this.makeActionType("DELETE_RECORD"), FETCH_ALL: this.makeActionType("FETCH_ALL"), FETCH_RECORD: this.makeActionType("FETCH_RECORD"), PATCH_RECORD: this.makeActionType("PATCH_RECORD"), PUSH_ALL: this.makeActionType("PUSH_ALL"), PUSH_RECORD: this.makeActionType("PUSH_RECORD"), SET_ERRORS: this.makeActionType("SET_ERRORS"), UNLOAD_ALL: this.makeActionType("UNLOAD_ALL"), UNLOAD_RECORD: this.makeActionType("UNLOAD_RECORD"), UPDATE_RECORD: this.makeActionType("UPDATE_RECORD"), SET_FIELD: this.makeActionType("SET_FIELD"), SET_META_FIELD: this.makeActionType("SET_META_FIELD") });
+        return __assign({}, types, { CREATE_RECORD: this.makeActionType("CREATE_RECORD"), DELETE_RECORD: this.makeActionType("DELETE_RECORD"), FETCH_ALL: this.makeActionType("FETCH_ALL"), FETCH_RECORD: this.makeActionType("FETCH_RECORD"), PATCH_RECORD: this.makeActionType("PATCH_RECORD"), PUSH_ALL: this.makeActionType("PUSH_ALL"), PUSH_RECORD: this.makeActionType("PUSH_RECORD"), SET_ERRORS: this.makeActionType("SET_ERRORS"), UNLOAD_ALL: this.makeActionType("UNLOAD_ALL"), UNLOAD_RECORD: this.makeActionType("UNLOAD_RECORD"), UPDATE_RECORD: this.makeActionType("UPDATE_RECORD"), SET_FIELD: this.makeActionType("SET_FIELD"), SET_META_FIELD: this.makeActionType("SET_META_FIELD"), SET_RELATIONSHIP: this.makeActionType("SET_RELATIONSHIP") });
     };
     DataService.prototype.createActions = function () {
         var actions = _super.prototype.createActions.call(this);
-        return __assign({}, actions, { createRecord: this.makeActionCreator(this.types.CREATE_RECORD), deleteRecord: this.makeActionCreator(this.types.DELETE_RECORD), fetchAll: this.makeActionCreator(this.types.FETCH_ALL), fetchRecord: this.makeActionCreator(this.types.FETCH_RECORD), patchRecord: this.makeActionCreator(this.types.PATCH_RECORD), pushAll: this.makeActionCreator(this.types.PUSH_ALL), pushRecord: this.makeActionCreator(this.types.PUSH_RECORD), setErrors: this.makeActionCreator(this.types.SET_ERRORS), unloadAll: this.makeActionCreator(this.types.UNLOAD_ALL), unloadRecord: this.makeActionCreator(this.types.UNLOAD_RECORD), updateRecord: this.makeActionCreator(this.types.UPDATE_RECORD), setField: this.makeActionCreator(this.types.SET_FIELD), setMetaField: this.makeActionCreator(this.types.SET_META_FIELD) });
+        return __assign({}, actions, { createRecord: this.makeActionCreator(this.types.CREATE_RECORD), deleteRecord: this.makeActionCreator(this.types.DELETE_RECORD), fetchAll: this.makeActionCreator(this.types.FETCH_ALL), fetchRecord: this.makeActionCreator(this.types.FETCH_RECORD), patchRecord: this.makeActionCreator(this.types.PATCH_RECORD), pushAll: this.makeActionCreator(this.types.PUSH_ALL), pushRecord: this.makeActionCreator(this.types.PUSH_RECORD), setErrors: this.makeActionCreator(this.types.SET_ERRORS), unloadAll: this.makeActionCreator(this.types.UNLOAD_ALL), unloadRecord: this.makeActionCreator(this.types.UNLOAD_RECORD), updateRecord: this.makeActionCreator(this.types.UPDATE_RECORD), setField: this.makeActionCreator(this.types.SET_FIELD), setMetaField: this.makeActionCreator(this.types.SET_META_FIELD), setRelationship: this.makeActionCreator(this.types.SET_RELATIONSHIP) });
     };
     DataService.prototype.createSelectors = function () {
         var selectors = _super.prototype.createSelectors.call(this);
@@ -270,7 +270,7 @@ var DataService = (function (_super) {
         var getAllItems = reselect_1.createSelector(getServiceState, function (store) { return store.items; });
         var getRequestCache = re_reselect_1.default(getServiceState, function (state, queryParams) { return queryParams; }, function (store, queryParams) { return store.requestCache.get(hash(queryParams || {})); })(function (state, queryParams) { return hash(queryParams || {}); });
         var getItems = re_reselect_1.default(getAllItems, function (state, queryParams) { return getRequestCache(state, queryParams); }, function (items, requestCache) { return requestCache ? requestCache.ids.map(function (id) { return items.get(id); }).valueSeq() : null; })(function (state, queryParams) { return hash(queryParams || {}); });
-        var getItemsByIds = re_reselect_1.default(getServiceState, function (state, ids) { return ids; }, getAllItems, function (state, ids, items) {
+        var getItemsByIds = re_reselect_1.default(function (state, ids) { return ids; }, getAllItems, function (ids, items) {
             return ids
                 .map(function (id) { return items.get(id); })
                 .filter(function (item) { return item != null; });
@@ -285,7 +285,7 @@ var DataService = (function (_super) {
     DataService.prototype.createReducers = function () {
         var _a;
         var reducers = _super.prototype.createReducers.call(this);
-        return __assign({}, reducers, (_a = {}, _a[this.types.FETCH_ALL] = this.fetchAllReducer, _a[this.types.PUSH_ALL] = this.pushAllReducer, _a[this.types.PUSH_RECORD] = this.pushRecordReducer, _a[this.types.UNLOAD_ALL] = this.unloadAllReducer, _a[this.types.UNLOAD_RECORD] = this.unloadRecordReducer, _a[this.types.SET_FIELD] = this.setFieldReducer, _a[this.types.SET_META_FIELD] = this.setMetaFieldReducer, _a));
+        return __assign({}, reducers, (_a = {}, _a[this.types.FETCH_ALL] = this.fetchAllReducer, _a[this.types.PUSH_ALL] = this.pushAllReducer, _a[this.types.PUSH_RECORD] = this.pushRecordReducer, _a[this.types.UNLOAD_ALL] = this.unloadAllReducer, _a[this.types.UNLOAD_RECORD] = this.unloadRecordReducer, _a[this.types.SET_FIELD] = this.setFieldReducer, _a[this.types.SET_META_FIELD] = this.setMetaFieldReducer, _a[this.types.SET_RELATIONSHIP] = this.setRelationshipReducer, _a));
     };
     DataService.prototype.createEpics = function () {
         var epics = _super.prototype.createEpics.call(this);

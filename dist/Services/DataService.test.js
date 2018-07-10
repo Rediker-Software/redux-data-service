@@ -725,7 +725,7 @@ describe("DataService", function () {
                 var indexes = itemData.map(function (item) { return item.id; });
                 fakeService.getByIds(indexes);
                 fakeService.getByIds(indexes);
-                expect(stubGetStateObservable).to.have.property("callCount").to.equal(1);
+                expect(stubGetStateObservable).to.have.property("callCount").to.equal(fakeModels.length);
             });
             it("should create a fetchRecord action if the requested Ids are not in the state already", function () {
                 stubFetchRecord = sinon_1.stub(fakeService.actions, "fetchRecord").returns({ invoke: sinon_1.spy() });

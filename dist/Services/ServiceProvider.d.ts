@@ -10,7 +10,7 @@ export interface IModuleMap {
     [module: string]: {
         [name: string]: IModelFactory<any> | IServiceFactory | ISerializerFactory<any> | IAdapterFactory<any> | {
             (data: any): any;
-        };
+        } | any;
     };
 }
 export declare function getService<T>(name: any): IService<T>;
