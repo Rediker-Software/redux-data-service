@@ -1,6 +1,6 @@
 import { IAction, IActionCreator, IActionCreators, IActionEpic, IActionTypes, IReducer, IReducers, ISelectors, IService } from "./IService";
 import { Observable } from "rxjs/Observable";
-import "rxjs/add/operator/publishReplay";
+import "rxjs/add/operator/shareReplay";
 export declare abstract class BaseService<S> implements IService<S> {
     abstract readonly name: string;
     protected static dispatch: (action: IAction) => void;

@@ -1,20 +1,23 @@
+import "rxjs/add/operator/auditTime";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/concat";
-import "rxjs/add/operator/distinct";
+import "rxjs/add/operator/distinctUntilChanged";
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/filter";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
+import "rxjs/add/operator/shareReplay";
+import "rxjs/add/operator/startWith";
 import "rxjs/add/operator/switchMap";
 import "rxjs/add/operator/take";
 import { Observable } from "rxjs/Observable";
 import { List, Map, Record } from "immutable";
 import { Store } from "redux";
-import { IModel, IModelData, IModelFactory, IModelMeta } from "../Model";
+import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
 import { ISerializer } from "../Serializers";
 import { IAdapter } from "../Adapters";
 import { BaseService } from "./BaseService";
-import { IAction, IActionEpic, IActionCreators, IActionTypes, IObserveableAction, ISelectors } from "./IService";
+import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors } from "./IService";
 export declare type IRequestCacheKey = string;
 export interface IRequestCache {
     isLoading: boolean;
@@ -75,7 +78,7 @@ export declare abstract class DataService<T extends IModelData> extends BaseServ
     getByIds(ids: string[]): Observable<IModel<T>[]>;
     getByQuery(queryParams: any): Observable<IModel<T>[]>;
     getAll(): Observable<IModel<T>[]>;
-    getDefaultQueryParams(): any;
+    getDefaultQueryParams(): Observable<any>;
     createTypes(): IActionTypes;
     createActions(): IActionCreators;
     createSelectors(): ISelectors;
@@ -88,7 +91,8 @@ export declare abstract class DataService<T extends IModelData> extends BaseServ
     setErrorsReducer: (state: DataServiceStateRecord<T>, action: IAction<any, any>) => DataServiceStateRecord<T>;
     setFieldReducer: (state: DataServiceStateRecord<T>, action: IAction<ISetField<T>, any>) => DataServiceStateRecord<T>;
     setMetaFieldReducer: (state: DataServiceStateRecord<T>, action: IAction<ISetMetaField<T>, any>) => DataServiceStateRecord<T>;
-    createEpics(): IActionEpic[];
+    setRelationshipReducer: (state: DataServiceStateRecord<T>, action: IAction<ISetField<T>, any>) => DataServiceStateRecord<T>;
+    createEpics(): import("../../../../../../Users/jmadson/projects/redux-data-service/node_modules/redux-observable").Epic<IObserveableAction<any>, {}, any>[];
     fetchAllEpic(action$: IObserveableAction, store: Store<DataServiceStateRecord<T>>): Observable<IAction<any, any>>;
     fetchRecordEpic(action$: IObserveableAction, store: Store<DataServiceStateRecord<T>>): Observable<IAction<T>>;
     createRecordEpic(action$: IObserveableAction<IModelId>, store: Store<DataServiceStateRecord<T>>): Observable<IAction<any, any>>;

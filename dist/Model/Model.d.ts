@@ -1,4 +1,5 @@
 import "rxjs/add/operator/takeUntil";
+import "rxjs/add/operator/skip";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
@@ -21,7 +22,7 @@ export declare class Model<T extends IModelData> implements IModel<T> {
     protected _willDestroyObservable$: Subject<boolean>;
     constructor(modelData: Partial<T> & {
         id: string;
-    }, meta?: Partial<IModelMeta<T>>);
+    }, meta?: Partial<IModelMeta<T>>, relatedModels?: IModelsMap);
     save(): Promise<IModel<T>>;
     saveModel(): Promise<IModel<T>>;
     saveRelatedModels(): Promise<IModel<T>[]>;
@@ -31,7 +32,7 @@ export declare class Model<T extends IModelData> implements IModel<T> {
     reset(): void;
     unload(): void;
     forceReload(): void;
-    applyUpdates(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>): IModel<T>;
+    applyUpdates(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>, relatedModels?: any): IModel<T>;
     initializeNewModel(): void;
     getField(fieldName: string, defaultValue?: any): any;
     protected checkFieldUpdateIsAllowed(key: any, value: any): void;

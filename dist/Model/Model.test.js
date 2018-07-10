@@ -32,13 +32,12 @@ var sinon_1 = require("sinon");
 var of_1 = require("rxjs/observable/of");
 var Subject_1 = require("rxjs/Subject");
 var faker_1 = require("faker");
-var TestUtils_1 = require("../TestUtils");
-var FakeModelModule_1 = require("../TestUtils/FakeModelModule");
 var Services_1 = require("../Services");
 var Initializers_1 = require("../Initializers");
 var Model_1 = require("./Model");
 var Decorators_1 = require("./Decorators");
 var FieldType_1 = require("./FieldType");
+var TestUtils_1 = require("../TestUtils");
 var _a = intern.getPlugin("interface.bdd"), describe = _a.describe, it = _a.it, beforeEach = _a.beforeEach, before = _a.before;
 var expect = intern.getPlugin("chai").expect;
 describe("Model", function () {
@@ -893,9 +892,9 @@ describe("Model", function () {
                 var shadowModel = exampleService.getShadowObject();
                 expect(shadowModel.getRelated("organization")).to.have.property("isShadow").to.be.true;
             });
-            it("returns null for a belongsTo relationship if the related id field is empty", function () {
+            it("returns undefined for a belongsTo relationship if the related id field is empty", function () {
                 var model = new ExampleModelClass({ id: id, organizationId: null });
-                expect(model.getRelated("organization")).to.be.null;
+                expect(model.getRelated("organization")).to.be.undefined;
             });
             it("returns an empty array for a hasMany relationship if the related ids field is empty", function () {
                 var model = new ExampleModelClass({ id: id, studentIds: [] });
@@ -915,7 +914,8 @@ describe("Model", function () {
                 var model = new ExampleModelClass({ id: id, studentIds: studentIds });
                 expect(model).to.have.property("students").to.deep.equal(students);
             });
-            it("listens for new changes from the related Observable", function () {
+            it("dispatches a setRelationship action when the Observable updates more than once", function () {
+                var stubSetRelationship = sinon_1.stub(exampleService.actions, "setRelationship").returns({ invoke: sinon_1.spy() });
                 var organizationObservable = new Subject_1.Subject();
                 sinon_1.stub(organizationService, "getById").returns(organizationObservable.publishReplay(1).refCount());
                 var organization1 = new organizationService.ModelClass({ id: organizationId });
@@ -924,7 +924,7 @@ describe("Model", function () {
                 model.getRelated("organization");
                 organizationObservable.next(organization1);
                 organizationObservable.next(organization2);
-                expect(model).to.have.property("organization").to.equal(organization2).but.to.not.equal(organization1);
+                expect(stubSetRelationship.firstCall.args[0]).to.have.property("value").to.equal(organization2);
             });
             it("stops listening to new changes when the Model is being torn down", function () {
                 var organizationObservable = new Subject_1.Subject();
@@ -954,7 +954,7 @@ describe("Model", function () {
                 sinon_1.stub(organizationService, "getById").returns(organizationObservable);
                 var model = new ExampleModelClass({ id: id, organizationId: organizationId });
                 model.markForDestruction();
-                expect(model).to.have.property("organization").to.be.null;
+                expect(model).to.have.property("organization").to.be.undefined;
             });
         });
         describe("Model#setRelated", function () {
@@ -983,32 +983,32 @@ describe("Model", function () {
     });
     describe("Model#isDirty", function () {
         it("considers the model to be dirty when a field has changed", function () {
-            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
+            TestUtils_1.initializeTestServices(TestUtils_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             model = model.applyUpdates({ fullText: faker_1.lorem.word() });
             expect(model.isDirty).to.be.true;
         });
         it("does not consider the model to be dirty when the model has not been changed", function () {
-            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
+            TestUtils_1.initializeTestServices(TestUtils_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             expect(model.isDirty).to.be.false;
         });
     });
     describe("Model#hasUnsavedChanges", function () {
         it("considers the model to have unsaved changes when one of its own fields has changed", function () {
-            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
+            TestUtils_1.initializeTestServices(TestUtils_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             model = model.applyUpdates({ fullText: faker_1.lorem.word() });
             expect(model.hasUnsavedChanges).to.be.true;
         });
         it("considers the model to have unsaved changes when one of its previously loaded related models has changed", function () {
-            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
+            TestUtils_1.initializeTestServices(TestUtils_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             model.relatedModels = { someRelatedModel: { isDirty: true } };
             expect(model.hasUnsavedChanges).to.be.true;
         });
         it("does not consider the model to have unsaved changes when the model and its relationships have not been changed", function () {
-            TestUtils_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
+            TestUtils_1.initializeTestServices(TestUtils_1.fakeModelModule);
             var model = TestUtils_1.seedService("fakeModel");
             model.relatedModels = { someRelatedModel: { isDirty: false } };
             expect(model.hasUnsavedChanges).to.be.false;

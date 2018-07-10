@@ -49,6 +49,7 @@ describe("@belongsTo", function () {
             type: Relationship_1.RelationshipType.BelongsTo,
             field: "student",
             relatedFieldName: "studentId",
+            modelRelatedFieldName: undefined,
             serviceName: "student",
         });
     });

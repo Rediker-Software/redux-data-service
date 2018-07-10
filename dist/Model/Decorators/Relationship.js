@@ -47,12 +47,13 @@ function relationship(relationshipType, options) {
         if (!options.relatedFieldName) {
             options.relatedFieldName = exports.getRelatedFieldNameForRelationship(relationshipType, singularKey);
         }
-        if (process.env.NODE_ENV !== "production" && !(options.relatedFieldName in target)) {
+        if (process.env.NODE_ENV !== "production" && !options.serialize && !(options.relatedFieldName in target)) {
             throw new ReferenceError("Related field name \"" + options.relatedFieldName + "\" missing for relationship \"" + key + "\". Did you forget to add an @attr decorator?");
         }
         target.relationships = __assign({}, target.relationships, (_a = {}, _a[key] = {
             serviceName: options.serviceName,
             relatedFieldName: options.relatedFieldName,
+            modelRelatedFieldName: options.modelRelatedFieldName,
             field: key,
             type: relationshipType,
         }, _a));

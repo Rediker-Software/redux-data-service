@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-require("rxjs/add/operator/publishReplay");
+require("rxjs/add/operator/shareReplay");
 var BaseService = (function () {
     function BaseService() {
     }
@@ -16,8 +16,7 @@ var BaseService = (function () {
     BaseService.getStateObservable = function () {
         return BaseService
             .state$
-            .publishReplay(1)
-            .refCount();
+            .shareReplay(1);
     };
     BaseService.prototype.makeActionCreator = function (type, defaultMeta) {
         return function (payload, meta) {

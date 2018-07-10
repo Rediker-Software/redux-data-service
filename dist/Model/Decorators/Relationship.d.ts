@@ -9,6 +9,7 @@ export interface IFieldRelationship {
     field: string;
     serviceName: string;
     relatedFieldName: string;
+    modelRelatedFieldName?: string;
     type: RelationshipType;
 }
 export interface IRelationship extends IFieldTypes {
@@ -21,6 +22,7 @@ export interface IRelationship extends IFieldTypes {
 export interface IRelationshipOptions extends IFieldOptions {
     serviceName?: string;
     relatedFieldName?: string;
+    modelRelatedFieldName?: string;
 }
 export declare const getFieldTypeForRelationship: (relationshipType: RelationshipType) => IFieldType<any>;
 export declare const getRelatedFieldNameForRelationship: (relationshipType: RelationshipType, baseName: string) => string;
