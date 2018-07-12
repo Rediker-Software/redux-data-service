@@ -25,19 +25,19 @@ var BaseSerializer = (function () {
         configurable: true
     });
     BaseSerializer.prototype.transformField = function (model) {
+        var _this = this;
         return function (fieldType, fieldName) {
             var fieldValue = model[fieldName];
-            if ("serviceName" in fieldType) {
-                return Services_1.getDataService(fieldType.serviceName)
-                    .serializer
-                    .transform(fieldValue);
-            }
-            else if ("transform" in fieldType) {
-                return fieldType.transform(fieldValue);
-            }
-            else {
+            if (fieldValue == null) {
                 return fieldValue;
             }
+            if (_this.relationships && fieldName in _this.relationships) {
+                return _this.transformRelationship(fieldValue, _this.relationships[fieldName]);
+            }
+            if ("transform" in fieldType) {
+                return fieldType.transform(fieldValue);
+            }
+            return fieldValue;
         };
     };
     BaseSerializer.prototype.normalizeField = function (data) {
@@ -62,6 +62,22 @@ var BaseSerializer = (function () {
             }
         }
         return model;
+    };
+    BaseSerializer.prototype.transformRelationship = function (fieldValue, relationship) {
+        var _this = this;
+        switch (relationship.type) {
+            case Decorators_1.RelationshipType.BelongsTo:
+                return this.transformRelatedModel(fieldValue);
+            case Decorators_1.RelationshipType.HasMany:
+                return fieldValue.map(function (item) { return _this.transformRelatedModel(item); });
+            default:
+                throw new TypeError("BaseSerializer: attempted to transform unknown relationship \"" + relationship.type + "\"");
+        }
+    };
+    BaseSerializer.prototype.transformRelatedModel = function (relatedModel) {
+        return Services_1.getDataService(relatedModel.serviceName)
+            .serializer
+            .transform(relatedModel);
     };
     BaseSerializer.prototype.processNestedRelationship = function (model, nestedData, relationship) {
         var _this = this;

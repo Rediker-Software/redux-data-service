@@ -4,7 +4,7 @@ import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 
 import { single, validate } from "validate.js";
-import { forEach, get, isEmpty, merge, omit } from "lodash";
+import { forEach, get, isEmpty, merge, omit, find } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
 import { getDataService } from "../Services";
@@ -292,10 +292,18 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public applyUpdates(modelData: Partial<T> = null, meta: Partial<IModelMeta<T>> = {}, relatedModels: any = {}): IModel<T> {
 
+    meta = { ...this.meta, ...meta };
+    relatedModels = { ...this.relatedModels, ...relatedModels };
+
     if (!isEmpty(modelData)) {
-      // Validate the input
+
+      // Validate the input, clear relatedModels whose ids may have just changed so they can be loaded again
       for (const key in modelData) {
         this.checkFieldUpdateIsAllowed(key, modelData[key]);
+        const relationship = find(this.relationships, { relatedFieldName: key });
+        if (relationship && relatedModels.hasOwnProperty(relationship.field)) {
+          delete relatedModels[relationship.field];
+        }
       }
 
       // Store a copy of the original data before we modify it
@@ -305,9 +313,6 @@ export class Model<T extends IModelData> implements IModel<T> {
 
       modelData = merge({}, this.modelData, modelData);
     }
-
-    meta = { ...this.meta, ...(meta as any) };
-    relatedModels = { ...this.relatedModels, ...(relatedModels as any) };
 
     const service = getDataService(this.serviceName);
     return new service.ModelClass(modelData || this.modelData, meta, relatedModels);
