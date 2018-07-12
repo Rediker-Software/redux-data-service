@@ -128,6 +128,7 @@ describe("BaseSerializer", function () {
         var fullText;
         var startDateString;
         var startTimeString;
+        var modelId;
         beforeEach(function () {
             Services_1.BaseService.registerDispatch(sinon_1.spy());
             mockSerializer = new RestSerializer_1.RestSerializer(MockModel);
@@ -140,7 +141,7 @@ describe("BaseSerializer", function () {
             startDateString = date_fns_1.format(faker_1.default.date.recent(), "YYYY-MM-DD");
             startTimeString = date_fns_1.format(faker_1.default.date.recent(), "hh:mm:ss a");
             fakeRelatedModelId = faker_1.default.random.number().toString();
-            var modelId = faker_1.default.random.number().toString();
+            modelId = faker_1.default.random.number().toString();
             fakeRelatedModelData = {
                 id: fakeRelatedModelId,
                 fullText: faker_1.default.lorem.word(),
@@ -179,17 +180,36 @@ describe("BaseSerializer", function () {
             expect(fakeModel).to.have.property("organization");
             expect(transformedModelData).to.not.have.property("organization");
         });
-        it("transforms relationships on the model when serialize = true", function () {
+        it("transforms belongsTo relationships on the model when serialize = true", function () {
             sinon_1.stub(fakeRelatedService.serializer, "transform").callThrough();
             fakeModel.fields.organization.serialize = true;
             var transformedModelData = mockSerializer.transform(fakeModel);
             expect(transformedModelData).to.have.property("organization").to.deep.equal(lodash_1.omit(fakeRelatedModelData, "id"));
         });
-        it("uses the relationship's own data service to transform it when serialize = true", function () {
+        it("uses the belongsTo relationship's own data service to transform it when serialize = true", function () {
             var stubRelatedSerializerTransform = sinon_1.stub(fakeRelatedService.serializer, "transform").returns(fakeRelatedModelData);
             fakeModel.fields.organization.serialize = true;
             mockSerializer.transform(fakeModel);
             expect(stubRelatedSerializerTransform.firstCall.args[0]).to.equal(fakeModel.organization);
+        });
+        it("transforms hasMany relationships on the model when serialize = true", function () {
+            sinon_1.stub(fakeRelatedService.serializer, "transform").callThrough();
+            var anotherFakeRelatedModelId = faker_1.default.random.number().toString();
+            var anotherFakeRelatedModelData = {
+                id: anotherFakeRelatedModelId,
+                fullText: faker_1.default.lorem.word(),
+                fakeModelId: modelId,
+            };
+            var anotherFakeRelatedModel = new FakeRelatedModel(anotherFakeRelatedModelData);
+            fakeModel = fakeModel.applyUpdates(undefined, undefined, {
+                fakeItems: [fakeRelatedModel, anotherFakeRelatedModel],
+            });
+            fakeModel.fields.fakeItems.serialize = true;
+            var transformedModelData = mockSerializer.transform(fakeModel);
+            expect(transformedModelData).to.have.property("fakeItems").to.deep.equal([
+                lodash_1.omit(fakeRelatedModelData, "id"),
+                lodash_1.omit(anotherFakeRelatedModelData, "id"),
+            ]);
         });
     });
     describe("normalize", function () {

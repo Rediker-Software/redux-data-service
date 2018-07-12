@@ -14,6 +14,8 @@ export declare abstract class BaseSerializer<T extends IModelData, S> implements
     normalizeField(data: Partial<T>): (fieldType: IFieldType<any>, fieldName: string) => any;
     transform(model: IModel<T> | Partial<T>): Partial<T>;
     normalize(data: any): IModel<T>;
+    protected transformRelationship(fieldValue: IModel<any> | IModel<any>[], relationship: IFieldRelationship): Partial<any>;
+    protected transformRelatedModel(relatedModel: IModel<any>): Partial<any>;
     protected processNestedRelationship(model: IModel<T>, nestedData: any, relationship: IFieldRelationship): string | string[];
     protected loadRelatedModel(model: IModel<T>, relatedModelData: any, relationship: IFieldRelationship): IModel<any>;
 }

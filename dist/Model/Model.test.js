@@ -956,6 +956,30 @@ describe("Model", function () {
                 model.markForDestruction();
                 expect(model).to.have.property("organization").to.be.undefined;
             });
+            it("will return the correct version of a relationship when its related id changes", function () {
+                var newOrganizationId = faker_1.random.number().toString();
+                var organization = new organizationService.ModelClass({ id: organizationId });
+                var newOrganization = new organizationService.ModelClass({ id: newOrganizationId });
+                var getByIdStub = sinon_1.stub(organizationService, "getById").returns(of_1.of(organization));
+                var model = new ExampleModelClass({ id: id, organizationId: organizationId });
+                expect(model).to.have.property("organization").to.equal(organization);
+                getByIdStub.restore();
+                sinon_1.stub(organizationService, "getById").returns(of_1.of(newOrganization));
+                var updatedModel = model.applyUpdates({ organizationId: newOrganizationId });
+                expect(updatedModel).to.have.property("organization").to.equal(newOrganization);
+            });
+            it("will not change the relationship of the current model instance when its related id changes", function () {
+                var organization = new organizationService.ModelClass({ id: organizationId });
+                var newOrganizationId = faker_1.random.number().toString();
+                var newOrganization = new organizationService.ModelClass({ id: organizationId });
+                var getByIdStub = sinon_1.stub(organizationService, "getById").returns(of_1.of(organization));
+                var model = new ExampleModelClass({ id: id, organizationId: organizationId });
+                expect(model).to.have.property("organization").to.equal(organization);
+                getByIdStub.restore();
+                sinon_1.stub(organizationService, "getById").returns(of_1.of(newOrganization));
+                model.applyUpdates({ organizationId: newOrganizationId });
+                expect(model).to.have.property("organization").to.equal(organization);
+            });
         });
         describe("Model#setRelated", function () {
             it("passes the BelongsTo model id to the setField method", function () {

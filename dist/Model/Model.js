@@ -182,17 +182,21 @@ var Model = (function () {
         if (modelData === void 0) { modelData = null; }
         if (meta === void 0) { meta = {}; }
         if (relatedModels === void 0) { relatedModels = {}; }
+        meta = __assign({}, this.meta, meta);
+        relatedModels = __assign({}, this.relatedModels, relatedModels);
         if (!lodash_1.isEmpty(modelData)) {
             for (var key in modelData) {
                 this.checkFieldUpdateIsAllowed(key, modelData[key]);
+                var relationship = lodash_1.find(this.relationships, { relatedFieldName: key });
+                if (relationship && relatedModels.hasOwnProperty(relationship.field)) {
+                    delete relatedModels[relationship.field];
+                }
             }
             if (!this.isDirty) {
                 meta.original = this.modelData;
             }
             modelData = lodash_1.merge({}, this.modelData, modelData);
         }
-        meta = __assign({}, this.meta, meta);
-        relatedModels = __assign({}, this.relatedModels, relatedModels);
         var service = Services_1.getDataService(this.serviceName);
         return new service.ModelClass(modelData || this.modelData, meta, relatedModels);
     };
