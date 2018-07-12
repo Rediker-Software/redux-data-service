@@ -26,7 +26,7 @@ import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
 import { ISerializer, RestSerializer } from "../Serializers";
 import { IAdapter, RestAdapter } from "../Adapters";
 import { BaseService } from "./BaseService";
-import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors } from "./IService";
+import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
 
 export type IRequestCacheKey = string;
 
@@ -454,7 +454,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
   //        EPICS
   // ---------------------
 
-  public createEpics() {
+  public createEpics(): IActionEpic[] {
     const epics = super.createEpics();
 
     epics.push(
