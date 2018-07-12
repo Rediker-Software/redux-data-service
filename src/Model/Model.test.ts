@@ -994,6 +994,42 @@ describe("Model", () => {
         model.markForDestruction();
         expect(model).to.have.property("organization").to.be.undefined;
       });
+
+      it("will return the correct version of a relationship when its related id changes", () => {
+        const newOrganizationId = random.number().toString();
+        const organization = new organizationService.ModelClass({ id: organizationId });
+        const newOrganization = new organizationService.ModelClass({ id: newOrganizationId });
+
+        const getByIdStub = stub(organizationService, "getById").returns(of$(organization));
+
+        const model = new ExampleModelClass({ id, organizationId });
+        expect(model).to.have.property("organization").to.equal(organization);
+
+        getByIdStub.restore();
+        stub(organizationService, "getById").returns(of$(newOrganization));
+
+        const updatedModel = model.applyUpdates({ organizationId: newOrganizationId });
+
+        expect(updatedModel).to.have.property("organization").to.equal(newOrganization);
+      });
+
+      it("will not change the relationship of the current model instance when its related id changes", () => {
+        const organization = new organizationService.ModelClass({ id: organizationId });
+        const newOrganizationId = random.number().toString();
+        const newOrganization = new organizationService.ModelClass({ id: organizationId });
+
+        const getByIdStub = stub(organizationService, "getById").returns(of$(organization));
+
+        const model = new ExampleModelClass({ id, organizationId });
+        expect(model).to.have.property("organization").to.equal(organization);
+
+        getByIdStub.restore();
+        stub(organizationService, "getById").returns(of$(newOrganization));
+
+        model.applyUpdates({ organizationId: newOrganizationId });
+
+        expect(model).to.have.property("organization").to.equal(organization);
+      });
     });
 
     describe("Model#setRelated", () => {
