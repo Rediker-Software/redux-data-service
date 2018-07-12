@@ -1,4 +1,5 @@
 import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
+import { isEmpty } from "lodash";
 
 import { mapValuesWithKeys } from "../Utils";
 import { IModel, IModelData, IModelFactory } from "../Model";
@@ -52,15 +53,19 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
     return (fieldType: IFieldType & any, fieldName: string) => {
       const fieldValue = model[fieldName];
 
-      if ("serviceName" in fieldType) {
-        return getDataService(fieldType.serviceName)
-          .serializer
-          .transform(fieldValue);
-      } else if ("transform" in fieldType) {
-        return fieldType.transform(fieldValue);
-      } else {
+      if (fieldValue == null) {
         return fieldValue;
       }
+
+      if (this.relationships && fieldName in this.relationships) {
+        return this.transformRelationship(fieldValue, this.relationships[fieldName]);
+      }
+
+      if ("transform" in fieldType) {
+        return fieldType.transform(fieldValue);
+      }
+
+      return fieldValue;
     };
   }
 
@@ -130,6 +135,29 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
     }
 
     return model;
+  }
+
+  /**
+   * Transform the given model or array of models depending on the relationship type.
+   */
+  protected transformRelationship(fieldValue: IModel<any> | IModel<any>[], relationship: IFieldRelationship) {
+    switch (relationship.type) {
+      case RelationshipType.BelongsTo:
+        return this.transformRelatedModel(fieldValue as IModel<any>);
+      case RelationshipType.HasMany:
+        return (fieldValue as IModel<any>[]).map(item => this.transformRelatedModel(item));
+      default:
+        throw new TypeError(`BaseSerializer: attempted to transform unknown relationship "${relationship.type}"`);
+    }
+  }
+
+  /**
+   * Transform the given relatedModel using its own serializer.
+   */
+  protected transformRelatedModel(relatedModel: IModel<any>) {
+    return getDataService(relatedModel.serviceName)
+      .serializer
+      .transform(relatedModel);
   }
 
   /**

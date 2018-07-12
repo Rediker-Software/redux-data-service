@@ -42,7 +42,7 @@ class MockModel extends Model<any> {
   @attr(ArrayField)
   public fakeItemIds: string[];
 
-  @hasMany({ serviceName: "fakeRelatedModel"})
+  @hasMany({ serviceName: "fakeRelatedModel" })
   public fakeItems: any[];
 }
 
@@ -85,6 +85,7 @@ describe("BaseSerializer", () => {
     let fullText;
     let startDateString;
     let startTimeString;
+    let modelId;
 
     beforeEach(() => {
       BaseService.registerDispatch(spy());
@@ -102,7 +103,7 @@ describe("BaseSerializer", () => {
       startTimeString = format(faker.date.recent(), "hh:mm:ss a");
 
       fakeRelatedModelId = faker.random.number().toString();
-      const modelId = faker.random.number().toString();
+      modelId = faker.random.number().toString();
 
       fakeRelatedModelData = {
         id: fakeRelatedModelId,
@@ -152,7 +153,7 @@ describe("BaseSerializer", () => {
       expect(transformedModelData).to.not.have.property("organization");
     });
 
-    it("transforms relationships on the model when serialize = true", () => {
+    it("transforms belongsTo relationships on the model when serialize = true", () => {
       stub(fakeRelatedService.serializer, "transform").callThrough();
 
       fakeModel.fields.organization.serialize = true;
@@ -161,13 +162,38 @@ describe("BaseSerializer", () => {
       expect(transformedModelData).to.have.property("organization").to.deep.equal(omit(fakeRelatedModelData, "id"));
     });
 
-    it("uses the relationship's own data service to transform it when serialize = true", () => {
+    it("uses the belongsTo relationship's own data service to transform it when serialize = true", () => {
       const stubRelatedSerializerTransform = stub(fakeRelatedService.serializer, "transform").returns(fakeRelatedModelData);
 
       fakeModel.fields.organization.serialize = true;
       mockSerializer.transform(fakeModel);
 
       expect(stubRelatedSerializerTransform.firstCall.args[0]).to.equal(fakeModel.organization);
+    });
+
+    it("transforms hasMany relationships on the model when serialize = true", () => {
+      stub(fakeRelatedService.serializer, "transform").callThrough();
+
+      const anotherFakeRelatedModelId = faker.random.number().toString();
+      const anotherFakeRelatedModelData = {
+        id: anotherFakeRelatedModelId,
+        fullText: faker.lorem.word(),
+        fakeModelId: modelId,
+      };
+
+      const anotherFakeRelatedModel = new FakeRelatedModel(anotherFakeRelatedModelData);
+
+      fakeModel = fakeModel.applyUpdates(undefined, undefined, {
+        fakeItems: [fakeRelatedModel, anotherFakeRelatedModel],
+      });
+
+      fakeModel.fields.fakeItems.serialize = true;
+      const transformedModelData = mockSerializer.transform(fakeModel);
+
+      expect(transformedModelData).to.have.property("fakeItems").to.deep.equal([
+        omit(fakeRelatedModelData, "id"),
+        omit(anotherFakeRelatedModelData, "id"),
+      ]);
     });
   });
 
