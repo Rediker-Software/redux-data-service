@@ -292,7 +292,8 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public applyUpdates(modelData: Partial<T> = null, meta: Partial<IModelMeta<T>> = {}, relatedModels: any = {}): IModel<T> {
 
-    relatedModels = { ...this.relatedModels, ...(relatedModels as any) };
+    meta = { ...this.meta, ...meta };
+    relatedModels = { ...this.relatedModels, ...relatedModels };
 
     if (!isEmpty(modelData)) {
 
@@ -312,8 +313,6 @@ export class Model<T extends IModelData> implements IModel<T> {
 
       modelData = merge({}, this.modelData, modelData);
     }
-
-    meta = { ...this.meta, ...(meta as any) };
 
     const service = getDataService(this.serviceName);
     return new service.ModelClass(modelData || this.modelData, meta, relatedModels);
