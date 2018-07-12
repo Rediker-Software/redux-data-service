@@ -17,7 +17,7 @@ import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
 import { ISerializer } from "../Serializers";
 import { IAdapter } from "../Adapters";
 import { BaseService } from "./BaseService";
-import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors } from "./IService";
+import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
 export declare type IRequestCacheKey = string;
 export interface IRequestCache {
     isLoading: boolean;
@@ -92,7 +92,7 @@ export declare abstract class DataService<T extends IModelData> extends BaseServ
     setFieldReducer: (state: DataServiceStateRecord<T>, action: IAction<ISetField<T>, any>) => DataServiceStateRecord<T>;
     setMetaFieldReducer: (state: DataServiceStateRecord<T>, action: IAction<ISetMetaField<T>, any>) => DataServiceStateRecord<T>;
     setRelationshipReducer: (state: DataServiceStateRecord<T>, action: IAction<ISetField<T>, any>) => DataServiceStateRecord<T>;
-    createEpics(): import("../../../../../../Users/jmadson/projects/redux-data-service/node_modules/redux-observable").Epic<IObserveableAction<any>, {}, any>[];
+    createEpics(): IActionEpic[];
     fetchAllEpic(action$: IObserveableAction, store: Store<DataServiceStateRecord<T>>): Observable<IAction<any, any>>;
     fetchRecordEpic(action$: IObserveableAction, store: Store<DataServiceStateRecord<T>>): Observable<IAction<T>>;
     createRecordEpic(action$: IObserveableAction<IModelId>, store: Store<DataServiceStateRecord<T>>): Observable<IAction<any, any>>;
