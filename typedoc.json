@@ -2,7 +2,7 @@
   "name": "redux-data-service",
   "out": "docs",
   "mode": "file",
-  "theme": "minimal",
+  "theme": "markdown",
   "ignoreCompilerErrors": "false",
   "preserveConstEnums": "true",
   "exclude": "**/*+(test|mock|story).*",
