@@ -1,0 +1,11 @@
+{
+  "name": "redux-data-service",
+  "out": "docs",
+  "mode": "file",
+  "theme": "minimal",
+  "ignoreCompilerErrors": "false",
+  "preserveConstEnums": "true",
+  "exclude": "**/*+(test|mock|story).*",
+  "stripInternal": "false",
+  "include": "**/*.md"
+}
