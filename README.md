@@ -107,7 +107,7 @@ export const StudentList = withModelQuery({ modelName: "student" })(
 );
 ```
 
-Apollo-like syntax is also supported:
+[Apollo](https://www.apollographql.com/)-like syntax is also supported:
 
 ```typescript
 import * as React from "react";
