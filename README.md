@@ -83,7 +83,7 @@ PUT api/students/123
 {"id": "123", "firstName": "Jessica", "age": 9, "email": "jess@example.com"}
 ```
 
-> Although the above example uses the default serializer and API adapter for connecting to a REST API, any `ISerializer` or `IAdapter` may be used to connect to *any* API.
+> Although the above example uses the default serializer and API adapter for connecting to a REST API, any [ISerializer](./docs/interfaces/iserializer.md) or [IAdapter](./docs/interfaces/iadapter.md) may be used to connect to *any* API.
 
 ## Easily connect models to your React components
 
@@ -244,3 +244,5 @@ export const store = configure({
   }
 });
 ```
+
+Please [Read the docs](./docs) for more detailed information.

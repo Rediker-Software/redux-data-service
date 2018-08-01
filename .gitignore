@@ -13,5 +13,4 @@ tmp
 junit-results.xml
 package-lock.json
 .vs
-docs
 yarn-error.log
