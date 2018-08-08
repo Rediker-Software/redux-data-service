@@ -31,6 +31,7 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   applyUpdates(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>, relationships?: any): IModel<T>;
   initializeNewModel(): void;
   markForDestruction(): void;
+  parseFieldValue(fieldName: string, value: any): any;
 }
 
 export interface IModelFactory<T extends IModelData> {

@@ -1,4 +1,4 @@
-import { getNestedFieldName } from "./String";
+import { addPenultimateFieldToPath, getNestedFieldName } from "./String";
 
 declare var intern;
 const { describe, it } = intern.getPlugin("interface.bdd");
@@ -12,6 +12,15 @@ describe("String utils", () => {
       const output = getNestedFieldName(example);
 
       expect(output).to.equal("c");
+    });
+  });
+
+  describe("addPenultimateFieldToPath", () => {
+    it("adds the given string as the second to last value in the given string path, returned as an array", () => {
+      const example = "a.b.c";
+      const output = addPenultimateFieldToPath(example, "x");
+
+      expect(output).to.deep.equal(["a", "b", "x", "c"]);
     });
   });
 });

@@ -80,9 +80,7 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
    */
   public normalizeField(data: Partial<T>) {
     return (fieldType: IFieldType, fieldName: string) => (
-      "normalize" in fieldType
-        ? fieldType.normalize(data[fieldName])
-        : data[fieldName]
+      fieldType.normalize(data[fieldName])
     );
   }
 

@@ -1113,6 +1113,17 @@ describe("Model", () => {
 
   });
 
+  describe("Model#parseFieldValue", () => {
+    it("parses the given value using the specified fieldName", () => {
+      initializeTestServices(fakeModelModule);
+
+      const model = seedService<IFakeModelData>("fakeModel");
+      const value = model.parseFieldValue("fullText", 4);
+
+      expect(value).to.be.a("string").and.to.equal("4");
+    });
+  });
+
   describe("sub-classing works as expected", () => {
     it("Model decorators apply only to the subtype and not the parent", () => {
       class MockModel extends Model<any> {
