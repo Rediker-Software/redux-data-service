@@ -11,7 +11,7 @@ import { getDataService } from "../Services";
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
 import { DateTimeField, IFieldType, StringField } from "./FieldType";
 import { attr, IFieldRelationship, RelationshipType } from "./Decorators";
-import { flattenObjectKeys } from "../Utils";
+import { addPenultimateFieldToPath, flattenObjectKeys } from "../Utils";
 
 /**
  * # Model
@@ -235,8 +235,7 @@ export class Model<T extends IModelData> implements IModel<T> {
   protected getValidationRulesForField(fieldName) {
     // split the fieldName if it has a dot, add "validationRules" as penultimate to the path
     // works even if the fieldName is not a nested path
-    const validationRulesPath = fieldName.split(".");
-    validationRulesPath.splice(validationRulesPath.length - 1, 0, "validationRules");
+    const validationRulesPath = addPenultimateFieldToPath(fieldName, "validationRules");
 
     return get(this, validationRulesPath, {});
   }
@@ -633,11 +632,9 @@ export class Model<T extends IModelData> implements IModel<T> {
    * this will use that field's own IFieldType.normalize function to parse the given value.
    */
   public parseFieldValue(fieldName: string, value: any): any {
-    const path = fieldName.split(".");
-    path.splice(path.length - 1, 0, "fields");
+    const path = addPenultimateFieldToPath(fieldName, "fields");
+    const field: IFieldType<any> = get(this, path);
 
-    const field: IFieldType<any> = get(this, path) as IFieldType<any>;
-
-    return "normalize" in field ? field.normalize(value) : value;
+    return field.normalize(value);
   }
 }
