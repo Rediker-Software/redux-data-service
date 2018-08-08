@@ -38,12 +38,18 @@ describe("FieldType: DateTimeField", function () {
         var value = new Date();
         expect(DateTimeField_1.DateTimeField.transform(value)).to.equal(value.toISOString());
     });
-    it("normalizes a Date ISO string into its corresponding Date object", function () {
-        var date = new Date();
-        var value = date.toISOString();
-        expect(DateTimeField_1.DateTimeField.normalize(value)).to.deep.equal(date);
-    });
     it("should be serialized", function () {
         expect(DateTimeField_1.DateTimeField.serialize).to.be.true;
+    });
+    describe("normalize", function () {
+        it("normalizes a Date ISO string into its corresponding Date object", function () {
+            var date = new Date();
+            var value = date.toISOString();
+            expect(DateTimeField_1.DateTimeField.normalize(value)).to.deep.equal(date);
+        });
+        it("normalizes a Date object by returning the given value", function () {
+            var date = new Date();
+            expect(DateTimeField_1.DateTimeField.normalize(date)).to.equal(date);
+        });
     });
 });
