@@ -1,6 +1,8 @@
 /* tslint:disable: no-unused-expression */
 
 import { validate } from "validate.js";
+import { random } from "faker";
+
 import { PhoneNumberField } from "./PhoneNumberField";
 import { initializePhoneNumberValidator } from "../../Validators";
 
@@ -46,5 +48,10 @@ describe("FieldType: PhoneNumberField", () => {
 
   it("should be serialized", () => {
     expect(PhoneNumberField.serialize).to.be.true;
+  });
+
+  it("normalizes any value into a string", () => {
+    const randomNumber = random.number();
+    expect(PhoneNumberField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
   });
 });

@@ -1,6 +1,8 @@
 /* tslint:disable: no-unused-expression */
 
 import { validate } from "validate.js";
+import { random } from "faker";
+
 import { BooleanField } from "./BooleanField";
 
 declare var intern;
@@ -42,5 +44,10 @@ describe("FieldType: BooleanField", () => {
 
   it("should be serialized", () => {
     expect(BooleanField.serialize).to.be.true;
+  });
+
+  it("normalizes any value into a boolean", () => {
+    const value = "true";
+    expect(BooleanField.normalize(value)).to.be.a("boolean").and.to.be.true;
   });
 });

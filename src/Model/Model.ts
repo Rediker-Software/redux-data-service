@@ -370,7 +370,11 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public setField(fieldName: string, value: any) {
     this.checkFieldUpdateIsAllowed(fieldName, value);
-    getDataService(this.serviceName).actions.setField({ id: this.id, fieldName, value }).invoke();
+
+    getDataService(this.serviceName)
+      .actions
+      .setField({ id: this.id, fieldName, value })
+      .invoke();
   }
 
   /**
@@ -622,5 +626,14 @@ export class Model<T extends IModelData> implements IModel<T> {
       const error = this.errors[fieldName];
       return (error instanceof Array) ? error[0] : error;
     }
+  }
+
+  public parseFieldValue(fieldName: string, value: any) {
+    const path = fieldName.split(".");
+    path.splice(path.length - 1, 0, "fields");
+
+    const field: IFieldType<any> = get(this, path) as IFieldType<any>;
+
+    return "normalize" in field ? field.normalize(value) : value;
   }
 }

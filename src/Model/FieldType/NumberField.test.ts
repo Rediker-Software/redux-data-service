@@ -42,4 +42,9 @@ describe("FieldType: NumberField", () => {
   it("should be serialized", () => {
     expect(NumberField.serialize).to.be.true;
   });
+
+  it("normalizes any value into a string", () => {
+    const value = "7";
+    expect(NumberField.normalize(value)).to.be.a("number").and.to.equal(7);
+  });
 });
