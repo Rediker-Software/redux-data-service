@@ -1,6 +1,8 @@
 /* tslint:disable: no-unused-expression */
 
 import { validate } from "validate.js";
+import { random } from "faker";
+
 import { ObjectField } from "./ObjectField";
 
 declare var intern;
@@ -41,5 +43,13 @@ describe("FieldType: ObjectField", () => {
 
   it("should be serialized", () => {
     expect(ObjectField.serialize).to.be.true;
+  });
+
+  it("normalizes an object by returning the given value", () => {
+    const randomObject = {
+      asdf: random.number(),
+    };
+
+    expect(ObjectField.normalize(randomObject)).to.equal(randomObject);
   });
 });

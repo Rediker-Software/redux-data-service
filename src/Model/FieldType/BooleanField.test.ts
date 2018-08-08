@@ -1,6 +1,8 @@
 /* tslint:disable: no-unused-expression */
 
 import { validate } from "validate.js";
+import { random } from "faker";
+
 import { BooleanField } from "./BooleanField";
 
 declare var intern;
@@ -43,4 +45,44 @@ describe("FieldType: BooleanField", () => {
   it("should be serialized", () => {
     expect(BooleanField.serialize).to.be.true;
   });
+
+  describe("normalize", () => {
+
+    it(`normalizes string "true" into boolean "true"`, () => {
+      const value = "true";
+      expect(BooleanField.normalize(value)).to.be.a("boolean").and.to.be.true;
+    });
+
+    it(`normalizes string "false" into boolean "false"`, () => {
+      const value = "false";
+      expect(BooleanField.normalize(value)).to.be.a("boolean").and.to.be.false;
+    });
+
+    it(`normalizes number "1" into boolean "true"`, () => {
+      const value = 1;
+      expect(BooleanField.normalize(value)).to.be.a("boolean").and.to.be.true;
+    });
+
+    it(`normalizes number "0" into boolean "false"`, () => {
+      const value = 0;
+      expect(BooleanField.normalize(value)).to.be.a("boolean").and.to.be.false;
+    });
+
+    it(`normalizes an empty string into boolean "false"`, () => {
+      const value = "";
+      expect(BooleanField.normalize(value)).to.be.a("boolean").and.to.be.false;
+    });
+
+    it(`normalizes NaN into boolean "false"`, () => {
+      const value = NaN;
+      expect(BooleanField.normalize(value)).to.be.a("boolean").and.to.be.false;
+    });
+
+    it(`normalizes a non-empty string into boolean "true"`, () => {
+      const value = random.word();
+      expect(BooleanField.normalize(value)).to.be.a("boolean").and.to.be.true;
+    });
+
+  });
+
 });

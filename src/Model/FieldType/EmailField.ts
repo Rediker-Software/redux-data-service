@@ -1,9 +1,7 @@
 import { IFieldType } from "./IFieldType";
-import { isString } from "validate.js";
+import { StringField } from "./StringField";
 
 export const EmailField: IFieldType<string> = {
-  serialize: true,
+  ...StringField,
   defaultValidationRules: { email: true },
-  defaultValue: "",
-  isValidType: (value) => value == null || isString(value),
 };

@@ -1,6 +1,8 @@
 /* tslint:disable: no-unused-expression */
 
 import { validate } from "validate.js";
+import { random } from "faker";
+
 import { StringField } from "./StringField";
 
 declare var intern;
@@ -41,5 +43,10 @@ describe("FieldType: StringField", () => {
 
   it("should be serialized", () => {
     expect(StringField.serialize).to.be.true;
+  });
+
+  it("normalizes any value into a string", () => {
+    const randomNumber = random.number();
+    expect(StringField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
   });
 });

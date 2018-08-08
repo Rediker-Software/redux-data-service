@@ -38,7 +38,7 @@ Classes which wish to use the `@field` decorator (or any of the decorators which
 
 **● fields**: *[IModelKeys](../#imodelkeys)<`T`, [IFieldType](ifieldtype.md)>*
 
-*Defined in [Model/Decorators/Field.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Model/Decorators/Field.ts#L11)*
+*Defined in [Model/Decorators/Field.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/69d850d/src/Model/Decorators/Field.ts#L11)*
 
 ___
 <a id="validationrules"></a>
@@ -49,7 +49,7 @@ ___
 
 *Inherited from [IValidate](ivalidate.md).[validationRules](ivalidate.md#validationrules)*
 
-*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Model/Decorators/Validation.ts#L6)*
+*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/69d850d/src/Model/Decorators/Validation.ts#L6)*
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 *Inherited from [IValidate](ivalidate.md).[validate](ivalidate.md#validate)*
 
-*Defined in [Model/Decorators/Validation.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Model/Decorators/Validation.ts#L7)*
+*Defined in [Model/Decorators/Validation.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/69d850d/src/Model/Decorators/Validation.ts#L7)*
 
 **Returns:** [IModelKeys](../#imodelkeys)<`T`>
 

@@ -5,5 +5,5 @@ export interface IFieldType<T = any> {
   defaultValue: T;
   isValidType(value: T | any): boolean;
   transform?(value: T): any;
-  normalize?(serializedValue: any): T;
+  normalize(serializedValue: any): T;
 }
