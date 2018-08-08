@@ -628,11 +628,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     }
   }
 
-  /**
-   * Given a fieldName as a deep path (such as "firstName" or "person.firstName"),
-   * this will use that field's own IFieldType.normalize function to parse the given value.
-   */
-  public parseFieldValue(fieldName: string, value: any): any {
+  public parseFieldValue(fieldName: string, value: any) {
     const path = fieldName.split(".");
     path.splice(path.length - 1, 0, "fields");
 

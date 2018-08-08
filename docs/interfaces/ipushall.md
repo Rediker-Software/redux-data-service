@@ -24,7 +24,7 @@
 
 **● items**: *[IModel](imodel.md)<`T`>[]*
 
-*Defined in [Services/DataService.ts:62](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Services/DataService.ts#L62)*
+*Defined in [Services/DataService.ts:62](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Services/DataService.ts#L62)*
 
 ___
 

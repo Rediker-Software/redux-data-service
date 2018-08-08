@@ -58,7 +58,7 @@ This class implements the `transform` and `normalize` methods on the interface, 
 
 ⊕ **new BaseSerializer**(ModelClass: *[IModelFactory](../interfaces/imodelfactory.md)<`T`>*): [BaseSerializer](baseserializer.md)
 
-*Defined in [Serializers/BaseSerializer.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L25)*
+*Defined in [Serializers/BaseSerializer.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L25)*
 
 **Parameters:**
 
@@ -78,7 +78,7 @@ ___
 
 **● ModelClass**: *[IModelFactory](../interfaces/imodelfactory.md)<`T`>*
 
-*Defined in [Serializers/BaseSerializer.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L21)*
+*Defined in [Serializers/BaseSerializer.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L21)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 getfields(): `any`
 
-*Defined in [Serializers/BaseSerializer.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L35)*
+*Defined in [Serializers/BaseSerializer.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L35)*
 
 **Returns:** `any`
 
@@ -101,7 +101,7 @@ ___
 
 getrelationships(): `any`
 
-*Defined in [Serializers/BaseSerializer.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L31)*
+*Defined in [Serializers/BaseSerializer.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L31)*
 
 **Returns:** `any`
 
@@ -115,7 +115,7 @@ ___
 
 ▸ **deserialize**(data: *`S`*): [IModel](../interfaces/imodel.md)<`T`>
 
-*Defined in [Serializers/BaseSerializer.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L23)*
+*Defined in [Serializers/BaseSerializer.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L23)*
 
 **Parameters:**
 
@@ -132,7 +132,7 @@ ___
 
 ▸ **isRelationship**(key: *`any`*): `any`
 
-*Defined in [Serializers/BaseSerializer.ts:39](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L39)*
+*Defined in [Serializers/BaseSerializer.ts:39](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L39)*
 
 **Parameters:**
 
@@ -149,7 +149,7 @@ ___
 
 ▸ **loadRelatedModel**(model: *[IModel](../interfaces/imodel.md)<`T`>*, relatedModelData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*): [IModel](../interfaces/imodel.md)<`any`>
 
-*Defined in [Serializers/BaseSerializer.ts:180](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L180)*
+*Defined in [Serializers/BaseSerializer.ts:182](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L182)*
 
 Given the relatedModelData of a single item, normalize the data using the relationship's own serializer, converting it into a Model instance, then dispatch that related Model to its data service and return the Model.
 
@@ -170,7 +170,7 @@ ___
 
 ▸ **normalize**(data: *`any`*): [IModel](../interfaces/imodel.md)<`T`>
 
-*Defined in [Serializers/BaseSerializer.ts:108](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L108)*
+*Defined in [Serializers/BaseSerializer.ts:110](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L110)*
 
 Creates a new IModel by normalizing the given raw data. If a nested relationship was included in the payload, it will be side-loaded.
 
@@ -189,7 +189,7 @@ ___
 
 ▸ **normalizeField**(data: *`Partial`<`T`>*): `(Anonymous function)`
 
-*Defined in [Serializers/BaseSerializer.ts:81](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L81)*
+*Defined in [Serializers/BaseSerializer.ts:81](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L81)*
 
 Returns a function, which when called, converts a single field on the provided raw data into its object equivalent if the given IFieldType implements the optional "normalize" method.
 
@@ -210,7 +210,7 @@ ___
 
 ▸ **processNestedRelationship**(model: *[IModel](../interfaces/imodel.md)<`T`>*, nestedData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*):  `string` &#124; `string`[]
 
-*Defined in [Serializers/BaseSerializer.ts:166](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L166)*
+*Defined in [Serializers/BaseSerializer.ts:168](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L168)*
 
 Process the nestedData for the given relationship.
 
@@ -234,7 +234,7 @@ ___
 
 ▸ **serialize**(modelData: *`Partial`<`T`>*): `S`
 
-*Defined in [Serializers/BaseSerializer.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L25)*
+*Defined in [Serializers/BaseSerializer.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L25)*
 
 **Parameters:**
 
@@ -251,7 +251,7 @@ ___
 
 ▸ **transform**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `Partial`<`T`>
 
-*Defined in [Serializers/BaseSerializer.ts:94](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L94)*
+*Defined in [Serializers/BaseSerializer.ts:96](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L96)*
 
 Transforms the given Model into a plain javascript object based on the Model's fieldTypes. Relationships and any fields identified in this class's `excludedFields` array will be excluded.
 
@@ -270,7 +270,7 @@ ___
 
 ▸ **transformField**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `(Anonymous function)`
 
-*Defined in [Serializers/BaseSerializer.ts:52](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L52)*
+*Defined in [Serializers/BaseSerializer.ts:52](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L52)*
 
 Returns a function, which when called, transforms the given fieldName on the provided model into its serialized equivalent if the given IFieldType implements the optional "transform" method.
 
@@ -291,7 +291,7 @@ ___
 
 ▸ **transformRelatedModel**(relatedModel: *[IModel](../interfaces/imodel.md)<`any`>*): `object`
 
-*Defined in [Serializers/BaseSerializer.ts:155](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L155)*
+*Defined in [Serializers/BaseSerializer.ts:157](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L157)*
 
 Transform the given relatedModel using its own serializer.
 
@@ -310,7 +310,7 @@ ___
 
 ▸ **transformRelationship**(fieldValue: * [IModel](../interfaces/imodel.md)<`any`> &#124; [IModel](../interfaces/imodel.md)<`any`>[]*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*): `object`
 
-*Defined in [Serializers/BaseSerializer.ts:141](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Serializers/BaseSerializer.ts#L141)*
+*Defined in [Serializers/BaseSerializer.ts:143](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Serializers/BaseSerializer.ts#L143)*
 
 Transform the given model or array of models depending on the relationship type.
 
