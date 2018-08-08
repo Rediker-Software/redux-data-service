@@ -40,12 +40,18 @@ describe("FieldType: DateField", function () {
         var date = date_fns_1.parse(serializedDate, "YYYY-MM-DD", new Date());
         expect(DateField_1.DateField.transform(date)).to.equal(serializedDate);
     });
-    it("normalizes a Date string into its corresponding Date object", function () {
-        var serializedDate = "2018-02-14";
-        var date = date_fns_1.parse(serializedDate, "YYYY-MM-DD", new Date());
-        expect(DateField_1.DateField.normalize(serializedDate)).to.deep.equal(date);
-    });
     it("should be serialized", function () {
         expect(DateField_1.DateField.serialize).to.be.true;
+    });
+    describe("normalize", function () {
+        it("normalizes a Date string into its corresponding Date object", function () {
+            var serializedDate = "2018-02-14";
+            var date = date_fns_1.parse(serializedDate, "YYYY-MM-DD", new Date());
+            expect(DateField_1.DateField.normalize(serializedDate)).to.deep.equal(date);
+        });
+        it("normalizes a Date object by returning the given value", function () {
+            var date = new Date();
+            expect(DateField_1.DateField.normalize(date)).to.equal(date);
+        });
     });
 });

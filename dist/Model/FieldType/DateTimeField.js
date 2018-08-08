@@ -7,7 +7,9 @@ exports.DateTimeField = {
     defaultValue: null,
     isValidType: function (value) { return value == null || validate_js_1.isDate(value); },
     transform: function (date) { return date != null ? date.toISOString() : null; },
-    normalize: function (serializedDate) { return (serializedDate != null
-        ? new Date(serializedDate)
-        : null); },
+    normalize: function (value) { return (validate_js_1.isDate(value)
+        ? value
+        : (value != null
+            ? new Date(value)
+            : null)); },
 };
