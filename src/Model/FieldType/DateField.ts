@@ -8,9 +8,12 @@ export const DateField: IFieldType<Date> = {
   defaultValue: null,
   isValidType: (value) => value == null || isDate(value),
   transform: (date: Date) => date != null ? format(date, "YYYY-MM-DD") : null,
-  normalize: (serializedDate: string): Date => (
-    serializedDate != null
-      ? parse(serializedDate, "YYYY-MM-DD", new Date())
-      : null
+  normalize: (value: string | any): Date => (
+    isDate(value)
+      ? value
+      : (value != null
+        ? parse(value, "YYYY-MM-DD", new Date())
+        : null
+      )
   ),
 };
