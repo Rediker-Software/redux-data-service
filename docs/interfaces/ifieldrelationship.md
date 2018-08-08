@@ -30,7 +30,7 @@ For example, field "student" relates to the "student" service through the "stude
 
 **● field**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Model/Decorators/Relationship.ts#L17)*
+*Defined in [Model/Decorators/Relationship.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Model/Decorators/Relationship.ts#L17)*
 
 ___
 <a id="modelrelatedfieldname"></a>
@@ -39,7 +39,7 @@ ___
 
 **● modelRelatedFieldName**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Model/Decorators/Relationship.ts#L20)*
+*Defined in [Model/Decorators/Relationship.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Model/Decorators/Relationship.ts#L20)*
 
 ___
 <a id="relatedfieldname"></a>
@@ -48,7 +48,7 @@ ___
 
 **● relatedFieldName**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Model/Decorators/Relationship.ts#L19)*
+*Defined in [Model/Decorators/Relationship.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Model/Decorators/Relationship.ts#L19)*
 
 ___
 <a id="servicename"></a>
@@ -57,7 +57,7 @@ ___
 
 **● serviceName**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Model/Decorators/Relationship.ts#L18)*
+*Defined in [Model/Decorators/Relationship.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Model/Decorators/Relationship.ts#L18)*
 
 ___
 <a id="type"></a>
@@ -66,7 +66,7 @@ ___
 
 **● type**: *[RelationshipType](../enums/relationshiptype.md)*
 
-*Defined in [Model/Decorators/Relationship.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Model/Decorators/Relationship.ts#L21)*
+*Defined in [Model/Decorators/Relationship.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Model/Decorators/Relationship.ts#L21)*
 
 ___
 

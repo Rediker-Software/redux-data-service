@@ -24,7 +24,7 @@
 
 **● relatedFieldName**: *`string`*
 
-*Defined in [Model/Decorators/IsEnum.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Model/Decorators/IsEnum.ts#L6)*
+*Defined in [Model/Decorators/IsEnum.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/cb5e36e/src/Model/Decorators/IsEnum.ts#L6)*
 
 ___
 
