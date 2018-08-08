@@ -6,4 +6,5 @@ exports.PhoneNumberField = {
     defaultValidationRules: { phoneNumber: true },
     defaultValue: "",
     isValidType: function (value) { return value == null || validate_js_1.isString(value); },
+    normalize: function (value) { return String(value); },
 };

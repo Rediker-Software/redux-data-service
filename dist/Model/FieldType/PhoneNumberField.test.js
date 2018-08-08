@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var validate_js_1 = require("validate.js");
+var faker_1 = require("faker");
 var PhoneNumberField_1 = require("./PhoneNumberField");
 var Validators_1 = require("../../Validators");
 var _a = intern.getPlugin("interface.bdd"), describe = _a.describe, it = _a.it, before = _a.before;
@@ -36,5 +37,9 @@ describe("FieldType: PhoneNumberField", function () {
     });
     it("should be serialized", function () {
         expect(PhoneNumberField_1.PhoneNumberField.serialize).to.be.true;
+    });
+    it("normalizes any value into a string", function () {
+        var randomNumber = faker_1.random.number();
+        expect(PhoneNumberField_1.PhoneNumberField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
     });
 });

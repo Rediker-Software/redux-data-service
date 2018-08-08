@@ -44,4 +44,10 @@ describe("FieldType: EnumField", function () {
     it("should not be serialized", function () {
         expect(EnumField.serialize).to.be.false;
     });
+    it("normalizes a value by returning the given value if it exists in the enum", function () {
+        expect(EnumField.normalize("world")).to.equal(TestEnum.world);
+    });
+    it("normalizes a value which does not exist in the enum by returning null", function () {
+        expect(EnumField.normalize("asdf")).to.be.null;
+    });
 });

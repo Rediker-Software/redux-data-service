@@ -6,4 +6,5 @@ exports.NumberField = {
     defaultValidationRules: { numericality: true },
     defaultValue: 0,
     isValidType: function (value) { return value == null || validate_js_1.isNumber(value); },
+    normalize: function (value) { return Number(value); },
 };

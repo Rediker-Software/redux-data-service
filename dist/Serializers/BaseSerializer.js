@@ -41,9 +41,7 @@ var BaseSerializer = (function () {
         };
     };
     BaseSerializer.prototype.normalizeField = function (data) {
-        return function (fieldType, fieldName) { return ("normalize" in fieldType
-            ? fieldType.normalize(data[fieldName])
-            : data[fieldName]); };
+        return function (fieldType, fieldName) { return (fieldType.normalize(data[fieldName])); };
     };
     BaseSerializer.prototype.transform = function (model) {
         return fp_1.flow(fp_1.pickBy(fp_1.property("serialize")), Utils_1.mapValuesWithKeys(this.transformField(model)))(this.fields);

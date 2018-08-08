@@ -6,4 +6,5 @@ exports.ArrayField = {
     defaultValidationRules: { type: "array" },
     defaultValue: [],
     isValidType: function (value) { return value == null || validate_js_1.isArray(value); },
+    normalize: function (value) { return value; },
 };

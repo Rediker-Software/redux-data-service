@@ -13,5 +13,6 @@ exports.createEnumField = function (fieldEnum) {
         },
         defaultValue: null,
         isValidType: function (value) { return value == null || lodash_1.includes(fieldEnum, value); },
+        normalize: function (value) { return value in fieldEnum ? fieldEnum[value] : null; },
     };
 };
