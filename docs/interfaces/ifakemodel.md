@@ -71,7 +71,7 @@
 
 *Overrides [IModelData](imodeldata.md).[dateDeleted](imodeldata.md#datedeleted)*
 
-*Defined in [Model/IModel.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L8)*
+*Defined in [Model/IModel.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L8)*
 
 ___
 <a id="dateupdated"></a>
@@ -84,7 +84,7 @@ ___
 
 *Overrides [IModelData](imodeldata.md).[dateUpdated](imodeldata.md#dateupdated)*
 
-*Defined in [Model/IModel.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L7)*
+*Defined in [Model/IModel.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L7)*
 
 ___
 <a id="errors"></a>
@@ -95,7 +95,7 @@ ___
 
 *Inherited from [IModelMeta](imodelmeta.md).[errors](imodelmeta.md#errors)*
 
-*Defined in [Model/IModel.ts:15](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L15)*
+*Defined in [Model/IModel.ts:15](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L15)*
 
 ___
 <a id="fields"></a>
@@ -108,7 +108,7 @@ ___
 
 *Overrides [IFieldTypes](ifieldtypes.md).[fields](ifieldtypes.md#fields)*
 
-*Defined in [Model/Decorators/Attr.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/Decorators/Attr.ts#L11)*
+*Defined in [Model/Decorators/Attr.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/Decorators/Attr.ts#L11)*
 
 ___
 <a id="fulltext"></a>
@@ -119,7 +119,7 @@ ___
 
 *Inherited from [IFakeModelData](ifakemodeldata.md).[fullText](ifakemodeldata.md#fulltext)*
 
-*Defined in [Model/Model.mock.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/Model.mock.ts#L26)*
+*Defined in [Model/Model.mock.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/Model.mock.ts#L26)*
 
 ___
 <a id="hasunsavedchanges"></a>
@@ -130,7 +130,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[hasUnsavedChanges](imodel.md#hasunsavedchanges)*
 
-*Defined in [Model/IModel.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L20)*
+*Defined in [Model/IModel.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L20)*
 
 ___
 <a id="id"></a>
@@ -143,7 +143,7 @@ ___
 
 *Overrides [IModelData](imodeldata.md).[id](imodeldata.md#id)*
 
-*Defined in [Model/IModel.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L6)*
+*Defined in [Model/IModel.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L6)*
 
 ___
 <a id="isdirty"></a>
@@ -154,7 +154,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[isDirty](imodel.md#isdirty)*
 
-*Defined in [Model/IModel.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L19)*
+*Defined in [Model/IModel.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L19)*
 
 ___
 <a id="isloading"></a>
@@ -165,7 +165,7 @@ ___
 
 *Inherited from [IModelMeta](imodelmeta.md).[isLoading](imodelmeta.md#isloading)*
 
-*Defined in [Model/IModel.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L13)*
+*Defined in [Model/IModel.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L13)*
 
 ___
 <a id="isnew"></a>
@@ -176,7 +176,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[isNew](imodel.md#isnew)*
 
-*Defined in [Model/IModel.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L21)*
+*Defined in [Model/IModel.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L21)*
 
 ___
 <a id="isshadow"></a>
@@ -187,7 +187,7 @@ ___
 
 *Inherited from [IModelMeta](imodelmeta.md).[isShadow](imodelmeta.md#isshadow)*
 
-*Defined in [Model/IModel.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L12)*
+*Defined in [Model/IModel.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L12)*
 
 ___
 <a id="original"></a>
@@ -198,7 +198,7 @@ ___
 
 *Inherited from [IModelMeta](imodelmeta.md).[original](imodelmeta.md#original)*
 
-*Defined in [Model/IModel.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L14)*
+*Defined in [Model/IModel.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L14)*
 
 ___
 <a id="relationships"></a>
@@ -209,7 +209,7 @@ ___
 
 *Inherited from [IRelationship](irelationship.md).[relationships](irelationship.md#relationships)*
 
-*Defined in [Model/Decorators/Relationship.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/Decorators/Relationship.ts#L28)*
+*Defined in [Model/Decorators/Relationship.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/Decorators/Relationship.ts#L28)*
 
 #### Type declaration
 
@@ -224,7 +224,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[serviceName](imodel.md#servicename)*
 
-*Defined in [Model/IModel.ts:22](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L22)*
+*Defined in [Model/IModel.ts:22](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L22)*
 
 ___
 <a id="validationrules"></a>
@@ -235,7 +235,7 @@ ___
 
 *Inherited from [IValidate](ivalidate.md).[validationRules](ivalidate.md#validationrules)*
 
-*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/Decorators/Validation.ts#L6)*
+*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/Decorators/Validation.ts#L6)*
 
 ___
 
@@ -249,7 +249,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[applyUpdates](imodel.md#applyupdates)*
 
-*Defined in [Model/IModel.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L31)*
+*Defined in [Model/IModel.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L31)*
 
 **Parameters:**
 
@@ -270,7 +270,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[forceReload](imodel.md#forcereload)*
 
-*Defined in [Model/IModel.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L30)*
+*Defined in [Model/IModel.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L30)*
 
 **Returns:** `void`
 
@@ -283,7 +283,7 @@ ___
 
 *Inherited from [IAttrs](iattrs.md).[getField](iattrs.md#getfield)*
 
-*Defined in [Model/Decorators/Attr.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/Decorators/Attr.ts#L12)*
+*Defined in [Model/Decorators/Attr.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/Decorators/Attr.ts#L12)*
 
 **Parameters:**
 
@@ -303,7 +303,7 @@ ___
 
 *Inherited from [IRelationship](irelationship.md).[getRelated](irelationship.md#getrelated)*
 
-*Defined in [Model/Decorators/Relationship.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/Decorators/Relationship.ts#L30)*
+*Defined in [Model/Decorators/Relationship.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/Decorators/Relationship.ts#L30)*
 
 **Parameters:**
 
@@ -322,7 +322,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[initializeNewModel](imodel.md#initializenewmodel)*
 
-*Defined in [Model/IModel.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L32)*
+*Defined in [Model/IModel.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L32)*
 
 **Returns:** `void`
 
@@ -335,7 +335,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[markForDestruction](imodel.md#markfordestruction)*
 
-*Defined in [Model/IModel.ts:33](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L33)*
+*Defined in [Model/IModel.ts:33](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L33)*
 
 **Returns:** `void`
 
@@ -348,7 +348,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[parseFieldValue](imodel.md#parsefieldvalue)*
 
-*Defined in [Model/IModel.ts:34](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L34)*
+*Defined in [Model/IModel.ts:34](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L34)*
 
 **Parameters:**
 
@@ -368,7 +368,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[reset](imodel.md#reset)*
 
-*Defined in [Model/IModel.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L28)*
+*Defined in [Model/IModel.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L28)*
 
 **Returns:** `void`
 
@@ -381,7 +381,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[save](imodel.md#save)*
 
-*Defined in [Model/IModel.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L23)*
+*Defined in [Model/IModel.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L23)*
 
 **Returns:** `Promise`<[IModel](imodel.md)<[IFakeModelData](ifakemodeldata.md)>>
 
@@ -394,7 +394,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[saveModel](imodel.md#savemodel)*
 
-*Defined in [Model/IModel.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L24)*
+*Defined in [Model/IModel.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L24)*
 
 **Returns:** `Promise`<[IModel](imodel.md)<[IFakeModelData](ifakemodeldata.md)>>
 
@@ -407,7 +407,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[saveRelatedModels](imodel.md#saverelatedmodels)*
 
-*Defined in [Model/IModel.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L25)*
+*Defined in [Model/IModel.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L25)*
 
 **Returns:** `Promise`<[IModel](imodel.md)<[IFakeModelData](ifakemodeldata.md)>[]>
 
@@ -420,7 +420,7 @@ ___
 
 *Inherited from [IAttrs](iattrs.md).[setField](iattrs.md#setfield)*
 
-*Defined in [Model/Decorators/Attr.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/Decorators/Attr.ts#L13)*
+*Defined in [Model/Decorators/Attr.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/Decorators/Attr.ts#L13)*
 
 **Parameters:**
 
@@ -440,7 +440,7 @@ ___
 
 *Inherited from [IRelationship](irelationship.md).[setRelated](irelationship.md#setrelated)*
 
-*Defined in [Model/Decorators/Relationship.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/Decorators/Relationship.ts#L32)*
+*Defined in [Model/Decorators/Relationship.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/Decorators/Relationship.ts#L32)*
 
 **Parameters:**
 
@@ -460,7 +460,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[unload](imodel.md#unload)*
 
-*Defined in [Model/IModel.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L29)*
+*Defined in [Model/IModel.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L29)*
 
 **Returns:** `void`
 
@@ -475,7 +475,7 @@ ___
 
 *Overrides [IValidate](ivalidate.md).[validate](ivalidate.md#validate)*
 
-*Defined in [Model/IModel.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L26)*
+*Defined in [Model/IModel.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L26)*
 
 **Returns:** [IModelKeys](../#imodelkeys)<[IFakeModelData](ifakemodeldata.md)>
 
@@ -488,7 +488,7 @@ ___
 
 *Inherited from [IModel](imodel.md).[validateField](imodel.md#validatefield)*
 
-*Defined in [Model/IModel.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/IModel.ts#L27)*
+*Defined in [Model/IModel.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/9764f28/src/Model/IModel.ts#L27)*
 
 **Parameters:**
 
