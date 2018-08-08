@@ -33,4 +33,8 @@ describe("FieldType: NumberField", function () {
     it("should be serialized", function () {
         expect(NumberField_1.NumberField.serialize).to.be.true;
     });
+    it("normalizes any value into a number", function () {
+        var value = "7";
+        expect(NumberField_1.NumberField.normalize(value)).to.be.a("number").and.to.equal(7);
+    });
 });

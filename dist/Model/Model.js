@@ -148,8 +148,7 @@ var Model = (function () {
         return validationResult;
     };
     Model.prototype.getValidationRulesForField = function (fieldName) {
-        var validationRulesPath = fieldName.split(".");
-        validationRulesPath.splice(validationRulesPath.length - 1, 0, "validationRules");
+        var validationRulesPath = Utils_1.addPenultimateFieldToPath(fieldName, "validationRules");
         return lodash_1.get(this, validationRulesPath, {});
     };
     Model.prototype.reset = function () {
@@ -219,7 +218,10 @@ var Model = (function () {
     };
     Model.prototype.setField = function (fieldName, value) {
         this.checkFieldUpdateIsAllowed(fieldName, value);
-        Services_1.getDataService(this.serviceName).actions.setField({ id: this.id, fieldName: fieldName, value: value }).invoke();
+        Services_1.getDataService(this.serviceName)
+            .actions
+            .setField({ id: this.id, fieldName: fieldName, value: value })
+            .invoke();
     };
     Model.prototype.getRelated = function (fieldName) {
         var _this = this;
@@ -374,6 +376,11 @@ var Model = (function () {
             var error = this.errors[fieldName];
             return (error instanceof Array) ? error[0] : error;
         }
+    };
+    Model.prototype.parseFieldValue = function (fieldName, value) {
+        var path = Utils_1.addPenultimateFieldToPath(fieldName, "fields");
+        var field = lodash_1.get(this, path);
+        return field.normalize(value);
     };
     __decorate([
         Decorators_1.attr(FieldType_1.StringField, { serialize: false }),

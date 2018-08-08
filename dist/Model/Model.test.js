@@ -1038,6 +1038,14 @@ describe("Model", function () {
             expect(model.hasUnsavedChanges).to.be.false;
         });
     });
+    describe("Model#parseFieldValue", function () {
+        it("parses the given value using the specified fieldName", function () {
+            TestUtils_1.initializeTestServices(TestUtils_1.fakeModelModule);
+            var model = TestUtils_1.seedService("fakeModel");
+            var value = model.parseFieldValue("fullText", 4);
+            expect(value).to.be.a("string").and.to.equal("4");
+        });
+    });
     describe("sub-classing works as expected", function () {
         it("Model decorators apply only to the subtype and not the parent", function () {
             var MockModel = (function (_super) {

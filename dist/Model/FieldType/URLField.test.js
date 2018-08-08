@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var validate_js_1 = require("validate.js");
+var faker_1 = require("faker");
 var URLField_1 = require("./URLField");
 var _a = intern.getPlugin("interface.bdd"), describe = _a.describe, it = _a.it;
 var expect = intern.getPlugin("chai").expect;
@@ -32,5 +33,9 @@ describe("FieldType: URLField", function () {
     });
     it("should be serialized", function () {
         expect(URLField_1.URLField.serialize).to.be.true;
+    });
+    it("normalizes any value into a string", function () {
+        var randomNumber = faker_1.random.number();
+        expect(URLField_1.URLField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
     });
 });

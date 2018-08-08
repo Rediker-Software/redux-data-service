@@ -6,4 +6,5 @@ exports.ObjectField = {
     defaultValidationRules: { type: "object" },
     defaultValue: null,
     isValidType: function (value) { return value == null || validate_js_1.isObject(value); },
+    normalize: function (value) { return value; },
 };

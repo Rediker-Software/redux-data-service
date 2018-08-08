@@ -16,7 +16,7 @@ A TypeScript property decorator. Use it wisely, my son.
 ## Callable
 ▸ **__call**(target: *`T`*, key: *`string`*): `void`
 
-*Defined in [Model/Decorators/IDecorator.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/69d850d/src/Model/Decorators/IDecorator.ts#L7)*
+*Defined in [Model/Decorators/IDecorator.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/b03f489/src/Model/Decorators/IDecorator.ts#L7)*
 
 A TypeScript property decorator. Use it wisely, my son.
 
