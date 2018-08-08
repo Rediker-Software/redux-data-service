@@ -26,7 +26,7 @@
 
 **● fieldName**: *`keyof IModelMeta&lt;T&gt;`*
 
-*Defined in [Services/DataService.ts:73](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Services/DataService.ts#L73)*
+*Defined in [Services/DataService.ts:73](https://github.com/Rediker-Software/redux-data-service/blob/69d850d/src/Services/DataService.ts#L73)*
 
 ___
 <a id="id"></a>
@@ -35,7 +35,7 @@ ___
 
 **● id**: *`string`*
 
-*Defined in [Services/DataService.ts:72](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Services/DataService.ts#L72)*
+*Defined in [Services/DataService.ts:72](https://github.com/Rediker-Software/redux-data-service/blob/69d850d/src/Services/DataService.ts#L72)*
 
 ___
 <a id="value"></a>
@@ -44,7 +44,7 @@ ___
 
 **● value**: *`any`*
 
-*Defined in [Services/DataService.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Services/DataService.ts#L74)*
+*Defined in [Services/DataService.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/69d850d/src/Services/DataService.ts#L74)*
 
 ___
 

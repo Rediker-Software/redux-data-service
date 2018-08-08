@@ -22,7 +22,7 @@
 
 **● modules**: *[IModuleMap](imodulemap.md)*
 
-*Defined in [Configure.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/533036e/src/Configure.ts#L9)*
+*Defined in [Configure.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/69d850d/src/Configure.ts#L9)*
 
 ___
 
