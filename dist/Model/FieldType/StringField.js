@@ -6,5 +6,5 @@ exports.StringField = {
     defaultValidationRules: { type: "string" },
     defaultValue: "",
     isValidType: function (value) { return value == null || validate_js_1.isString(value); },
-    normalize: function (value) { return String(value); },
+    normalize: function (value) { return value != null ? String(value) : null; },
 };

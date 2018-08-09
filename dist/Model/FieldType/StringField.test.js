@@ -34,8 +34,11 @@ describe("FieldType: StringField", function () {
     it("should be serialized", function () {
         expect(StringField_1.StringField.serialize).to.be.true;
     });
-    it("normalizes any value into a string", function () {
+    it("normalizes any value that is not null-like into a string", function () {
         var randomNumber = faker_1.random.number();
         expect(StringField_1.StringField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
+    });
+    it("normalizes any null-like value by returning the given value", function () {
+        expect(StringField_1.StringField.normalize(null)).to.be.null;
     });
 });
