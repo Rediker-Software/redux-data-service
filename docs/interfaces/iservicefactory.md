@@ -24,7 +24,7 @@
 
 ⊕ **new IServiceFactory**(): [IService](iservice.md)<`S`>
 
-*Defined in [Services/IService.ts:40](https://github.com/Rediker-Software/redux-data-service/blob/1af9254/src/Services/IService.ts#L40)*
+*Defined in [Services/IService.ts:40](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/IService.ts#L40)*
 
 **Returns:** [IService](iservice.md)<`S`>
 

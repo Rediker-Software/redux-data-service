@@ -45,12 +45,12 @@ describe("FieldType: StringField", () => {
     expect(StringField.serialize).to.be.true;
   });
 
-  it("normalizes any value that is not null-like into a string", () => {
+  it("normalizes any value into a string", () => {
     const randomNumber = random.number();
     expect(StringField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
   });
 
-  it("normalizes any null-like value by returning the given value", () => {
-    expect(StringField.normalize(null)).to.be.null;
+  it("normalizes any null-like value into an empty string", () => {
+    expect(StringField.normalize(null)).to.be.a("string").and.to.equal("");
   });
 });
