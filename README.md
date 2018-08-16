@@ -1,5 +1,7 @@
 # redux-data-service
 
+[![CircleCI](https://circleci.com/gh/Rediker-Software/redux-data-service.svg?style=svg)](https://circleci.com/gh/Rediker-Software/redux-data-service)
+
 **A Redux library to seamlessly connect to any API using first-class models created from true TypeScript classes,
  with support for customizable serialization, validation, and dependency injection.**
  
