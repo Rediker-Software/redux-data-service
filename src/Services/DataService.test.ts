@@ -7,15 +7,16 @@ import { Subject } from "rxjs/Subject";
 
 import { Map, Record } from "immutable";
 import { createMockStore } from "redux-test-utils";
+import hash from "object-hash";
 
 import { createMockServiceState } from "../TestUtils";
 import { IModelMeta, createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model";
 import { MockAdapter } from "../Adapters";
+import { MockSerializer } from "../Serializers";
+import { configure } from "../Configure";
 
 import { DataService, IDataServiceState, IRequestCacheKey } from "./DataService";
 import { BaseService } from "./BaseService";
-
-import hash from "object-hash";
 import { registerService } from "./ServiceProvider";
 
 declare var intern;
@@ -33,6 +34,7 @@ describe("DataService", () => {
   const serviceName = "fakeModel";
 
   beforeEach(() => {
+    configure({ modules: null });
     mockAdapter = new MockAdapter();
 
     class FakeService extends DataService<IFakeModelData> {
@@ -54,6 +56,34 @@ describe("DataService", () => {
 
   it("has an action creator for triggering a fetchAll query", () => {
     assert.isFunction(fakeService.actions.fetchAll);
+  });
+
+  describe("adapter", () => {
+    it("uses the adapter from the config if one was not defined in the child class", () => {
+      class MockService extends DataService<IFakeModelData> {
+        public name = "";
+        public ModelClass = null;
+      }
+
+      configure({ modules: null, adapter: MockAdapter });
+      const mockService = new MockService();
+
+      expect(mockService.adapter).to.be.an.instanceOf(MockAdapter);
+    });
+  });
+
+  describe("serializer", () => {
+    it("uses the serializer from the config if one was not defined in the child class", () => {
+      class MockService extends DataService<IFakeModelData> {
+        public name = "";
+        public ModelClass = null;
+      }
+
+      configure({ modules: null, serializer: MockSerializer });
+      const mockService = new MockService();
+
+      expect(mockService.serializer).to.be.an.instanceOf(MockSerializer);
+    });
   });
 
   describe("fetchAll action creator", () => {

@@ -22,9 +22,11 @@ import { Store } from "redux";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 
+import { getConfiguration } from "../Configure";
 import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
 import { ISerializer, RestSerializer } from "../Serializers";
 import { IAdapter, RestAdapter } from "../Adapters";
+
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
 
@@ -115,7 +117,8 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
 
   public get adapter() {
     if (!this._adapter) {
-      this._adapter = new RestAdapter(this.name);
+      const Adapter = getConfiguration().adapter || RestAdapter;
+      this._adapter = new Adapter(this.name);
     }
 
     return this._adapter;
@@ -123,7 +126,8 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
 
   public get serializer() {
     if (!this._serializer) {
-      this._serializer = new RestSerializer(this.ModelClass);
+      const Serializer = getConfiguration().serializer || RestSerializer;
+      this._serializer = new Serializer(this.ModelClass);
     }
 
     return this._serializer;
