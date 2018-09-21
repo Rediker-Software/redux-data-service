@@ -17,9 +17,8 @@ import { ISerializer } from "./ISerializer";
 export abstract class BaseSerializer<S, T extends IModelData, R = T> implements ISerializer<S, T, R> {
   public readonly ModelClass: IModelFactory<T>;
 
-  public abstract deserialize(data: S): IModel<T>;
-
-  public abstract serialize(modelData: Partial<T>): S;
+  public abstract deserialize(data: R): IModel<T>;
+  public abstract serialize(modelData: IModel<T> | Partial<T>): S;
 
   public constructor(ModelClass: IModelFactory<T>) {
     this.ModelClass = ModelClass;

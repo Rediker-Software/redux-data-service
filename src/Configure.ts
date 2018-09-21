@@ -10,7 +10,7 @@ import { IAdapterFactory } from "./Adapters";
 export interface IConfiguration {
   modules: IModuleMap;
   adapter?: IAdapterFactory<any>;
-  serializer?: ISerializerFactory<any>;
+  serializer?: ISerializerFactory<any, any, any>;
 }
 
 let configuration: IConfiguration = {} as IConfiguration;

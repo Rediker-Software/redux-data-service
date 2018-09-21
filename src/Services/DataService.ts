@@ -24,8 +24,8 @@ import { createSelector } from "reselect";
 
 import { getConfiguration } from "../Configure";
 import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
-import { ISerializer, RestSerializer } from "../Serializers";
-import { IAdapter, RestAdapter } from "../Adapters";
+import { ISerializer, ISerializerFactory, RestSerializer } from "../Serializers";
+import { IAdapter, IAdapterFactory, RestAdapter } from "../Adapters";
 
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
@@ -101,13 +101,14 @@ export interface IForceReload {
  * @abstract
  * @class
  */
-export abstract class DataService<T extends IModelData> extends BaseService<DataServiceStateRecord<T>> {
+export abstract class DataService<T extends IModelData, R = T> extends BaseService<DataServiceStateRecord<T>> {
   public abstract readonly ModelClass: IModelFactory<T>;
-  public readonly Adapter = RestAdapter;
-  public readonly Serializer = RestSerializer;
-  
-  protected _serializer: ISerializer<T, any>;
+  protected readonly AdapterClass: IAdapterFactory<any> = RestAdapter;
+  protected readonly SerializerClass: ISerializerFactory<any, T, R> = RestSerializer;
+
+  protected _serializer: ISerializer<any, T, R>;
   protected _adapter: IAdapter<any>;
+
   protected shadowObject: IModel<T> = null;
   protected observablesByIdCache: { [id: string]: Observable<IModel<T>> } = {};
   protected observablesByIdsCache: { [id: string]: Observable<IModel<T>[]> } = {};
@@ -120,7 +121,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
 
   public get adapter() {
     if (!this._adapter) {
-      const Adapter = getConfiguration().adapter || this.Adapter;
+      const Adapter = getConfiguration().adapter || this.AdapterClass;
       this._adapter = new Adapter(this.name);
     }
 
@@ -129,7 +130,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
 
   public get serializer() {
     if (!this._serializer) {
-      const Serializer = getConfiguration().serializer || this.Serializer;
+      const Serializer = getConfiguration().serializer || this.SerializerClass;
       this._serializer = new Serializer(this.ModelClass);
     }
 
