@@ -103,6 +103,9 @@ export interface IForceReload {
  */
 export abstract class DataService<T extends IModelData> extends BaseService<DataServiceStateRecord<T>> {
   public abstract readonly ModelClass: IModelFactory<T>;
+  public readonly Adapter = RestAdapter;
+  public readonly Serializer = RestSerializer;
+  
   protected _serializer: ISerializer<T, any>;
   protected _adapter: IAdapter<any>;
   protected shadowObject: IModel<T> = null;
@@ -117,7 +120,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
 
   public get adapter() {
     if (!this._adapter) {
-      const Adapter = getConfiguration().adapter || RestAdapter;
+      const Adapter = getConfiguration().adapter || this.Adapter;
       this._adapter = new Adapter(this.name);
     }
 
@@ -126,7 +129,7 @@ export abstract class DataService<T extends IModelData> extends BaseService<Data
 
   public get serializer() {
     if (!this._serializer) {
-      const Serializer = getConfiguration().serializer || RestSerializer;
+      const Serializer = getConfiguration().serializer || this.Serializer;
       this._serializer = new Serializer(this.ModelClass);
     }
 

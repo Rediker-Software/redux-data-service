@@ -1,10 +1,10 @@
 import { IModel, IModelData, IModelFactory } from "../Model";
 
-export interface ISerializer<T extends IModelData, S> {
+export interface ISerializer<S, T extends IModelData, R = T> {
   serialize: (modelData: IModel<T> | Partial<T>) => S;
   deserialize: (data: S) => IModel<T>;
-  transform: (model: IModel<T>) => Partial<T>;
-  normalize: (data: Partial<T>) => IModel<T>;
+  transform: (model: IModel<T>) => Partial<R>;
+  normalize: (data: Partial<R>) => IModel<T>;
 }
 
 export interface ISerializerFactory<T extends IModelData> {
