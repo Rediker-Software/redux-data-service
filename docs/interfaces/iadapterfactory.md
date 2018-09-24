@@ -22,15 +22,16 @@
 
 ###  constructor
 
-⊕ **new IAdapterFactory**(data: *`any`*): [IAdapter](iadapter.md)<`T`>
+⊕ **new IAdapterFactory**(pathName: *`string`*, options?: *`any`*): [IAdapter](iadapter.md)<`T`>
 
-*Defined in [Adapters/IAdapter.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Adapters/IAdapter.ts#L12)*
+*Defined in [Adapters/IAdapter.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Adapters/IAdapter.ts#L12)*
 
 **Parameters:**
 
 | Param | Type |
 | ------ | ------ |
-| data | `any` |
+| pathName | `string` |
+| `Optional` options | `any` |
 
 **Returns:** [IAdapter](iadapter.md)<`T`>
 

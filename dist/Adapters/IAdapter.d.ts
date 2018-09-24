@@ -10,5 +10,5 @@ export interface IAdapter<T> {
     deleteItem: (id: string) => Observable<T>;
 }
 export interface IAdapterFactory<T> {
-    new (data: any): IAdapter<T>;
+    new (pathName: string, options?: any): IAdapter<T>;
 }

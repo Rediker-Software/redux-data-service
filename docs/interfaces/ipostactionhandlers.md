@@ -23,7 +23,7 @@
 
 **● onError**: *`function`*
 
-*Defined in [Services/DataService.ts:48](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/DataService.ts#L48)*
+*Defined in [Services/DataService.ts:50](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/DataService.ts#L50)*
 
 #### Type declaration
 ▸(errors: *`any`*): `void`
@@ -43,7 +43,7 @@ ___
 
 **● onSuccess**: *`function`*
 
-*Defined in [Services/DataService.ts:47](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/DataService.ts#L47)*
+*Defined in [Services/DataService.ts:49](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/DataService.ts#L49)*
 
 #### Type declaration
 ▸(data: *`any`*): `void`

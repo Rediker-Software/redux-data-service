@@ -24,7 +24,7 @@
 
 ⊕ **new ISerializerFactory**(ModelClass: *[IModelFactory](imodelfactory.md)<`T`>*): [ISerializer](iserializer.md)<`T`, `any`>
 
-*Defined in [Serializers/ISerializer.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Serializers/ISerializer.ts#L10)*
+*Defined in [Serializers/ISerializer.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Serializers/ISerializer.ts#L10)*
 
 **Parameters:**
 
