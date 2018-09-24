@@ -25,12 +25,14 @@ require("rxjs/add/observable/of");
 var Subject_1 = require("rxjs/Subject");
 var immutable_1 = require("immutable");
 var redux_test_utils_1 = require("redux-test-utils");
+var object_hash_1 = require("object-hash");
 var TestUtils_1 = require("../TestUtils");
 var Model_1 = require("../Model");
 var Adapters_1 = require("../Adapters");
+var Serializers_1 = require("../Serializers");
+var Configure_1 = require("../Configure");
 var DataService_1 = require("./DataService");
 var BaseService_1 = require("./BaseService");
-var object_hash_1 = require("object-hash");
 var ServiceProvider_1 = require("./ServiceProvider");
 var _a = intern.getPlugin("interface.bdd"), describe = _a.describe, it = _a.it, beforeEach = _a.beforeEach, afterEach = _a.afterEach;
 var _b = intern.getPlugin("chai"), assert = _b.assert, expect = _b.expect;
@@ -43,6 +45,7 @@ describe("DataService", function () {
     var state;
     var serviceName = "fakeModel";
     beforeEach(function () {
+        Configure_1.configure({ modules: null });
         mockAdapter = new Adapters_1.MockAdapter();
         var FakeService = (function (_super) {
             __extends(FakeService, _super);
@@ -65,6 +68,40 @@ describe("DataService", function () {
     });
     it("has an action creator for triggering a fetchAll query", function () {
         assert.isFunction(fakeService.actions.fetchAll);
+    });
+    describe("adapter", function () {
+        it("uses the adapter from the config if one was not defined in the child class", function () {
+            var MockService = (function (_super) {
+                __extends(MockService, _super);
+                function MockService() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.name = "";
+                    _this.ModelClass = null;
+                    return _this;
+                }
+                return MockService;
+            }(DataService_1.DataService));
+            Configure_1.configure({ modules: null, adapter: Adapters_1.MockAdapter });
+            var mockService = new MockService();
+            expect(mockService.adapter).to.be.an.instanceOf(Adapters_1.MockAdapter);
+        });
+    });
+    describe("serializer", function () {
+        it("uses the serializer from the config if one was not defined in the child class", function () {
+            var MockService = (function (_super) {
+                __extends(MockService, _super);
+                function MockService() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.name = "";
+                    _this.ModelClass = null;
+                    return _this;
+                }
+                return MockService;
+            }(DataService_1.DataService));
+            Configure_1.configure({ modules: null, serializer: Serializers_1.MockSerializer });
+            var mockService = new MockService();
+            expect(mockService.serializer).to.be.an.instanceOf(Serializers_1.MockSerializer);
+        });
     });
     describe("fetchAll action creator", function () {
         it("should create the correct action to trigger a fetchAll query to the api with the query params", function () {

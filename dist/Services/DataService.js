@@ -46,6 +46,7 @@ var lodash_1 = require("lodash");
 var hash = require("object-hash");
 var re_reselect_1 = require("re-reselect");
 var reselect_1 = require("reselect");
+var Configure_1 = require("../Configure");
 var Serializers_1 = require("../Serializers");
 var Adapters_1 = require("../Adapters");
 var BaseService_1 = require("./BaseService");
@@ -162,7 +163,8 @@ var DataService = (function (_super) {
     Object.defineProperty(DataService.prototype, "adapter", {
         get: function () {
             if (!this._adapter) {
-                this._adapter = new Adapters_1.RestAdapter(this.name);
+                var Adapter = Configure_1.getConfiguration().adapter || Adapters_1.RestAdapter;
+                this._adapter = new Adapter(this.name);
             }
             return this._adapter;
         },
@@ -172,7 +174,8 @@ var DataService = (function (_super) {
     Object.defineProperty(DataService.prototype, "serializer", {
         get: function () {
             if (!this._serializer) {
-                this._serializer = new Serializers_1.RestSerializer(this.ModelClass);
+                var Serializer = Configure_1.getConfiguration().serializer || Serializers_1.RestSerializer;
+                this._serializer = new Serializer(this.ModelClass);
             }
             return this._serializer;
         },

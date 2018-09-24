@@ -73,7 +73,7 @@ The `reducers` should map an `ActionType` to a "micro" reducer. A single, final 
 
 **● internalActions**: *[IActionCreators](../interfaces/iactioncreators.md)*
 
-*Defined in [Services/BaseService.ts:45](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L45)*
+*Defined in [Services/BaseService.ts:45](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L45)*
 
 ___
 <a id="internalepics"></a>
@@ -82,7 +82,7 @@ ___
 
 **● internalEpics**: *[IActionEpic](../#iactionepic)[]*
 
-*Defined in [Services/BaseService.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L44)*
+*Defined in [Services/BaseService.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L44)*
 
 ___
 <a id="internalreducers"></a>
@@ -91,7 +91,7 @@ ___
 
 **● internalReducers**: *[IReducers](../#ireducers)<`S`>*
 
-*Defined in [Services/BaseService.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L43)*
+*Defined in [Services/BaseService.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L43)*
 
 ___
 <a id="internalselectors"></a>
@@ -100,7 +100,7 @@ ___
 
 **● internalSelectors**: *[ISelectors](../interfaces/iselectors.md)*
 
-*Defined in [Services/BaseService.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L46)*
+*Defined in [Services/BaseService.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L46)*
 
 ___
 <a id="internaltypes"></a>
@@ -109,7 +109,7 @@ ___
 
 **● internalTypes**: *[IActionTypes](../interfaces/iactiontypes.md)*
 
-*Defined in [Services/BaseService.ts:47](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L47)*
+*Defined in [Services/BaseService.ts:47](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L47)*
 
 ___
 <a id="name"></a>
@@ -120,7 +120,7 @@ ___
 
 *Implementation of [IService](../interfaces/iservice.md).[name](../interfaces/iservice.md#name)*
 
-*Defined in [Services/BaseService.ts:39](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L39)*
+*Defined in [Services/BaseService.ts:39](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L39)*
 
 ___
 <a id="dispatch"></a>
@@ -129,7 +129,7 @@ ___
 
 **● dispatch**: *`function`*
 
-*Defined in [Services/BaseService.ts:41](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L41)*
+*Defined in [Services/BaseService.ts:41](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L41)*
 
 #### Type declaration
 ▸(action: *[IAction](../interfaces/iaction.md)*): `void`
@@ -149,7 +149,7 @@ ___
 
 **● state$**: *`any`*
 
-*Defined in [Services/BaseService.ts:42](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L42)*
+*Defined in [Services/BaseService.ts:42](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L42)*
 
 ___
 
@@ -161,7 +161,7 @@ ___
 
 getactions(): [IActionCreators](../interfaces/iactioncreators.md)
 
-*Defined in [Services/BaseService.ts:205](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L205)*
+*Defined in [Services/BaseService.ts:205](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L205)*
 
 Returns a map of IActionCreators, which when dispatched to Redux, one or many reducers or epics may act on that IAction.
 
@@ -174,7 +174,7 @@ ___
 
 getepics(): [IActionEpic](../#iactionepic)[]
 
-*Defined in [Services/BaseService.ts:248](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L248)*
+*Defined in [Services/BaseService.ts:248](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L248)*
 
 Returns an array of RxJS Observeable Epics from redux-observable, which are observers that are always listening for a given ActionType. They are useful for triggering side effects (such as loading data asynchronously) in response to an IAction via chainable, asynchronous "streams".
 
@@ -194,7 +194,7 @@ ___
 
 getreducer(): [IReducer](../#ireducer)<`S`>
 
-*Defined in [Services/BaseService.ts:170](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L170)*
+*Defined in [Services/BaseService.ts:170](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L170)*
 
 Returns a single IReducer function which triggers the methods mapped in the internal `reducers` object to the given IAction type.
 
@@ -209,7 +209,7 @@ ___
 
 getreducers(): [IReducers](../#ireducers)<`S`>
 
-*Defined in [Services/BaseService.ts:156](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L156)*
+*Defined in [Services/BaseService.ts:156](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L156)*
 
 Return a map of functions which are triggered by the IReducer for a given ActionType. They are used to update the Redux state in response to a given IAction.
 
@@ -224,7 +224,7 @@ ___
 
 getselectors(): [ISelectors](../interfaces/iselectors.md)
 
-*Defined in [Services/BaseService.ts:224](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L224)*
+*Defined in [Services/BaseService.ts:224](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L224)*
 
 Returns an object of selectors using Reselect. ISelectors are useful for efficiently filtering data from the Redux state.
 
@@ -241,7 +241,7 @@ ___
 
 gettypes(): [IActionTypes](../interfaces/iactiontypes.md)
 
-*Defined in [Services/BaseService.ts:191](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L191)*
+*Defined in [Services/BaseService.ts:191](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L191)*
 
 Returns a map of IActionTypes, which are string "constants" that represent the type of an IAction. When an IAction is dispatched to Redux via an IActionCreator, one or many reducers or epics may act on that IAction
 
@@ -257,7 +257,7 @@ ___
 
 ▸ **createActions**(): [IActionCreators](../interfaces/iactioncreators.md)
 
-*Defined in [Services/BaseService.ts:119](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L119)*
+*Defined in [Services/BaseService.ts:119](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L119)*
 
 Children classes should extend this method to dispatch new Actions
 
@@ -270,7 +270,7 @@ ___
 
 ▸ **createEpics**(): [IActionEpic](../#iactionepic)[]
 
-*Defined in [Services/BaseService.ts:134](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L134)*
+*Defined in [Services/BaseService.ts:134](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L134)*
 
 Children classes should extend this method to perform new side effects (such as loading data) in response to a given IAction.
 
@@ -283,7 +283,7 @@ ___
 
 ▸ **createReducers**(): [IReducers](../#ireducers)<`S`>
 
-*Defined in [Services/BaseService.ts:126](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L126)*
+*Defined in [Services/BaseService.ts:126](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L126)*
 
 Children classes should extend this method to handle new IAction types in the reducer.
 
@@ -296,7 +296,7 @@ ___
 
 ▸ **createSelectors**(): [ISelectors](../interfaces/iselectors.md)
 
-*Defined in [Services/BaseService.ts:142](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L142)*
+*Defined in [Services/BaseService.ts:142](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L142)*
 
 Children classes should extend this method to efficiently slice data from the Redux state in a composable manner.
 
@@ -309,7 +309,7 @@ ___
 
 ▸ **createTypes**(): [IActionTypes](../interfaces/iactiontypes.md)
 
-*Defined in [Services/BaseService.ts:109](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L109)*
+*Defined in [Services/BaseService.ts:109](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L109)*
 
 Children classes should extend this method to create new IActionTypes
 
@@ -322,7 +322,7 @@ ___
 
 ▸ **getDefaultState**(): `S`
 
-*Defined in [Services/BaseService.ts:55](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L55)*
+*Defined in [Services/BaseService.ts:55](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L55)*
 
 The default Redux state of the IService
 *__abstract__*: 
@@ -336,7 +336,7 @@ ___
 
 ▸ **makeActionCreator**T,M(type: *`string`*, defaultMeta?: *`any`*): [IActionCreator](../#iactioncreator)
 
-*Defined in [Services/BaseService.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L95)*
+*Defined in [Services/BaseService.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L95)*
 
 Creates an IActionCreator function for triggering an IAction with the given type.
 
@@ -360,7 +360,7 @@ ___
 
 ▸ **makeActionType**(type: *`string`*): `string`
 
-*Defined in [Services/BaseService.ts:64](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L64)*
+*Defined in [Services/BaseService.ts:64](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L64)*
 
 Returns a namespaced IAction type in the form `<name>/<type>`. For example: `student/FETCH_ALL`
 
@@ -379,7 +379,7 @@ ___
 
 ▸ **getStateObservable**(): `Observable`<`any`>
 
-*Defined in [Services/BaseService.ts:82](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L82)*
+*Defined in [Services/BaseService.ts:82](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L82)*
 
 **Returns:** `Observable`<`any`>
 
@@ -390,7 +390,7 @@ ___
 
 ▸ **registerDispatch**(dispatch: *`any`*): `void`
 
-*Defined in [Services/BaseService.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L74)*
+*Defined in [Services/BaseService.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L74)*
 
 Registers the dispatch function that is passed in from the middleware.
 
@@ -410,7 +410,7 @@ ___
 
 ▸ **setStateObservable**(state$: *`Observable`<`any`>*): `void`
 
-*Defined in [Services/BaseService.ts:78](https://github.com/Rediker-Software/redux-data-service/blob/9bffbe1/src/Services/BaseService.ts#L78)*
+*Defined in [Services/BaseService.ts:78](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/BaseService.ts#L78)*
 
 **Parameters:**
 
