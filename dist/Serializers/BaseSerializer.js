@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var fp_1 = require("lodash/fp");
 var Utils_1 = require("../Utils");
+var Model_1 = require("../Model");
 var Services_1 = require("../Services");
-var Decorators_1 = require("../Model/Decorators");
 var BaseSerializer = (function () {
     function BaseSerializer(ModelClass) {
         var _this = this;
@@ -64,9 +64,9 @@ var BaseSerializer = (function () {
     BaseSerializer.prototype.transformRelationship = function (fieldValue, relationship) {
         var _this = this;
         switch (relationship.type) {
-            case Decorators_1.RelationshipType.BelongsTo:
+            case Model_1.RelationshipType.BelongsTo:
                 return this.transformRelatedModel(fieldValue);
-            case Decorators_1.RelationshipType.HasMany:
+            case Model_1.RelationshipType.HasMany:
                 return fieldValue.map(function (item) { return _this.transformRelatedModel(item); });
             default:
                 throw new TypeError("BaseSerializer: attempted to transform unknown relationship \"" + relationship.type + "\"");
@@ -79,11 +79,11 @@ var BaseSerializer = (function () {
     };
     BaseSerializer.prototype.processNestedRelationship = function (model, nestedData, relationship) {
         var _this = this;
-        if (relationship.type === Decorators_1.RelationshipType.BelongsTo) {
+        if (relationship.type === Model_1.RelationshipType.BelongsTo) {
             var relatedModel = this.loadRelatedModel(model, nestedData, relationship);
             return relatedModel.id;
         }
-        else if (relationship.type === Decorators_1.RelationshipType.HasMany && nestedData instanceof Array) {
+        else if (relationship.type === Model_1.RelationshipType.HasMany && nestedData instanceof Array) {
             var relatedModels = nestedData.map(function (relatedModelData) { return _this.loadRelatedModel(model, relatedModelData, relationship); });
             return relatedModels.map(function (relatedModel) { return relatedModel.id; });
         }

@@ -25,7 +25,7 @@
 **● errors**: * `string`[] &#124; `string` &#124; `any` &#124; `null`
 *
 
-*Defined in [Services/DataService.ts:37](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/DataService.ts#L37)*
+*Defined in [Services/DataService.ts:37](https://github.com/Rediker-Software/redux-data-service/blob/6ea6c09/src/Services/DataService.ts#L37)*
 
 ___
 <a id="ids"></a>
@@ -34,7 +34,7 @@ ___
 
 **● ids**: *`List`<`string`>*
 
-*Defined in [Services/DataService.ts:38](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/DataService.ts#L38)*
+*Defined in [Services/DataService.ts:38](https://github.com/Rediker-Software/redux-data-service/blob/6ea6c09/src/Services/DataService.ts#L38)*
 
 ___
 <a id="isloading"></a>
@@ -43,7 +43,7 @@ ___
 
 **● isLoading**: *`boolean`*
 
-*Defined in [Services/DataService.ts:36](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Services/DataService.ts#L36)*
+*Defined in [Services/DataService.ts:36](https://github.com/Rediker-Software/redux-data-service/blob/6ea6c09/src/Services/DataService.ts#L36)*
 
 ___
 

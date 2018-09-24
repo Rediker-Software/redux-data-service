@@ -59,6 +59,8 @@ var DataService = (function (_super) {
     __extends(DataService, _super);
     function DataService() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.AdapterClass = Adapters_1.RestAdapter;
+        _this.SerializerClass = Serializers_1.RestSerializer;
         _this.shadowObject = null;
         _this.observablesByIdCache = {};
         _this.observablesByIdsCache = {};
@@ -163,7 +165,7 @@ var DataService = (function (_super) {
     Object.defineProperty(DataService.prototype, "adapter", {
         get: function () {
             if (!this._adapter) {
-                var Adapter = Configure_1.getConfiguration().adapter || Adapters_1.RestAdapter;
+                var Adapter = Configure_1.getConfiguration().adapter || this.AdapterClass;
                 this._adapter = new Adapter(this.name);
             }
             return this._adapter;
@@ -174,7 +176,7 @@ var DataService = (function (_super) {
     Object.defineProperty(DataService.prototype, "serializer", {
         get: function () {
             if (!this._serializer) {
-                var Serializer = Configure_1.getConfiguration().serializer || Serializers_1.RestSerializer;
+                var Serializer = Configure_1.getConfiguration().serializer || this.SerializerClass;
                 this._serializer = new Serializer(this.ModelClass);
             }
             return this._serializer;

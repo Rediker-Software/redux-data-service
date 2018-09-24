@@ -8,7 +8,7 @@ export interface IServiceMap {
 }
 export interface IModuleMap {
     [module: string]: {
-        [name: string]: IModelFactory<any> | IServiceFactory | ISerializerFactory<any> | IAdapterFactory<any> | {
+        [name: string]: IModelFactory<any> | IServiceFactory | ISerializerFactory<any, any, any> | IAdapterFactory<any> | {
             (data: any): any;
         } | any;
     };

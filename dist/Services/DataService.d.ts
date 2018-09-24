@@ -14,8 +14,8 @@ import { Observable } from "rxjs/Observable";
 import { List, Map, Record } from "immutable";
 import { Store } from "redux";
 import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
-import { ISerializer } from "../Serializers";
-import { IAdapter } from "../Adapters";
+import { ISerializer, ISerializerFactory } from "../Serializers";
+import { IAdapter, IAdapterFactory } from "../Adapters";
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
 export declare type IRequestCacheKey = string;
@@ -54,9 +54,11 @@ export interface IModelId {
 export interface IForceReload {
     forceReload: boolean;
 }
-export declare abstract class DataService<T extends IModelData> extends BaseService<DataServiceStateRecord<T>> {
+export declare abstract class DataService<T extends IModelData, R = T> extends BaseService<DataServiceStateRecord<T>> {
     abstract readonly ModelClass: IModelFactory<T>;
-    protected _serializer: ISerializer<T, any>;
+    protected readonly AdapterClass: IAdapterFactory<any>;
+    protected readonly SerializerClass: ISerializerFactory<any, T, R>;
+    protected _serializer: ISerializer<any, T, R>;
     protected _adapter: IAdapter<any>;
     protected shadowObject: IModel<T>;
     protected observablesByIdCache: {
@@ -70,7 +72,7 @@ export declare abstract class DataService<T extends IModelData> extends BaseServ
     };
     private readonly DataServiceStateRecord;
     readonly adapter: IAdapter<any>;
-    readonly serializer: ISerializer<T, any>;
+    readonly serializer: ISerializer<any, T, R>;
     getDefaultState(): DataServiceStateRecord<T>;
     getShadowObject(): IModel<T>;
     createNew(initialData?: Partial<T>): IModel<T>;

@@ -6,7 +6,7 @@ import { IAdapterFactory } from "./Adapters";
 export interface IConfiguration {
     modules: IModuleMap;
     adapter?: IAdapterFactory<any>;
-    serializer?: ISerializerFactory<any>;
+    serializer?: ISerializerFactory<any, any, any>;
 }
 export declare function getConfiguration(): IConfiguration;
 export declare function configure(config: IConfiguration, configureStore?: IConfigureStore): Store<any>;
