@@ -1,13 +1,10 @@
 import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
-import { isEmpty } from "lodash";
 
 import { mapValuesWithKeys } from "../Utils";
-import { IModel, IModelData, IModelFactory } from "../Model";
+import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, RelationshipType } from "../Model";
 import { getDataService } from "../Services";
 
 import { ISerializer } from "./ISerializer";
-import { IFieldType } from "../Model/FieldType";
-import { IFieldRelationship, RelationshipType } from "../Model/Decorators";
 
 /**
  * The base class from which implementations of `IDataSerializer` should extend.
@@ -17,12 +14,11 @@ import { IFieldRelationship, RelationshipType } from "../Model/Decorators";
  * Any nested relationships will be side-loaded by dispatching an action to the related service.
  *
  */
-export abstract class BaseSerializer<T extends IModelData, S> implements ISerializer<T, S> {
+export abstract class BaseSerializer<S, T extends IModelData, R = T> implements ISerializer<S, T, R> {
   public readonly ModelClass: IModelFactory<T>;
 
-  public abstract deserialize(data: S): IModel<T>;
-
-  public abstract serialize(modelData: Partial<T>): S;
+  public abstract deserialize(data: R): IModel<T>;
+  public abstract serialize(modelData: IModel<T> | Partial<T>): S;
 
   public constructor(ModelClass: IModelFactory<T>) {
     this.ModelClass = ModelClass;
@@ -75,10 +71,10 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
    *
    * For example, an ISO date string will be converted into a Date object when given a DateField.
    *
-   * @param {Partial<T extends IModelData>} data
+   * @param {Partial<R>} data
    * @returns {(fieldType: IFieldType, fieldName: string) => Partial<T extends IModelData>[string]}
    */
-  public normalizeField(data: Partial<T>) {
+  public normalizeField(data: Partial<R>) {
     return (fieldType: IFieldType, fieldName: string) => (
       fieldType.normalize(data[fieldName])
     );
@@ -89,9 +85,9 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
    * Relationships and any fields identified in this class's `excludedFields` array will be excluded.
    *
    * @param {IModel} model
-   * @returns {any}
+   * @returns {Partial<R>}
    */
-  public transform(model: IModel<T> | Partial<T>): Partial<T> {
+  public transform(model: IModel<T> | Partial<T>): Partial<R> {
     return flow(
       pickBy(property("serialize")),
       mapValuesWithKeys(this.transformField(model)),
@@ -102,10 +98,10 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
    * Creates a new IModel by normalizing the given raw data.
    * If a nested relationship was included in the payload, it will be side-loaded.
    *
-   * @param {Partial<T extends IModelData>} data
+   * @param {Partial<R>} data
    * @returns {IModel<T extends IModelData>}
    */
-  public normalize(data: any): IModel<T> {
+  public normalize(data: Partial<R>): IModel<T> {
 
     // Split nested relationships from the model's own values
     const [relationshipKeys, fieldKeys] = flow(

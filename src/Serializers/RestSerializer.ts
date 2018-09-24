@@ -4,7 +4,7 @@ import { BaseSerializer } from "./BaseSerializer";
 /**
  * An ISerializer implementation which will convert a given Model to or from JSON.
  */
-export class RestSerializer<T extends IModelData> extends BaseSerializer<T, string> {
+export class RestSerializer<T extends IModelData, R = T> extends BaseSerializer<string, T, R> {
 
   /**
    * Converts the given IModel into a JSON string.
