@@ -1,49 +1,45 @@
-[redux-data-service](../README.md) > [RestSerializer](../classes/restserializer.md)
+[redux-data-service](../README.md) > [MockSerializer](../classes/mockserializer.md)
 
-# Class: RestSerializer
+# Class: MockSerializer
 
-An ISerializer implementation which will convert a given Model to or from JSON.
-
-## Type parameters
-#### T :  [IModelData](../interfaces/imodeldata.md)
 ## Hierarchy
 
- [BaseSerializer](baseserializer.md)<`T`, `string`>
+ [BaseSerializer](baseserializer.md)<`any`, `any`>
 
-**↳ RestSerializer**
+**↳ MockSerializer**
 
 ## Implements
 
-* [ISerializer](../interfaces/iserializer.md)<`T`, `string`>
+* [ISerializer](../interfaces/iserializer.md)<`any`, `any`>
 
 ## Index
 
 ### Constructors
 
-* [constructor](restserializer.md#constructor)
+* [constructor](mockserializer.md#constructor)
 
 ### Properties
 
-* [ModelClass](restserializer.md#modelclass)
+* [ModelClass](mockserializer.md#modelclass)
 
 ### Accessors
 
-* [fields](restserializer.md#fields)
-* [relationships](restserializer.md#relationships)
+* [fields](mockserializer.md#fields)
+* [relationships](mockserializer.md#relationships)
 
 ### Methods
 
-* [deserialize](restserializer.md#deserialize)
-* [isRelationship](restserializer.md#isrelationship)
-* [loadRelatedModel](restserializer.md#loadrelatedmodel)
-* [normalize](restserializer.md#normalize)
-* [normalizeField](restserializer.md#normalizefield)
-* [processNestedRelationship](restserializer.md#processnestedrelationship)
-* [serialize](restserializer.md#serialize)
-* [transform](restserializer.md#transform)
-* [transformField](restserializer.md#transformfield)
-* [transformRelatedModel](restserializer.md#transformrelatedmodel)
-* [transformRelationship](restserializer.md#transformrelationship)
+* [deserialize](mockserializer.md#deserialize)
+* [isRelationship](mockserializer.md#isrelationship)
+* [loadRelatedModel](mockserializer.md#loadrelatedmodel)
+* [normalize](mockserializer.md#normalize)
+* [normalizeField](mockserializer.md#normalizefield)
+* [processNestedRelationship](mockserializer.md#processnestedrelationship)
+* [serialize](mockserializer.md#serialize)
+* [transform](mockserializer.md#transform)
+* [transformField](mockserializer.md#transformfield)
+* [transformRelatedModel](mockserializer.md#transformrelatedmodel)
+* [transformRelationship](mockserializer.md#transformrelationship)
 
 ---
 
@@ -53,7 +49,7 @@ An ISerializer implementation which will convert a given Model to or from JSON.
 
 ###  constructor
 
-⊕ **new RestSerializer**(ModelClass: *[IModelFactory](../interfaces/imodelfactory.md)<`T`>*): [RestSerializer](restserializer.md)
+⊕ **new MockSerializer**(ModelClass: *[IModelFactory](../interfaces/imodelfactory.md)<`any`>*): [MockSerializer](mockserializer.md)
 
 *Inherited from [BaseSerializer](baseserializer.md).[constructor](baseserializer.md#constructor)*
 
@@ -63,9 +59,9 @@ An ISerializer implementation which will convert a given Model to or from JSON.
 
 | Param | Type |
 | ------ | ------ |
-| ModelClass | [IModelFactory](../interfaces/imodelfactory.md)<`T`> |
+| ModelClass | [IModelFactory](../interfaces/imodelfactory.md)<`any`> |
 
-**Returns:** [RestSerializer](restserializer.md)
+**Returns:** [MockSerializer](mockserializer.md)
 
 ___
 
@@ -75,7 +71,7 @@ ___
 
 ###  ModelClass
 
-**● ModelClass**: *[IModelFactory](../interfaces/imodelfactory.md)<`T`>*
+**● ModelClass**: *[IModelFactory](../interfaces/imodelfactory.md)<`any`>*
 
 *Inherited from [BaseSerializer](baseserializer.md).[ModelClass](baseserializer.md#modelclass)*
 
@@ -118,21 +114,13 @@ ___
 
 ###  deserialize
 
-▸ **deserialize**(data: *`any`*): [IModel](../interfaces/imodel.md)<`T`>
+▸ **deserialize**(): [FakeModel](fakemodel.md)
 
 *Overrides [BaseSerializer](baseserializer.md).[deserialize](baseserializer.md#deserialize)*
 
-*Defined in [Serializers/RestSerializer.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Serializers/RestSerializer.ts#L27)*
+*Defined in [Serializers/MockSerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Serializers/MockSerializer.ts#L9)*
 
-Converts the given JSON string into an IModel.
-
-**Parameters:**
-
-| Param | Type | Description |
-| ------ | ------ | ------ |
-| data | `any` |  - |
-
-**Returns:** [IModel](../interfaces/imodel.md)<`T`>
+**Returns:** [FakeModel](fakemodel.md)
 
 ___
 <a id="isrelationship"></a>
@@ -158,7 +146,7 @@ ___
 
 ### `<Protected>` loadRelatedModel
 
-▸ **loadRelatedModel**(model: *[IModel](../interfaces/imodel.md)<`T`>*, relatedModelData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*): [IModel](../interfaces/imodel.md)<`any`>
+▸ **loadRelatedModel**(model: *[IModel](../interfaces/imodel.md)<`any`>*, relatedModelData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*): [IModel](../interfaces/imodel.md)<`any`>
 
 *Inherited from [BaseSerializer](baseserializer.md).[loadRelatedModel](baseserializer.md#loadrelatedmodel)*
 
@@ -170,7 +158,7 @@ Given the relatedModelData of a single item, normalize the data using the relati
 
 | Param | Type |
 | ------ | ------ |
-| model | [IModel](../interfaces/imodel.md)<`T`> |
+| model | [IModel](../interfaces/imodel.md)<`any`> |
 | relatedModelData | `any` |
 | relationship | [IFieldRelationship](../interfaces/ifieldrelationship.md) |
 
@@ -181,7 +169,7 @@ ___
 
 ###  normalize
 
-▸ **normalize**(data: *`any`*): [IModel](../interfaces/imodel.md)<`T`>
+▸ **normalize**(data: *`any`*): [IModel](../interfaces/imodel.md)<`any`>
 
 *Inherited from [BaseSerializer](baseserializer.md).[normalize](baseserializer.md#normalize)*
 
@@ -195,14 +183,14 @@ Creates a new IModel by normalizing the given raw data. If a nested relationship
 | ------ | ------ | ------ |
 | data | `any` |  - |
 
-**Returns:** [IModel](../interfaces/imodel.md)<`T`>
+**Returns:** [IModel](../interfaces/imodel.md)<`any`>
 
 ___
 <a id="normalizefield"></a>
 
 ###  normalizeField
 
-▸ **normalizeField**(data: *`Partial`<`T`>*): `(Anonymous function)`
+▸ **normalizeField**(data: *`Partial`<`any`>*): `(Anonymous function)`
 
 *Inherited from [BaseSerializer](baseserializer.md).[normalizeField](baseserializer.md#normalizefield)*
 
@@ -216,7 +204,7 @@ For example, an ISO date string will be converted into a Date object when given 
 
 | Param | Type | Description |
 | ------ | ------ | ------ |
-| data | `Partial`<`T`> |  - |
+| data | `Partial`<`any`> |  - |
 
 **Returns:** `(Anonymous function)`
 
@@ -225,7 +213,7 @@ ___
 
 ### `<Protected>` processNestedRelationship
 
-▸ **processNestedRelationship**(model: *[IModel](../interfaces/imodel.md)<`T`>*, nestedData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*):  `string` &#124; `string`[]
+▸ **processNestedRelationship**(model: *[IModel](../interfaces/imodel.md)<`any`>*, nestedData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*):  `string` &#124; `string`[]
 
 *Inherited from [BaseSerializer](baseserializer.md).[processNestedRelationship](baseserializer.md#processnestedrelationship)*
 
@@ -240,7 +228,7 @@ Process the nestedData for the given relationship.
 
 | Param | Type |
 | ------ | ------ |
-| model | [IModel](../interfaces/imodel.md)<`T`> |
+| model | [IModel](../interfaces/imodel.md)<`any`> |
 | nestedData | `any` |
 | relationship | [IFieldRelationship](../interfaces/ifieldrelationship.md) |
 
@@ -251,19 +239,11 @@ ___
 
 ###  serialize
 
-▸ **serialize**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `string`
+▸ **serialize**(): `string`
 
 *Overrides [BaseSerializer](baseserializer.md).[serialize](baseserializer.md#serialize)*
 
-*Defined in [Serializers/RestSerializer.ts:15](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Serializers/RestSerializer.ts#L15)*
-
-Converts the given IModel into a JSON string.
-
-**Parameters:**
-
-| Param | Type | Description |
-| ------ | ------ | ------ |
-| model |  [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>|  - |
+*Defined in [Serializers/MockSerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/b3239e0/src/Serializers/MockSerializer.ts#L5)*
 
 **Returns:** `string`
 
@@ -272,7 +252,7 @@ ___
 
 ###  transform
 
-▸ **transform**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `Partial`<`T`>
+▸ **transform**(model: * [IModel](../interfaces/imodel.md)<`any`> &#124; `Partial`<`any`>*): `Partial`<`any`>
 
 *Inherited from [BaseSerializer](baseserializer.md).[transform](baseserializer.md#transform)*
 
@@ -284,16 +264,16 @@ Transforms the given Model into a plain javascript object based on the Model's f
 
 | Param | Type | Description |
 | ------ | ------ | ------ |
-| model |  [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>|  - |
+| model |  [IModel](../interfaces/imodel.md)<`any`> &#124; `Partial`<`any`>|  - |
 
-**Returns:** `Partial`<`T`>
+**Returns:** `Partial`<`any`>
 
 ___
 <a id="transformfield"></a>
 
 ###  transformField
 
-▸ **transformField**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `(Anonymous function)`
+▸ **transformField**(model: * [IModel](../interfaces/imodel.md)<`any`> &#124; `Partial`<`any`>*): `(Anonymous function)`
 
 *Inherited from [BaseSerializer](baseserializer.md).[transformField](baseserializer.md#transformfield)*
 
@@ -307,7 +287,7 @@ For example, a Date object will be converted into an ISO Date string when given 
 
 | Param | Type | Description |
 | ------ | ------ | ------ |
-| model |  [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>|  - |
+| model |  [IModel](../interfaces/imodel.md)<`any`> &#124; `Partial`<`any`>|  - |
 
 **Returns:** `(Anonymous function)`
 
