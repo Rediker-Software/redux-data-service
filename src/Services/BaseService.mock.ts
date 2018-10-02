@@ -1,7 +1,7 @@
 import { Record, List } from "immutable";
 
 import { BaseService } from "./BaseService";
-import { FakeModel } from "../Model";
+import { FakeModel } from "../Model/Model.mock";
 import {
   IAction,
   IActionCreators,
@@ -10,7 +10,8 @@ import {
   ISelectors,
   IObserveableAction,
 } from "./IService";
-import { IAdapter, MockAdapter } from "../Adapters";
+import { IAdapter } from "../Adapters/IAdapter";
+import { MockAdapter } from "../Adapters/MockAdapter";
 
 export interface IMockTestServiceState {
   items: List<FakeModel>;

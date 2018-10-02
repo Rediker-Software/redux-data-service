@@ -25,7 +25,8 @@ import { createSelector } from "reselect";
 import { getConfiguration } from "../Configure";
 import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
 import { ISerializer, ISerializerFactory, RestSerializer } from "../Serializers";
-import { IAdapter, IAdapterFactory, RestAdapter } from "../Adapters";
+import { IAdapter, IAdapterFactory } from "../Adapters/IAdapter";
+import { RestAdapter } from "../Adapters/RestAdapter";
 
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";

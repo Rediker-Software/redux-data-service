@@ -1,25 +1,45 @@
 // tslint:disable:no-unused-expression
 
+import { getConfiguration } from "../Configure";
 import { DataService, getService } from "../Services";
-import { IFakeModelData } from "../Model";
-import { fakeModelModule } from "./FakeModelModule";
+import { IFakeModelData } from "../Model/Model.mock";
 
+import { RestAdapter } from "../Adapters/RestAdapter";
+import { RestSerializer } from "../Serializers/RestSerializer";
+
+import { MemoryAdapter } from "../Adapters/MemoryAdapter";
+import { MemorySerializer } from "../Serializers/MemorySerializer";
+
+import { fakeModelModule } from "./FakeModelModule";
 import { getActionStubMap, getFakedXHRHistory, initializeTestServices, seedService, seedServiceList, seedServices } from "./Service";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
 const { expect } = intern.getPlugin("chai");
 
-describe("initializeServices", () => {
+describe("initializeTestServices", () => {
 
-  it("builds all services", () => {
-    const store = initializeTestServices(fakeModelModule);
+  describe("initialization", () => {
 
-    // they should be in the same order
-    const returnedKeys = Object.keys(store.getState());
-    const moduleKeys = Object.keys(fakeModelModule);
+    it("builds all services", () => {
+      const store = initializeTestServices(fakeModelModule);
 
-    expect(moduleKeys).to.have.all.members(returnedKeys, "actual fakeModelModule and returned fakeModelModule are same");
+      // they should be in the same order
+      const returnedKeys = Object.keys(store.getState());
+      const moduleKeys = Object.keys(fakeModelModule);
+
+      expect(moduleKeys).to.have.all.members(returnedKeys, "actual fakeModelModule and returned fakeModelModule are same");
+    });
+
+    it("uses MemoryAdapter and MemorySerializer by default", () => {
+      const store = initializeTestServices(fakeModelModule);
+
+      expect(getConfiguration()).to.deep.contain({
+        adapter: MemoryAdapter,
+        serializer: MemorySerializer,
+      });
+    });
+
   });
 
   describe("stubbed xhr actions", () => {
@@ -68,7 +88,7 @@ describe("initializeServices", () => {
     });
 
     it("uses fake xhr when stubs are not in use", () => {
-      initializeTestServices(fakeModelModule, false);
+      initializeTestServices(fakeModelModule, false, { adapter: RestAdapter, serializer: RestSerializer });
 
       const service = getService("fakeModel") as DataService<IFakeModelData>;
       const initHistorySize = getFakedXHRHistory().length;

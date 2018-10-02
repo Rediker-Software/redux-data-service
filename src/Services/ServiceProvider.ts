@@ -6,7 +6,7 @@ import { DataService } from "./DataService";
 import { IModelData, IModelFactory } from "../Model";
 import { isApplicationInitialized } from "../Initialize";
 import { ISerializerFactory } from "../Serializers";
-import { IAdapterFactory } from "../Adapters";
+import { IAdapterFactory } from "../Adapters/IAdapter";
 
 export interface IServiceMap {
   [name: string]: IService<any>;
@@ -67,8 +67,15 @@ export function initializeServices(modules: IModuleMap) {
   forEach(modules, (moduleObj, moduleName) => {
     const serviceName = `${upperFirst(moduleName)}Service`;
     if (serviceName in moduleObj) {
-      const ServiceClass = moduleObj[serviceName] as IServiceFactory;
-      registerService(new ServiceClass());
+      try {
+        const ServiceClass = moduleObj[serviceName] as IServiceFactory;
+        registerService(new ServiceClass());
+      } catch (e) {
+        if (process.env.NODE_ENV !== "production") {
+          console.error(`Failed to register service "${serviceName}"`, moduleObj[serviceName], e); // tslint:disable-line
+        }
+        throw e;
+      }
     }
   });
 }

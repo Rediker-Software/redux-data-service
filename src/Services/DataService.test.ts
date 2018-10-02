@@ -10,8 +10,9 @@ import { createMockStore } from "redux-test-utils";
 import hash from "object-hash";
 
 import { createMockServiceState } from "../TestUtils";
-import { IModelMeta, createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model";
-import { MockAdapter } from "../Adapters";
+import { IModelMeta } from "../Model";
+import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model/Model.mock";
+import { MockAdapter } from "../Adapters/MockAdapter";
 import { MockSerializer } from "../Serializers";
 import { configure } from "../Configure";
 
