@@ -9,7 +9,7 @@ import { omit } from "lodash";
 
 import { BaseService, DataService, registerService } from "../Services";
 import { attr, belongsTo, hasMany, DateField, IModelFactory, Model, NumberField, StringField, TimeField } from "../Model";
-import { MockAdapter } from "../Adapters";
+import { MockAdapter } from "../Adapters/MockAdapter";
 
 import { RestSerializer } from "./RestSerializer";
 import { ArrayField } from "../Model/FieldType";
