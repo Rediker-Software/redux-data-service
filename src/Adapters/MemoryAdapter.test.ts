@@ -1,13 +1,13 @@
 import { random } from "faker";
-import { stub, spy } from "sinon";
+import { spy, stub } from "sinon";
 
-import { fakeModelModule, initializeTestServices, seedService, seedServiceList } from "../TestUtils";
+import { fakeModelModule, initializeTestServices, seedService } from "../TestUtils";
 
 import { getDataService } from "../Services";
 import { MemoryAdapter } from "./MemoryAdapter";
 
 declare var intern;
-const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
+const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
 const { expect } = intern.getPlugin("chai");
 
 describe("MemoryAdapter", () => {
