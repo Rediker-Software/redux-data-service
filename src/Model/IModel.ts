@@ -8,6 +8,10 @@ export interface IModelData {
   readonly dateDeleted: Date;
 }
 
+export interface IModelAPIData {
+  readonly id: string;
+}
+
 export interface IModelMeta<T> {
   readonly isShadow: boolean;
   isLoading: boolean;
