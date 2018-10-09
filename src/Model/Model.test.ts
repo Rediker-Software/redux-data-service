@@ -111,7 +111,7 @@ describe("Model", () => {
             throw new Error("Promise should throw when there are validation errors");
           })
           .catch((errors) => {
-            expect(errors).to.have.property("name").deep.equal(["is required"]);
+            expect(errors).to.have.property("name").deep.equal(["Name is required"]);
           });
       });
 
@@ -338,7 +338,7 @@ describe("Model", () => {
     it("validates the model's data using the model's validation rules", () => {
       const model = new service.ModelClass({ id: modelId, name: "" });
       expect(model.validate()).to.deep.equal({
-        name: ["is required"],
+        name: ["Name is required"],
       });
     });
 
@@ -352,7 +352,7 @@ describe("Model", () => {
         id: modelId,
         fieldName: "errors",
         value: {
-          name: ["is required"],
+          name: ["Name is required"],
         },
       });
     });
@@ -371,8 +371,8 @@ describe("Model", () => {
       const model = new service.ModelClass({ id: modelId, name: "", relatedModelId });
       model.getRelated("relatedModel");
       expect(model.validate(true)).to.deep.equal({
-        "relatedModel.favoriteColor": ["is required"],
-        name: ["is required"],
+        "relatedModel.favoriteColor": ["Favorite color is required"],
+        name: ["Name is required"],
       });
     });
 
@@ -384,14 +384,14 @@ describe("Model", () => {
     it("validates a single field", () => {
       const model = new service.ModelClass({ id: modelId, name: "" });
       expect(model.validateField("name")).to.deep.equal([
-        "is required",
+        "Name is required",
       ]);
     });
 
     it("validates a single nested field", () => {
       const model = new service.ModelClass({ id: modelId, name: "", relatedModelId });
       expect(model.validateField("relatedModel.favoriteColor")).to.deep.equal([
-        "is required",
+        "Favorite color is required",
       ]);
     });
 
