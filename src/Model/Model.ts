@@ -184,7 +184,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public validate(includeRelatedModels = false): IModelKeys<T> {
     const { id, dateUpdated, dateDeleted, ...data } = this.modelData as any;
-    let errors = validate(data, this.validationRules, { fullMessages: false }) || {};
+    let errors = validate(data, this.validationRules) || {};
 
     if (includeRelatedModels) {
       errors = flow(
@@ -213,17 +213,20 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public validateField(fieldName) {
     const errors = this.errors as any || {};
-    const validationRules = this.getValidationRulesForField(fieldName);
-    const value = get(this, fieldName);
+    const localFieldName = fieldName.substring(fieldName.lastIndexOf(".") + 1);
+    const validationRules = { [localFieldName]: this.getValidationRulesForField(fieldName) };
+    const value = { [localFieldName]: get(this, fieldName) };
 
-    const validationResult = single(value, validationRules);
+    const validationResult = validate(value, validationRules);
 
     // Update existing errors object with the results for this one field
     this.errors = isEmpty(validationResult)
       ? omit(errors, fieldName)
-      : { ...errors, [fieldName]: validationResult };
+      : { ...errors, validationResult };
 
-    return validationResult;
+    return validationResult && localFieldName in validationResult
+      ? validationResult[localFieldName]
+      : undefined;
   }
 
   /**
