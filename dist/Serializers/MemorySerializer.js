@@ -10,19 +10,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var Model_mock_1 = require("../Model/Model.mock");
 var BaseSerializer_1 = require("./BaseSerializer");
-var MockSerializer = (function (_super) {
-    __extends(MockSerializer, _super);
-    function MockSerializer() {
+var MemorySerializer = (function (_super) {
+    __extends(MemorySerializer, _super);
+    function MemorySerializer() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    MockSerializer.prototype.serialize = function () {
-        return "";
+    MemorySerializer.prototype.serialize = function (model) {
+        return this.transform(model);
     };
-    MockSerializer.prototype.deserialize = function () {
-        return new Model_mock_1.FakeModel({ id: "123" });
+    MemorySerializer.prototype.deserialize = function (data) {
+        return this.normalize(data);
     };
-    return MockSerializer;
+    return MemorySerializer;
 }(BaseSerializer_1.BaseSerializer));
-exports.MockSerializer = MockSerializer;
+exports.MemorySerializer = MemorySerializer;

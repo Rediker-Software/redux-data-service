@@ -134,7 +134,7 @@ describe("Model", function () {
                     throw new Error("Promise should throw when there are validation errors");
                 })
                     .catch(function (errors) {
-                    expect(errors).to.have.property("name").deep.equal(["is required"]);
+                    expect(errors).to.have.property("name").deep.equal(["Name is required"]);
                 });
             });
             it("calls saveRelatedModels to save related models", function () {
@@ -332,7 +332,7 @@ describe("Model", function () {
         it("validates the model's data using the model's validation rules", function () {
             var model = new service.ModelClass({ id: modelId, name: "" });
             expect(model.validate()).to.deep.equal({
-                name: ["is required"],
+                name: ["Name is required"],
             });
         });
         it("passes validation result to the SET_META_FIELD action creator on the DataService to update the model's error meta field", function () {
@@ -345,7 +345,7 @@ describe("Model", function () {
                 id: modelId,
                 fieldName: "errors",
                 value: {
-                    name: ["is required"],
+                    name: ["Name is required"],
                 },
             });
         });
@@ -362,8 +362,8 @@ describe("Model", function () {
             var model = new service.ModelClass({ id: modelId, name: "", relatedModelId: relatedModelId });
             model.getRelated("relatedModel");
             expect(model.validate(true)).to.deep.equal({
-                "relatedModel.favoriteColor": ["is required"],
-                name: ["is required"],
+                "relatedModel.favoriteColor": ["Favorite color is required"],
+                name: ["Name is required"],
             });
         });
         it("does not validate related models which have not been loaded previously", function () {
@@ -373,13 +373,13 @@ describe("Model", function () {
         it("validates a single field", function () {
             var model = new service.ModelClass({ id: modelId, name: "" });
             expect(model.validateField("name")).to.deep.equal([
-                "is required",
+                "Name is required",
             ]);
         });
         it("validates a single nested field", function () {
             var model = new service.ModelClass({ id: modelId, name: "", relatedModelId: relatedModelId });
             expect(model.validateField("relatedModel.favoriteColor")).to.deep.equal([
-                "is required",
+                "Favorite color is required",
             ]);
         });
         it("updates existing validation results when validating a single field", function () {

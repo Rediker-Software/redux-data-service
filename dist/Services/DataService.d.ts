@@ -15,7 +15,7 @@ import { List, Map, Record } from "immutable";
 import { Store } from "redux";
 import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
 import { ISerializer, ISerializerFactory } from "../Serializers";
-import { IAdapter, IAdapterFactory } from "../Adapters";
+import { IAdapter, IAdapterFactory } from "../Adapters/IAdapter";
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
 export declare type IRequestCacheKey = string;

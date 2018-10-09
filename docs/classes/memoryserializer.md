@@ -1,47 +1,50 @@
-[redux-data-service](../README.md) > [MockSerializer](../classes/mockserializer.md)
+[redux-data-service](../README.md) > [MemorySerializer](../classes/memoryserializer.md)
 
-# Class: MockSerializer
+# Class: MemorySerializer
+
+An in-memory ISerializer implementation for testing and local development purposes.
 
 ## Type parameters
+#### T :  [IModelData](../interfaces/imodeldata.md)
 #### R 
 ## Hierarchy
 
- [BaseSerializer](baseserializer.md)<`any`, `any`>
+ [BaseSerializer](baseserializer.md)<`Partial`<`R`>, `T`, `R`>
 
-**↳ MockSerializer**
+**↳ MemorySerializer**
 
 ## Implements
 
-* [ISerializer](../interfaces/iserializer.md)<`any`, `any`, `R`>
+* [ISerializer](../interfaces/iserializer.md)<`Partial`<`R`>, `T`, `R`>
 
 ## Index
 
 ### Constructors
 
-* [constructor](mockserializer.md#constructor)
+* [constructor](memoryserializer.md#constructor)
 
 ### Properties
 
-* [ModelClass](mockserializer.md#modelclass)
+* [ModelClass](memoryserializer.md#modelclass)
 
 ### Accessors
 
-* [fields](mockserializer.md#fields)
-* [relationships](mockserializer.md#relationships)
+* [fields](memoryserializer.md#fields)
+* [relationships](memoryserializer.md#relationships)
 
 ### Methods
 
-* [deserialize](mockserializer.md#deserialize)
-* [isRelationship](mockserializer.md#isrelationship)
-* [loadRelatedModel](mockserializer.md#loadrelatedmodel)
-* [normalize](mockserializer.md#normalize)
-* [normalizeField](mockserializer.md#normalizefield)
-* [processNestedRelationship](mockserializer.md#processnestedrelationship)
-* [serialize](mockserializer.md#serialize)
-* [transform](mockserializer.md#transform)
-* [transformField](mockserializer.md#transformfield)
-* [transformRelatedModel](mockserializer.md#transformrelatedmodel)
-* [transformRelationship](mockserializer.md#transformrelationship)
+* [deserialize](memoryserializer.md#deserialize)
+* [isRelationship](memoryserializer.md#isrelationship)
+* [loadRelatedModel](memoryserializer.md#loadrelatedmodel)
+* [normalize](memoryserializer.md#normalize)
+* [normalizeField](memoryserializer.md#normalizefield)
+* [processNestedRelationship](memoryserializer.md#processnestedrelationship)
+* [serialize](memoryserializer.md#serialize)
+* [transform](memoryserializer.md#transform)
+* [transformField](memoryserializer.md#transformfield)
+* [transformRelatedModel](memoryserializer.md#transformrelatedmodel)
+* [transformRelationship](memoryserializer.md#transformrelationship)
 
 ---
 
@@ -51,7 +54,7 @@
 
 ###  constructor
 
-⊕ **new MockSerializer**(ModelClass: *[IModelFactory](../interfaces/imodelfactory.md)<`any`>*): [MockSerializer](mockserializer.md)
+⊕ **new MemorySerializer**(ModelClass: *[IModelFactory](../interfaces/imodelfactory.md)<`T`>*): [MemorySerializer](memoryserializer.md)
 
 *Inherited from [BaseSerializer](baseserializer.md).[constructor](baseserializer.md#constructor)*
 
@@ -61,9 +64,9 @@
 
 | Param | Type |
 | ------ | ------ |
-| ModelClass | [IModelFactory](../interfaces/imodelfactory.md)<`any`> |
+| ModelClass | [IModelFactory](../interfaces/imodelfactory.md)<`T`> |
 
-**Returns:** [MockSerializer](mockserializer.md)
+**Returns:** [MemorySerializer](memoryserializer.md)
 
 ___
 
@@ -73,7 +76,7 @@ ___
 
 ###  ModelClass
 
-**● ModelClass**: *[IModelFactory](../interfaces/imodelfactory.md)<`any`>*
+**● ModelClass**: *[IModelFactory](../interfaces/imodelfactory.md)<`T`>*
 
 *Inherited from [BaseSerializer](baseserializer.md).[ModelClass](baseserializer.md#modelclass)*
 
@@ -116,13 +119,19 @@ ___
 
 ###  deserialize
 
-▸ **deserialize**(): [FakeModel](fakemodel.md)
+▸ **deserialize**(data: *`Partial`<`R`>*): [IModel](../interfaces/imodel.md)<`T`>
 
 *Overrides [BaseSerializer](baseserializer.md).[deserialize](baseserializer.md#deserialize)*
 
-*Defined in [Serializers/MockSerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Serializers/MockSerializer.ts#L9)*
+*Defined in [Serializers/MemorySerializer.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Serializers/MemorySerializer.ts#L13)*
 
-**Returns:** [FakeModel](fakemodel.md)
+**Parameters:**
+
+| Param | Type |
+| ------ | ------ |
+| data | `Partial`<`R`> |
+
+**Returns:** [IModel](../interfaces/imodel.md)<`T`>
 
 ___
 <a id="isrelationship"></a>
@@ -148,7 +157,7 @@ ___
 
 ### `<Protected>` loadRelatedModel
 
-▸ **loadRelatedModel**(model: *[IModel](../interfaces/imodel.md)<`any`>*, relatedModelData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*): [IModel](../interfaces/imodel.md)<`any`>
+▸ **loadRelatedModel**(model: *[IModel](../interfaces/imodel.md)<`T`>*, relatedModelData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*): [IModel](../interfaces/imodel.md)<`any`>
 
 *Inherited from [BaseSerializer](baseserializer.md).[loadRelatedModel](baseserializer.md#loadrelatedmodel)*
 
@@ -160,7 +169,7 @@ Given the relatedModelData of a single item, normalize the data using the relati
 
 | Param | Type |
 | ------ | ------ |
-| model | [IModel](../interfaces/imodel.md)<`any`> |
+| model | [IModel](../interfaces/imodel.md)<`T`> |
 | relatedModelData | `any` |
 | relationship | [IFieldRelationship](../interfaces/ifieldrelationship.md) |
 
@@ -171,7 +180,7 @@ ___
 
 ###  normalize
 
-▸ **normalize**(data: *`Partial`<`R`>*): [IModel](../interfaces/imodel.md)<`any`>
+▸ **normalize**(data: *`Partial`<`R`>*): [IModel](../interfaces/imodel.md)<`T`>
 
 *Inherited from [BaseSerializer](baseserializer.md).[normalize](baseserializer.md#normalize)*
 
@@ -185,7 +194,7 @@ Creates a new IModel by normalizing the given raw data. If a nested relationship
 | ------ | ------ | ------ |
 | data | `Partial`<`R`> |  - |
 
-**Returns:** [IModel](../interfaces/imodel.md)<`any`>
+**Returns:** [IModel](../interfaces/imodel.md)<`T`>
 
 ___
 <a id="normalizefield"></a>
@@ -215,7 +224,7 @@ ___
 
 ### `<Protected>` processNestedRelationship
 
-▸ **processNestedRelationship**(model: *[IModel](../interfaces/imodel.md)<`any`>*, nestedData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*):  `string` &#124; `string`[]
+▸ **processNestedRelationship**(model: *[IModel](../interfaces/imodel.md)<`T`>*, nestedData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*):  `string` &#124; `string`[]
 
 *Inherited from [BaseSerializer](baseserializer.md).[processNestedRelationship](baseserializer.md#processnestedrelationship)*
 
@@ -230,7 +239,7 @@ Process the nestedData for the given relationship.
 
 | Param | Type |
 | ------ | ------ |
-| model | [IModel](../interfaces/imodel.md)<`any`> |
+| model | [IModel](../interfaces/imodel.md)<`T`> |
 | nestedData | `any` |
 | relationship | [IFieldRelationship](../interfaces/ifieldrelationship.md) |
 
@@ -241,20 +250,26 @@ ___
 
 ###  serialize
 
-▸ **serialize**(): `string`
+▸ **serialize**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `Partial`<`R`>
 
 *Overrides [BaseSerializer](baseserializer.md).[serialize](baseserializer.md#serialize)*
 
-*Defined in [Serializers/MockSerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Serializers/MockSerializer.ts#L5)*
+*Defined in [Serializers/MemorySerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Serializers/MemorySerializer.ts#L9)*
 
-**Returns:** `string`
+**Parameters:**
+
+| Param | Type |
+| ------ | ------ |
+| model |  [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>|
+
+**Returns:** `Partial`<`R`>
 
 ___
 <a id="transform"></a>
 
 ###  transform
 
-▸ **transform**(model: * [IModel](../interfaces/imodel.md)<`any`> &#124; `Partial`<`any`>*): `Partial`<`R`>
+▸ **transform**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `Partial`<`R`>
 
 *Inherited from [BaseSerializer](baseserializer.md).[transform](baseserializer.md#transform)*
 
@@ -266,7 +281,7 @@ Transforms the given Model into a plain javascript object based on the Model's f
 
 | Param | Type | Description |
 | ------ | ------ | ------ |
-| model |  [IModel](../interfaces/imodel.md)<`any`> &#124; `Partial`<`any`>|  - |
+| model |  [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>|  - |
 
 **Returns:** `Partial`<`R`>
 
@@ -275,7 +290,7 @@ ___
 
 ###  transformField
 
-▸ **transformField**(model: * [IModel](../interfaces/imodel.md)<`any`> &#124; `Partial`<`any`>*): `(Anonymous function)`
+▸ **transformField**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `(Anonymous function)`
 
 *Inherited from [BaseSerializer](baseserializer.md).[transformField](baseserializer.md#transformfield)*
 
@@ -289,7 +304,7 @@ For example, a Date object will be converted into an ISO Date string when given 
 
 | Param | Type | Description |
 | ------ | ------ | ------ |
-| model |  [IModel](../interfaces/imodel.md)<`any`> &#124; `Partial`<`any`>|  - |
+| model |  [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>|  - |
 
 **Returns:** `(Anonymous function)`
 

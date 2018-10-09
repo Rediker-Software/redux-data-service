@@ -20,7 +20,7 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var immutable_1 = require("immutable");
 var BaseService_1 = require("./BaseService");
-var Adapters_1 = require("../Adapters");
+var MockAdapter_1 = require("../Adapters/MockAdapter");
 var MockTestService = (function (_super) {
     __extends(MockTestService, _super);
     function MockTestService() {
@@ -31,7 +31,7 @@ var MockTestService = (function (_super) {
     Object.defineProperty(MockTestService.prototype, "adapter", {
         get: function () {
             if (!this._adapter) {
-                this._adapter = new Adapters_1.MockAdapter();
+                this._adapter = new MockAdapter_1.MockAdapter();
             }
             return this._adapter;
         },

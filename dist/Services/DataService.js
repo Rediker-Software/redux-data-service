@@ -48,7 +48,7 @@ var re_reselect_1 = require("re-reselect");
 var reselect_1 = require("reselect");
 var Configure_1 = require("../Configure");
 var Serializers_1 = require("../Serializers");
-var Adapters_1 = require("../Adapters");
+var RestAdapter_1 = require("../Adapters/RestAdapter");
 var BaseService_1 = require("./BaseService");
 exports.RequestCacheRecord = immutable_1.Record({
     isLoading: false,
@@ -59,7 +59,7 @@ var DataService = (function (_super) {
     __extends(DataService, _super);
     function DataService() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.AdapterClass = Adapters_1.RestAdapter;
+        _this.AdapterClass = RestAdapter_1.RestAdapter;
         _this.SerializerClass = Serializers_1.RestSerializer;
         _this.shadowObject = null;
         _this.observablesByIdCache = {};

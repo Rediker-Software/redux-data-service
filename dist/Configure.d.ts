@@ -2,7 +2,7 @@ import { Store } from "redux";
 import { IModuleMap } from "./Services";
 import { IConfigureStore } from "./Store";
 import { ISerializerFactory } from "./Serializers";
-import { IAdapterFactory } from "./Adapters";
+import { IAdapterFactory } from "./Adapters/IAdapter";
 export interface IConfiguration {
     modules: IModuleMap;
     adapter?: IAdapterFactory<any>;

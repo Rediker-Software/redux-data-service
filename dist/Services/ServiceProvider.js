@@ -21,8 +21,16 @@ function initializeServices(modules) {
     lodash_1.forEach(modules, function (moduleObj, moduleName) {
         var serviceName = lodash_1.upperFirst(moduleName) + "Service";
         if (serviceName in moduleObj) {
-            var ServiceClass = moduleObj[serviceName];
-            registerService(new ServiceClass());
+            try {
+                var ServiceClass = moduleObj[serviceName];
+                registerService(new ServiceClass());
+            }
+            catch (e) {
+                if (process.env.NODE_ENV !== "production") {
+                    console.error("Failed to register service \"" + serviceName + "\"", moduleObj[serviceName], e);
+                }
+                throw e;
+            }
         }
     });
 }

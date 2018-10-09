@@ -27,7 +27,7 @@ var date_fns_1 = require("date-fns");
 var lodash_1 = require("lodash");
 var Services_1 = require("../Services");
 var Model_1 = require("../Model");
-var Adapters_1 = require("../Adapters");
+var MockAdapter_1 = require("../Adapters/MockAdapter");
 var RestSerializer_1 = require("./RestSerializer");
 var FieldType_1 = require("../Model/FieldType");
 var _a = intern.getPlugin("interface.bdd"), describe = _a.describe, it = _a.it, beforeEach = _a.beforeEach, afterEach = _a.afterEach;
@@ -79,7 +79,7 @@ var FakeService = (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.name = "fakeModel";
         _this.ModelClass = MockModel;
-        _this._adapter = new Adapters_1.MockAdapter();
+        _this._adapter = new MockAdapter_1.MockAdapter();
         _this._serializer = new RestSerializer_1.RestSerializer(MockModel);
         return _this;
     }
@@ -108,7 +108,7 @@ var FakeRelatedService = (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.name = "fakeRelatedModel";
         _this.ModelClass = FakeRelatedModel;
-        _this._adapter = new Adapters_1.MockAdapter();
+        _this._adapter = new MockAdapter_1.MockAdapter();
         _this._serializer = new RestSerializer_1.RestSerializer(FakeRelatedModel);
         return _this;
     }

@@ -2,7 +2,7 @@ import { IActionEpic, IReducers, IService, IServiceFactory } from "./IService";
 import { DataService } from "./DataService";
 import { IModelData, IModelFactory } from "../Model";
 import { ISerializerFactory } from "../Serializers";
-import { IAdapterFactory } from "../Adapters";
+import { IAdapterFactory } from "../Adapters/IAdapter";
 export interface IServiceMap {
     [name: string]: IService<any>;
 }

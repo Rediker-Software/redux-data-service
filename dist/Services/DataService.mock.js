@@ -11,13 +11,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var DataService_1 = require("./DataService");
-var Model_1 = require("../Model");
+var Model_mock_1 = require("../Model/Model.mock");
 var FakeModelService = (function (_super) {
     __extends(FakeModelService, _super);
     function FakeModelService() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.name = "fakeModel";
-        _this.ModelClass = Model_1.FakeModel;
+        _this.ModelClass = Model_mock_1.FakeModel;
         return _this;
     }
     return FakeModelService;

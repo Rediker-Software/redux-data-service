@@ -27,8 +27,8 @@ var immutable_1 = require("immutable");
 var redux_test_utils_1 = require("redux-test-utils");
 var object_hash_1 = require("object-hash");
 var TestUtils_1 = require("../TestUtils");
-var Model_1 = require("../Model");
-var Adapters_1 = require("../Adapters");
+var Model_mock_1 = require("../Model/Model.mock");
+var MockAdapter_1 = require("../Adapters/MockAdapter");
 var Serializers_1 = require("../Serializers");
 var Configure_1 = require("../Configure");
 var DataService_1 = require("./DataService");
@@ -46,13 +46,13 @@ describe("DataService", function () {
     var serviceName = "fakeModel";
     beforeEach(function () {
         Configure_1.configure({ modules: null });
-        mockAdapter = new Adapters_1.MockAdapter();
+        mockAdapter = new MockAdapter_1.MockAdapter();
         var FakeService = (function (_super) {
             __extends(FakeService, _super);
             function FakeService() {
                 var _this = _super !== null && _super.apply(this, arguments) || this;
                 _this.name = serviceName;
-                _this.ModelClass = Model_1.FakeModel;
+                _this.ModelClass = Model_mock_1.FakeModel;
                 _this._adapter = mockAdapter;
                 return _this;
             }
@@ -60,7 +60,7 @@ describe("DataService", function () {
         }(DataService_1.DataService));
         fakeService = new FakeService();
         ServiceProvider_1.registerService(fakeService);
-        fakeModels = Model_1.createMockFakeModels();
+        fakeModels = Model_mock_1.createMockFakeModels();
         state = TestUtils_1.createMockServiceState(fakeService, [
             fakeService.actions.pushAll({ items: fakeModels }),
         ]);
@@ -81,9 +81,9 @@ describe("DataService", function () {
                 }
                 return MockService;
             }(DataService_1.DataService));
-            Configure_1.configure({ modules: null, adapter: Adapters_1.MockAdapter });
+            Configure_1.configure({ modules: null, adapter: MockAdapter_1.MockAdapter });
             var mockService = new MockService();
-            expect(mockService.adapter).to.be.an.instanceOf(Adapters_1.MockAdapter);
+            expect(mockService.adapter).to.be.an.instanceOf(MockAdapter_1.MockAdapter);
         });
     });
     describe("serializer", function () {
@@ -250,7 +250,7 @@ describe("DataService", function () {
                 fullText: "Egg",
             };
             var modelMeta = { original: null };
-            var model = new Model_1.FakeModel(modelData, modelMeta);
+            var model = new Model_mock_1.FakeModel(modelData, modelMeta);
             var items = immutable_1.Map()
                 .set(modelData.id, model);
             var stateRecord = immutable_1.Record({ items: items })();
@@ -275,7 +275,7 @@ describe("DataService", function () {
                 firstName: "Elton",
             };
             var modelMeta = { original: null };
-            var model = new Model_1.FakeModel(modelData, modelMeta);
+            var model = new Model_mock_1.FakeModel(modelData, modelMeta);
             var items = immutable_1.Map()
                 .set(modelData.id, model);
             var stateRecord = immutable_1.Record({ items: items })();
@@ -297,7 +297,7 @@ describe("DataService", function () {
                 fullText: "Anakin",
             };
             var modelMeta = { original: null };
-            var model = new Model_1.FakeModel(modelData, modelMeta);
+            var model = new Model_mock_1.FakeModel(modelData, modelMeta);
             var items = immutable_1.Map()
                 .set(modelData.id, model);
             var stateRecord = immutable_1.Record({ items: items })();
@@ -355,8 +355,8 @@ describe("DataService", function () {
     describe("getItems selector", function () {
         it("should only select the items returned from a fetchall request, given the same obj to make the request", function () {
             var queryParams = { fakeField: "fakeVal" };
-            var expectedValues = Model_1.createMockFakeModels(2);
-            var extraValues = [Model_1.createMockFakeModel(), Model_1.createMockFakeModel()];
+            var expectedValues = Model_mock_1.createMockFakeModels(2);
+            var extraValues = [Model_mock_1.createMockFakeModel(), Model_mock_1.createMockFakeModel()];
             state = TestUtils_1.createMockServiceState(fakeService, [
                 fakeService.actions.pushAll({ items: expectedValues }, { queryParams: queryParams }),
                 fakeService.actions.pushAll({ items: extraValues }, { queryParams: { fakeField2: "fakeVal" } }),
@@ -382,7 +382,7 @@ describe("DataService", function () {
             }, "cached request value is properly initilized");
         });
         it("preserves the ids", function () {
-            var expectedValues = Model_1.createMockFakeModels(2);
+            var expectedValues = Model_mock_1.createMockFakeModels(2);
             var existingIds = expectedValues.map(function (val) { return val.id; });
             var queryParams = { fakeField: "fakeVal" };
             state = TestUtils_1.createMockServiceState(fakeService, [
@@ -409,7 +409,7 @@ describe("DataService", function () {
             var pushRecordAction = sinon_1.stub(fakeService.actions, "pushRecord");
             mockAdapter.fetchItem.returns(Observable_1.Observable.of(expectedResult));
             fakeService.fetchRecordEpic(redux_observable_1.ActionsObservable.of(fetchRecordAction), store)
-                .subscribe(noop, noop, function () { return expect(onSuccess.firstCall.args[0]).to.deep.equal(new Model_1.FakeModel(expectedResult)); });
+                .subscribe(noop, noop, function () { return expect(onSuccess.firstCall.args[0]).to.deep.equal(new Model_mock_1.FakeModel(expectedResult)); });
         });
         it("should fire The pushRecord action with the response", function () {
             var onSuccess = sinon_1.spy();
@@ -551,7 +551,7 @@ describe("DataService", function () {
             mockAdapter.updateItem.returns(Observable_1.Observable.of(expectedResult));
             fakeService.updateRecordEpic(redux_observable_1.ActionsObservable.of(updateRecordAction), store)
                 .subscribe(noop, noop, function () {
-                expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new Model_1.FakeModel(expectedResult));
+                expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new Model_mock_1.FakeModel(expectedResult));
             });
         });
         it("should use the store's getState() method", function () {
@@ -586,7 +586,7 @@ describe("DataService", function () {
             var patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess: onSuccess });
             mockAdapter.patchItem.returns(Observable_1.Observable.of(expectedResult));
             fakeService.patchRecordEpic(redux_observable_1.ActionsObservable.of(patchRecordAction), store)
-                .subscribe(noop, noop, function () { return expect(onSuccess.firstCall.args[0]).to.deep.equal(new Model_1.FakeModel(expectedResult)); });
+                .subscribe(noop, noop, function () { return expect(onSuccess.firstCall.args[0]).to.deep.equal(new Model_mock_1.FakeModel(expectedResult)); });
         });
         it("should call pushRecord with expected result", function () {
             var onSuccess = sinon_1.spy();
@@ -596,7 +596,7 @@ describe("DataService", function () {
             mockAdapter.patchItem.returns(Observable_1.Observable.of(expectedResult));
             fakeService.patchRecordEpic(redux_observable_1.ActionsObservable.of(patchRecordAction), store)
                 .subscribe(noop, noop, function () {
-                expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new Model_1.FakeModel(expectedResult));
+                expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new Model_mock_1.FakeModel(expectedResult));
             });
         });
     });
@@ -620,7 +620,7 @@ describe("DataService", function () {
             var deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess: onSuccess });
             mockAdapter.deleteItem.returns(Observable_1.Observable.of(expectedResult));
             fakeService.deleteRecordEpic(redux_observable_1.ActionsObservable.of(deleteRecordAction), store)
-                .subscribe(noop, noop, function () { return expect(onSuccess.firstCall.args[0]).to.deep.equal(new Model_1.FakeModel(expectedResult)); });
+                .subscribe(noop, noop, function () { return expect(onSuccess.firstCall.args[0]).to.deep.equal(new Model_mock_1.FakeModel(expectedResult)); });
         });
         it("should call pushRecord with resopnse", function () {
             var onSuccess = sinon_1.spy();
@@ -630,7 +630,7 @@ describe("DataService", function () {
             mockAdapter.deleteItem.returns(Observable_1.Observable.of(expectedResult));
             fakeService.deleteRecordEpic(redux_observable_1.ActionsObservable.of(deleteRecordAction), store)
                 .subscribe(noop, noop, function () {
-                expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new Model_1.FakeModel(expectedResult));
+                expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new Model_mock_1.FakeModel(expectedResult));
             });
         });
     });
