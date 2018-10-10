@@ -96,7 +96,7 @@
 
 *Inherited from [DataService](dataservice.md).[AdapterClass](dataservice.md#adapterclass)*
 
-*Defined in [Services/DataService.ts:107](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L107)*
+*Defined in [Services/DataService.ts:107](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L107)*
 
 ___
 <a id="modelclass"></a>
@@ -107,7 +107,7 @@ ___
 
 *Overrides [DataService](dataservice.md).[ModelClass](dataservice.md#modelclass)*
 
-*Defined in [Services/DataService.mock.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.mock.ts#L8)*
+*Defined in [Services/DataService.mock.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.mock.ts#L8)*
 
 ___
 <a id="serializerclass"></a>
@@ -118,7 +118,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[SerializerClass](dataservice.md#serializerclass)*
 
-*Defined in [Services/DataService.ts:108](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L108)*
+*Defined in [Services/DataService.ts:108](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L108)*
 
 ___
 <a id="_adapter"></a>
@@ -129,7 +129,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[_adapter](dataservice.md#_adapter)*
 
-*Defined in [Services/DataService.ts:111](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L111)*
+*Defined in [Services/DataService.ts:111](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L111)*
 
 ___
 <a id="_serializer"></a>
@@ -140,7 +140,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[_serializer](dataservice.md#_serializer)*
 
-*Defined in [Services/DataService.ts:110](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L110)*
+*Defined in [Services/DataService.ts:110](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L110)*
 
 ___
 <a id="internalactions"></a>
@@ -151,7 +151,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[internalActions](baseservice.md#internalactions)*
 
-*Defined in [Services/BaseService.ts:45](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L45)*
+*Defined in [Services/BaseService.ts:45](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L45)*
 
 ___
 <a id="internalepics"></a>
@@ -162,7 +162,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[internalEpics](baseservice.md#internalepics)*
 
-*Defined in [Services/BaseService.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L44)*
+*Defined in [Services/BaseService.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L44)*
 
 ___
 <a id="internalreducers"></a>
@@ -173,7 +173,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[internalReducers](baseservice.md#internalreducers)*
 
-*Defined in [Services/BaseService.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L43)*
+*Defined in [Services/BaseService.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L43)*
 
 ___
 <a id="internalselectors"></a>
@@ -184,7 +184,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[internalSelectors](baseservice.md#internalselectors)*
 
-*Defined in [Services/BaseService.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L46)*
+*Defined in [Services/BaseService.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L46)*
 
 ___
 <a id="internaltypes"></a>
@@ -195,7 +195,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[internalTypes](baseservice.md#internaltypes)*
 
-*Defined in [Services/BaseService.ts:47](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L47)*
+*Defined in [Services/BaseService.ts:47](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L47)*
 
 ___
 <a id="name"></a>
@@ -208,7 +208,7 @@ ___
 
 *Overrides [BaseService](baseservice.md).[name](baseservice.md#name)*
 
-*Defined in [Services/DataService.mock.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.mock.ts#L7)*
+*Defined in [Services/DataService.mock.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.mock.ts#L7)*
 
 ___
 <a id="observablesbyidcache"></a>
@@ -219,7 +219,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[observablesByIdCache](dataservice.md#observablesbyidcache)*
 
-*Defined in [Services/DataService.ts:114](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L114)*
+*Defined in [Services/DataService.ts:114](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L114)*
 
 #### Type declaration
 
@@ -234,7 +234,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[observablesByIdsCache](dataservice.md#observablesbyidscache)*
 
-*Defined in [Services/DataService.ts:115](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L115)*
+*Defined in [Services/DataService.ts:115](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L115)*
 
 #### Type declaration
 
@@ -249,7 +249,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[observablesByQueryCache](dataservice.md#observablesbyquerycache)*
 
-*Defined in [Services/DataService.ts:116](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L116)*
+*Defined in [Services/DataService.ts:116](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L116)*
 
 #### Type declaration
 
@@ -264,7 +264,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[shadowObject](dataservice.md#shadowobject)*
 
-*Defined in [Services/DataService.ts:113](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L113)*
+*Defined in [Services/DataService.ts:113](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L113)*
 
 ___
 <a id="dispatch"></a>
@@ -275,7 +275,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[dispatch](baseservice.md#dispatch)*
 
-*Defined in [Services/BaseService.ts:41](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L41)*
+*Defined in [Services/BaseService.ts:41](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L41)*
 
 #### Type declaration
 ▸(action: *[IAction](../interfaces/iaction.md)*): `void`
@@ -297,7 +297,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[state$](baseservice.md#state_)*
 
-*Defined in [Services/BaseService.ts:42](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L42)*
+*Defined in [Services/BaseService.ts:42](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L42)*
 
 ___
 
@@ -311,7 +311,7 @@ getactions(): [IActionCreators](../interfaces/iactioncreators.md)
 
 *Inherited from [BaseService](baseservice.md).[actions](baseservice.md#actions)*
 
-*Defined in [Services/BaseService.ts:205](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L205)*
+*Defined in [Services/BaseService.ts:205](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L205)*
 
 Returns a map of IActionCreators, which when dispatched to Redux, one or many reducers or epics may act on that IAction.
 
@@ -326,7 +326,7 @@ getadapter(): [IAdapter](../interfaces/iadapter.md)<`any`>
 
 *Inherited from [DataService](dataservice.md).[adapter](dataservice.md#adapter)*
 
-*Defined in [Services/DataService.ts:123](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L123)*
+*Defined in [Services/DataService.ts:123](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L123)*
 
 **Returns:** [IAdapter](../interfaces/iadapter.md)<`any`>
 
@@ -339,7 +339,7 @@ getepics(): [IActionEpic](../#iactionepic)[]
 
 *Inherited from [BaseService](baseservice.md).[epics](baseservice.md#epics)*
 
-*Defined in [Services/BaseService.ts:248](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L248)*
+*Defined in [Services/BaseService.ts:248](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L248)*
 
 Returns an array of RxJS Observeable Epics from redux-observable, which are observers that are always listening for a given ActionType. They are useful for triggering side effects (such as loading data asynchronously) in response to an IAction via chainable, asynchronous "streams".
 
@@ -361,7 +361,7 @@ getreducer(): [IReducer](../#ireducer)<[DataServiceStateRecord](dataservice.md#d
 
 *Inherited from [BaseService](baseservice.md).[reducer](baseservice.md#reducer)*
 
-*Defined in [Services/BaseService.ts:170](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L170)*
+*Defined in [Services/BaseService.ts:170](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L170)*
 
 Returns a single IReducer function which triggers the methods mapped in the internal `reducers` object to the given IAction type.
 
@@ -378,7 +378,7 @@ getreducers(): [IReducers](../#ireducers)<[DataServiceStateRecord](dataservice.m
 
 *Inherited from [BaseService](baseservice.md).[reducers](baseservice.md#reducers)*
 
-*Defined in [Services/BaseService.ts:156](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L156)*
+*Defined in [Services/BaseService.ts:156](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L156)*
 
 Return a map of functions which are triggered by the IReducer for a given ActionType. They are used to update the Redux state in response to a given IAction.
 
@@ -395,7 +395,7 @@ getselectors(): [ISelectors](../interfaces/iselectors.md)
 
 *Inherited from [BaseService](baseservice.md).[selectors](baseservice.md#selectors)*
 
-*Defined in [Services/BaseService.ts:224](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L224)*
+*Defined in [Services/BaseService.ts:224](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L224)*
 
 Returns an object of selectors using Reselect. ISelectors are useful for efficiently filtering data from the Redux state.
 
@@ -414,7 +414,7 @@ getserializer(): [ISerializer](../interfaces/iserializer.md)<`any`, `T`, `R`>
 
 *Inherited from [DataService](dataservice.md).[serializer](dataservice.md#serializer)*
 
-*Defined in [Services/DataService.ts:132](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L132)*
+*Defined in [Services/DataService.ts:132](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L132)*
 
 **Returns:** [ISerializer](../interfaces/iserializer.md)<`any`, `T`, `R`>
 
@@ -427,7 +427,7 @@ gettypes(): [IActionTypes](../interfaces/iactiontypes.md)
 
 *Inherited from [BaseService](baseservice.md).[types](baseservice.md#types)*
 
-*Defined in [Services/BaseService.ts:191](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L191)*
+*Defined in [Services/BaseService.ts:191](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L191)*
 
 Returns a map of IActionTypes, which are string "constants" that represent the type of an IAction. When an IAction is dispatched to Redux via an IActionCreator, one or many reducers or epics may act on that IAction
 
@@ -447,7 +447,7 @@ ___
 
 *Overrides [BaseService](baseservice.md).[createActions](baseservice.md#createactions)*
 
-*Defined in [Services/DataService.ts:279](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L279)*
+*Defined in [Services/DataService.ts:279](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L279)*
 
 **Returns:** [IActionCreators](../interfaces/iactioncreators.md)
 
@@ -462,7 +462,7 @@ ___
 
 *Overrides [BaseService](baseservice.md).[createEpics](baseservice.md#createepics)*
 
-*Defined in [Services/DataService.ts:466](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L466)*
+*Defined in [Services/DataService.ts:466](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L466)*
 
 **Returns:** [IActionEpic](../#iactionepic)[]
 
@@ -475,7 +475,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[createNew](dataservice.md#createnew)*
 
-*Defined in [Services/DataService.ts:158](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L158)*
+*Defined in [Services/DataService.ts:158](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L158)*
 
 Create a new instance of the Model which has not been committed to the API yet.
 
@@ -496,7 +496,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[createRecordEpic](dataservice.md#createrecordepic)*
 
-*Defined in [Services/DataService.ts:512](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L512)*
+*Defined in [Services/DataService.ts:512](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L512)*
 
 **Parameters:**
 
@@ -518,7 +518,7 @@ ___
 
 *Overrides [BaseService](baseservice.md).[createReducers](baseservice.md#createreducers)*
 
-*Defined in [Services/DataService.ts:353](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L353)*
+*Defined in [Services/DataService.ts:353](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L353)*
 
 **Returns:** `object`
 
@@ -533,7 +533,7 @@ ___
 
 *Overrides [BaseService](baseservice.md).[createSelectors](baseservice.md#createselectors)*
 
-*Defined in [Services/DataService.ts:305](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L305)*
+*Defined in [Services/DataService.ts:305](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L305)*
 
 **Returns:** [ISelectors](../interfaces/iselectors.md)
 
@@ -548,7 +548,7 @@ ___
 
 *Overrides [BaseService](baseservice.md).[createTypes](baseservice.md#createtypes)*
 
-*Defined in [Services/DataService.ts:254](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L254)*
+*Defined in [Services/DataService.ts:254](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L254)*
 
 **Returns:** [IActionTypes](../interfaces/iactiontypes.md)
 
@@ -561,7 +561,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[deleteRecordEpic](dataservice.md#deleterecordepic)*
 
-*Defined in [Services/DataService.ts:556](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L556)*
+*Defined in [Services/DataService.ts:556](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L556)*
 
 **Parameters:**
 
@@ -580,7 +580,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[fetchAllEpic](dataservice.md#fetchallepic)*
 
-*Defined in [Services/DataService.ts:481](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L481)*
+*Defined in [Services/DataService.ts:481](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L481)*
 
 **Parameters:**
 
@@ -600,7 +600,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[fetchAllReducer](dataservice.md#fetchallreducer)*
 
-*Defined in [Services/DataService.ts:369](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L369)*
+*Defined in [Services/DataService.ts:369](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L369)*
 
 **Parameters:**
 
@@ -620,7 +620,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[fetchRecordEpic](dataservice.md#fetchrecordepic)*
 
-*Defined in [Services/DataService.ts:498](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L498)*
+*Defined in [Services/DataService.ts:498](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L498)*
 
 **Parameters:**
 
@@ -640,7 +640,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[getAll](dataservice.md#getall)*
 
-*Defined in [Services/DataService.ts:227](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L227)*
+*Defined in [Services/DataService.ts:227](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L227)*
 
 **Returns:** `Observable`<[IModel](../interfaces/imodel.md)<[IFakeModelData](../interfaces/ifakemodeldata.md)>[]>
 
@@ -653,7 +653,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[getById](dataservice.md#getbyid)*
 
-*Defined in [Services/DataService.ts:169](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L169)*
+*Defined in [Services/DataService.ts:169](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L169)*
 
 **Parameters:**
 
@@ -672,7 +672,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[getByIds](dataservice.md#getbyids)*
 
-*Defined in [Services/DataService.ts:190](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L190)*
+*Defined in [Services/DataService.ts:190](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L190)*
 
 **Parameters:**
 
@@ -691,7 +691,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[getByQuery](dataservice.md#getbyquery)*
 
-*Defined in [Services/DataService.ts:207](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L207)*
+*Defined in [Services/DataService.ts:207](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L207)*
 
 **Parameters:**
 
@@ -710,7 +710,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[getDefaultQueryParams](dataservice.md#getdefaultqueryparams)*
 
-*Defined in [Services/DataService.ts:246](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L246)*
+*Defined in [Services/DataService.ts:246](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L246)*
 
 Get the default query params object to use when querying for the Model associated to this DataService.
 
@@ -728,7 +728,7 @@ ___
 
 *Overrides [BaseService](baseservice.md).[getDefaultState](baseservice.md#getdefaultstate)*
 
-*Defined in [Services/DataService.ts:141](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L141)*
+*Defined in [Services/DataService.ts:141](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L141)*
 
 **Returns:** [DataServiceStateRecord](dataservice.md#dataservicestaterecord)<[IFakeModelData](../interfaces/ifakemodeldata.md)>
 
@@ -741,7 +741,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[getShadowObject](dataservice.md#getshadowobject)*
 
-*Defined in [Services/DataService.ts:145](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L145)*
+*Defined in [Services/DataService.ts:145](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L145)*
 
 **Returns:** [IModel](../interfaces/imodel.md)<[IFakeModelData](../interfaces/ifakemodeldata.md)>
 
@@ -754,7 +754,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[makeActionCreator](baseservice.md#makeactioncreator)*
 
-*Defined in [Services/BaseService.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L95)*
+*Defined in [Services/BaseService.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L95)*
 
 Creates an IActionCreator function for triggering an IAction with the given type.
 
@@ -780,7 +780,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[makeActionType](baseservice.md#makeactiontype)*
 
-*Defined in [Services/BaseService.ts:64](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L64)*
+*Defined in [Services/BaseService.ts:64](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L64)*
 
 Returns a namespaced IAction type in the form `<name>/<type>`. For example: `student/FETCH_ALL`
 
@@ -801,7 +801,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[patchRecordEpic](dataservice.md#patchrecordepic)*
 
-*Defined in [Services/DataService.ts:543](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L543)*
+*Defined in [Services/DataService.ts:543](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L543)*
 
 **Parameters:**
 
@@ -820,7 +820,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[pushAllReducer](dataservice.md#pushallreducer)*
 
-*Defined in [Services/DataService.ts:382](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L382)*
+*Defined in [Services/DataService.ts:382](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L382)*
 
 **Parameters:**
 
@@ -840,7 +840,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[pushRecordReducer](dataservice.md#pushrecordreducer)*
 
-*Defined in [Services/DataService.ts:395](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L395)*
+*Defined in [Services/DataService.ts:395](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L395)*
 
 **Parameters:**
 
@@ -860,7 +860,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[setErrorsReducer](dataservice.md#seterrorsreducer)*
 
-*Defined in [Services/DataService.ts:417](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L417)*
+*Defined in [Services/DataService.ts:417](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L417)*
 
 **Parameters:**
 
@@ -880,7 +880,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[setFieldReducer](dataservice.md#setfieldreducer)*
 
-*Defined in [Services/DataService.ts:426](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L426)*
+*Defined in [Services/DataService.ts:426](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L426)*
 
 **Parameters:**
 
@@ -900,7 +900,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[setMetaFieldReducer](dataservice.md#setmetafieldreducer)*
 
-*Defined in [Services/DataService.ts:439](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L439)*
+*Defined in [Services/DataService.ts:439](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L439)*
 
 **Parameters:**
 
@@ -920,7 +920,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[setRelationshipReducer](dataservice.md#setrelationshipreducer)*
 
-*Defined in [Services/DataService.ts:449](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L449)*
+*Defined in [Services/DataService.ts:449](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L449)*
 
 **Parameters:**
 
@@ -940,7 +940,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[shouldFetchAll](dataservice.md#shouldfetchall)*
 
-*Defined in [Services/DataService.ts:569](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L569)*
+*Defined in [Services/DataService.ts:569](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L569)*
 
 **Parameters:**
 
@@ -960,7 +960,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[unloadAllReducer](dataservice.md#unloadallreducer)*
 
-*Defined in [Services/DataService.ts:400](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L400)*
+*Defined in [Services/DataService.ts:400](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L400)*
 
 **Parameters:**
 
@@ -979,7 +979,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[unloadRecordReducer](dataservice.md#unloadrecordreducer)*
 
-*Defined in [Services/DataService.ts:407](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L407)*
+*Defined in [Services/DataService.ts:407](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L407)*
 
 **Parameters:**
 
@@ -999,7 +999,7 @@ ___
 
 *Inherited from [DataService](dataservice.md).[updateRecordEpic](dataservice.md#updaterecordepic)*
 
-*Defined in [Services/DataService.ts:528](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/DataService.ts#L528)*
+*Defined in [Services/DataService.ts:528](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/DataService.ts#L528)*
 
 **Parameters:**
 
@@ -1019,7 +1019,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[getStateObservable](baseservice.md#getstateobservable)*
 
-*Defined in [Services/BaseService.ts:82](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L82)*
+*Defined in [Services/BaseService.ts:82](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L82)*
 
 **Returns:** `Observable`<`any`>
 
@@ -1032,7 +1032,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[registerDispatch](baseservice.md#registerdispatch)*
 
-*Defined in [Services/BaseService.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L74)*
+*Defined in [Services/BaseService.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L74)*
 
 Registers the dispatch function that is passed in from the middleware.
 
@@ -1054,7 +1054,7 @@ ___
 
 *Inherited from [BaseService](baseservice.md).[setStateObservable](baseservice.md#setstateobservable)*
 
-*Defined in [Services/BaseService.ts:78](https://github.com/Rediker-Software/redux-data-service/blob/fbab6d2/src/Services/BaseService.ts#L78)*
+*Defined in [Services/BaseService.ts:78](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Services/BaseService.ts#L78)*
 
 **Parameters:**
 
