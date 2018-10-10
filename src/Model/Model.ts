@@ -222,7 +222,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     // Update existing errors object with the results for this one field
     this.errors = isEmpty(validationResult)
       ? omit(errors, fieldName)
-      : { ...errors, validationResult };
+      : { ...errors, [fieldName]: validationResult[localFieldName] };
 
     return validationResult && localFieldName in validationResult
       ? validationResult[localFieldName]
@@ -622,12 +622,13 @@ export class Model<T extends IModelData> implements IModel<T> {
   }
 
   public getFieldError(fieldName) {
-    if (isEmpty(this.errors)) {
-      return {};
-    } else {
-      const error = this.errors[fieldName];
-      return (error instanceof Array) ? error[0] : error;
-    }
+    return this.errors;
+    // if (isEmpty(this.errors)) {
+    //  return {};
+    // } else {
+    //  const error = this.errors[fieldName];
+    //  return (error instanceof Array) ? error[0] : error;
+    // }
   }
 
   /**
