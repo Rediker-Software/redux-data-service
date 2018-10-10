@@ -19,7 +19,7 @@
 
 **BelongsTo**:  = "BelongsTo"
 
-*Defined in [Model/Decorators/Relationship.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Model/Decorators/Relationship.ts#L7)*
+*Defined in [Model/Decorators/Relationship.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9a774aa/src/Model/Decorators/Relationship.ts#L7)*
 
 ___
 <a id="hasmany"></a>
@@ -28,7 +28,7 @@ ___
 
 **HasMany**:  = "HasMany"
 
-*Defined in [Model/Decorators/Relationship.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/a82aa72/src/Model/Decorators/Relationship.ts#L8)*
+*Defined in [Model/Decorators/Relationship.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9a774aa/src/Model/Decorators/Relationship.ts#L8)*
 
 ___
 
