@@ -622,13 +622,12 @@ export class Model<T extends IModelData> implements IModel<T> {
   }
 
   public getFieldError(fieldName) {
-    return this.errors;
-    // if (isEmpty(this.errors)) {
-    //  return {};
-    // } else {
-    //  const error = this.errors[fieldName];
-    //  return (error instanceof Array) ? error[0] : error;
-    // }
+    if (isEmpty(this.errors)) {
+      return {};
+    } else {
+      const error = this.errors[fieldName];
+      return (error instanceof Array) ? error[0] : error;
+    }
   }
 
   /**
