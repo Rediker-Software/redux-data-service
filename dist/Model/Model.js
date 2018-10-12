@@ -197,7 +197,7 @@ var Model = (function () {
             if (!this.isDirty) {
                 meta.original = this.modelData;
             }
-            modelData = lodash_1.merge({}, this.modelData, modelData);
+            modelData = __assign({}, this.modelData, modelData);
         }
         var service = Services_1.getDataService(this.serviceName);
         return new service.ModelClass(modelData || this.modelData, meta, relatedModels);

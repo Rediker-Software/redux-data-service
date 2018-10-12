@@ -604,10 +604,12 @@ describe("Model", function () {
             var modelId;
             var name;
             var age;
+            var languages;
             beforeEach(function () {
                 modelId = faker_1.random.number().toString();
                 name = faker_1.lorem.word();
                 age = faker_1.random.number();
+                languages = [faker_1.random.word(), faker_1.random.word(), faker_1.random.word()];
                 var Example = (function (_super) {
                     __extends(Example, _super);
                     function Example() {
@@ -629,6 +631,10 @@ describe("Model", function () {
                         Decorators_1.attr(FieldType_1.NumberField),
                         __metadata("design:type", Number)
                     ], Example.prototype, "age", void 0);
+                    __decorate([
+                        Decorators_1.attr(FieldType_1.ArrayField),
+                        __metadata("design:type", Array)
+                    ], Example.prototype, "languages", void 0);
                     return Example;
                 }(Model_1.Model));
                 var ExampleService = (function (_super) {
@@ -643,7 +649,7 @@ describe("Model", function () {
                 }(Services_1.DataService));
                 service = new ExampleService();
                 Services_1.registerService(service);
-                originalData = { id: modelId, name: name, age: age };
+                originalData = { id: modelId, name: name, age: age, languages: languages };
                 firstModel = new service.ModelClass(originalData);
             });
             it("creates a new instance of the Model with new data and sets the previous data as the meta.original", function () {
@@ -670,6 +676,10 @@ describe("Model", function () {
             it("creates a new instance of the Model with new meta and previous data was copied over", function () {
                 var secondModel = firstModel.applyUpdates(null, { isLoading: true });
                 expect(secondModel.getModelData()).to.deep.equal(originalData);
+            });
+            it("creates a new instance of the Model with empty array when updating with an empty array", function () {
+                var secondModel = firstModel.applyUpdates({ languages: [] });
+                expect(secondModel).to.have.property("languages").to.be.empty;
             });
         });
     });
