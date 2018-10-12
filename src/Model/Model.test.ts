@@ -629,11 +629,13 @@ describe("Model", () => {
       let modelId;
       let name;
       let age;
+      let languages;
 
       beforeEach(() => {
         modelId = random.number().toString();
         name = lorem.word();
         age = random.number();
+        languages = [random.word(), random.word(), random.word()];
 
         interface IExampleData extends IModelData {
           name: string;
@@ -647,6 +649,9 @@ describe("Model", () => {
 
           @attr(NumberField)
           public age: number;
+
+          @attr(ArrayField)
+          public languages: string[];
 
           public getMeta() {
             return this.meta;
@@ -665,7 +670,7 @@ describe("Model", () => {
         service = new ExampleService();
         registerService(service);
 
-        originalData = { id: modelId, name, age };
+        originalData = { id: modelId, name, age, languages };
         firstModel = new service.ModelClass(originalData);
       });
 
@@ -698,6 +703,11 @@ describe("Model", () => {
       it("creates a new instance of the Model with new meta and previous data was copied over", () => {
         const secondModel = firstModel.applyUpdates(null, { isLoading: true });
         expect(secondModel.getModelData()).to.deep.equal(originalData);
+      });
+
+      it("creates a new instance of the Model with empty array when updating with an empty array", () => {
+        const secondModel = firstModel.applyUpdates({ languages: [] });
+        expect(secondModel).to.have.property("languages").to.be.empty;
       });
     });
   });

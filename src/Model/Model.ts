@@ -313,7 +313,7 @@ export class Model<T extends IModelData> implements IModel<T> {
         meta.original = this.modelData;
       }
 
-      modelData = merge({}, this.modelData, modelData);
+      modelData = { ...(this.modelData as object), ...(modelData as object) };
     }
 
     const service = getDataService(this.serviceName);
