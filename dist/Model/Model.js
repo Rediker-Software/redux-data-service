@@ -137,7 +137,7 @@ var Model = (function () {
         return errors;
     };
     Model.prototype.validateField = function (fieldName) {
-        var _a, _b;
+        var _a, _b, _c;
         var errors = this.errors || {};
         var localFieldName = fieldName.substring(fieldName.lastIndexOf(".") + 1);
         var validationRules = (_a = {}, _a[localFieldName] = this.getValidationRulesForField(fieldName), _a);
@@ -145,7 +145,7 @@ var Model = (function () {
         var validationResult = validate_js_1.validate(value, validationRules);
         this.errors = lodash_1.isEmpty(validationResult)
             ? lodash_1.omit(errors, fieldName)
-            : __assign({}, errors, { validationResult: validationResult });
+            : __assign({}, errors, (_c = {}, _c[fieldName] = validationResult[localFieldName], _c));
         return validationResult && localFieldName in validationResult
             ? validationResult[localFieldName]
             : undefined;
@@ -197,7 +197,7 @@ var Model = (function () {
             if (!this.isDirty) {
                 meta.original = this.modelData;
             }
-            modelData = lodash_1.merge({}, this.modelData, modelData);
+            modelData = __assign({}, this.modelData, modelData);
         }
         var service = Services_1.getDataService(this.serviceName);
         return new service.ModelClass(modelData || this.modelData, meta, relatedModels);

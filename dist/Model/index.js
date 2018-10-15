@@ -4,5 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./Model"));
+__export(require("./Model.mock"));
 __export(require("./Decorators"));
 __export(require("./FieldType"));

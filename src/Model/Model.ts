@@ -222,7 +222,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     // Update existing errors object with the results for this one field
     this.errors = isEmpty(validationResult)
       ? omit(errors, fieldName)
-      : { ...errors, validationResult };
+      : { ...errors, [fieldName]: validationResult[localFieldName] };
 
     return validationResult && localFieldName in validationResult
       ? validationResult[localFieldName]
@@ -313,7 +313,7 @@ export class Model<T extends IModelData> implements IModel<T> {
         meta.original = this.modelData;
       }
 
-      modelData = merge({}, this.modelData, modelData);
+      modelData = { ...(this.modelData as object), ...(modelData as object) };
     }
 
     const service = getDataService(this.serviceName);
