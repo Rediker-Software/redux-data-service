@@ -12,6 +12,12 @@ export interface ISort {
 export type FilterValue = string | number | boolean;
 
 export interface IQueryBuilder {
+  /** The name of the Redux data service being queried */
+  readonly serviceName: string;
+
+  /** The current set of query params. DO NOT MUTATE THIS OBJECT DIRECTLY! */
+  readonly queryParams: any;
+
   /** Add the given sorting param to the query. Default SortDirection is "asc". */
   sort: (key: string, direction?: SortDirection) => IQueryBuilder;
 
@@ -41,6 +47,7 @@ export interface IQueryParams {
   sort?: ISort;
   page?: number;
   pageSize?: number;
+
   [key: string]: FilterValue | FilterValue[] | ISort;
 }
 
@@ -88,8 +95,18 @@ export class QueryBuilder implements IQueryBuilder {
   public filter(key: string, value: (FilterValue | FilterValue[])): IQueryBuilder {
     const queryParams = {
       ...this.queryParams,
-      key: value,
+      [key]: value,
     };
+
+    return new QueryBuilder(this.serviceName, queryParams);
+  }
+
+  public removeFilter(key: string): IQueryBuilder {
+    const queryParams = {
+      ...this.queryParams,
+    };
+
+    delete queryParams[key];
 
     return new QueryBuilder(this.serviceName, queryParams);
   }
@@ -118,16 +135,6 @@ export class QueryBuilder implements IQueryBuilder {
         [key]: direction,
       },
     });
-
-    return new QueryBuilder(this.serviceName, queryParams);
-  }
-
-  public removeFilter(key: string): IQueryBuilder {
-    const queryParams = {
-      ...this.queryParams,
-    };
-
-    delete queryParams[key];
 
     return new QueryBuilder(this.serviceName, queryParams);
   }
