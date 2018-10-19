@@ -45,11 +45,11 @@ describe("FieldType: ObjectField", () => {
     expect(ObjectField.serialize).to.be.true;
   });
 
-  it("normalizes an object by returning the given value", () => {
+  it("normalizes an object by returning the given value", async () => {
     const randomObject = {
       asdf: random.number(),
     };
 
-    expect(ObjectField.normalize(randomObject)).to.equal(randomObject);
+    expect(await ObjectField.normalize(randomObject)).to.equal(randomObject);
   });
 });

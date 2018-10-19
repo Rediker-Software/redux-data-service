@@ -6,11 +6,11 @@ import { BaseSerializer } from "./BaseSerializer";
  */
 export class MemorySerializer<T extends IModelData, R = T> extends BaseSerializer<Partial<R>, T, R> {
 
-  public serialize(model: IModel<T> | Partial<T>): Partial<R> {
-    return this.transform(model);
+  public async serialize(model: IModel<T> | Partial<T>): Promise<Partial<R>> {
+    return await this.transform(model);
   }
 
-  public deserialize(data: Partial<R>): IModel<T> {
-    return this.normalize(data);
+  public async deserialize(data: Partial<R>): Promise<IModel<T>> {
+    return await this.normalize(data);
   }
 }

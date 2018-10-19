@@ -6,5 +6,5 @@ export const ObjectField: IFieldType<object> = {
   defaultValidationRules: { type: "object" },
   defaultValue: null,
   isValidType: value => value == null || isObject(value),
-  normalize: value => value,
+  normalize: async value => value,
 };

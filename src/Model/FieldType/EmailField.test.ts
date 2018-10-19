@@ -45,8 +45,8 @@ describe("FieldType: EmailField", () => {
     expect(EmailField.serialize).to.be.true;
   });
 
-  it("normalizes any value into a string", () => {
+  it("normalizes any value into a string", async () => {
     const randomNumber = random.number();
-    expect(EmailField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
+    expect(await EmailField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
   });
 });

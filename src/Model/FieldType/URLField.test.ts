@@ -45,8 +45,8 @@ describe("FieldType: URLField", () => {
     expect(URLField.serialize).to.be.true;
   });
 
-  it("normalizes any value into a string", () => {
+  it("normalizes any value into a string", async () => {
     const randomNumber = random.number();
-    expect(URLField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
+    expect(await URLField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
   });
 });

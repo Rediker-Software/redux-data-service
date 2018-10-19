@@ -1124,11 +1124,11 @@ describe("Model", () => {
   });
 
   describe("Model#parseFieldValue", () => {
-    it("parses the given value using the specified fieldName", () => {
+    it("parses the given value using the specified fieldName", async () => {
       initializeTestServices(fakeModelModule);
 
       const model = seedService<IFakeModelData>("fakeModel");
-      const value = model.parseFieldValue("fullText", 4);
+      const value = await model.parseFieldValue("fullText", 4);
 
       expect(value).to.be.a("string").and.to.equal("4");
     });
