@@ -26,6 +26,6 @@ export class RestSerializer<T extends IModelData, R = T> extends BaseSerializer<
    */
   public async deserialize(data: any): Promise<IModel<T>> {
     data = (typeof data === "string") ? JSON.parse(data) : data;
-    return this.normalize(data);
+    return await this.normalize(data);
   }
 }

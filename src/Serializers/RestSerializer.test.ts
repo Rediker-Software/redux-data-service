@@ -13,17 +13,17 @@ describe("RestSerializer", () => {
 
   describe("serialize", () => {
 
-    it("first transforms the model before serializing it", () => {
+    it("first transforms the model before serializing it", async () => {
       const fakeModel = new FakeModel({ id: faker.random.number().toString() });
       const restSerializer = new RestSerializer(FakeModel);
       const stubTransform = stub(restSerializer, "transform");
 
-      restSerializer.serialize(fakeModel);
+      await restSerializer.serialize(fakeModel);
 
       expect(stubTransform.firstCall.args[0]).to.equal(fakeModel);
     });
 
-    it("converts the model into a JSON string", () => {
+    it("converts the model into a JSON string", async () => {
       const fullText = faker.lorem.word().toString();
 
       const fakeModel = new FakeModel({
@@ -32,7 +32,7 @@ describe("RestSerializer", () => {
       });
 
       const restSerializer = new RestSerializer(FakeModel);
-      const serializedModel = restSerializer.serialize(fakeModel);
+      const serializedModel = await restSerializer.serialize(fakeModel);
 
       expect(serializedModel).to.equal(JSON.stringify({ fullText }));
     });
@@ -41,7 +41,7 @@ describe("RestSerializer", () => {
 
   describe("deserialize", () => {
 
-    it("converts the deserialized raw data into a Model by normalizing it", () => {
+    it("converts the deserialized raw data into a Model by normalizing it", async () => {
       const fakeModelData = {
         id: faker.random.number().toString(),
         fullText: faker.lorem.word().toString(),
@@ -51,12 +51,12 @@ describe("RestSerializer", () => {
       const restSerializer = new RestSerializer(FakeModel);
       const stubNormalize = stub(restSerializer, "normalize");
 
-      restSerializer.deserialize(serializedModel);
+      await restSerializer.deserialize(serializedModel);
 
       expect(stubNormalize.firstCall.args[0]).to.deep.equal(fakeModelData);
     });
 
-    it("converts the JSON string into a model", () => {
+    it("converts the JSON string into a model", async () => {
       const fakeModelData = {
         id: faker.random.number().toString(),
         fullText: faker.lorem.word().toString(),
@@ -65,7 +65,7 @@ describe("RestSerializer", () => {
       const serializedModel = JSON.stringify(fakeModelData);
       const restSerializer = new RestSerializer(FakeModel);
 
-      const deserializedModel = restSerializer.deserialize(serializedModel);
+      const deserializedModel = await restSerializer.deserialize(serializedModel);
 
       expect(deserializedModel).to.deep.equal(fakeModel);
     });

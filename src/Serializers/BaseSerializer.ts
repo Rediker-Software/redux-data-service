@@ -1,6 +1,7 @@
 import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
+import { fromPairs } from "lodash";
 
-import { mapValuesWithKeys } from "../Utils";
+import { mapValuesWithKeys, mapWithKeys } from "../Utils";
 import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, RelationshipType } from "../Model";
 import { getDataService } from "../Services";
 
@@ -41,28 +42,26 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
    * Returns a function, which when called, transforms the given fieldName on the provided model
    * into its serialized equivalent if the given IFieldType implements the optional "transform" method.
    *
-   * For example, a Date object will be converted into an ISO Date string when given a DateField.
+   * That function will then return a Promise that resolves to provide a tuple of the fieldName and the value.
+   * The Promise is necessary for the rare circumstance that we need to perform the transform asynchronously.
    *
-   * @param {IModel<T extends IModelData>} model
-   * @returns {(fieldType: IFieldType, fieldName: string) => IModel<T extends IModelData>[string]}
+   * For example, a Date object will be converted into an ISO Date string when given a DateField.
    */
   public transformField(model: IModel<T> | Partial<T>) {
-    return async (fieldType: IFieldType & any, fieldName: string) => {
-      const fieldValue = model[fieldName];
+    return async (fieldType: IFieldType & any, fieldName: string): Promise<[string, string]> => {
+      let fieldValue = model[fieldName];
 
-      if (fieldValue == null) {
-        return fieldValue;
+      if (fieldValue != null) {
+        if (this.relationships && fieldName in this.relationships) {
+          fieldValue = await this.transformRelationship(fieldValue, this.relationships[fieldName]);
+        }
+
+        if ("transform" in fieldType) {
+          fieldValue = await fieldType.transform(fieldValue);
+        }
       }
 
-      if (this.relationships && fieldName in this.relationships) {
-        return await this.transformRelationship(fieldValue, this.relationships[fieldName]);
-      }
-
-      if ("transform" in fieldType) {
-        return await fieldType.transform(fieldValue);
-      }
-
-      return fieldValue;
+      return [fieldName, fieldValue];
     };
   }
 
@@ -70,15 +69,20 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
    * Returns a function, which when called, converts a single field on the provided raw data
    * into its object equivalent if the given IFieldType implements the optional "normalize" method.
    *
-   * For example, an ISO date string will be converted into a Date object when given a DateField.
+   * That function then returns a Promise which resolves with a tuple of the field name and the normalized value.
    *
-   * @param {Partial<R>} data
-   * @returns {(fieldType: IFieldType, fieldName: string) => Promise<Partial<T extends IModelData>[string]>}
+   * For example, an ISO date string will be converted into a Date object when given a DateField.
    */
   public normalizeField(data: Partial<R>) {
-    return async (fieldType: IFieldType, fieldName: string) => (
-      await fieldType.normalize(data[fieldName])
-    );
+    return async (fieldType: IFieldType, fieldName: string): Promise<[string, string]> => {
+      let value = data[fieldName];
+
+      if (fieldType.normalize) {
+        value = await fieldType.normalize(value);
+      }
+
+      return [fieldName, value];
+    };
   }
 
   /**
@@ -91,9 +95,13 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
   public async transform(model: IModel<T> | Partial<T>): Promise<Partial<R>> {
     const transformPromises = flow(
       pickBy(property("serialize")),
-      map(this.transformField(model)),
+      mapWithKeys(this.transformField(model)),
     )(this.fields);
 
+    // promise resolves with an array of tuples in the format: [key, value][]
+    // fromPairs then converts the array of tuples into an object
+    const pairs = await Promise.all(transformPromises) as any;
+    return fromPairs(pairs) as Partial<R>;
   }
 
   /**
@@ -112,10 +120,15 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
     )(data);
 
     // Build the model's data
-    const modelData: T = flow(
+    const normalizeFieldPromises = flow(
       pick(fieldKeys),
-      mapValuesWithKeys(await this.normalizeField(data)),
-    )(this.fields) as T;
+      mapWithKeys(await this.normalizeField(data)),
+    )(this.fields) as Promise<[string, string]>[];
+
+    // promise resolves with an array of tuples in the format: [key, value][]
+    // fromPairs then converts the array of tuples into an object
+    const pairs = await Promise.all(normalizeFieldPromises);
+    const modelData: T = fromPairs(pairs) as any;
 
     const model = new this.ModelClass(modelData);
 
@@ -141,7 +154,8 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
       case RelationshipType.BelongsTo:
         return await this.transformRelatedModel(fieldValue as IModel<any>);
       case RelationshipType.HasMany:
-        return await (fieldValue as IModel<any>[]).map(async item => await this.transformRelatedModel(item));
+        const promises = (fieldValue as IModel<any>[]).map(async item => await this.transformRelatedModel(item));
+        return await Promise.all(promises);
       default:
         throw new TypeError(`BaseSerializer: attempted to transform unknown relationship "${relationship.type}"`);
     }
