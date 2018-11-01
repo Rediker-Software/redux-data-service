@@ -70,13 +70,13 @@ export class Model<T extends IModelData> implements IModel<T> {
   public readonly validationRules: IModelKeys<T>;
   public readonly relationships: { [key: string]: IFieldRelationship };
 
-  @attr(StringField, { serialize: false })
+  @attr(StringField, { serialize: false, readOnly: true })
   public readonly id: string;
 
-  @attr(DateTimeField, { serialize: false })
+  @attr(DateTimeField, { serialize: false, readOnly: true })
   public readonly dateUpdated: Date;
 
-  @attr(DateTimeField, { serialize: false })
+  @attr(DateTimeField, { serialize: false, readOnly: true })
   public readonly dateDeleted: Date;
 
   protected readonly modelData: Partial<T>;
