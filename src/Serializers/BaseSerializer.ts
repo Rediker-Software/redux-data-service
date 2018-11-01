@@ -19,7 +19,6 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
   public readonly ModelClass: IModelFactory<T>;
 
   public abstract async deserialize(data: R): Promise<IModel<T>>;
-
   public abstract async serialize(modelData: IModel<T> | Partial<T>): Promise<S>;
 
   public constructor(ModelClass: IModelFactory<T>) {
