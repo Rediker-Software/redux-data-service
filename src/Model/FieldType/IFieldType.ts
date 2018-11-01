@@ -1,4 +1,3 @@
-
 export interface IFieldType<T = any> {
   serialize: boolean;
   defaultValidationRules: any;
@@ -6,4 +5,6 @@ export interface IFieldType<T = any> {
   isValidType(value: T | any): boolean;
   transform?(value: T): any;
   normalize?(serializedValue: any): T;
+  readOnly?: boolean;
+  type: string;
 }
