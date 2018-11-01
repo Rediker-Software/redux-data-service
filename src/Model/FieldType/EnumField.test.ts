@@ -54,4 +54,8 @@ describe("FieldType: EnumField", () => {
   it("should not be serialized", () => {
     expect(EnumField.serialize).to.be.false;
   });
+
+  it("declares it's type", () =>
+    expect(EnumField.type).to.eq("enum"),
+  );
 });

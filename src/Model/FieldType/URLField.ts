@@ -6,4 +6,5 @@ export const URLField: IFieldType<string> = {
   defaultValidationRules: { url: { allowLocal: true } },
   defaultValue: "",
   isValidType: (value) => value == null || isString(value),
+  type: "URL",
 };

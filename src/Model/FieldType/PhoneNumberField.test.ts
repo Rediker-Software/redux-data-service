@@ -47,4 +47,8 @@ describe("FieldType: PhoneNumberField", () => {
   it("should be serialized", () => {
     expect(PhoneNumberField.serialize).to.be.true;
   });
+
+  it("declares it's type", () =>
+    expect(PhoneNumberField.type).to.eq("phoneNumber"),
+  );
 });

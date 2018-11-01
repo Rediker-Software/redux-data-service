@@ -6,4 +6,5 @@ export const EmailField: IFieldType<string> = {
   defaultValidationRules: { email: true },
   defaultValue: "",
   isValidType: (value) => value == null || isString(value),
+  type: "email",
 };

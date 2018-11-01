@@ -42,4 +42,8 @@ describe("FieldType: StringField", () => {
   it("should be serialized", () => {
     expect(StringField.serialize).to.be.true;
   });
+
+  it("declares it's type", () =>
+    expect(StringField.type).to.eq("string"),
+  );
 });

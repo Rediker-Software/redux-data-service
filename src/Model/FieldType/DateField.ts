@@ -13,4 +13,5 @@ export const DateField: IFieldType<Date> = {
       ? parse(serializedDate, "YYYY-MM-DD", new Date())
       : null
   ),
+  type: "date",
 };

@@ -12,4 +12,5 @@ export const DateTimeField: IFieldType<Date> = {
       ? new Date(serializedDate)
       : null
   ),
+  type: "dateTime",
 };

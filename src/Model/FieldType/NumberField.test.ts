@@ -42,4 +42,8 @@ describe("FieldType: NumberField", () => {
   it("should be serialized", () => {
     expect(NumberField.serialize).to.be.true;
   });
+
+  it("declares it's type", () =>
+    expect(NumberField.type).to.eq("number"),
+  );
 });

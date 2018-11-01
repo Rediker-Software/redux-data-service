@@ -42,4 +42,8 @@ describe("FieldType: EmailField", () => {
   it("should be serialized", () => {
     expect(EmailField.serialize).to.be.true;
   });
+
+  it("declares it's type", () =>
+    expect(EmailField.type).to.eq("email"),
+  );
 });

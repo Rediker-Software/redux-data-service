@@ -6,4 +6,5 @@ export const PhoneNumberField: IFieldType<string> = {
   defaultValidationRules: { phoneNumber: true },
   defaultValue: "",
   isValidType: (value) => value == null || isString(value),
+  type: "phoneNumber",
 };

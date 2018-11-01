@@ -6,4 +6,5 @@ export const BooleanField: IFieldType<boolean> = {
   defaultValidationRules: { type: "boolean" },
   defaultValue: false,
   isValidType: (value) => value == null || isBoolean(value),
+  type: "boolean",
 };
