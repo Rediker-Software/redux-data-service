@@ -381,9 +381,18 @@ var Model = (function () {
         }
     };
     Model.prototype.parseFieldValue = function (fieldName, value) {
-        var path = Utils_1.addPenultimateFieldToPath(fieldName, "fields");
-        var field = lodash_1.get(this, path);
-        return field.normalize(value);
+        return __awaiter(this, void 0, void 0, function () {
+            var path, field;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        path = Utils_1.addPenultimateFieldToPath(fieldName, "fields");
+                        field = lodash_1.get(this, path);
+                        return [4, field.normalize(value)];
+                    case 1: return [2, _a.sent()];
+                }
+            });
+        });
     };
     __decorate([
         Decorators_1.attr(FieldType_1.StringField, { serialize: false }),

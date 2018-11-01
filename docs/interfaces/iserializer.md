@@ -36,10 +36,10 @@
 
 **● deserialize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/d65f4fb/src/Serializers/ISerializer.ts#L5)*
+*Defined in [Serializers/ISerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/24939f4/src/Serializers/ISerializer.ts#L5)*
 
 #### Type declaration
-▸(data: *`R`*): [IModel](imodel.md)<`T`>
+▸(data: *`R`*): `Promise`<[IModel](imodel.md)<`T`>>
 
 **Parameters:**
 
@@ -47,7 +47,7 @@
 | ------ | ------ |
 | data | `R` |
 
-**Returns:** [IModel](imodel.md)<`T`>
+**Returns:** `Promise`<[IModel](imodel.md)<`T`>>
 
 ___
 <a id="normalize"></a>
@@ -56,10 +56,10 @@ ___
 
 **● normalize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/d65f4fb/src/Serializers/ISerializer.ts#L7)*
+*Defined in [Serializers/ISerializer.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/24939f4/src/Serializers/ISerializer.ts#L7)*
 
 #### Type declaration
-▸(data: *`Partial`<`R`>*): [IModel](imodel.md)<`T`>
+▸(data: *`Partial`<`R`>*): `Promise`<[IModel](imodel.md)<`T`>>
 
 **Parameters:**
 
@@ -67,7 +67,7 @@ ___
 | ------ | ------ |
 | data | `Partial`<`R`> |
 
-**Returns:** [IModel](imodel.md)<`T`>
+**Returns:** `Promise`<[IModel](imodel.md)<`T`>>
 
 ___
 <a id="serialize"></a>
@@ -76,10 +76,10 @@ ___
 
 **● serialize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/d65f4fb/src/Serializers/ISerializer.ts#L4)*
+*Defined in [Serializers/ISerializer.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/24939f4/src/Serializers/ISerializer.ts#L4)*
 
 #### Type declaration
-▸(modelData: * [IModel](imodel.md)<`T`> &#124; `Partial`<`T`>*): `S`
+▸(modelData: * [IModel](imodel.md)<`T`> &#124; `Partial`<`T`>*): `Promise`<`S`>
 
 **Parameters:**
 
@@ -87,7 +87,7 @@ ___
 | ------ | ------ |
 | modelData |  [IModel](imodel.md)<`T`> &#124; `Partial`<`T`>|
 
-**Returns:** `S`
+**Returns:** `Promise`<`S`>
 
 ___
 <a id="transform"></a>
@@ -96,10 +96,10 @@ ___
 
 **● transform**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/d65f4fb/src/Serializers/ISerializer.ts#L6)*
+*Defined in [Serializers/ISerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/24939f4/src/Serializers/ISerializer.ts#L6)*
 
 #### Type declaration
-▸(model: *[IModel](imodel.md)<`T`>*): `Partial`<`R`>
+▸(model: *[IModel](imodel.md)<`T`>*): `Promise`<`Partial`<`R`>>
 
 **Parameters:**
 
@@ -107,7 +107,7 @@ ___
 | ------ | ------ |
 | model | [IModel](imodel.md)<`T`> |
 
-**Returns:** `Partial`<`R`>
+**Returns:** `Promise`<`Partial`<`R`>>
 
 ___
 

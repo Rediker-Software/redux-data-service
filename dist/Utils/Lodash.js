@@ -5,6 +5,9 @@ var lodash_1 = require("lodash");
 exports.mapValuesWithKeys = convert("mapValues", lodash_1.mapValues, {
     cap: false,
 });
+exports.mapWithKeys = convert("map", lodash_1.map, {
+    cap: false,
+});
 exports.flattenObjectKeys = function (obj) {
     var output = {};
     lodash_1.forEach(obj, function (child, key) {

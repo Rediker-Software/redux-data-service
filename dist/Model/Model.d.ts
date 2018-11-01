@@ -51,5 +51,5 @@ export declare class Model<T extends IModelData> implements IModel<T> {
     readonly hasUnsavedChanges: boolean;
     readonly isNew: boolean;
     getFieldError(fieldName: any): any;
-    parseFieldValue(fieldName: string, value: any): any;
+    parseFieldValue(fieldName: string, value: any): Promise<any>;
 }
