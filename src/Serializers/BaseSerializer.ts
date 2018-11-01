@@ -1,13 +1,11 @@
 import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
-import { isEmpty } from "lodash";
+import { fromPairs } from "lodash";
 
-import { mapValuesWithKeys } from "../Utils";
-import { IModel, IModelData, IModelFactory } from "../Model";
+import { mapValuesWithKeys, mapWithKeys } from "../Utils";
+import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, RelationshipType } from "../Model";
 import { getDataService } from "../Services";
 
 import { ISerializer } from "./ISerializer";
-import { IFieldType } from "../Model/FieldType";
-import { IFieldRelationship, RelationshipType } from "../Model/Decorators";
 
 /**
  * The base class from which implementations of `IDataSerializer` should extend.
@@ -17,12 +15,11 @@ import { IFieldRelationship, RelationshipType } from "../Model/Decorators";
  * Any nested relationships will be side-loaded by dispatching an action to the related service.
  *
  */
-export abstract class BaseSerializer<T extends IModelData, S> implements ISerializer<T, S> {
+export abstract class BaseSerializer<S, T extends IModelData, R = T> implements ISerializer<S, T, R> {
   public readonly ModelClass: IModelFactory<T>;
 
-  public abstract deserialize(data: S): IModel<T>;
-
-  public abstract serialize(modelData: Partial<T>): S;
+  public abstract async deserialize(data: R): Promise<IModel<T>>;
+  public abstract async serialize(modelData: IModel<T> | Partial<T>): Promise<S>;
 
   public constructor(ModelClass: IModelFactory<T>) {
     this.ModelClass = ModelClass;
@@ -44,28 +41,26 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
    * Returns a function, which when called, transforms the given fieldName on the provided model
    * into its serialized equivalent if the given IFieldType implements the optional "transform" method.
    *
-   * For example, a Date object will be converted into an ISO Date string when given a DateField.
+   * That function will then return a Promise that resolves to provide a tuple of the fieldName and the value.
+   * The Promise is necessary for the rare circumstance that we need to perform the transform asynchronously.
    *
-   * @param {IModel<T extends IModelData>} model
-   * @returns {(fieldType: IFieldType, fieldName: string) => IModel<T extends IModelData>[string]}
+   * For example, a Date object will be converted into an ISO Date string when given a DateField.
    */
   public transformField(model: IModel<T> | Partial<T>) {
-    return (fieldType: IFieldType & any, fieldName: string) => {
-      const fieldValue = model[fieldName];
+    return async (fieldType: IFieldType & any, fieldName: string): Promise<[string, string]> => {
+      let fieldValue = model[fieldName];
 
-      if (fieldValue == null) {
-        return fieldValue;
+      if (fieldValue != null) {
+        if (this.relationships && fieldName in this.relationships) {
+          fieldValue = await this.transformRelationship(fieldValue, this.relationships[fieldName]);
+        }
+
+        if ("transform" in fieldType) {
+          fieldValue = await fieldType.transform(fieldValue);
+        }
       }
 
-      if (this.relationships && fieldName in this.relationships) {
-        return this.transformRelationship(fieldValue, this.relationships[fieldName]);
-      }
-
-      if ("transform" in fieldType) {
-        return fieldType.transform(fieldValue);
-      }
-
-      return fieldValue;
+      return [fieldName, fieldValue];
     };
   }
 
@@ -73,41 +68,49 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
    * Returns a function, which when called, converts a single field on the provided raw data
    * into its object equivalent if the given IFieldType implements the optional "normalize" method.
    *
-   * For example, an ISO date string will be converted into a Date object when given a DateField.
+   * That function then returns a Promise which resolves with a tuple of the field name and the normalized value.
    *
-   * @param {Partial<T extends IModelData>} data
-   * @returns {(fieldType: IFieldType, fieldName: string) => Partial<T extends IModelData>[string]}
+   * For example, an ISO date string will be converted into a Date object when given a DateField.
    */
-  public normalizeField(data: Partial<T>) {
-    return (fieldType: IFieldType, fieldName: string) => (
-      "normalize" in fieldType
-        ? fieldType.normalize(data[fieldName])
-        : data[fieldName]
-    );
+  public normalizeField(data: Partial<R>) {
+    return async (fieldType: IFieldType, fieldName: string): Promise<[string, string]> => {
+      let value = data[fieldName];
+
+      if (fieldType.normalize) {
+        value = await fieldType.normalize(value);
+      }
+
+      return [fieldName, value];
+    };
   }
 
   /**
    * Transforms the given Model into a plain javascript object based on the Model's fieldTypes.
-   * Relationships and any fields identified in this class's `excludedFields` array will be excluded.
+   * Each fieldType with `serialize = false` will be excluded.
    *
    * @param {IModel} model
-   * @returns {any}
+   * @returns {Promise<Partial<R>>}
    */
-  public transform(model: IModel<T> | Partial<T>): Partial<T> {
-    return flow(
+  public async transform(model: IModel<T> | Partial<T>): Promise<Partial<R>> {
+    const transformPromises = flow(
       pickBy(property("serialize")),
-      mapValuesWithKeys(this.transformField(model)),
+      mapWithKeys(this.transformField(model)),
     )(this.fields);
+
+    // promise resolves with an array of tuples in the format: [key, value][]
+    // fromPairs then converts the array of tuples into an object
+    const pairs = await Promise.all(transformPromises) as any;
+    return fromPairs(pairs) as Partial<R>;
   }
 
   /**
    * Creates a new IModel by normalizing the given raw data.
    * If a nested relationship was included in the payload, it will be side-loaded.
    *
-   * @param {Partial<T extends IModelData>} data
-   * @returns {IModel<T extends IModelData>}
+   * @param {Partial<R>} data
+   * @returns {Promise<IModel<T extends IModelData>>}
    */
-  public normalize(data: any): IModel<T> {
+  public async normalize(data: Partial<R>): Promise<IModel<T>> {
 
     // Split nested relationships from the model's own values
     const [relationshipKeys, fieldKeys] = flow(
@@ -116,10 +119,15 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
     )(data);
 
     // Build the model's data
-    const modelData: T = flow(
+    const normalizeFieldPromises = flow(
       pick(fieldKeys),
-      mapValuesWithKeys(this.normalizeField(data)),
-    )(this.fields) as T;
+      mapWithKeys(await this.normalizeField(data)),
+    )(this.fields) as Promise<[string, string]>[];
+
+    // promise resolves with an array of tuples in the format: [key, value][]
+    // fromPairs then converts the array of tuples into an object
+    const pairs = await Promise.all(normalizeFieldPromises);
+    const modelData: T = fromPairs(pairs) as any;
 
     const model = new this.ModelClass(modelData);
 
@@ -127,7 +135,7 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
     for (const key of relationshipKeys) {
       const relationship = this.relationships[key];
       const relatedModelData = data[key];
-      const relatedIdOrIds = this.processNestedRelationship(model, relatedModelData, relationship);
+      const relatedIdOrIds = await this.processNestedRelationship(model, relatedModelData, relationship);
 
       if (!modelData.hasOwnProperty(relationship.relatedFieldName)) {
         modelData[relationship.relatedFieldName] = relatedIdOrIds;
@@ -140,12 +148,13 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
   /**
    * Transform the given model or array of models depending on the relationship type.
    */
-  protected transformRelationship(fieldValue: IModel<any> | IModel<any>[], relationship: IFieldRelationship) {
+  protected async transformRelationship(fieldValue: IModel<any> | IModel<any>[], relationship: IFieldRelationship) {
     switch (relationship.type) {
       case RelationshipType.BelongsTo:
-        return this.transformRelatedModel(fieldValue as IModel<any>);
+        return await this.transformRelatedModel(fieldValue as IModel<any>);
       case RelationshipType.HasMany:
-        return (fieldValue as IModel<any>[]).map(item => this.transformRelatedModel(item));
+        const promises = (fieldValue as IModel<any>[]).map(async item => await this.transformRelatedModel(item));
+        return await Promise.all(promises);
       default:
         throw new TypeError(`BaseSerializer: attempted to transform unknown relationship "${relationship.type}"`);
     }
@@ -154,8 +163,8 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
   /**
    * Transform the given relatedModel using its own serializer.
    */
-  protected transformRelatedModel(relatedModel: IModel<any>) {
-    return getDataService(relatedModel.serviceName)
+  protected async transformRelatedModel(relatedModel: IModel<any>) {
+    return await getDataService(relatedModel.serviceName)
       .serializer
       .transform(relatedModel);
   }
@@ -165,12 +174,15 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
    * - If it is a BelongsTo relationship, its data is normalized into a Model instance, added to its store and its id is returned.
    * - If it is a HasMany relationship, the above is done for each nested object and the ids of the models are returned.
    */
-  protected processNestedRelationship(model: IModel<T>, nestedData: any, relationship: IFieldRelationship) {
+  protected async processNestedRelationship(model: IModel<T>, nestedData: any, relationship: IFieldRelationship) {
     if (relationship.type === RelationshipType.BelongsTo) {
-      const relatedModel = this.loadRelatedModel(model, nestedData, relationship);
+      const relatedModel = await this.loadRelatedModel(model, nestedData, relationship);
       return relatedModel.id;
     } else if (relationship.type === RelationshipType.HasMany && nestedData instanceof Array) {
-      const relatedModels = nestedData.map((relatedModelData) => this.loadRelatedModel(model, relatedModelData, relationship));
+      const relatedModels = await Promise.all(
+        nestedData.map((relatedModelData) => this.loadRelatedModel(model, relatedModelData, relationship)),
+      );
+
       return relatedModels.map(relatedModel => relatedModel.id);
     }
   }
@@ -179,7 +191,7 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
    * Given the relatedModelData of a single item, normalize the data using the relationship's own serializer,
    * converting it into a Model instance, then dispatch that related Model to its data service and return the Model.
    */
-  protected loadRelatedModel(model: IModel<T>, relatedModelData: any, relationship: IFieldRelationship) {
+  protected async loadRelatedModel(model: IModel<T>, relatedModelData: any, relationship: IFieldRelationship) {
     const modelRelatedFieldName: string = relationship.modelRelatedFieldName != null
       ? relationship.modelRelatedFieldName
       : model.serviceName + "Id";
@@ -189,7 +201,7 @@ export abstract class BaseSerializer<T extends IModelData, S> implements ISerial
     }
 
     const service = getDataService(relationship.serviceName);
-    const relatedModel = service.serializer.normalize(relatedModelData);
+    const relatedModel = await service.serializer.normalize(relatedModelData);
     service.actions.pushRecord(relatedModel).invoke();
 
     return relatedModel;

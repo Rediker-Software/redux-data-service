@@ -1,6 +1,8 @@
 /* tslint:disable: no-unused-expression */
 
 import { validate } from "validate.js";
+import { random } from "faker";
+
 import { StringField } from "./StringField";
 
 declare var intern;
@@ -46,4 +48,13 @@ describe("FieldType: StringField", () => {
   it("declares it's type", () =>
     expect(StringField.type).to.eq("string"),
   );
+
+  it("normalizes any value into a string", async () => {
+    const randomNumber = random.number();
+    expect(await StringField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
+  });
+
+  it("normalizes any null-like value into an empty string", async () => {
+    expect(await StringField.normalize(null)).to.be.a("string").and.to.equal("");
+  });
 });

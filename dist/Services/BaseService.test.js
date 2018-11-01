@@ -12,7 +12,7 @@ require("rxjs/add/operator/take");
 var of_1 = require("rxjs/observable/of");
 var sinon_1 = require("sinon");
 var redux_test_utils_1 = require("redux-test-utils");
-var Adapters_1 = require("../Adapters");
+var MockAdapter_1 = require("../Adapters/MockAdapter");
 var TestUtils_1 = require("../TestUtils");
 var BaseService_1 = require("./BaseService");
 var BaseService_mock_1 = require("./BaseService.mock");
@@ -25,7 +25,7 @@ describe("BaseService", function () {
     var store;
     var state;
     beforeEach(function () {
-        mockAdapter = new Adapters_1.MockAdapter();
+        mockAdapter = new MockAdapter_1.MockAdapter();
         mockTestService = BaseService_mock_1.createMockTestService();
         ServiceProvider_1.registerService(mockTestService);
         state = TestUtils_1.createMockServiceState(mockTestService, []);

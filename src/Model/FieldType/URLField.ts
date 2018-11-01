@@ -7,4 +7,5 @@ export const URLField: IFieldType<string> = {
   defaultValue: "",
   isValidType: (value) => value == null || isString(value),
   type: "URL",
+  normalize: async (value) => String(value),
 };

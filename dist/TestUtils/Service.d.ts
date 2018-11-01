@@ -1,10 +1,11 @@
 import { Store } from "redux";
 import { IModel, IModelData } from "../Model";
 import { IAction, IModuleMap, IService } from "../Services";
+import { IConfiguration } from "../Configure";
 export interface IModelDataCreatorMap {
     [name: string]: (overrideValues?: any) => IModel<any>;
 }
-export declare function initializeTestServices(modules: IModuleMap, shouldStubActionCreators?: boolean): Store<any>;
+export declare function initializeTestServices(modules: IModuleMap, shouldStubActionCreators?: boolean, configOptions?: Partial<IConfiguration>): Store<any>;
 export declare function initializeMockDataCreators(modules: any): void;
 export declare function stubActionCreators(modules: any): void;
 export declare function stubXHR(): void;

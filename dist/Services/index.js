@@ -5,5 +5,4 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./BaseService"));
 __export(require("./DataService"));
-__export(require("./DataService.mock"));
 __export(require("./ServiceProvider"));

@@ -4,16 +4,16 @@ import { BaseSerializer } from "./BaseSerializer";
 /**
  * An ISerializer implementation which will convert a given Model to or from JSON.
  */
-export class RestSerializer<T extends IModelData> extends BaseSerializer<T, string> {
+export class RestSerializer<T extends IModelData, R = T> extends BaseSerializer<string, T, R> {
 
   /**
    * Converts the given IModel into a JSON string.
    *
    * @param {IModel<T extends IModelData> | Partial<T extends IModelData>} model
-   * @returns {any}
+   * @returns {Promise<S>}
    */
-  public serialize(model: IModel<T> | Partial<T>): string {
-    const modelData = this.transform(model);
+  public async serialize(model: IModel<T> | Partial<T>): Promise<string> {
+    const modelData = await this.transform(model);
     return JSON.stringify(modelData);
   }
 
@@ -22,10 +22,10 @@ export class RestSerializer<T extends IModelData> extends BaseSerializer<T, stri
    *
    * @param {IModel<T extends IModelData>} data
    * @param data
-   * @returns {IModel<T extends IModelData>}
+   * @returns {Promise<IModel<T extends IModelData>>}
    */
-  public deserialize(data: any): IModel<T> {
+  public async deserialize(data: any): Promise<IModel<T>> {
     data = (typeof data === "string") ? JSON.parse(data) : data;
-    return this.normalize(data);
+    return await this.normalize(data);
   }
 }

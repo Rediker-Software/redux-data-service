@@ -7,6 +7,9 @@ export interface IModelData {
     readonly dateUpdated: Date;
     readonly dateDeleted: Date;
 }
+export interface IModelAPIData {
+    readonly id: string;
+}
 export interface IModelMeta<T> {
     readonly isShadow: boolean;
     isLoading: boolean;
@@ -29,6 +32,7 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
     applyUpdates(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>, relationships?: any): IModel<T>;
     initializeNewModel(): void;
     markForDestruction(): void;
+    parseFieldValue(fieldName: string, value: any): Promise<any>;
 }
 export interface IModelFactory<T extends IModelData> {
     new (modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>, relatedModels?: IModelsMap): IModel<T>;

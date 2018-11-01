@@ -3,6 +3,6 @@ export interface IFieldType<T = any> {
     defaultValidationRules: any;
     defaultValue: T;
     isValidType(value: T | any): boolean;
-    transform?(value: T): any;
-    normalize?(serializedValue: any): T;
+    transform?(value: T): Promise<any>;
+    normalize(serializedValue: any): Promise<T>;
 }

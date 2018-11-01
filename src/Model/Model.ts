@@ -11,7 +11,7 @@ import { getDataService } from "../Services";
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
 import { DateTimeField, IFieldType, StringField } from "./FieldType";
 import { attr, IFieldRelationship, RelationshipType } from "./Decorators";
-import { flattenObjectKeys } from "../Utils";
+import { addPenultimateFieldToPath, flattenObjectKeys } from "../Utils";
 
 /**
  * # Model
@@ -184,7 +184,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public validate(includeRelatedModels = false): IModelKeys<T> {
     const { id, dateUpdated, dateDeleted, ...data } = this.modelData as any;
-    let errors = validate(data, this.validationRules, { fullMessages: false }) || {};
+    let errors = validate(data, this.validationRules) || {};
 
     if (includeRelatedModels) {
       errors = flow(
@@ -213,17 +213,20 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public validateField(fieldName) {
     const errors = this.errors as any || {};
-    const validationRules = this.getValidationRulesForField(fieldName);
-    const value = get(this, fieldName);
+    const localFieldName = fieldName.substring(fieldName.lastIndexOf(".") + 1);
+    const validationRules = { [localFieldName]: this.getValidationRulesForField(fieldName) };
+    const value = { [localFieldName]: get(this, fieldName) };
 
-    const validationResult = single(value, validationRules);
+    const validationResult = validate(value, validationRules);
 
     // Update existing errors object with the results for this one field
     this.errors = isEmpty(validationResult)
       ? omit(errors, fieldName)
-      : { ...errors, [fieldName]: validationResult };
+      : { ...errors, [fieldName]: validationResult[localFieldName] };
 
-    return validationResult;
+    return validationResult && localFieldName in validationResult
+      ? validationResult[localFieldName]
+      : undefined;
   }
 
   /**
@@ -235,8 +238,7 @@ export class Model<T extends IModelData> implements IModel<T> {
   protected getValidationRulesForField(fieldName) {
     // split the fieldName if it has a dot, add "validationRules" as penultimate to the path
     // works even if the fieldName is not a nested path
-    const validationRulesPath = fieldName.split(".");
-    validationRulesPath.splice(validationRulesPath.length - 1, 0, "validationRules");
+    const validationRulesPath = addPenultimateFieldToPath(fieldName, "validationRules");
 
     return get(this, validationRulesPath, {});
   }
@@ -311,7 +313,7 @@ export class Model<T extends IModelData> implements IModel<T> {
         meta.original = this.modelData;
       }
 
-      modelData = merge({}, this.modelData, modelData);
+      modelData = { ...(this.modelData as object), ...(modelData as object) };
     }
 
     const service = getDataService(this.serviceName);
@@ -370,7 +372,11 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public setField(fieldName: string, value: any) {
     this.checkFieldUpdateIsAllowed(fieldName, value);
-    getDataService(this.serviceName).actions.setField({ id: this.id, fieldName, value }).invoke();
+
+    getDataService(this.serviceName)
+      .actions
+      .setField({ id: this.id, fieldName, value })
+      .invoke();
   }
 
   /**
@@ -622,5 +628,16 @@ export class Model<T extends IModelData> implements IModel<T> {
       const error = this.errors[fieldName];
       return (error instanceof Array) ? error[0] : error;
     }
+  }
+
+  /**
+   * Given a fieldName as a deep path (such as "firstName" or "person.firstName"),
+   * this will use that field's own IFieldType.normalize function to parse the given value.
+   */
+  public async parseFieldValue(fieldName: string, value: any): Promise<any> {
+    const path = addPenultimateFieldToPath(fieldName, "fields");
+    const field: IFieldType<any> = get(this, path);
+
+    return await field.normalize(value);
   }
 }

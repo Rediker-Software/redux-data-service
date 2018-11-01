@@ -7,4 +7,5 @@ export const PhoneNumberField: IFieldType<string> = {
   defaultValue: "",
   isValidType: (value) => value == null || isString(value),
   type: "phoneNumber",
+  normalize: async (value) => String(value),
 };

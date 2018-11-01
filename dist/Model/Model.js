@@ -127,7 +127,7 @@ var Model = (function () {
     Model.prototype.validate = function (includeRelatedModels) {
         if (includeRelatedModels === void 0) { includeRelatedModels = false; }
         var _a = this.modelData, id = _a.id, dateUpdated = _a.dateUpdated, dateDeleted = _a.dateDeleted, data = __rest(_a, ["id", "dateUpdated", "dateDeleted"]);
-        var errors = validate_js_1.validate(data, this.validationRules, { fullMessages: false }) || {};
+        var errors = validate_js_1.validate(data, this.validationRules) || {};
         if (includeRelatedModels) {
             errors = fp_1.flow(fp_1.omitBy(function (relatedModel) { return relatedModel == null || !relatedModel.isDirty; }), fp_1.mapValues(function (relatedModel) { return relatedModel.validate(); }), Utils_1.flattenObjectKeys, fp_1.assign(errors))(this.relatedModels);
         }
@@ -137,19 +137,21 @@ var Model = (function () {
         return errors;
     };
     Model.prototype.validateField = function (fieldName) {
-        var _a;
+        var _a, _b, _c;
         var errors = this.errors || {};
-        var validationRules = this.getValidationRulesForField(fieldName);
-        var value = lodash_1.get(this, fieldName);
-        var validationResult = validate_js_1.single(value, validationRules);
+        var localFieldName = fieldName.substring(fieldName.lastIndexOf(".") + 1);
+        var validationRules = (_a = {}, _a[localFieldName] = this.getValidationRulesForField(fieldName), _a);
+        var value = (_b = {}, _b[localFieldName] = lodash_1.get(this, fieldName), _b);
+        var validationResult = validate_js_1.validate(value, validationRules);
         this.errors = lodash_1.isEmpty(validationResult)
             ? lodash_1.omit(errors, fieldName)
-            : __assign({}, errors, (_a = {}, _a[fieldName] = validationResult, _a));
-        return validationResult;
+            : __assign({}, errors, (_c = {}, _c[fieldName] = validationResult[localFieldName], _c));
+        return validationResult && localFieldName in validationResult
+            ? validationResult[localFieldName]
+            : undefined;
     };
     Model.prototype.getValidationRulesForField = function (fieldName) {
-        var validationRulesPath = fieldName.split(".");
-        validationRulesPath.splice(validationRulesPath.length - 1, 0, "validationRules");
+        var validationRulesPath = Utils_1.addPenultimateFieldToPath(fieldName, "validationRules");
         return lodash_1.get(this, validationRulesPath, {});
     };
     Model.prototype.reset = function () {
@@ -195,7 +197,7 @@ var Model = (function () {
             if (!this.isDirty) {
                 meta.original = this.modelData;
             }
-            modelData = lodash_1.merge({}, this.modelData, modelData);
+            modelData = __assign({}, this.modelData, modelData);
         }
         var service = Services_1.getDataService(this.serviceName);
         return new service.ModelClass(modelData || this.modelData, meta, relatedModels);
@@ -219,7 +221,10 @@ var Model = (function () {
     };
     Model.prototype.setField = function (fieldName, value) {
         this.checkFieldUpdateIsAllowed(fieldName, value);
-        Services_1.getDataService(this.serviceName).actions.setField({ id: this.id, fieldName: fieldName, value: value }).invoke();
+        Services_1.getDataService(this.serviceName)
+            .actions
+            .setField({ id: this.id, fieldName: fieldName, value: value })
+            .invoke();
     };
     Model.prototype.getRelated = function (fieldName) {
         var _this = this;
@@ -374,6 +379,20 @@ var Model = (function () {
             var error = this.errors[fieldName];
             return (error instanceof Array) ? error[0] : error;
         }
+    };
+    Model.prototype.parseFieldValue = function (fieldName, value) {
+        return __awaiter(this, void 0, void 0, function () {
+            var path, field;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        path = Utils_1.addPenultimateFieldToPath(fieldName, "fields");
+                        field = lodash_1.get(this, path);
+                        return [4, field.normalize(value)];
+                    case 1: return [2, _a.sent()];
+                }
+            });
+        });
     };
     __decorate([
         Decorators_1.attr(FieldType_1.StringField, { serialize: false }),

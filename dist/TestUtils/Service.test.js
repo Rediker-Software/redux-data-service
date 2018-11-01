@@ -1,16 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var Configure_1 = require("../Configure");
 var Services_1 = require("../Services");
+var RestAdapter_1 = require("../Adapters/RestAdapter");
+var RestSerializer_1 = require("../Serializers/RestSerializer");
+var MemoryAdapter_1 = require("../Adapters/MemoryAdapter");
+var MemorySerializer_1 = require("../Serializers/MemorySerializer");
 var FakeModelModule_1 = require("./FakeModelModule");
 var Service_1 = require("./Service");
 var _a = intern.getPlugin("interface.bdd"), describe = _a.describe, it = _a.it, beforeEach = _a.beforeEach;
 var expect = intern.getPlugin("chai").expect;
-describe("initializeServices", function () {
-    it("builds all services", function () {
-        var store = Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
-        var returnedKeys = Object.keys(store.getState());
-        var moduleKeys = Object.keys(FakeModelModule_1.fakeModelModule);
-        expect(moduleKeys).to.have.all.members(returnedKeys, "actual fakeModelModule and returned fakeModelModule are same");
+describe("initializeTestServices", function () {
+    describe("initialization", function () {
+        it("builds all services", function () {
+            var store = Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
+            var returnedKeys = Object.keys(store.getState());
+            var moduleKeys = Object.keys(FakeModelModule_1.fakeModelModule);
+            expect(moduleKeys).to.have.all.members(returnedKeys, "actual fakeModelModule and returned fakeModelModule are same");
+        });
+        it("uses MemoryAdapter and MemorySerializer by default", function () {
+            var store = Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule);
+            expect(Configure_1.getConfiguration()).to.deep.contain({
+                adapter: MemoryAdapter_1.MemoryAdapter,
+                serializer: MemorySerializer_1.MemorySerializer,
+            });
+        });
     });
     describe("stubbed xhr actions", function () {
         it("has a working spy on the invoke method", function () {
@@ -48,7 +62,7 @@ describe("initializeServices", function () {
             expect(Service_1.getActionStubMap()).to.be.empty;
         });
         it("uses fake xhr when stubs are not in use", function () {
-            Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule, false);
+            Service_1.initializeTestServices(FakeModelModule_1.fakeModelModule, false, { adapter: RestAdapter_1.RestAdapter, serializer: RestSerializer_1.RestSerializer });
             var service = Services_1.getService("fakeModel");
             var initHistorySize = Service_1.getFakedXHRHistory().length;
             service.actions.fetchAll({}).invoke();

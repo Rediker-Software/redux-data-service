@@ -7,11 +7,14 @@ export const DateField: IFieldType<Date> = {
   defaultValidationRules: { datetime: { dateOnly: true } },
   defaultValue: null,
   isValidType: (value) => value == null || isDate(value),
-  transform: (date: Date) => date != null ? format(date, "YYYY-MM-DD") : null,
-  normalize: (serializedDate: string): Date => (
-    serializedDate != null
-      ? parse(serializedDate, "YYYY-MM-DD", new Date())
-      : null
+  transform: async (date: Date) => date != null ? format(date, "YYYY-MM-DD") : null,
+  normalize: async (value: string | any): Promise<Date> => (
+    isDate(value)
+      ? value
+      : (value != null
+        ? parse(value, "YYYY-MM-DD", new Date())
+        : null
+      )
   ),
   type: "date",
 };

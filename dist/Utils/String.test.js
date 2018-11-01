@@ -11,4 +11,11 @@ describe("String utils", function () {
             expect(output).to.equal("c");
         });
     });
+    describe("addPenultimateFieldToPath", function () {
+        it("adds the given string as the second to last value in the given string path, returned as an array", function () {
+            var example = "a.b.c";
+            var output = String_1.addPenultimateFieldToPath(example, "x");
+            expect(output).to.deep.equal(["a", "b", "x", "c"]);
+        });
+    });
 });

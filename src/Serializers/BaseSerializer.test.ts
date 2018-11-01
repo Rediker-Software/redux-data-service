@@ -9,7 +9,7 @@ import { omit } from "lodash";
 
 import { BaseService, DataService, registerService } from "../Services";
 import { attr, belongsTo, hasMany, DateField, IModelFactory, Model, NumberField, StringField, TimeField } from "../Model";
-import { MockAdapter } from "../Adapters";
+import { MockAdapter } from "../Adapters/MockAdapter";
 
 import { RestSerializer } from "./RestSerializer";
 import { ArrayField } from "../Model/FieldType";
@@ -126,8 +126,8 @@ describe("BaseSerializer", () => {
       fakeModel = new MockModel(mockModelData);
     });
 
-    it("transforms the model into a plain javascript object based on each field's FieldType", () => {
-      const transformedModelData = mockSerializer.transform(fakeModel);
+    it("transforms the model into a plain javascript object based on each field's FieldType", async () => {
+      const transformedModelData = await mockSerializer.transform(fakeModel);
 
       expect(transformedModelData).to.deep.equal({
         age,
@@ -139,39 +139,39 @@ describe("BaseSerializer", () => {
       });
     });
 
-    it("excludes transforming fields from the model using the model's fields property", () => {
+    it("excludes transforming fields from the model using the model's fields property", async () => {
       fakeModel.fields.age.serialize = false;
-      const transformedModelData = mockSerializer.transform(fakeModel);
+      const transformedModelData = await mockSerializer.transform(fakeModel);
 
       expect(transformedModelData).to.not.have.property("age");
     });
 
-    it("excludes transforming relationships from the model by default", () => {
-      const transformedModelData = mockSerializer.transform(fakeModel);
+    it("excludes transforming relationships from the model by default", async () => {
+      const transformedModelData = await mockSerializer.transform(fakeModel);
 
       expect(fakeModel).to.have.property("organization");
       expect(transformedModelData).to.not.have.property("organization");
     });
 
-    it("transforms belongsTo relationships on the model when serialize = true", () => {
+    it("transforms belongsTo relationships on the model when serialize = true", async () => {
       stub(fakeRelatedService.serializer, "transform").callThrough();
 
       fakeModel.fields.organization.serialize = true;
-      const transformedModelData = mockSerializer.transform(fakeModel);
+      const transformedModelData = await mockSerializer.transform(fakeModel);
 
       expect(transformedModelData).to.have.property("organization").to.deep.equal(omit(fakeRelatedModelData, "id"));
     });
 
-    it("uses the belongsTo relationship's own data service to transform it when serialize = true", () => {
+    it("uses the belongsTo relationship's own data service to transform it when serialize = true", async () => {
       const stubRelatedSerializerTransform = stub(fakeRelatedService.serializer, "transform").returns(fakeRelatedModelData);
 
       fakeModel.fields.organization.serialize = true;
-      mockSerializer.transform(fakeModel);
+      await mockSerializer.transform(fakeModel);
 
       expect(stubRelatedSerializerTransform.firstCall.args[0]).to.equal(fakeModel.organization);
     });
 
-    it("transforms hasMany relationships on the model when serialize = true", () => {
+    it("transforms hasMany relationships on the model when serialize = true", async () => {
       stub(fakeRelatedService.serializer, "transform").callThrough();
 
       const anotherFakeRelatedModelId = faker.random.number().toString();
@@ -188,7 +188,7 @@ describe("BaseSerializer", () => {
       });
 
       fakeModel.fields.fakeItems.serialize = true;
-      const transformedModelData = mockSerializer.transform(fakeModel);
+      const transformedModelData = await mockSerializer.transform(fakeModel);
 
       expect(transformedModelData).to.have.property("fakeItems").to.deep.equal([
         omit(fakeRelatedModelData, "id"),
@@ -224,7 +224,7 @@ describe("BaseSerializer", () => {
       registerService(fakeRelatedService);
     });
 
-    it("normalizes raw data to create an instance of the model", () => {
+    it("normalizes raw data to create an instance of the model", async () => {
       const age = faker.random.number();
       const fullText = faker.lorem.word();
       const startDateString = format(faker.date.recent(), "YYYY-MM-DD");
@@ -239,7 +239,7 @@ describe("BaseSerializer", () => {
         organizationId: fakeRelatedModelId,
       };
 
-      const model = mockSerializer.normalize(rawModelData);
+      const model = await mockSerializer.normalize(rawModelData);
 
       expect(model).to.deep.contain({
         age,
@@ -278,21 +278,21 @@ describe("BaseSerializer", () => {
         pushRecordStub.restore();
       });
 
-      it("normalizes nested related data", () => {
+      it("normalizes nested related data", async () => {
         const normalizeStub = stub(fakeRelatedService.serializer, "normalize").callThrough();
-        mockSerializer.normalize(rawModelData);
+        await mockSerializer.normalize(rawModelData);
 
         expect(normalizeStub.firstCall.args[0]).to.equal(relatedModelData);
       });
 
-      it("creates a pushRecord action with related data", () => {
-        mockSerializer.normalize(rawModelData);
+      it("creates a pushRecord action with related data", async () => {
+        await mockSerializer.normalize(rawModelData);
 
         expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel(relatedModelData));
       });
 
-      it("invokes a pushRecord action with related data", () => {
-        mockSerializer.normalize(rawModelData);
+      it("invokes a pushRecord action with related data", async () => {
+        await mockSerializer.normalize(rawModelData);
         expect(invokeSpy.calledOnce).to.be.true;
       });
     });
@@ -333,25 +333,25 @@ describe("BaseSerializer", () => {
         pushRecordStub.restore();
       });
 
-      it("normalizes nested related data for each item", () => {
+      it("normalizes nested related data for each item", async () => {
         const normalizeStub = stub(fakeRelatedService.serializer, "normalize").callThrough();
-        mockSerializer.normalize(rawModelData);
+        await mockSerializer.normalize(rawModelData);
 
         relatedModelsData.forEach((itemData, index) => {
           expect(normalizeStub.getCall(index).args[0]).to.equal(itemData);
         });
       });
 
-      it("creates a pushRecord action for each item", () => {
-        mockSerializer.normalize(rawModelData);
+      it("creates a pushRecord action for each item", async () => {
+        await mockSerializer.normalize(rawModelData);
 
         relatedModelsData.forEach((itemData, index) => {
           expect(pushRecordStub.getCall(index).args[0]).to.deep.equal(new FakeRelatedModel(itemData));
         });
       });
 
-      it("invokes a pushRecord action for each item", () => {
-        mockSerializer.normalize(rawModelData);
+      it("invokes a pushRecord action for each item", async () => {
+        await mockSerializer.normalize(rawModelData);
         expect(invokeSpy.callCount).to.equal(relatedModelsData.length);
       });
     });

@@ -111,7 +111,7 @@ describe("Model", () => {
             throw new Error("Promise should throw when there are validation errors");
           })
           .catch((errors) => {
-            expect(errors).to.have.property("name").deep.equal(["is required"]);
+            expect(errors).to.have.property("name").deep.equal(["Name is required"]);
           });
       });
 
@@ -338,7 +338,7 @@ describe("Model", () => {
     it("validates the model's data using the model's validation rules", () => {
       const model = new service.ModelClass({ id: modelId, name: "" });
       expect(model.validate()).to.deep.equal({
-        name: ["is required"],
+        name: ["Name is required"],
       });
     });
 
@@ -352,7 +352,7 @@ describe("Model", () => {
         id: modelId,
         fieldName: "errors",
         value: {
-          name: ["is required"],
+          name: ["Name is required"],
         },
       });
     });
@@ -371,8 +371,8 @@ describe("Model", () => {
       const model = new service.ModelClass({ id: modelId, name: "", relatedModelId });
       model.getRelated("relatedModel");
       expect(model.validate(true)).to.deep.equal({
-        "relatedModel.favoriteColor": ["is required"],
-        name: ["is required"],
+        "relatedModel.favoriteColor": ["Favorite color is required"],
+        name: ["Name is required"],
       });
     });
 
@@ -384,14 +384,14 @@ describe("Model", () => {
     it("validates a single field", () => {
       const model = new service.ModelClass({ id: modelId, name: "" });
       expect(model.validateField("name")).to.deep.equal([
-        "is required",
+        "Name is required",
       ]);
     });
 
     it("validates a single nested field", () => {
       const model = new service.ModelClass({ id: modelId, name: "", relatedModelId });
       expect(model.validateField("relatedModel.favoriteColor")).to.deep.equal([
-        "is required",
+        "Favorite color is required",
       ]);
     });
 
@@ -629,11 +629,13 @@ describe("Model", () => {
       let modelId;
       let name;
       let age;
+      let languages;
 
       beforeEach(() => {
         modelId = random.number().toString();
         name = lorem.word();
         age = random.number();
+        languages = [random.word(), random.word(), random.word()];
 
         interface IExampleData extends IModelData {
           name: string;
@@ -647,6 +649,9 @@ describe("Model", () => {
 
           @attr(NumberField)
           public age: number;
+
+          @attr(ArrayField)
+          public languages: string[];
 
           public getMeta() {
             return this.meta;
@@ -665,7 +670,7 @@ describe("Model", () => {
         service = new ExampleService();
         registerService(service);
 
-        originalData = { id: modelId, name, age };
+        originalData = { id: modelId, name, age, languages };
         firstModel = new service.ModelClass(originalData);
       });
 
@@ -698,6 +703,11 @@ describe("Model", () => {
       it("creates a new instance of the Model with new meta and previous data was copied over", () => {
         const secondModel = firstModel.applyUpdates(null, { isLoading: true });
         expect(secondModel.getModelData()).to.deep.equal(originalData);
+      });
+
+      it("creates a new instance of the Model with empty array when updating with an empty array", () => {
+        const secondModel = firstModel.applyUpdates({ languages: [] });
+        expect(secondModel).to.have.property("languages").to.be.empty;
       });
     });
   });
@@ -1111,6 +1121,17 @@ describe("Model", () => {
       expect(model.hasUnsavedChanges).to.be.false;
     });
 
+  });
+
+  describe("Model#parseFieldValue", () => {
+    it("parses the given value using the specified fieldName", async () => {
+      initializeTestServices(fakeModelModule);
+
+      const model = seedService<IFakeModelData>("fakeModel");
+      const value = await model.parseFieldValue("fullText", 4);
+
+      expect(value).to.be.a("string").and.to.equal("4");
+    });
   });
 
   describe("sub-classing works as expected", () => {

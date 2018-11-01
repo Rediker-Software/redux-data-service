@@ -1,6 +1,6 @@
 {
   "name": "redux-data-service",
-  "version": "0.0.15",
+  "version": "0.0.27",
   "private": false,
   "description": "",
   "main": "dist/index.js",
@@ -16,8 +16,9 @@
     "test:web": "intern serveOnly",
     "test:ci": "cross-env NODE_ENV=test webpack && intern config=@ci",
     "build": "tsc",
+    "build:release": "yarn tslint && yarn test && yarn typedoc && yarn build",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "typedoc": "typedoc --options typedoc.json && http-server docs -p 9384 -c-1"
+    "typedoc": "typedoc --options typedoc.json"
   },
   "devDependencies": {
     "@types/node": "8.0.53",
@@ -39,6 +40,7 @@
     "tslint-react": "^3.4.0",
     "tslint-webpack-plugin": "^1.1.1",
     "typedoc": "^0.11.1",
+    "typedoc-plugin-markdown": "^1.1.13",
     "typescript": "^2.9.2",
     "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^3.8.1",

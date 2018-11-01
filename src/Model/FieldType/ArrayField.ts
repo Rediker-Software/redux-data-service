@@ -7,4 +7,5 @@ export const ArrayField: IFieldType<any[]> = {
   defaultValue: [],
   isValidType: (value) => value == null || isArray(value),
   type: "array",
+  normalize: async (value) => value,
 };

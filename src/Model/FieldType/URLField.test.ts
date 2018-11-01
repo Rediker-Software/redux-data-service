@@ -1,6 +1,8 @@
 /* tslint:disable: no-unused-expression */
 
 import { validate } from "validate.js";
+import { random } from "faker";
+
 import { URLField } from "./URLField";
 
 declare var intern;
@@ -46,4 +48,9 @@ describe("FieldType: URLField", () => {
   it("declares it's type", () =>
     expect(URLField.type).to.eq("URL"),
   );
+
+  it("normalizes any value into a string", async () => {
+    const randomNumber = random.number();
+    expect(await URLField.normalize(randomNumber)).to.be.a("string").and.to.equal(String(randomNumber));
+  });
 });

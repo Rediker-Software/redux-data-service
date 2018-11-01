@@ -28,7 +28,7 @@ export declare class Model<T extends IModelData> implements IModel<T> {
     saveRelatedModels(): Promise<IModel<T>[]>;
     validate(includeRelatedModels?: boolean): IModelKeys<T>;
     validateField(fieldName: any): any;
-    protected getValidationRulesForField(fieldName: any): {} | this[any];
+    protected getValidationRulesForField(fieldName: any): any;
     reset(): void;
     unload(): void;
     forceReload(): void;
@@ -51,4 +51,5 @@ export declare class Model<T extends IModelData> implements IModel<T> {
     readonly hasUnsavedChanges: boolean;
     readonly isNew: boolean;
     getFieldError(fieldName: any): any;
+    parseFieldValue(fieldName: string, value: any): Promise<any>;
 }

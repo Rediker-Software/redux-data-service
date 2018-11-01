@@ -4,13 +4,20 @@ var lodash_1 = require("lodash");
 var sinon_1 = require("sinon");
 var Services_1 = require("../Services");
 var Configure_1 = require("../Configure");
+var MemoryAdapter_1 = require("../Adapters/MemoryAdapter");
+var MemorySerializer_1 = require("../Serializers/MemorySerializer");
 var modelDataCreatorMap = {};
 var actionStubMap = {};
 var _FakedXHRHistory = [];
 var _FakeXHR;
-function initializeTestServices(modules, shouldStubActionCreators) {
+function initializeTestServices(modules, shouldStubActionCreators, configOptions) {
     if (shouldStubActionCreators === void 0) { shouldStubActionCreators = true; }
-    var store = Configure_1.configure({ modules: modules });
+    if (configOptions === void 0) { configOptions = {}; }
+    var store = Configure_1.configure(lodash_1.defaults({}, configOptions, {
+        modules: modules,
+        adapter: MemoryAdapter_1.MemoryAdapter,
+        serializer: MemorySerializer_1.MemorySerializer,
+    }));
     initializeMockDataCreators(modules);
     stubXHR();
     if (shouldStubActionCreators) {

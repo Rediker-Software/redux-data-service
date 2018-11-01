@@ -1,6 +1,8 @@
 /* tslint:disable: no-unused-expression */
 
 import { validate } from "validate.js";
+import { random } from "faker";
+
 import { ArrayField } from "./ArrayField";
 
 declare var intern;
@@ -46,4 +48,13 @@ describe("FieldType: ArrayField", () => {
   it("declares it's type", () =>
     expect(ArrayField.type).to.eq("array"),
   );
+
+  it("normalizes an array by returning the given value", async () => {
+    const randomArray = [
+      random.number(),
+    ];
+
+    const normalizedValue = await ArrayField.normalize(randomArray);
+    expect(normalizedValue).to.equal(randomArray);
+  });
 });

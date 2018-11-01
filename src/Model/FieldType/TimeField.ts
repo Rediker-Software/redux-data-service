@@ -7,8 +7,8 @@ export const TimeField: IFieldType<Date> = {
   defaultValidationRules: { datetime: { timeOnly: true, message: "must be a valid time" } },
   defaultValue: null,
   isValidType: (value) => value == null || isDate(value),
-  transform: (date: Date) => date != null ? format(date, "hh:mm:ss a") : null,
-  normalize: (serializedDate: string): Date => (
+  transform: async (date: Date) => date != null ? format(date, "hh:mm:ss a") : null,
+  normalize: async (serializedDate: string): Promise<Date> => (
     serializedDate != null
       ? parse(serializedDate, "hh:mm:ss a", new Date())
       : null

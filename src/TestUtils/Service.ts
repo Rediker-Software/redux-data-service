@@ -1,10 +1,12 @@
-import { forEach, isEmpty, upperFirst } from "lodash";
+import { forEach, isEmpty, defaults, upperFirst } from "lodash";
 import { Store } from "redux";
 import { spy, stub, useFakeXMLHttpRequest } from "sinon";
 
 import { IModel, IModelData } from "../Model";
 import { getDataService, IAction, IModuleMap, IService } from "../Services";
-import { configure } from "../Configure";
+import { configure, IConfiguration } from "../Configure";
+import { MemoryAdapter } from "../Adapters/MemoryAdapter";
+import { MemorySerializer } from "../Serializers/MemorySerializer";
 
 export interface IModelDataCreatorMap {
   [name: string]: (overrideValues?: any) => IModel<any>;
@@ -28,10 +30,15 @@ let _FakedXHRHistory = [];
 let _FakeXHR;
 
 /**
- * Registers the services, short circuits their XHR epics and returns a Redux store
+ * Registers the services, short circuits their XHR epics and returns a Redux store.
+ * Will use a MemoryAdapter and MemorySerializer by default.
  */
-export function initializeTestServices(modules: IModuleMap, shouldStubActionCreators = true): Store<any> {
-  const store = configure({ modules });
+export function initializeTestServices(modules: IModuleMap, shouldStubActionCreators = true, configOptions: Partial<IConfiguration> = {}): Store<any> {
+  const store = configure(defaults({}, configOptions, {
+    modules,
+    adapter: MemoryAdapter,
+    serializer: MemorySerializer,
+  }));
 
   initializeMockDataCreators(modules);
   stubXHR();

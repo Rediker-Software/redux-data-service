@@ -58,4 +58,12 @@ describe("FieldType: EnumField", () => {
   it("declares it's type", () =>
     expect(EnumField.type).to.eq("enum"),
   );
+
+  it("normalizes a value by returning the given value if it exists in the enum", async () => {
+    expect(await EnumField.normalize("world")).to.equal(TestEnum.world);
+  });
+
+  it("normalizes a value which does not exist in the enum by returning null", async () => {
+    expect(await EnumField.normalize("asdf")).to.be.null;
+  });
 });

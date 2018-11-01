@@ -4,4 +4,6 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./BaseSerializer"));
+__export(require("./MockSerializer"));
 __export(require("./RestSerializer"));
+__export(require("./MemorySerializer"));

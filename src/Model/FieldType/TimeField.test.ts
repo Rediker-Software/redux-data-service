@@ -46,18 +46,18 @@ describe("FieldType: TimeField", () => {
     expect(TimeField.isValidType(value)).to.be.false;
   });
 
-  it("transforms a Time into the correct Time string", () => {
+  it("transforms a Time into the correct Time string", async () => {
     const serializedDate = "04:20:32 pm";
     const date = parse(serializedDate, "hh:mm:ss a", new Date());
 
-    expect(TimeField.transform(date)).to.equal(serializedDate);
+    expect(await TimeField.transform(date)).to.equal(serializedDate);
   });
 
-  it("normalizes a Time string into its corresponding Date object", () => {
+  it("normalizes a Time string into its corresponding Date object", async () => {
     const serializedDate = "04:20:32 pm";
     const date = parse(serializedDate, "hh:mm:ss a", new Date());
 
-    expect(TimeField.normalize(serializedDate)).to.deep.equal(date);
+    expect(await TimeField.normalize(serializedDate)).to.deep.equal(date);
   });
 
   it("should be serialized", () => {

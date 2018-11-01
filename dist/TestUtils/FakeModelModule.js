@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Model_1 = require("../Model");
-var Services_1 = require("../Services");
+var Model_mock_1 = require("../Model/Model.mock");
+var DataService_mock_1 = require("../Services/DataService.mock");
 exports.fakeModelModule = {
     fakeModel: {
-        FakeModel: Model_1.FakeModel,
-        FakeModelService: Services_1.FakeModelService,
-        createMockFakeModel: Model_1.createMockFakeModel,
+        FakeModel: Model_mock_1.FakeModel,
+        FakeModelService: DataService_mock_1.FakeModelService,
+        createMockFakeModel: Model_mock_1.createMockFakeModel,
     },
 };
