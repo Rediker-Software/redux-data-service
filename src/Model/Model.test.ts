@@ -1172,9 +1172,9 @@ describe("Model", () => {
       const model = new Model({ id: random.number().toString() });
 
       expect(model.fields).to.deep.equal({
-        id: { ...StringField, serialize: false },
-        dateDeleted: { ...DateTimeField, serialize: false },
-        dateUpdated: { ...DateTimeField, serialize: false },
+        id: { ...StringField, serialize: false, readOnly: true },
+        dateDeleted: { ...DateTimeField, serialize: false, readOnly: true },
+        dateUpdated: { ...DateTimeField, serialize: false, readOnly: true },
       });
     });
   });
