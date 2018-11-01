@@ -10,6 +10,7 @@ __export(require("./DateField"));
 __export(require("./DateTimeField"));
 __export(require("./EmailField"));
 __export(require("./EnumField"));
+__export(require("./FileField"));
 __export(require("./HasManyField"));
 __export(require("./NumberField"));
 __export(require("./ObjectField"));
