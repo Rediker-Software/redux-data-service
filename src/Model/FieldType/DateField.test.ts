@@ -45,11 +45,11 @@ describe("FieldType: DateField", () => {
     expect(DateField.isValidType(value)).to.be.false;
   });
 
-  it("transforms a Date into the correct Date string", () => {
+  it("transforms a Date into the correct Date string", async () => {
     const serializedDate = "2018-02-14";
     const date = parse(serializedDate, "YYYY-MM-DD", new Date());
 
-    expect(DateField.transform(date)).to.equal(serializedDate);
+    expect(await DateField.transform(date)).to.equal(serializedDate);
   });
 
   it("should be serialized", () => {
@@ -58,16 +58,16 @@ describe("FieldType: DateField", () => {
 
   describe("normalize", () => {
 
-    it("normalizes a Date string into its corresponding Date object", () => {
+    it("normalizes a Date string into its corresponding Date object", async () => {
       const serializedDate = "2018-02-14";
       const date = parse(serializedDate, "YYYY-MM-DD", new Date());
 
-      expect(DateField.normalize(serializedDate)).to.deep.equal(date);
+      expect(await DateField.normalize(serializedDate)).to.deep.equal(date);
     });
 
-    it("normalizes a Date object by returning the given value", () => {
+    it("normalizes a Date object by returning the given value", async () => {
       const date = new Date();
-      expect(DateField.normalize(date)).to.equal(date);
+      expect(await DateField.normalize(date)).to.equal(date);
     });
 
   });

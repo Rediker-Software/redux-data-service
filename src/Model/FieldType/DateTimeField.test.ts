@@ -44,9 +44,9 @@ describe("FieldType: DateTimeField", () => {
     expect(DateTimeField.isValidType(value)).to.be.false;
   });
 
-  it("transforms a Date into its corresponding ISO string", () => {
+  it("transforms a Date into its corresponding ISO string", async () => {
     const value = new Date();
-    expect(DateTimeField.transform(value)).to.equal(value.toISOString());
+    expect(await DateTimeField.transform(value)).to.equal(value.toISOString());
   });
 
   it("should be serialized", () => {
@@ -55,16 +55,16 @@ describe("FieldType: DateTimeField", () => {
 
   describe("normalize", () => {
 
-    it("normalizes a Date ISO string into its corresponding Date object", () => {
+    it("normalizes a Date ISO string into its corresponding Date object", async () => {
       const date = new Date();
       const value = date.toISOString();
 
-      expect(DateTimeField.normalize(value)).to.deep.equal(date);
+      expect(await DateTimeField.normalize(value)).to.deep.equal(date);
     });
 
-    it("normalizes a Date object by returning the given value", () => {
+    it("normalizes a Date object by returning the given value", async () => {
       const date = new Date();
-      expect(DateTimeField.normalize(date)).to.equal(date);
+      expect(await DateTimeField.normalize(date)).to.equal(date);
     });
 
   });

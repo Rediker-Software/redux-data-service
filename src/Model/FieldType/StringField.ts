@@ -6,5 +6,5 @@ export const StringField: IFieldType<string> = {
   defaultValidationRules: { type: "string" },
   defaultValue: "",
   isValidType: (value) => value == null || isString(value),
-  normalize: (value) => value != null ? String(value) : "",
+  normalize: async (value) => value != null ? String(value) : "",
 };

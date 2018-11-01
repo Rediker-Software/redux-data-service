@@ -2,11 +2,11 @@ import { FakeModel } from "../Model/Model.mock";
 import { BaseSerializer } from "./BaseSerializer";
 
 export class MockSerializer extends BaseSerializer<any, any> {
-  public serialize() {
+  public async serialize() {
     return "";
   }
 
-  public deserialize() {
+  public async deserialize() {
     return new FakeModel({ id: "123" });
   }
 }

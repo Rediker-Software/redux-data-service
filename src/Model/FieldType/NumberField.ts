@@ -6,5 +6,5 @@ export const NumberField: IFieldType<number> = {
   defaultValidationRules: { numericality: true },
   defaultValue: 0,
   isValidType: (value) => value == null || isNumber(value),
-  normalize: (value) => Number(value),
+  normalize: async (value) => Number(value),
 };

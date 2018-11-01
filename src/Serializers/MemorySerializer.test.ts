@@ -18,15 +18,15 @@ describe("MemorySerializer", () => {
     serializer = new MemorySerializer(FakeModel);
   });
 
-  it("serialize() returns the raw model data", () => {
+  it("serialize() returns the raw model data", async () => {
     const fakeModel = seedService("fakeModel") as any;
-    expect(serializer.serialize(fakeModel))
+    expect(await serializer.serialize(fakeModel))
       .to.deep.contain(omit(fakeModel.modelData, ["id", "dateUpdated", "dateDeleted"]));
   });
 
-  it("deserialize() returns the model when given raw data", () => {
+  it("deserialize() returns the model when given raw data", async () => {
     const fakeModel = seedService("fakeModel") as any;
-    expect(serializer.deserialize(fakeModel.modelData))
+    expect(await serializer.deserialize(fakeModel.modelData))
       .to.deep.equal(fakeModel);
   });
 

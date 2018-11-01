@@ -45,11 +45,12 @@ describe("FieldType: ArrayField", () => {
     expect(ArrayField.serialize).to.be.true;
   });
 
-  it("normalizes an array by returning the given value", () => {
+  it("normalizes an array by returning the given value", async () => {
     const randomArray = [
       random.number(),
     ];
 
-    expect(ArrayField.normalize(randomArray)).to.equal(randomArray);
+    const normalizedValue = await ArrayField.normalize(randomArray);
+    expect(normalizedValue).to.equal(randomArray);
   });
 });

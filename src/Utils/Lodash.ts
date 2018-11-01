@@ -1,5 +1,5 @@
 import * as convert from "lodash/fp/convert";
-import { mapValues, forEach, isPlainObject } from "lodash";
+import { forEach, isPlainObject, map, mapValues } from "lodash";
 
 /**
  * By default, lodash/fp/mapValues does not return the key to the iterator.
@@ -9,6 +9,17 @@ import { mapValues, forEach, isPlainObject } from "lodash";
  * @see https://github.com/lodash/lodash/wiki/FP-Guide
  */
 export const mapValuesWithKeys = convert("mapValues", mapValues, {
+  cap: false,
+});
+
+/**
+ * By default, lodash/fp/map does not return the key to the iterator.
+ * This example was lifted from their docs to make it work as expected.
+ *
+ * @type {any}
+ * @see https://github.com/lodash/lodash/wiki/FP-Guide
+ */
+export const mapWithKeys = convert("map", map, {
   cap: false,
 });
 

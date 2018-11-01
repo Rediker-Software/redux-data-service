@@ -6,8 +6,8 @@ export const DateTimeField: IFieldType<Date> = {
   defaultValidationRules: { datetime: true },
   defaultValue: null,
   isValidType: (value) => value == null || isDate(value),
-  transform: (date: Date) => date != null ? date.toISOString() : null,
-  normalize: (value: string | any): Date => (
+  transform: async (date: Date) => date != null ? date.toISOString() : null,
+  normalize: async (value: string | any): Promise<Date> => (
     isDate(value)
       ? value
       : (value != null

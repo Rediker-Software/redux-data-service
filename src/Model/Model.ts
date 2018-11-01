@@ -634,10 +634,10 @@ export class Model<T extends IModelData> implements IModel<T> {
    * Given a fieldName as a deep path (such as "firstName" or "person.firstName"),
    * this will use that field's own IFieldType.normalize function to parse the given value.
    */
-  public parseFieldValue(fieldName: string, value: any): any {
+  public async parseFieldValue(fieldName: string, value: any): Promise<any> {
     const path = addPenultimateFieldToPath(fieldName, "fields");
     const field: IFieldType<any> = get(this, path);
 
-    return field.normalize(value);
+    return await field.normalize(value);
   }
 }

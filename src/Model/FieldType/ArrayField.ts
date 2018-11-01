@@ -6,5 +6,5 @@ export const ArrayField: IFieldType<any[]> = {
   defaultValidationRules: { type: "array" },
   defaultValue: [],
   isValidType: (value) => value == null || isArray(value),
-  normalize: (value) => value,
+  normalize: async (value) => value,
 };
