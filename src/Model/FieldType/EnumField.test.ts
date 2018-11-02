@@ -55,6 +55,10 @@ describe("FieldType: EnumField", () => {
     expect(EnumField.serialize).to.be.false;
   });
 
+  it("declares it's type", () =>
+    expect(EnumField.type).to.eq("enum"),
+  );
+
   it("normalizes a value by returning the given value if it exists in the enum", async () => {
     expect(await EnumField.normalize("world")).to.equal(TestEnum.world);
   });

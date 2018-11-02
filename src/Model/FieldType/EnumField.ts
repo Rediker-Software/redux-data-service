@@ -14,6 +14,7 @@ export const createEnumField = (fieldEnum: any): IFieldType<any> => {
     },
     defaultValue: null,
     isValidType: (value) => value == null || includes(fieldEnum, value),
+    type: "enum",
     normalize: async (value) => value in fieldEnum ? fieldEnum[value] : null,
   };
 };

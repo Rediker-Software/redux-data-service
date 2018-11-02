@@ -26,6 +26,22 @@ describe("Model", () => {
     initializeValidateJS();
   });
 
+  describe("Fields", () => {
+    const mockModel = new Model({ id: "fakeId", dateDeleted: new Date(), dateUpdated: new Date() });
+
+    it("sets id to be readOnly", () => {
+      expect(mockModel.fields.id).to.have.property("readOnly", true);
+    });
+
+    it("sets dateDeleted to be readOnly", () => {
+      expect(mockModel.fields.dateDeleted).to.have.property("readOnly", true);
+    });
+
+    it("sets dateUpdated to be readOnly", () => {
+      expect(mockModel.fields.dateUpdated).to.have.property("readOnly", true);
+    });
+  });
+
   describe("Saving the model", () => {
     let service;
     let modelId;
@@ -1156,9 +1172,9 @@ describe("Model", () => {
       const model = new Model({ id: random.number().toString() });
 
       expect(model.fields).to.deep.equal({
-        id: { ...StringField, serialize: false },
-        dateDeleted: { ...DateTimeField, serialize: false },
-        dateUpdated: { ...DateTimeField, serialize: false },
+        id: { ...StringField, serialize: false, readOnly: true },
+        dateDeleted: { ...DateTimeField, serialize: false, readOnly: true },
+        dateUpdated: { ...DateTimeField, serialize: false, readOnly: true },
       });
     });
   });

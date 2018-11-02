@@ -45,6 +45,10 @@ describe("FieldType: ArrayField", () => {
     expect(ArrayField.serialize).to.be.true;
   });
 
+  it("declares it's type", () =>
+    expect(ArrayField.type).to.eq("array"),
+  );
+
   it("normalizes an array by returning the given value", async () => {
     const randomArray = [
       random.number(),

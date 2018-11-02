@@ -13,4 +13,5 @@ export const TimeField: IFieldType<Date> = {
       ? parse(serializedDate, "hh:mm:ss a", new Date())
       : null
   ),
+  type: "time",
 };

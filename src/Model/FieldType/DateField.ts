@@ -16,4 +16,5 @@ export const DateField: IFieldType<Date> = {
         : null
       )
   ),
+  type: "date",
 };

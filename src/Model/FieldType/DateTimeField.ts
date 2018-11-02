@@ -15,4 +15,5 @@ export const DateTimeField: IFieldType<Date> = {
         : null
       )
   ),
+  type: "dateTime",
 };

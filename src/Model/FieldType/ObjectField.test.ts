@@ -45,6 +45,10 @@ describe("FieldType: ObjectField", () => {
     expect(ObjectField.serialize).to.be.true;
   });
 
+  it("declares it's type", () =>
+    expect(ObjectField.type).to.eq("object"),
+  );
+
   it("normalizes an object by returning the given value", async () => {
     const randomObject = {
       asdf: random.number(),

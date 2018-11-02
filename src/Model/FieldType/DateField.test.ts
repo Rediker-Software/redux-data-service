@@ -56,6 +56,10 @@ describe("FieldType: DateField", () => {
     expect(DateField.serialize).to.be.true;
   });
 
+  it("declares it's type", () =>
+    expect(DateField.type).to.eq("date"),
+  );
+
   describe("normalize", () => {
 
     it("normalizes a Date string into its corresponding Date object", async () => {
@@ -71,5 +75,4 @@ describe("FieldType: DateField", () => {
     });
 
   });
-
 });

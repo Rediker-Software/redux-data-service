@@ -63,4 +63,8 @@ describe("FieldType: TimeField", () => {
   it("should be serialized", () => {
     expect(TimeField.serialize).to.be.true;
   });
+
+  it("declares it's type", () =>
+    expect(TimeField.type).to.eq("time"),
+  );
 });
