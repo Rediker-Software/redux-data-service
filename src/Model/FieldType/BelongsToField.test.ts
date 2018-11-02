@@ -43,7 +43,7 @@ describe("FieldType: BelongsToField", () => {
     expect(BelongsToField.serialize).to.be.false;
   });
 
-  it("declares it's type", () =>
+  it("declares its type", () =>
     expect(BelongsToField.type).to.eq("belongsTo"),
   );
 });

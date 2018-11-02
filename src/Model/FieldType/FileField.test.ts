@@ -43,7 +43,7 @@ describe("FieldType: FileField", () => {
     expect(FileField.serialize).to.be.true;
   });
 
-  it("declares it's type", () =>
+  it("declares its type", () =>
     expect(FileField.type).to.eq("file"),
   );
 

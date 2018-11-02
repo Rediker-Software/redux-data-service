@@ -46,7 +46,7 @@ describe("FieldType: BooleanField", () => {
     expect(BooleanField.serialize).to.be.true;
   });
 
-  it("declares it's type", () =>
+  it("declares its type", () =>
     expect(BooleanField.type).to.eq("boolean"),
   );
 

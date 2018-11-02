@@ -43,7 +43,7 @@ describe("FieldType: HasManyField", () => {
     expect(HasManyField.serialize).to.be.false;
   });
 
-  it("declares it's type", () =>
+  it("declares its type", () =>
     expect(HasManyField.type).to.eq("hasMany"),
   );
 });

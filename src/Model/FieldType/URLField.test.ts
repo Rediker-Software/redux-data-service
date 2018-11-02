@@ -45,7 +45,7 @@ describe("FieldType: URLField", () => {
     expect(URLField.serialize).to.be.true;
   });
 
-  it("declares it's type", () =>
+  it("declares its type", () =>
     expect(URLField.type).to.eq("URL"),
   );
 

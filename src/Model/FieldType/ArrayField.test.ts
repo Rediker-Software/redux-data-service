@@ -45,7 +45,7 @@ describe("FieldType: ArrayField", () => {
     expect(ArrayField.serialize).to.be.true;
   });
 
-  it("declares it's type", () =>
+  it("declares its type", () =>
     expect(ArrayField.type).to.eq("array"),
   );
 

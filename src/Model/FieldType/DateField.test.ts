@@ -56,7 +56,7 @@ describe("FieldType: DateField", () => {
     expect(DateField.serialize).to.be.true;
   });
 
-  it("declares it's type", () =>
+  it("declares its type", () =>
     expect(DateField.type).to.eq("date"),
   );
 
