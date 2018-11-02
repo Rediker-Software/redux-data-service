@@ -5,6 +5,7 @@ export * from "./DateField";
 export * from "./DateTimeField";
 export * from "./EmailField";
 export * from "./EnumField";
+export * from "./FileField";
 export * from "./HasManyField";
 export * from "./IFieldType";
 export * from "./NumberField";
