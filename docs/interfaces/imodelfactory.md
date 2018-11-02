@@ -24,11 +24,11 @@
 
 ⊕ **new IModelFactory**(modelData?: *`Partial`<`T`>*, meta?: *`Partial`<[IModelMeta](imodelmeta.md)<`T`>>*, relatedModels?: *[IModelsMap](imodelsmap.md)*): [IModel](imodel.md)<`T`>
 
-*Defined in [Model/IModel.ts:41](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/IModel.ts#L41)*
+*Defined in [Model/IModel.ts:41](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/IModel.ts#L41)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | `Optional` modelData | `Partial`<`T`> |
 | `Optional` meta | `Partial`<[IModelMeta](imodelmeta.md)<`T`>> |

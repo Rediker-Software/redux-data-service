@@ -42,6 +42,7 @@ exports.NumberField = {
     defaultValidationRules: { numericality: true },
     defaultValue: 0,
     isValidType: function (value) { return value == null || validate_js_1.isNumber(value); },
+    type: "number",
     normalize: function (value) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
         return [2, Number(value)];
     }); }); },

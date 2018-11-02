@@ -80,6 +80,18 @@ describe("Model", function () {
     before(function () {
         Initializers_1.initializeValidateJS();
     });
+    describe("Fields", function () {
+        var mockModel = new Model_1.Model({ id: "fakeId", dateDeleted: new Date(), dateUpdated: new Date() });
+        it("sets id to be readOnly", function () {
+            expect(mockModel.fields.id).to.have.property("readOnly", true);
+        });
+        it("sets dateDeleted to be readOnly", function () {
+            expect(mockModel.fields.dateDeleted).to.have.property("readOnly", true);
+        });
+        it("sets dateUpdated to be readOnly", function () {
+            expect(mockModel.fields.dateUpdated).to.have.property("readOnly", true);
+        });
+    });
     describe("Saving the model", function () {
         var service;
         var modelId;
@@ -1132,9 +1144,9 @@ describe("Model", function () {
             }(Model_1.Model));
             var model = new Model_1.Model({ id: faker_1.random.number().toString() });
             expect(model.fields).to.deep.equal({
-                id: __assign({}, FieldType_1.StringField, { serialize: false }),
-                dateDeleted: __assign({}, FieldType_1.DateTimeField, { serialize: false }),
-                dateUpdated: __assign({}, FieldType_1.DateTimeField, { serialize: false }),
+                id: __assign({}, FieldType_1.StringField, { serialize: false, readOnly: true }),
+                dateDeleted: __assign({}, FieldType_1.DateTimeField, { serialize: false, readOnly: true }),
+                dateUpdated: __assign({}, FieldType_1.DateTimeField, { serialize: false, readOnly: true }),
             });
         });
     });

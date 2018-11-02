@@ -49,6 +49,7 @@ exports.createEnumField = function (fieldEnum) {
         },
         defaultValue: null,
         isValidType: function (value) { return value == null || lodash_1.includes(fieldEnum, value); },
+        type: "enum",
         normalize: function (value) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
             return [2, value in fieldEnum ? fieldEnum[value] : null];
         }); }); },

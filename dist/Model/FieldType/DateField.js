@@ -55,4 +55,5 @@ exports.DateField = {
                         : null))];
         });
     }); },
+    type: "date",
 };

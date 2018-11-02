@@ -6,6 +6,7 @@ exports.FileField = {
     defaultValue: null,
     isValidType: function (value) { return value == null || value instanceof File; },
     normalize: function (value) { return value; },
+    type: "file",
     transform: function (file) {
         return new Promise(function (resolve, reject) {
             try {

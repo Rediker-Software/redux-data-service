@@ -87,6 +87,9 @@ describe("FieldType: DateTimeField", function () {
     it("should be serialized", function () {
         expect(DateTimeField_1.DateTimeField.serialize).to.be.true;
     });
+    it("declares it's type", function () {
+        return expect(DateTimeField_1.DateTimeField.type).to.eq("dateTime");
+    });
     describe("normalize", function () {
         it("normalizes a Date ISO string into its corresponding Date object", function () { return __awaiter(_this, void 0, void 0, function () {
             var date, value, _a;

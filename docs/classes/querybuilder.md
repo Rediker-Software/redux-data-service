@@ -72,11 +72,11 @@ Note that QueryBuilder is immutable. Each of the builder methods will return a n
 
 ⊕ **new QueryBuilder**(serviceName: *`string`*, queryParams?: *[IQueryParams](../interfaces/iqueryparams.md)*): [QueryBuilder](querybuilder.md)
 
-*Defined in [Query/QueryBuilder.ts:88](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L88)*
+*Defined in [Query/QueryBuilder.ts:88](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L88)*
 
 **Parameters:**
 
-| Param | Type | Default value |
+| Name | Type | Default value |
 | ------ | ------ | ------ |
 | serviceName | `string` | - |
 | `Default value` queryParams | [IQueryParams](../interfaces/iqueryparams.md) |  {} |
@@ -93,7 +93,7 @@ ___
 
 **● hashCode**: *`string`*
 
-*Defined in [Query/QueryBuilder.ts:88](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L88)*
+*Defined in [Query/QueryBuilder.ts:88](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L88)*
 
 ___
 <a id="queryparams"></a>
@@ -104,7 +104,7 @@ ___
 
 *Implementation of [IQueryBuilder](../interfaces/iquerybuilder.md).[queryParams](../interfaces/iquerybuilder.md#queryparams)*
 
-*Defined in [Query/QueryBuilder.ts:87](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L87)*
+*Defined in [Query/QueryBuilder.ts:87](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L87)*
 
 ___
 <a id="servicename"></a>
@@ -115,7 +115,7 @@ ___
 
 *Implementation of [IQueryBuilder](../interfaces/iquerybuilder.md).[serviceName](../interfaces/iquerybuilder.md#servicename)*
 
-*Defined in [Query/QueryBuilder.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L86)*
+*Defined in [Query/QueryBuilder.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L86)*
 
 ___
 
@@ -125,16 +125,16 @@ ___
 
 ###  filter
 
-▸ **filter**(key: *`string`*, value: * `string` &#124; `number` &#124; `true` &#124; `false` &#124; ( `string` &#124; `number` &#124; `true` &#124; `false`)[]*): [IQueryBuilder](../interfaces/iquerybuilder.md)
+▸ **filter**(key: *`string`*, value: * `string` &#124; `number` &#124; `false` &#124; `true` &#124; ( `string` &#124; `number` &#124; `false` &#124; `true`)[]*): [IQueryBuilder](../interfaces/iquerybuilder.md)
 
-*Defined in [Query/QueryBuilder.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L95)*
+*Defined in [Query/QueryBuilder.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L95)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | key | `string` |
-| value |  `string` &#124; `number` &#124; `true` &#124; `false` &#124; ( `string` &#124; `number` &#124; `true` &#124; `false`)[]|
+| value |  `string` &#124; `number` &#124; `false` &#124; `true` &#124; ( `string` &#124; `number` &#124; `false` &#124; `true`)[]|
 
 **Returns:** [IQueryBuilder](../interfaces/iquerybuilder.md)
 
@@ -145,7 +145,7 @@ ___
 
 ▸ **getHashCode**(): `string`
 
-*Defined in [Query/QueryBuilder.ts:164](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L164)*
+*Defined in [Query/QueryBuilder.ts:164](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L164)*
 
 **Returns:** `string`
 
@@ -156,7 +156,7 @@ ___
 
 ▸ **invoke**(): `void`
 
-*Defined in [Query/QueryBuilder.ts:157](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L157)*
+*Defined in [Query/QueryBuilder.ts:157](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L157)*
 
 **Returns:** `void`
 
@@ -167,11 +167,11 @@ ___
 
 ▸ **page**(pageNumber: *`number`*): [IQueryBuilder](../interfaces/iquerybuilder.md)
 
-*Defined in [Query/QueryBuilder.ts:114](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L114)*
+*Defined in [Query/QueryBuilder.ts:114](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L114)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | pageNumber | `number` |
 
@@ -184,11 +184,11 @@ ___
 
 ▸ **pageSize**(pageSize: *`number`*): [IQueryBuilder](../interfaces/iquerybuilder.md)
 
-*Defined in [Query/QueryBuilder.ts:123](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L123)*
+*Defined in [Query/QueryBuilder.ts:123](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L123)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | pageSize | `number` |
 
@@ -201,11 +201,11 @@ ___
 
 ▸ **removeFilter**(key: *`string`*): [IQueryBuilder](../interfaces/iquerybuilder.md)
 
-*Defined in [Query/QueryBuilder.ts:104](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L104)*
+*Defined in [Query/QueryBuilder.ts:104](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L104)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | key | `string` |
 
@@ -218,11 +218,11 @@ ___
 
 ▸ **removeSort**(key: *`string`*): [IQueryBuilder](../interfaces/iquerybuilder.md)
 
-*Defined in [Query/QueryBuilder.ts:142](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L142)*
+*Defined in [Query/QueryBuilder.ts:142](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L142)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | key | `string` |
 
@@ -235,11 +235,11 @@ ___
 
 ▸ **sort**(key: *`string`*, direction?: *[SortDirection](../#sortdirection)*): [IQueryBuilder](../interfaces/iquerybuilder.md)
 
-*Defined in [Query/QueryBuilder.ts:132](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L132)*
+*Defined in [Query/QueryBuilder.ts:132](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L132)*
 
 **Parameters:**
 
-| Param | Type | Default value |
+| Name | Type | Default value |
 | ------ | ------ | ------ |
 | key | `string` | - |
 | `Default value` direction | [SortDirection](../#sortdirection) | &quot;asc&quot; |

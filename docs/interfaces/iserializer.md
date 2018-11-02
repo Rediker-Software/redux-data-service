@@ -36,14 +36,14 @@
 
 **● deserialize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Serializers/ISerializer.ts#L5)*
+*Defined in [Serializers/ISerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Serializers/ISerializer.ts#L5)*
 
 #### Type declaration
 ▸(data: *`R`*): `Promise`<[IModel](imodel.md)<`T`>>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | data | `R` |
 
@@ -56,14 +56,14 @@ ___
 
 **● normalize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Serializers/ISerializer.ts#L7)*
+*Defined in [Serializers/ISerializer.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Serializers/ISerializer.ts#L7)*
 
 #### Type declaration
 ▸(data: *`Partial`<`R`>*): `Promise`<[IModel](imodel.md)<`T`>>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | data | `Partial`<`R`> |
 
@@ -76,14 +76,14 @@ ___
 
 **● serialize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Serializers/ISerializer.ts#L4)*
+*Defined in [Serializers/ISerializer.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Serializers/ISerializer.ts#L4)*
 
 #### Type declaration
 ▸(modelData: * [IModel](imodel.md)<`T`> &#124; `Partial`<`T`>*): `Promise`<`S`>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | modelData |  [IModel](imodel.md)<`T`> &#124; `Partial`<`T`>|
 
@@ -96,14 +96,14 @@ ___
 
 **● transform**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Serializers/ISerializer.ts#L6)*
+*Defined in [Serializers/ISerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Serializers/ISerializer.ts#L6)*
 
 #### Type declaration
 ▸(model: *[IModel](imodel.md)<`T`>*): `Promise`<`Partial`<`R`>>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | model | [IModel](imodel.md)<`T`> |
 

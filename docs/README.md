@@ -181,36 +181,36 @@
 
 ###  DataServiceStateRecord
 
-**ΤDataServiceStateRecord**: * `Record`<[IDataServiceState](interfaces/idataservicestate.md)<`T`>> & `Readonly`<[IDataServiceState](interfaces/idataservicestate.md)<`T`>>
+**Ƭ DataServiceStateRecord**: * `Record`<[IDataServiceState](interfaces/idataservicestate.md)<`T`>> & `Readonly`<[IDataServiceState](interfaces/idataservicestate.md)<`T`>>
 *
 
-*Defined in [Services/DataService.ts:54](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/DataService.ts#L54)*
+*Defined in [Services/DataService.ts:54](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/DataService.ts#L54)*
 
 ___
 <a id="filtervalue"></a>
 
 ###  FilterValue
 
-**ΤFilterValue**: * `string` &#124; `number` &#124; `boolean`
+**Ƭ FilterValue**: * `string` &#124; `number` &#124; `boolean`
 *
 
-*Defined in [Query/QueryBuilder.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L12)*
+*Defined in [Query/QueryBuilder.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L12)*
 
 ___
 <a id="iactioncreator"></a>
 
 ###  IActionCreator
 
-**ΤIActionCreator**: *`function`*
+**Ƭ IActionCreator**: *`function`*
 
-*Defined in [Services/IService.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/IService.ts#L14)*
+*Defined in [Services/IService.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/IService.ts#L14)*
 
 #### Type declaration
 ▸(payload?: *`T`*, meta?: *`M`*): [IAction](interfaces/iaction.md)<`T`, `M`>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | `Optional` payload | `T` |
 | `Optional` meta | `M` |
@@ -222,25 +222,25 @@ ___
 
 ###  IActionEpic
 
-**ΤIActionEpic**: *`Epic`<[IObserveableAction](#iobserveableaction)<`T`>, `__type`, `any`>*
+**Ƭ IActionEpic**: *`Epic`<[IObserveableAction](#iobserveableaction)<`T`>, `__type`, `any`>*
 
-*Defined in [Services/IService.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/IService.ts#L24)*
+*Defined in [Services/IService.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/IService.ts#L24)*
 
 ___
 <a id="iconfigurestore"></a>
 
 ###  IConfigureStore
 
-**ΤIConfigureStore**: *`function`*
+**Ƭ IConfigureStore**: *`function`*
 
-*Defined in [Store/ConfigureStore.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Store/ConfigureStore.ts#L8)*
+*Defined in [Store/ConfigureStore.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Store/ConfigureStore.ts#L8)*
 
 #### Type declaration
 ▸(reducers: *[IReducers](#ireducers)<`any`>*, epics: *[IActionEpic](#iactionepic)[]*): `Store`<`any`>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | reducers | [IReducers](#ireducers)<`any`> |
 | epics | [IActionEpic](#iactionepic)[] |
@@ -252,36 +252,36 @@ ___
 
 ###  IModelKeys
 
-**ΤIModelKeys**: * `object` &#124; `null`
+**Ƭ IModelKeys**: * `object` &#124; `null`
 *
 
-*Defined in [Model/IModel.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/IModel.ts#L3)*
+*Defined in [Model/IModel.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/IModel.ts#L3)*
 
 ___
 <a id="iobserveableaction"></a>
 
 ###  IObserveableAction
 
-**ΤIObserveableAction**: * `ActionsObservable`<[IAction](interfaces/iaction.md)<`T`>> & [IAction](interfaces/iaction.md)<`T`>
+**Ƭ IObserveableAction**: * `ActionsObservable`<[IAction](interfaces/iaction.md)<`T`>> & [IAction](interfaces/iaction.md)<`T`>
 *
 
-*Defined in [Services/IService.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/IService.ts#L23)*
+*Defined in [Services/IService.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/IService.ts#L23)*
 
 ___
 <a id="ireducer"></a>
 
 ###  IReducer
 
-**ΤIReducer**: *`function`*
+**Ƭ IReducer**: *`function`*
 
-*Defined in [Services/IService.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/IService.ts#L20)*
+*Defined in [Services/IService.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/IService.ts#L20)*
 
 #### Type declaration
 ▸(state: *`S`*, action: *[IAction](interfaces/iaction.md)*): `S`
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | state | `S` |
 | action | [IAction](interfaces/iaction.md) |
@@ -293,39 +293,39 @@ ___
 
 ###  IReducers
 
-**ΤIReducers**: * `object` &#124; `__type`
+**Ƭ IReducers**: * `object` &#124; `__type`
 *
 
-*Defined in [Services/IService.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/IService.ts#L21)*
+*Defined in [Services/IService.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/IService.ts#L21)*
 
 ___
 <a id="irequestcachekey"></a>
 
 ###  IRequestCacheKey
 
-**ΤIRequestCacheKey**: *`string`*
+**Ƭ IRequestCacheKey**: *`string`*
 
-*Defined in [Services/DataService.ts:34](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/DataService.ts#L34)*
+*Defined in [Services/DataService.ts:34](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/DataService.ts#L34)*
 
 ___
 <a id="irequestcacherecord"></a>
 
 ###  IRequestCacheRecord
 
-**ΤIRequestCacheRecord**: * `Record`<[IRequestCache](interfaces/irequestcache.md)> & `Readonly`<[IRequestCache](interfaces/irequestcache.md)>
+**Ƭ IRequestCacheRecord**: * `Record`<[IRequestCache](interfaces/irequestcache.md)> & `Readonly`<[IRequestCache](interfaces/irequestcache.md)>
 *
 
-*Defined in [Services/DataService.ts:42](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/DataService.ts#L42)*
+*Defined in [Services/DataService.ts:42](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/DataService.ts#L42)*
 
 ___
 <a id="sortdirection"></a>
 
 ###  SortDirection
 
-**ΤSortDirection**: * "asc" &#124; "desc"
+**Ƭ SortDirection**: * "asc" &#124; "desc"
 *
 
-*Defined in [Query/QueryBuilder.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Query/QueryBuilder.ts#L6)*
+*Defined in [Query/QueryBuilder.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Query/QueryBuilder.ts#L6)*
 
 ___
 
@@ -341,7 +341,7 @@ ___
   ids: List(),
 })
 
-*Defined in [Services/DataService.ts:58](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/DataService.ts#L58)*
+*Defined in [Services/DataService.ts:58](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/DataService.ts#L58)*
 
 ___
 <a id="_fakexhr"></a>
@@ -350,7 +350,7 @@ ___
 
 **● _FakeXHR**: *`any`*
 
-*Defined in [TestUtils/Service.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L30)*
+*Defined in [TestUtils/Service.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L30)*
 
 ___
 <a id="_fakedxhrhistory"></a>
@@ -359,7 +359,7 @@ ___
 
 **● _FakedXHRHistory**: *`any`[]* =  []
 
-*Defined in [TestUtils/Service.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L29)*
+*Defined in [TestUtils/Service.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L29)*
 
 ___
 <a id="actionstubmap"></a>
@@ -368,7 +368,7 @@ ___
 
 **● actionStubMap**: *`any`*
 
-*Defined in [TestUtils/Service.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L28)*
+*Defined in [TestUtils/Service.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L28)*
 
 Looks like { \[moduleName\] : { \[actionName\] : { base: main stub on action invokeSpy: A Sinon Spy } } }
 
@@ -379,7 +379,7 @@ ___
 
 **● configuration**: *[IConfiguration](interfaces/iconfiguration.md)* =  {} as IConfiguration
 
-*Defined in [Configure.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Configure.ts#L16)*
+*Defined in [Configure.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Configure.ts#L16)*
 
 ___
 <a id="initializationcomplete"></a>
@@ -388,7 +388,7 @@ ___
 
 **● initializationComplete**: *`boolean`* = false
 
-*Defined in [Initialize.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Initialize.ts#L4)*
+*Defined in [Initialize.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Initialize.ts#L4)*
 
 ___
 <a id="initialize"></a>
@@ -397,7 +397,7 @@ ___
 
 **● initialize**: *`(Anonymous function)`* =  makeInitialize(Initializers)
 
-*Defined in [Initialize.ts:37](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Initialize.ts#L37)*
+*Defined in [Initialize.ts:37](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Initialize.ts#L37)*
 
 Initializers are fired once when the app boots up, providing a useful hook for initializing the application. For instance, if a third-party dependency needs some initial setup, create an initializer in the Initializers directory.
 
@@ -410,7 +410,7 @@ ___
 
 **● initializeValidateJS**: *`(Anonymous function)`* =  makeInitializeValidateJS(validateJS, Validators)
 
-*Defined in [Initializers/InitializeValidateJS.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Initializers/InitializeValidateJS.ts#L27)*
+*Defined in [Initializers/InitializeValidateJS.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Initializers/InitializeValidateJS.ts#L27)*
 
 Validation initializers are pulled out of the Validation directory and executed using a standard naming convention such that they are executed if their name starts with "initialize". They are passed an instance of validate.js
 
@@ -423,7 +423,7 @@ ___
   cap: false,
 })
 
-*Defined in [Utils/Lodash.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Utils/Lodash.ts#L11)*
+*Defined in [Utils/Lodash.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Utils/Lodash.ts#L11)*
 
 By default, lodash/fp/mapValues does not return the key to the iterator. This example was lifted from their docs to make it work as expected.
 *__type__*: {any}
@@ -439,7 +439,7 @@ ___
   cap: false,
 })
 
-*Defined in [Utils/Lodash.ts:22](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Utils/Lodash.ts#L22)*
+*Defined in [Utils/Lodash.ts:22](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Utils/Lodash.ts#L22)*
 
 By default, lodash/fp/map does not return the key to the iterator. This example was lifted from their docs to make it work as expected.
 *__type__*: {any}
@@ -453,7 +453,7 @@ ___
 
 **● modelDataCreatorMap**: *[IModelDataCreatorMap](interfaces/imodeldatacreatormap.md)*
 
-*Defined in [TestUtils/Service.ts:15](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L15)*
+*Defined in [TestUtils/Service.ts:15](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L15)*
 
 ___
 <a id="servicemap"></a>
@@ -462,7 +462,7 @@ ___
 
 **● serviceMap**: *[IServiceMap](interfaces/iservicemap.md)*
 
-*Defined in [Services/ServiceProvider.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/ServiceProvider.ts#L21)*
+*Defined in [Services/ServiceProvider.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/ServiceProvider.ts#L21)*
 
 ___
 
@@ -474,16 +474,16 @@ ___
 
 ▸ **addPenultimateFieldToPath**(path: *`string`*, field: *`any`*): `string`[]
 
-*Defined in [Utils/String.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Utils/String.ts#L24)*
+*Defined in [Utils/String.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Utils/String.ts#L24)*
 
 Given a path string in dot notation compatible with lodash's `get` and `set` functions, will return the path as an array of strings with the given field as the second to last item.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| path | `string` |  - |
-| field | `any` |  - |
+| path | `string` |  \- |
+| field | `any` |  \- |
 
 **Returns:** `string`[]
 
@@ -494,16 +494,16 @@ ___
 
 ▸ **attr**(fieldType: *[IFieldType](interfaces/ifieldtype.md)*, options?: *[IFieldOptions](interfaces/ifieldoptions.md)*): [IDecorator](interfaces/idecorator.md)<[IAttrs](interfaces/iattrs.md)>
 
-*Defined in [Model/Decorators/Attr.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/Attr.ts#L24)*
+*Defined in [Model/Decorators/Attr.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Attr.ts#L24)*
 
 A decorator which maps a property's getter and setter to `getField` and `setField` methods implemented on the target class.
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| fieldType | [IFieldType](interfaces/ifieldtype.md) | - |  - |
-| `Default value` options | [IFieldOptions](interfaces/ifieldoptions.md) |  {} |  - |
+| fieldType | [IFieldType](interfaces/ifieldtype.md) | - |  \- |
+| `Default value` options | [IFieldOptions](interfaces/ifieldoptions.md) |  {} |  \- |
 
 **Returns:** [IDecorator](interfaces/idecorator.md)<[IAttrs](interfaces/iattrs.md)>
 
@@ -514,7 +514,7 @@ ___
 
 ▸ **belongsTo**(options?: *[IRelationshipOptions](interfaces/irelationshipoptions.md)*): [IDecorator](interfaces/idecorator.md)<[IRelationship](interfaces/irelationship.md)>
 
-*Defined in [Model/Decorators/BelongsTo.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/BelongsTo.ts#L14)*
+*Defined in [Model/Decorators/BelongsTo.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/BelongsTo.ts#L14)*
 
 A decorator which creates a "BelongsTo" relationship, for establishing a one-to-many or one-to-one relationship to the related service, such that this service has one of the related service. The `relatedFieldName` is the FK field on this model, for identifying the ID of the related model.
 
@@ -522,9 +522,9 @@ If no `serviceName` is provided, the property being decorated will be used. If n
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| `Default value` options | [IRelationshipOptions](interfaces/irelationshipoptions.md) |  {} |  - |
+| `Default value` options | [IRelationshipOptions](interfaces/irelationshipoptions.md) |  {} |  \- |
 
 **Returns:** [IDecorator](interfaces/idecorator.md)<[IRelationship](interfaces/irelationship.md)>
 
@@ -535,11 +535,11 @@ ___
 
 ▸ **configure**(config: *[IConfiguration](interfaces/iconfiguration.md)*, configureStore?: *[IConfigureStore](#iconfigurestore)*): `Store`<`any`>
 
-*Defined in [Configure.ts:22](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Configure.ts#L22)*
+*Defined in [Configure.ts:22](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Configure.ts#L22)*
 
 **Parameters:**
 
-| Param | Type | Default value |
+| Name | Type | Default value |
 | ------ | ------ | ------ |
 | config | [IConfiguration](interfaces/iconfiguration.md) | - |
 | `Default value` configureStore | [IConfigureStore](#iconfigurestore) |  defaultConfigureStore |
@@ -553,11 +553,11 @@ ___
 
 ▸ **configureStore**(reducers: *[IReducers](#ireducers)<`any`>*, epics: *[IActionEpic](#iactionepic)[]*):  `Store`<`Object`, `AnyAction`> & `object`
 
-*Defined in [Store/ConfigureStore.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Store/ConfigureStore.ts#L10)*
+*Defined in [Store/ConfigureStore.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Store/ConfigureStore.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | reducers | [IReducers](#ireducers)<`any`> |
 | epics | [IActionEpic](#iactionepic)[] |
@@ -571,11 +571,11 @@ ___
 
 ▸ **createEnumField**(fieldEnum: *`any`*): [IFieldType](interfaces/ifieldtype.md)<`any`>
 
-*Defined in [Model/FieldType/EnumField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/EnumField.ts#L4)*
+*Defined in [Model/FieldType/EnumField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/EnumField.ts#L4)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | fieldEnum | `any` |
 
@@ -588,11 +588,11 @@ ___
 
 ▸ **createMockFakeModel**(overrideValues?: *[IFakeModelData](interfaces/ifakemodeldata.md)*): [FakeModel](classes/fakemodel.md)
 
-*Defined in [Model/Model.mock.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.mock.ts#L44)*
+*Defined in [Model/Model.mock.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.mock.ts#L44)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | `Optional` overrideValues | [IFakeModelData](interfaces/ifakemodeldata.md) |
 
@@ -605,15 +605,15 @@ ___
 
 ▸ **createMockFakeModelArray**(numItems?: *`number`*): [IFakeModelData](interfaces/ifakemodeldata.md)[]
 
-*Defined in [Model/Model.mock.ts:59](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.mock.ts#L59)*
+*Defined in [Model/Model.mock.ts:59](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.mock.ts#L59)*
 
 Generates an array of items using fake data
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| `Default value` numItems | `number` | 10 |  - |
+| `Default value` numItems | `number` | 10 |  \- |
 
 **Returns:** [IFakeModelData](interfaces/ifakemodeldata.md)[]
 
@@ -624,15 +624,15 @@ ___
 
 ▸ **createMockFakeModelData**(id?: *`string`*): [IFakeModelData](interfaces/ifakemodeldata.md)
 
-*Defined in [Model/Model.mock.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.mock.ts#L35)*
+*Defined in [Model/Model.mock.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.mock.ts#L35)*
 
 Generates a single item using fake data
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| `Optional` id | `string` |  - |
+| `Optional` id | `string` |  \- |
 
 **Returns:** [IFakeModelData](interfaces/ifakemodeldata.md)
 
@@ -643,11 +643,11 @@ ___
 
 ▸ **createMockFakeModels**(numItems?: *`number`*): [FakeModel](classes/fakemodel.md)[]
 
-*Defined in [Model/Model.mock.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.mock.ts#L69)*
+*Defined in [Model/Model.mock.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.mock.ts#L69)*
 
 **Parameters:**
 
-| Param | Type | Default value |
+| Name | Type | Default value |
 | ------ | ------ | ------ |
 | `Default value` numItems | `number` | 10 |
 
@@ -658,9 +658,9 @@ ___
 
 ###  createMockServiceState
 
-▸ **createMockServiceState**T(service: *[IService](interfaces/iservice.md)<`T`>*, actions?: *[IAction](interfaces/iaction.md)[]*): `object`
+▸ **createMockServiceState**<`T`>(service: *[IService](interfaces/iservice.md)<`T`>*, actions?: *[IAction](interfaces/iaction.md)[]*): `object`
 
-*Defined in [TestUtils/Service.ts:218](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L218)*
+*Defined in [TestUtils/Service.ts:218](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L218)*
 
 Creates a mock state object for the given service to plug it into a mock Redux store
 *__see__*: redux-test-utils/createMockStore
@@ -670,10 +670,10 @@ Creates a mock state object for the given service to plug it into a mock Redux s
 #### T 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| service | [IService](interfaces/iservice.md)<`T`> | - |  - |
-| `Default value` actions | [IAction](interfaces/iaction.md)[] |  [] |  - |
+| service | [IService](interfaces/iservice.md)<`T`> | - |  \- |
+| `Default value` actions | [IAction](interfaces/iaction.md)[] |  [] |  \- |
 
 **Returns:** `object`
 any
@@ -685,7 +685,7 @@ ___
 
 ▸ **field**(fieldType: *[IFieldType](interfaces/ifieldtype.md)*, options?: * [IFieldOptions](interfaces/ifieldoptions.md) & `any`*): [IDecorator](interfaces/idecorator.md)<[IFieldTypes](interfaces/ifieldtypes.md)>
 
-*Defined in [Model/Decorators/Field.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/Field.ts#L27)*
+*Defined in [Model/Decorators/Field.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Field.ts#L27)*
 
 A decorator which marks the FieldType for the property and sets up default validation rules.
 
@@ -693,10 +693,10 @@ Note: Chances are you should use the `@attr`, `@belongsTo` or `@hasMany` decorat
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| fieldType | [IFieldType](interfaces/ifieldtype.md) | - |  - |
-| `Default value` options |  [IFieldOptions](interfaces/ifieldoptions.md) & `any`|  {} |  - |
+| fieldType | [IFieldType](interfaces/ifieldtype.md) | - |  \- |
+| `Default value` options |  [IFieldOptions](interfaces/ifieldoptions.md) & `any`|  {} |  \- |
 
 **Returns:** [IDecorator](interfaces/idecorator.md)<[IFieldTypes](interfaces/ifieldtypes.md)>
 
@@ -707,7 +707,7 @@ ___
 
 ▸ **flattenObjectKeys**(obj: *`any`*): `any`
 
-*Defined in [Utils/Lodash.ts:39](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Utils/Lodash.ts#L39)*
+*Defined in [Utils/Lodash.ts:39](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Utils/Lodash.ts#L39)*
 
 Flattens the keys of an object's immediate children onto a copy of the parent object.
 
@@ -719,9 +719,9 @@ Note that this function will intentionally go only one level deep.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| obj | `any` |  - |
+| obj | `any` |  \- |
 
 **Returns:** `any`
 
@@ -732,7 +732,7 @@ ___
 
 ▸ **getActionStubMap**(): `any`
 
-*Defined in [TestUtils/Service.ts:138](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L138)*
+*Defined in [TestUtils/Service.ts:138](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L138)*
 
 **Returns:** `any`
 
@@ -743,7 +743,7 @@ ___
 
 ▸ **getConfiguration**(): [IConfiguration](interfaces/iconfiguration.md)
 
-*Defined in [Configure.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Configure.ts#L18)*
+*Defined in [Configure.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Configure.ts#L18)*
 
 **Returns:** [IConfiguration](interfaces/iconfiguration.md)
 
@@ -752,9 +752,9 @@ ___
 
 ###  getDataService
 
-▸ **getDataService**T(name: *`string`*): [DataService](classes/dataservice.md)<`T`>
+▸ **getDataService**<`T`>(name: *`string`*): [DataService](classes/dataservice.md)<`T`>
 
-*Defined in [Services/ServiceProvider.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/ServiceProvider.ts#L44)*
+*Defined in [Services/ServiceProvider.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/ServiceProvider.ts#L44)*
 
 Get the requested DataService using getService.
 
@@ -763,9 +763,9 @@ Get the requested DataService using getService.
 #### T :  [IModelData](interfaces/imodeldata.md)
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| name | `string` |  - |
+| name | `string` |  \- |
 
 **Returns:** [DataService](classes/dataservice.md)<`T`>
 
@@ -776,11 +776,11 @@ ___
 
 ▸ **getDateTimeFormat**(options: *`any`*): `any`
 
-*Defined in [Validators/DateTime.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Validators/DateTime.ts#L3)*
+*Defined in [Validators/DateTime.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Validators/DateTime.ts#L3)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | options | `any` |
 
@@ -793,7 +793,7 @@ ___
 
 ▸ **getEpics**(): [IActionEpic](#iactionepic)[]
 
-*Defined in [Services/ServiceProvider.ts:110](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/ServiceProvider.ts#L110)*
+*Defined in [Services/ServiceProvider.ts:110](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/ServiceProvider.ts#L110)*
 
 Creates the root epic which will be added to the redux-observable epic middleware
 
@@ -808,7 +808,7 @@ ___
 
 ▸ **getFakeXHR**(): `any`
 
-*Defined in [TestUtils/Service.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L86)*
+*Defined in [TestUtils/Service.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L86)*
 
 **Returns:** `any`
 
@@ -819,7 +819,7 @@ ___
 
 ▸ **getFakedXHRHistory**(): `any`[]
 
-*Defined in [TestUtils/Service.ts:90](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L90)*
+*Defined in [TestUtils/Service.ts:90](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L90)*
 
 **Returns:** `any`[]
 
@@ -830,15 +830,15 @@ ___
 
 ▸ **getFieldTypeForRelationship**(relationshipType: *[RelationshipType](enums/relationshiptype.md)*): [IFieldType](interfaces/ifieldtype.md)<`any`>
 
-*Defined in [Model/Decorators/Relationship.ts:52](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/Relationship.ts#L52)*
+*Defined in [Model/Decorators/Relationship.ts:52](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Relationship.ts#L52)*
 
 Get the corresponding FieldType object for the given RelationshipType.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| relationshipType | [RelationshipType](enums/relationshiptype.md) |  - |
+| relationshipType | [RelationshipType](enums/relationshiptype.md) |  \- |
 
 **Returns:** [IFieldType](interfaces/ifieldtype.md)<`any`>
 
@@ -849,7 +849,7 @@ ___
 
 ▸ **getNestedFieldName**(path: *`any`*): `any`
 
-*Defined in [Utils/String.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Utils/String.ts#L11)*
+*Defined in [Utils/String.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Utils/String.ts#L11)*
 
 Given a path string in dot notation compatible with lodash's `get` and `set` functions, this will return the nested value.
 
@@ -857,9 +857,9 @@ For example, given path "a.b.c", this will return "c".
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| path | `any` |  - |
+| path | `any` |  \- |
 
 **Returns:** `any`
 
@@ -870,7 +870,7 @@ ___
 
 ▸ **getReducers**(): [IReducers](#ireducers)<`any`>
 
-*Defined in [Services/ServiceProvider.ts:101](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/ServiceProvider.ts#L101)*
+*Defined in [Services/ServiceProvider.ts:101](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/ServiceProvider.ts#L101)*
 
 Creates the root reducer to be added to the Redux store. Note: This method is called on startup. You should not need to call it directly except for testing purposes.
 
@@ -883,7 +883,7 @@ ___
 
 ▸ **getRelatedFieldNameForRelationship**(relationshipType: *[RelationshipType](enums/relationshiptype.md)*, baseName: *`string`*): `string`
 
-*Defined in [Model/Decorators/Relationship.ts:73](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/Relationship.ts#L73)*
+*Defined in [Model/Decorators/Relationship.ts:73](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Relationship.ts#L73)*
 
 Determine the property name of the related field depending on the relationship.
 
@@ -891,10 +891,10 @@ BelongsTo will add the suffix "Id" to the given `baseName` HasMany will add the 
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| relationshipType | [RelationshipType](enums/relationshiptype.md) |  - |
-| baseName | `string` |  - |
+| relationshipType | [RelationshipType](enums/relationshiptype.md) |  \- |
+| baseName | `string` |  \- |
 
 **Returns:** `string`
 
@@ -903,9 +903,9 @@ ___
 
 ###  getService
 
-▸ **getService**T(name: *`any`*): [IService](interfaces/iservice.md)<`T`>
+▸ **getService**<`T`>(name: *`any`*): [IService](interfaces/iservice.md)<`T`>
 
-*Defined in [Services/ServiceProvider.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/ServiceProvider.ts#L30)*
+*Defined in [Services/ServiceProvider.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/ServiceProvider.ts#L30)*
 
 Behaves as a dependency injection service to facilitate injecting service instances based on their name and module. This is useful for testing so services can be replaced with mocks.
 
@@ -914,9 +914,9 @@ Behaves as a dependency injection service to facilitate injecting service instan
 #### T 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| name | `any` |  - |
+| name | `any` |  \- |
 
 **Returns:** [IService](interfaces/iservice.md)<`T`>
 
@@ -927,7 +927,7 @@ ___
 
 ▸ **hasMany**(options?: *[IRelationshipOptions](interfaces/irelationshipoptions.md)*): [IDecorator](interfaces/idecorator.md)<[IRelationship](interfaces/irelationship.md)>
 
-*Defined in [Model/Decorators/HasMany.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/HasMany.ts#L14)*
+*Defined in [Model/Decorators/HasMany.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/HasMany.ts#L14)*
 
 A decorator which creates a "HasMany" relationship, for establishing a many-to-one or many-to-many relationship to the related service, such that this service has many of the related service. The `relatedFieldName` is the FK field on this model, for identifying the IDs of the related models.
 
@@ -935,9 +935,9 @@ If no `serviceName` is provided, the property being decorated will be used. If n
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| `Default value` options | [IRelationshipOptions](interfaces/irelationshipoptions.md) |  {} |  - |
+| `Default value` options | [IRelationshipOptions](interfaces/irelationshipoptions.md) |  {} |  \- |
 
 **Returns:** [IDecorator](interfaces/idecorator.md)<[IRelationship](interfaces/irelationship.md)>
 
@@ -948,11 +948,11 @@ ___
 
 ▸ **initializeDateTimeValidator**(validate: *`any`*): `any`
 
-*Defined in [Validators/DateTime.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Validators/DateTime.ts#L19)*
+*Defined in [Validators/DateTime.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Validators/DateTime.ts#L19)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | validate | `any` |
 
@@ -965,13 +965,13 @@ ___
 
 ▸ **initializeMockDataCreators**(modules: *`any`*): `void`
 
-*Defined in [TestUtils/Service.ts:56](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L56)*
+*Defined in [TestUtils/Service.ts:56](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L56)*
 
-Build a modelDataCreatorMap for later use in the seedService* functions
+Build a modelDataCreatorMap for later use in the seedService\* functions
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | modules | `any` |
 
@@ -984,11 +984,11 @@ ___
 
 ▸ **initializePhoneNumberValidator**(validate: *`any`*): `(Anonymous function)`
 
-*Defined in [Validators/PhoneNumber.ts:1](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Validators/PhoneNumber.ts#L1)*
+*Defined in [Validators/PhoneNumber.ts:1](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Validators/PhoneNumber.ts#L1)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | validate | `any` |
 
@@ -1001,7 +1001,7 @@ ___
 
 ▸ **initializeServices**(modules: *[IModuleMap](interfaces/imodulemap.md)*): `void`
 
-*Defined in [Services/ServiceProvider.ts:62](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/ServiceProvider.ts#L62)*
+*Defined in [Services/ServiceProvider.ts:62](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/ServiceProvider.ts#L62)*
 
 Initialize the map of services to enable dependency injection.
 
@@ -1013,7 +1013,7 @@ You should not need to call this method directly unless it is needed for testing
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
 | modules | [IModuleMap](interfaces/imodulemap.md) |   |
 
@@ -1026,13 +1026,13 @@ ___
 
 ▸ **initializeTestServices**(modules: *[IModuleMap](interfaces/imodulemap.md)*, shouldStubActionCreators?: *`boolean`*, configOptions?: *`Partial`<[IConfiguration](interfaces/iconfiguration.md)>*): `Store`<`any`>
 
-*Defined in [TestUtils/Service.ts:36](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L36)*
+*Defined in [TestUtils/Service.ts:36](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L36)*
 
 Registers the services, short circuits their XHR epics and returns a Redux store. Will use a MemoryAdapter and MemorySerializer by default.
 
 **Parameters:**
 
-| Param | Type | Default value |
+| Name | Type | Default value |
 | ------ | ------ | ------ |
 | modules | [IModuleMap](interfaces/imodulemap.md) | - |
 | `Default value` shouldStubActionCreators | `boolean` | true |
@@ -1047,7 +1047,7 @@ ___
 
 ▸ **isApplicationInitialized**(): `boolean`
 
-*Defined in [Initialize.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Initialize.ts#L11)*
+*Defined in [Initialize.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Initialize.ts#L11)*
 
 Determine if the application's initializers have been fired yet.
 
@@ -1060,16 +1060,16 @@ ___
 
 ▸ **isEnum**(fieldEnum: *`any`*, options?: *[IIsEnumOptions](interfaces/iisenumoptions.md)*): [IDecorator](interfaces/idecorator.md)<[IFieldTypes](interfaces/ifieldtypes.md)>
 
-*Defined in [Model/Decorators/IsEnum.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/IsEnum.ts#L17)*
+*Defined in [Model/Decorators/IsEnum.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/IsEnum.ts#L17)*
 
 A decorator which maps a property's getter and setter to `getField` and `setField` methods implemented on the target class.
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| fieldEnum | `any` | - |  - |
-| `Default value` options | [IIsEnumOptions](interfaces/iisenumoptions.md) |  {} |  - |
+| fieldEnum | `any` | - |  \- |
+| `Default value` options | [IIsEnumOptions](interfaces/iisenumoptions.md) |  {} |  \- |
 
 **Returns:** [IDecorator](interfaces/idecorator.md)<[IFieldTypes](interfaces/ifieldtypes.md)>
 
@@ -1080,7 +1080,7 @@ ___
 
 ▸ **loggerMiddleware**(): `(Anonymous function)`
 
-*Defined in [Store/Middleware/Logger.ts:1](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Store/Middleware/Logger.ts#L1)*
+*Defined in [Store/Middleware/Logger.ts:1](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Store/Middleware/Logger.ts#L1)*
 
 **Returns:** `(Anonymous function)`
 
@@ -1091,11 +1091,11 @@ ___
 
 ▸ **makeInitialize**(initializers: *`any`*): `(Anonymous function)`
 
-*Defined in [Initialize.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Initialize.ts#L20)*
+*Defined in [Initialize.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Initialize.ts#L20)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | initializers | `any` |
 
@@ -1108,11 +1108,11 @@ ___
 
 ▸ **makeInitializeValidateJS**(validate: *`validateJS.ValidateJS`*, validators: *[IValidatorMap](interfaces/ivalidatormap.md)*): `(Anonymous function)`
 
-*Defined in [Initializers/InitializeValidateJS.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Initializers/InitializeValidateJS.ts#L14)*
+*Defined in [Initializers/InitializeValidateJS.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Initializers/InitializeValidateJS.ts#L14)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | validate | `validateJS.ValidateJS` |
 | validators | [IValidatorMap](interfaces/ivalidatormap.md) |
@@ -1126,7 +1126,7 @@ ___
 
 ▸ **registerService**(service: *[IService](interfaces/iservice.md)<`any`>*): `void`
 
-*Defined in [Services/ServiceProvider.ts:92](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Services/ServiceProvider.ts#L92)*
+*Defined in [Services/ServiceProvider.ts:92](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/ServiceProvider.ts#L92)*
 
 Enables service dependency injection by registering services so they can later be retrieved (injected) as needed.
 
@@ -1134,7 +1134,7 @@ Note: Until we can support dynamically updating the redux store, you should not 
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
 | service | [IService](interfaces/iservice.md)<`any`> |   |
 
@@ -1147,7 +1147,7 @@ ___
 
 ▸ **relationship**(relationshipType: *[RelationshipType](enums/relationshiptype.md)*, options?: *[IRelationshipOptions](interfaces/irelationshipoptions.md)*): [IDecorator](interfaces/idecorator.md)<[IRelationship](interfaces/irelationship.md)>
 
-*Defined in [Model/Decorators/Relationship.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/Relationship.ts#L95)*
+*Defined in [Model/Decorators/Relationship.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Relationship.ts#L95)*
 
 A decorator which establishes that the decorated property is related to the given serviceName through the given relatedFieldName. You probably want to use `@belongsTo` or `@hasMany` decorators, which wrap this one.
 
@@ -1155,10 +1155,10 @@ If no `serviceName` is provided, the name of the property being decorated will b
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| relationshipType | [RelationshipType](enums/relationshiptype.md) | - |  - |
-| `Default value` options | [IRelationshipOptions](interfaces/irelationshipoptions.md) |  {} |  - |
+| relationshipType | [RelationshipType](enums/relationshiptype.md) | - |  \- |
+| `Default value` options | [IRelationshipOptions](interfaces/irelationshipoptions.md) |  {} |  \- |
 
 **Returns:** [IDecorator](interfaces/idecorator.md)<[IRelationship](interfaces/irelationship.md)>
 
@@ -1169,16 +1169,16 @@ ___
 
 ▸ **required**(message?: *`string`*, allowEmpty?: *`boolean`*): [IDecorator](interfaces/idecorator.md)<[IValidate](interfaces/ivalidate.md)>
 
-*Defined in [Model/Decorators/Required.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/Required.ts#L11)*
+*Defined in [Model/Decorators/Required.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Required.ts#L11)*
 
 Decorator to conveniently set a "required" validation rule.
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| `Default value` message | `string` | &quot;is required&quot; |  - |
-| `Default value` allowEmpty | `boolean` | false |  - |
+| `Default value` message | `string` | &quot;is required&quot; |  \- |
+| `Default value` allowEmpty | `boolean` | false |  \- |
 
 **Returns:** [IDecorator](interfaces/idecorator.md)<[IValidate](interfaces/ivalidate.md)>
 
@@ -1189,7 +1189,7 @@ ___
 
 ▸ **resetInitializationStatus**(): `boolean`
 
-*Defined in [Initialize.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Initialize.ts#L18)*
+*Defined in [Initialize.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Initialize.ts#L18)*
 
 Reset the application's initialization status.
 
@@ -1202,7 +1202,7 @@ ___
 
 ▸ **restoreActionStubs**(): `void`
 
-*Defined in [TestUtils/Service.ts:145](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L145)*
+*Defined in [TestUtils/Service.ts:145](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L145)*
 
 Restores all stubs in the action stub map
 
@@ -1213,9 +1213,9 @@ ___
 
 ###  seedService
 
-▸ **seedService**T(serviceName: *`string`*, overrideValues?: *`Partial`<`T`>*): [IModel](interfaces/imodel.md)<`T`>
+▸ **seedService**<`T`>(serviceName: *`string`*, overrideValues?: *`Partial`<`T`>*): [IModel](interfaces/imodel.md)<`T`>
 
-*Defined in [TestUtils/Service.ts:160](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L160)*
+*Defined in [TestUtils/Service.ts:160](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L160)*
 
 Adds seed data to the redux store for a single specific service
 
@@ -1224,7 +1224,7 @@ Adds seed data to the redux store for a single specific service
 #### T :  [IModelData](interfaces/imodeldata.md)
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
 | serviceName | `string` | - |  service to seed |
 | `Default value` overrideValues | `Partial`<`T`> |  {} |  values to override in seed |
@@ -1236,9 +1236,9 @@ ___
 
 ###  seedServiceList
 
-▸ **seedServiceList**T(serviceName: *`string`*, count?: *`number`*, overrideValues?: *`Partial`<`T`>*): [IModel](interfaces/imodel.md)<`T`>[]
+▸ **seedServiceList**<`T`>(serviceName: *`string`*, count?: *`number`*, overrideValues?: *`Partial`<`T`>*): [IModel](interfaces/imodel.md)<`T`>[]
 
-*Defined in [TestUtils/Service.ts:180](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L180)*
+*Defined in [TestUtils/Service.ts:180](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L180)*
 
 Adds multiple seeds to the redux store for a single specified service. If `overrideValues` are provided, they will be added to the service's requestCache as queryParams.
 
@@ -1247,7 +1247,7 @@ Adds multiple seeds to the redux store for a single specified service. If `overr
 #### T :  [IModelData](interfaces/imodeldata.md)
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
 | serviceName | `string` | - |  service to seed |
 | `Default value` count | `number` | 5 |  number of seeds |
@@ -1262,13 +1262,13 @@ ___
 
 ▸ **seedServices**(serviceNames?: *`string`[]*): `__type`
 
-*Defined in [TestUtils/Service.ts:198](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L198)*
+*Defined in [TestUtils/Service.ts:198](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L198)*
 
 Add multiple seeds for each of the initialized services
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
 | `Optional` serviceNames | `string`[] |  services to seed, defaults to all services initialized in initializeTestServices() |
 
@@ -1281,13 +1281,13 @@ ___
 
 ▸ **stubActionCreators**(modules: *`any`*): `void`
 
-*Defined in [TestUtils/Service.ts:67](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L67)*
+*Defined in [TestUtils/Service.ts:67](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L67)*
 
 Stub all actions in each service
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | modules | `any` |
 
@@ -1300,13 +1300,13 @@ ___
 
 ▸ **stubService**(moduleName: *`string`*): `object`
 
-*Defined in [TestUtils/Service.ts:100](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L100)*
+*Defined in [TestUtils/Service.ts:100](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L100)*
 
 Attempts to stub a service
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
 | moduleName | `string` |  name of module which will have its service stubbed |
 
@@ -1320,7 +1320,7 @@ ___
 
 ▸ **stubXHR**(): `void`
 
-*Defined in [TestUtils/Service.ts:78](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L78)*
+*Defined in [TestUtils/Service.ts:78](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L78)*
 
 Stub all XHR requests via Sinon
 
@@ -1333,13 +1333,13 @@ ___
 
 ▸ **tryStubAction**(moduleName: *`string`*, obj: *`any`*, methodName: *`string`*): `object`
 
-*Defined in [TestUtils/Service.ts:123](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/Service.ts#L123)*
+*Defined in [TestUtils/Service.ts:123](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/Service.ts#L123)*
 
 Attempts to stub a method on an object if that method exists, stub returns a valid IAction
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
 | moduleName | `string` |  Name of module this stub is acting on |
 | obj | `any` |  Object to stub |
@@ -1355,7 +1355,7 @@ ___
 
 ▸ **validation**(validationRules: *`any`*): [IDecorator](interfaces/idecorator.md)<[IValidate](interfaces/ivalidate.md)>
 
-*Defined in [Model/Decorators/Validation.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Decorators/Validation.ts#L18)*
+*Defined in [Model/Decorators/Validation.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Validation.ts#L18)*
 
 A property decorator for specifying validation rules.
 
@@ -1363,9 +1363,9 @@ We currently use [Validate.js](https://validatejs.org/), but this should work wi
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| validationRules | `any` |  - |
+| validationRules | `any` |  \- |
 
 **Returns:** [IDecorator](interfaces/idecorator.md)<[IValidate](interfaces/ivalidate.md)>
 
@@ -1379,7 +1379,7 @@ ___
 
 **ArrayField**: *`object`*
 
-*Defined in [Model/FieldType/ArrayField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ArrayField.ts#L4)*
+*Defined in [Model/FieldType/ArrayField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ArrayField.ts#L4)*
 
 <a id="arrayfield.defaultvalue"></a>
 
@@ -1387,7 +1387,7 @@ ___
 
 **● defaultValue**: *`undefined`[]* =  []
 
-*Defined in [Model/FieldType/ArrayField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ArrayField.ts#L7)*
+*Defined in [Model/FieldType/ArrayField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ArrayField.ts#L7)*
 
 ___
 <a id="arrayfield.serialize"></a>
@@ -1396,7 +1396,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/ArrayField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ArrayField.ts#L5)*
+*Defined in [Model/FieldType/ArrayField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ArrayField.ts#L5)*
+
+___
+<a id="arrayfield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "array"
+
+*Defined in [Model/FieldType/ArrayField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ArrayField.ts#L9)*
 
 ___
 <a id="arrayfield.isvalidtype"></a>
@@ -1405,11 +1414,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/ArrayField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ArrayField.ts#L8)*
+*Defined in [Model/FieldType/ArrayField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ArrayField.ts#L8)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1422,11 +1431,11 @@ ___
 
 ▸ **normalize**(value: *`any`*): `Promise`<`any`>
 
-*Defined in [Model/FieldType/ArrayField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ArrayField.ts#L9)*
+*Defined in [Model/FieldType/ArrayField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ArrayField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1439,15 +1448,15 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/ArrayField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ArrayField.ts#L6)*
+*Defined in [Model/FieldType/ArrayField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ArrayField.ts#L6)*
 
-<a id="arrayfield.defaultvalidationrules.type"></a>
+<a id="arrayfield.defaultvalidationrules.type-1"></a>
 
 ####  type
 
 **● type**: *`string`* = "array"
 
-*Defined in [Model/FieldType/ArrayField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ArrayField.ts#L6)*
+*Defined in [Model/FieldType/ArrayField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ArrayField.ts#L6)*
 
 ___
 
@@ -1460,7 +1469,7 @@ ___
 
 **BelongsToField**: *`object`*
 
-*Defined in [Model/FieldType/BelongsToField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/BelongsToField.ts#L4)*
+*Defined in [Model/FieldType/BelongsToField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BelongsToField.ts#L4)*
 
 <a id="belongstofield.serialize"></a>
 
@@ -1468,7 +1477,16 @@ ___
 
 **● serialize**: *`false`* = false
 
-*Defined in [Model/FieldType/BelongsToField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/BelongsToField.ts#L6)*
+*Defined in [Model/FieldType/BelongsToField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BelongsToField.ts#L6)*
+
+___
+<a id="belongstofield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "belongsTo"
+
+*Defined in [Model/FieldType/BelongsToField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BelongsToField.ts#L7)*
 
 ___
 
@@ -1479,7 +1497,7 @@ ___
 
 **BooleanField**: *`object`*
 
-*Defined in [Model/FieldType/BooleanField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/BooleanField.ts#L4)*
+*Defined in [Model/FieldType/BooleanField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BooleanField.ts#L4)*
 
 <a id="booleanfield.defaultvalue"></a>
 
@@ -1487,7 +1505,7 @@ ___
 
 **● defaultValue**: *`false`* = false
 
-*Defined in [Model/FieldType/BooleanField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/BooleanField.ts#L7)*
+*Defined in [Model/FieldType/BooleanField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BooleanField.ts#L7)*
 
 ___
 <a id="booleanfield.serialize"></a>
@@ -1496,7 +1514,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/BooleanField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/BooleanField.ts#L5)*
+*Defined in [Model/FieldType/BooleanField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BooleanField.ts#L5)*
+
+___
+<a id="booleanfield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "boolean"
+
+*Defined in [Model/FieldType/BooleanField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BooleanField.ts#L9)*
 
 ___
 <a id="booleanfield.isvalidtype"></a>
@@ -1505,11 +1532,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/BooleanField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/BooleanField.ts#L8)*
+*Defined in [Model/FieldType/BooleanField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BooleanField.ts#L8)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1522,11 +1549,11 @@ ___
 
 ▸ **normalize**(value: *`any`*): `Promise`<`boolean`>
 
-*Defined in [Model/FieldType/BooleanField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/BooleanField.ts#L9)*
+*Defined in [Model/FieldType/BooleanField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BooleanField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1539,15 +1566,15 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/BooleanField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/BooleanField.ts#L6)*
+*Defined in [Model/FieldType/BooleanField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BooleanField.ts#L6)*
 
-<a id="booleanfield.defaultvalidationrules.type"></a>
+<a id="booleanfield.defaultvalidationrules.type-1"></a>
 
 ####  type
 
 **● type**: *`string`* = "boolean"
 
-*Defined in [Model/FieldType/BooleanField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/BooleanField.ts#L6)*
+*Defined in [Model/FieldType/BooleanField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/BooleanField.ts#L6)*
 
 ___
 
@@ -1560,7 +1587,7 @@ ___
 
 **DateField**: *`object`*
 
-*Defined in [Model/FieldType/DateField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateField.ts#L5)*
+*Defined in [Model/FieldType/DateField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L5)*
 
 <a id="datefield.defaultvalue"></a>
 
@@ -1568,7 +1595,7 @@ ___
 
 **● defaultValue**: *`null`* =  null
 
-*Defined in [Model/FieldType/DateField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateField.ts#L8)*
+*Defined in [Model/FieldType/DateField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L8)*
 
 ___
 <a id="datefield.serialize"></a>
@@ -1577,7 +1604,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/DateField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateField.ts#L6)*
+*Defined in [Model/FieldType/DateField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L6)*
+
+___
+<a id="datefield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "date"
+
+*Defined in [Model/FieldType/DateField.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L19)*
 
 ___
 <a id="datefield.isvalidtype"></a>
@@ -1586,11 +1622,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/DateField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateField.ts#L9)*
+*Defined in [Model/FieldType/DateField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L9)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1603,11 +1639,11 @@ ___
 
 ▸ **normalize**(value: * `string` &#124; `any`*): `Promise`<`Date`>
 
-*Defined in [Model/FieldType/DateField.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateField.ts#L11)*
+*Defined in [Model/FieldType/DateField.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L11)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value |  `string` &#124; `any`|
 
@@ -1620,11 +1656,11 @@ ___
 
 ▸ **transform**(date: *`Date`*): `Promise`<`string`>
 
-*Defined in [Model/FieldType/DateField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateField.ts#L10)*
+*Defined in [Model/FieldType/DateField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | date | `Date` |
 
@@ -1637,7 +1673,7 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/DateField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateField.ts#L7)*
+*Defined in [Model/FieldType/DateField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L7)*
 
 <a id="datefield.defaultvalidationrules.datetime"></a>
 
@@ -1645,7 +1681,7 @@ ___
 
 **datetime**: *`object`*
 
-*Defined in [Model/FieldType/DateField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateField.ts#L7)*
+*Defined in [Model/FieldType/DateField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L7)*
 
 <a id="datefield.defaultvalidationrules.datetime.dateonly"></a>
 
@@ -1653,7 +1689,7 @@ ___
 
 **● dateOnly**: *`boolean`* = true
 
-*Defined in [Model/FieldType/DateField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateField.ts#L7)*
+*Defined in [Model/FieldType/DateField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateField.ts#L7)*
 
 ___
 
@@ -1668,7 +1704,7 @@ ___
 
 **DateTimeField**: *`object`*
 
-*Defined in [Model/FieldType/DateTimeField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateTimeField.ts#L4)*
+*Defined in [Model/FieldType/DateTimeField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateTimeField.ts#L4)*
 
 <a id="datetimefield.defaultvalue"></a>
 
@@ -1676,7 +1712,7 @@ ___
 
 **● defaultValue**: *`null`* =  null
 
-*Defined in [Model/FieldType/DateTimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateTimeField.ts#L7)*
+*Defined in [Model/FieldType/DateTimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateTimeField.ts#L7)*
 
 ___
 <a id="datetimefield.serialize"></a>
@@ -1685,7 +1721,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/DateTimeField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateTimeField.ts#L5)*
+*Defined in [Model/FieldType/DateTimeField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateTimeField.ts#L5)*
+
+___
+<a id="datetimefield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "dateTime"
+
+*Defined in [Model/FieldType/DateTimeField.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateTimeField.ts#L18)*
 
 ___
 <a id="datetimefield.isvalidtype"></a>
@@ -1694,11 +1739,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/DateTimeField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateTimeField.ts#L8)*
+*Defined in [Model/FieldType/DateTimeField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateTimeField.ts#L8)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1711,11 +1756,11 @@ ___
 
 ▸ **normalize**(value: * `string` &#124; `any`*): `Promise`<`Date`>
 
-*Defined in [Model/FieldType/DateTimeField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateTimeField.ts#L10)*
+*Defined in [Model/FieldType/DateTimeField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateTimeField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value |  `string` &#124; `any`|
 
@@ -1728,11 +1773,11 @@ ___
 
 ▸ **transform**(date: *`Date`*): `Promise`<`string`>
 
-*Defined in [Model/FieldType/DateTimeField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateTimeField.ts#L9)*
+*Defined in [Model/FieldType/DateTimeField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateTimeField.ts#L9)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | date | `Date` |
 
@@ -1745,7 +1790,7 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/DateTimeField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateTimeField.ts#L6)*
+*Defined in [Model/FieldType/DateTimeField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateTimeField.ts#L6)*
 
 <a id="datetimefield.defaultvalidationrules.datetime"></a>
 
@@ -1753,7 +1798,7 @@ ___
 
 **● datetime**: *`boolean`* = true
 
-*Defined in [Model/FieldType/DateTimeField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/DateTimeField.ts#L6)*
+*Defined in [Model/FieldType/DateTimeField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/DateTimeField.ts#L6)*
 
 ___
 
@@ -1766,15 +1811,24 @@ ___
 
 **EmailField**: *`object`*
 
-*Defined in [Model/FieldType/EmailField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/EmailField.ts#L4)*
+*Defined in [Model/FieldType/EmailField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/EmailField.ts#L4)*
 
+<a id="emailfield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "email"
+
+*Defined in [Model/FieldType/EmailField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/EmailField.ts#L7)*
+
+___
 <a id="emailfield.defaultvalidationrules"></a>
 
 ####  defaultValidationRules
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/EmailField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/EmailField.ts#L6)*
+*Defined in [Model/FieldType/EmailField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/EmailField.ts#L6)*
 
 <a id="emailfield.defaultvalidationrules.email"></a>
 
@@ -1782,7 +1836,7 @@ ___
 
 **● email**: *`boolean`* = true
 
-*Defined in [Model/FieldType/EmailField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/EmailField.ts#L6)*
+*Defined in [Model/FieldType/EmailField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/EmailField.ts#L6)*
 
 ___
 
@@ -1795,7 +1849,7 @@ ___
 
 **FileField**: *`object`*
 
-*Defined in [Model/FieldType/FileField.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/FileField.ts#L3)*
+*Defined in [Model/FieldType/FileField.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/FileField.ts#L3)*
 
 <a id="filefield.defaultvalidationrules"></a>
 
@@ -1803,7 +1857,7 @@ ___
 
 **● defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/FileField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/FileField.ts#L5)*
+*Defined in [Model/FieldType/FileField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/FileField.ts#L5)*
 
 #### Type declaration
 
@@ -1814,7 +1868,7 @@ ___
 
 **● defaultValue**: *`null`* =  null
 
-*Defined in [Model/FieldType/FileField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/FileField.ts#L6)*
+*Defined in [Model/FieldType/FileField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/FileField.ts#L6)*
 
 ___
 <a id="filefield.serialize"></a>
@@ -1823,7 +1877,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/FileField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/FileField.ts#L4)*
+*Defined in [Model/FieldType/FileField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/FileField.ts#L4)*
+
+___
+<a id="filefield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "file"
+
+*Defined in [Model/FieldType/FileField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/FileField.ts#L9)*
 
 ___
 <a id="filefield.isvalidtype"></a>
@@ -1832,11 +1895,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/FileField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/FileField.ts#L7)*
+*Defined in [Model/FieldType/FileField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/FileField.ts#L7)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1849,11 +1912,11 @@ ___
 
 ▸ **normalize**(value: *`any`*): `any`
 
-*Defined in [Model/FieldType/FileField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/FileField.ts#L8)*
+*Defined in [Model/FieldType/FileField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/FileField.ts#L8)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1866,11 +1929,11 @@ ___
 
 ▸ **transform**(file: *`File`*): `Promise`<`any`[]>
 
-*Defined in [Model/FieldType/FileField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/FileField.ts#L9)*
+*Defined in [Model/FieldType/FileField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/FileField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | file | `File` |
 
@@ -1885,7 +1948,7 @@ ___
 
 **HasManyField**: *`object`*
 
-*Defined in [Model/FieldType/HasManyField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/HasManyField.ts#L4)*
+*Defined in [Model/FieldType/HasManyField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/HasManyField.ts#L4)*
 
 <a id="hasmanyfield.serialize"></a>
 
@@ -1893,7 +1956,16 @@ ___
 
 **● serialize**: *`false`* = false
 
-*Defined in [Model/FieldType/HasManyField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/HasManyField.ts#L6)*
+*Defined in [Model/FieldType/HasManyField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/HasManyField.ts#L6)*
+
+___
+<a id="hasmanyfield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "hasMany"
+
+*Defined in [Model/FieldType/HasManyField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/HasManyField.ts#L7)*
 
 ___
 
@@ -1904,7 +1976,7 @@ ___
 
 **NumberField**: *`object`*
 
-*Defined in [Model/FieldType/NumberField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/NumberField.ts#L4)*
+*Defined in [Model/FieldType/NumberField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/NumberField.ts#L4)*
 
 <a id="numberfield.defaultvalue"></a>
 
@@ -1912,7 +1984,7 @@ ___
 
 **● defaultValue**: *`number`* = 0
 
-*Defined in [Model/FieldType/NumberField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/NumberField.ts#L7)*
+*Defined in [Model/FieldType/NumberField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/NumberField.ts#L7)*
 
 ___
 <a id="numberfield.serialize"></a>
@@ -1921,7 +1993,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/NumberField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/NumberField.ts#L5)*
+*Defined in [Model/FieldType/NumberField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/NumberField.ts#L5)*
+
+___
+<a id="numberfield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "number"
+
+*Defined in [Model/FieldType/NumberField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/NumberField.ts#L9)*
 
 ___
 <a id="numberfield.isvalidtype"></a>
@@ -1930,11 +2011,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/NumberField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/NumberField.ts#L8)*
+*Defined in [Model/FieldType/NumberField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/NumberField.ts#L8)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1947,11 +2028,11 @@ ___
 
 ▸ **normalize**(value: *`any`*): `Promise`<`number`>
 
-*Defined in [Model/FieldType/NumberField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/NumberField.ts#L9)*
+*Defined in [Model/FieldType/NumberField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/NumberField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -1964,7 +2045,7 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/NumberField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/NumberField.ts#L6)*
+*Defined in [Model/FieldType/NumberField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/NumberField.ts#L6)*
 
 <a id="numberfield.defaultvalidationrules.numericality"></a>
 
@@ -1972,7 +2053,7 @@ ___
 
 **● numericality**: *`boolean`* = true
 
-*Defined in [Model/FieldType/NumberField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/NumberField.ts#L6)*
+*Defined in [Model/FieldType/NumberField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/NumberField.ts#L6)*
 
 ___
 
@@ -1985,7 +2066,7 @@ ___
 
 **ObjectField**: *`object`*
 
-*Defined in [Model/FieldType/ObjectField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ObjectField.ts#L4)*
+*Defined in [Model/FieldType/ObjectField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ObjectField.ts#L4)*
 
 <a id="objectfield.defaultvalue"></a>
 
@@ -1993,7 +2074,7 @@ ___
 
 **● defaultValue**: *`null`* =  null
 
-*Defined in [Model/FieldType/ObjectField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ObjectField.ts#L7)*
+*Defined in [Model/FieldType/ObjectField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ObjectField.ts#L7)*
 
 ___
 <a id="objectfield.serialize"></a>
@@ -2002,7 +2083,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/ObjectField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ObjectField.ts#L5)*
+*Defined in [Model/FieldType/ObjectField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ObjectField.ts#L5)*
+
+___
+<a id="objectfield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "object"
+
+*Defined in [Model/FieldType/ObjectField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ObjectField.ts#L8)*
 
 ___
 <a id="objectfield.isvalidtype"></a>
@@ -2011,11 +2101,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/ObjectField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ObjectField.ts#L8)*
+*Defined in [Model/FieldType/ObjectField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ObjectField.ts#L9)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -2028,11 +2118,11 @@ ___
 
 ▸ **normalize**(value: *`any`*): `Promise`<`any`>
 
-*Defined in [Model/FieldType/ObjectField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ObjectField.ts#L9)*
+*Defined in [Model/FieldType/ObjectField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ObjectField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -2045,15 +2135,15 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/ObjectField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ObjectField.ts#L6)*
+*Defined in [Model/FieldType/ObjectField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ObjectField.ts#L6)*
 
-<a id="objectfield.defaultvalidationrules.type"></a>
+<a id="objectfield.defaultvalidationrules.type-1"></a>
 
 ####  type
 
 **● type**: *`string`* = "object"
 
-*Defined in [Model/FieldType/ObjectField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/ObjectField.ts#L6)*
+*Defined in [Model/FieldType/ObjectField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/ObjectField.ts#L6)*
 
 ___
 
@@ -2066,7 +2156,7 @@ ___
 
 **PhoneNumberField**: *`object`*
 
-*Defined in [Model/FieldType/PhoneNumberField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/PhoneNumberField.ts#L4)*
+*Defined in [Model/FieldType/PhoneNumberField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/PhoneNumberField.ts#L4)*
 
 <a id="phonenumberfield.defaultvalue"></a>
 
@@ -2074,7 +2164,7 @@ ___
 
 **● defaultValue**: *`string`* = ""
 
-*Defined in [Model/FieldType/PhoneNumberField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/PhoneNumberField.ts#L7)*
+*Defined in [Model/FieldType/PhoneNumberField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/PhoneNumberField.ts#L7)*
 
 ___
 <a id="phonenumberfield.serialize"></a>
@@ -2083,7 +2173,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/PhoneNumberField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/PhoneNumberField.ts#L5)*
+*Defined in [Model/FieldType/PhoneNumberField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/PhoneNumberField.ts#L5)*
+
+___
+<a id="phonenumberfield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "phoneNumber"
+
+*Defined in [Model/FieldType/PhoneNumberField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/PhoneNumberField.ts#L9)*
 
 ___
 <a id="phonenumberfield.isvalidtype"></a>
@@ -2092,11 +2191,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/PhoneNumberField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/PhoneNumberField.ts#L8)*
+*Defined in [Model/FieldType/PhoneNumberField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/PhoneNumberField.ts#L8)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -2109,11 +2208,11 @@ ___
 
 ▸ **normalize**(value: *`any`*): `Promise`<`string`>
 
-*Defined in [Model/FieldType/PhoneNumberField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/PhoneNumberField.ts#L9)*
+*Defined in [Model/FieldType/PhoneNumberField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/PhoneNumberField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -2126,7 +2225,7 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/PhoneNumberField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/PhoneNumberField.ts#L6)*
+*Defined in [Model/FieldType/PhoneNumberField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/PhoneNumberField.ts#L6)*
 
 <a id="phonenumberfield.defaultvalidationrules.phonenumber"></a>
 
@@ -2134,7 +2233,7 @@ ___
 
 **● phoneNumber**: *`boolean`* = true
 
-*Defined in [Model/FieldType/PhoneNumberField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/PhoneNumberField.ts#L6)*
+*Defined in [Model/FieldType/PhoneNumberField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/PhoneNumberField.ts#L6)*
 
 ___
 
@@ -2147,7 +2246,7 @@ ___
 
 **StringField**: *`object`*
 
-*Defined in [Model/FieldType/StringField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/StringField.ts#L4)*
+*Defined in [Model/FieldType/StringField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/StringField.ts#L4)*
 
 <a id="stringfield.defaultvalue"></a>
 
@@ -2155,7 +2254,7 @@ ___
 
 **● defaultValue**: *`string`* = ""
 
-*Defined in [Model/FieldType/StringField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/StringField.ts#L7)*
+*Defined in [Model/FieldType/StringField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/StringField.ts#L7)*
 
 ___
 <a id="stringfield.serialize"></a>
@@ -2164,7 +2263,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/StringField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/StringField.ts#L5)*
+*Defined in [Model/FieldType/StringField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/StringField.ts#L5)*
+
+___
+<a id="stringfield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "string"
+
+*Defined in [Model/FieldType/StringField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/StringField.ts#L9)*
 
 ___
 <a id="stringfield.isvalidtype"></a>
@@ -2173,11 +2281,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/StringField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/StringField.ts#L8)*
+*Defined in [Model/FieldType/StringField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/StringField.ts#L8)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -2190,11 +2298,11 @@ ___
 
 ▸ **normalize**(value: *`any`*): `Promise`<`string`>
 
-*Defined in [Model/FieldType/StringField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/StringField.ts#L9)*
+*Defined in [Model/FieldType/StringField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/StringField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -2207,15 +2315,15 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/StringField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/StringField.ts#L6)*
+*Defined in [Model/FieldType/StringField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/StringField.ts#L6)*
 
-<a id="stringfield.defaultvalidationrules.type"></a>
+<a id="stringfield.defaultvalidationrules.type-1"></a>
 
 ####  type
 
 **● type**: *`string`* = "string"
 
-*Defined in [Model/FieldType/StringField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/StringField.ts#L6)*
+*Defined in [Model/FieldType/StringField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/StringField.ts#L6)*
 
 ___
 
@@ -2228,7 +2336,7 @@ ___
 
 **TimeField**: *`object`*
 
-*Defined in [Model/FieldType/TimeField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L5)*
+*Defined in [Model/FieldType/TimeField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L5)*
 
 <a id="timefield.defaultvalue"></a>
 
@@ -2236,7 +2344,7 @@ ___
 
 **● defaultValue**: *`null`* =  null
 
-*Defined in [Model/FieldType/TimeField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L8)*
+*Defined in [Model/FieldType/TimeField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L8)*
 
 ___
 <a id="timefield.serialize"></a>
@@ -2245,7 +2353,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/TimeField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L6)*
+*Defined in [Model/FieldType/TimeField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L6)*
+
+___
+<a id="timefield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "time"
+
+*Defined in [Model/FieldType/TimeField.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L16)*
 
 ___
 <a id="timefield.isvalidtype"></a>
@@ -2254,11 +2371,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/TimeField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L9)*
+*Defined in [Model/FieldType/TimeField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L9)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -2271,11 +2388,11 @@ ___
 
 ▸ **normalize**(serializedDate: *`string`*): `Promise`<`Date`>
 
-*Defined in [Model/FieldType/TimeField.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L11)*
+*Defined in [Model/FieldType/TimeField.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L11)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | serializedDate | `string` |
 
@@ -2288,11 +2405,11 @@ ___
 
 ▸ **transform**(date: *`Date`*): `Promise`<`string`>
 
-*Defined in [Model/FieldType/TimeField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L10)*
+*Defined in [Model/FieldType/TimeField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | date | `Date` |
 
@@ -2305,7 +2422,7 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/TimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L7)*
+*Defined in [Model/FieldType/TimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L7)*
 
 <a id="timefield.defaultvalidationrules.datetime"></a>
 
@@ -2313,7 +2430,7 @@ ___
 
 **datetime**: *`object`*
 
-*Defined in [Model/FieldType/TimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L7)*
+*Defined in [Model/FieldType/TimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L7)*
 
 <a id="timefield.defaultvalidationrules.datetime.message"></a>
 
@@ -2321,7 +2438,7 @@ ___
 
 **● message**: *`string`* = "must be a valid time"
 
-*Defined in [Model/FieldType/TimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L7)*
+*Defined in [Model/FieldType/TimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L7)*
 
 ___
 <a id="timefield.defaultvalidationrules.datetime.timeonly"></a>
@@ -2330,7 +2447,7 @@ ___
 
 **● timeOnly**: *`boolean`* = true
 
-*Defined in [Model/FieldType/TimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/TimeField.ts#L7)*
+*Defined in [Model/FieldType/TimeField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/TimeField.ts#L7)*
 
 ___
 
@@ -2345,7 +2462,7 @@ ___
 
 **URLField**: *`object`*
 
-*Defined in [Model/FieldType/URLField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/URLField.ts#L4)*
+*Defined in [Model/FieldType/URLField.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/URLField.ts#L4)*
 
 <a id="urlfield.defaultvalue"></a>
 
@@ -2353,7 +2470,7 @@ ___
 
 **● defaultValue**: *`string`* = ""
 
-*Defined in [Model/FieldType/URLField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/URLField.ts#L7)*
+*Defined in [Model/FieldType/URLField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/URLField.ts#L7)*
 
 ___
 <a id="urlfield.serialize"></a>
@@ -2362,7 +2479,16 @@ ___
 
 **● serialize**: *`true`* = true
 
-*Defined in [Model/FieldType/URLField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/URLField.ts#L5)*
+*Defined in [Model/FieldType/URLField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/URLField.ts#L5)*
+
+___
+<a id="urlfield.type"></a>
+
+####  type
+
+**● type**: *`string`* = "URL"
+
+*Defined in [Model/FieldType/URLField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/URLField.ts#L9)*
 
 ___
 <a id="urlfield.isvalidtype"></a>
@@ -2371,11 +2497,11 @@ ___
 
 ▸ **isValidType**(value: *`any`*): `boolean`
 
-*Defined in [Model/FieldType/URLField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/URLField.ts#L8)*
+*Defined in [Model/FieldType/URLField.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/URLField.ts#L8)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -2388,11 +2514,11 @@ ___
 
 ▸ **normalize**(value: *`any`*): `Promise`<`string`>
 
-*Defined in [Model/FieldType/URLField.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/URLField.ts#L9)*
+*Defined in [Model/FieldType/URLField.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/URLField.ts#L10)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `any` |
 
@@ -2405,7 +2531,7 @@ ___
 
 **defaultValidationRules**: *`object`*
 
-*Defined in [Model/FieldType/URLField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/URLField.ts#L6)*
+*Defined in [Model/FieldType/URLField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/URLField.ts#L6)*
 
 <a id="urlfield.defaultvalidationrules.url"></a>
 
@@ -2413,7 +2539,7 @@ ___
 
 **url**: *`object`*
 
-*Defined in [Model/FieldType/URLField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/URLField.ts#L6)*
+*Defined in [Model/FieldType/URLField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/URLField.ts#L6)*
 
 <a id="urlfield.defaultvalidationrules.url.allowlocal"></a>
 
@@ -2421,7 +2547,7 @@ ___
 
 **● allowLocal**: *`boolean`* = true
 
-*Defined in [Model/FieldType/URLField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/URLField.ts#L6)*
+*Defined in [Model/FieldType/URLField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/URLField.ts#L6)*
 
 ___
 
@@ -2436,7 +2562,7 @@ ___
 
 **fakeModelModule**: *`object`*
 
-*Defined in [TestUtils/FakeModelModule.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/FakeModelModule.ts#L4)*
+*Defined in [TestUtils/FakeModelModule.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/FakeModelModule.ts#L4)*
 
 <a id="fakemodelmodule.fakemodel"></a>
 
@@ -2444,7 +2570,7 @@ ___
 
 **fakeModel**: *`object`*
 
-*Defined in [TestUtils/FakeModelModule.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/FakeModelModule.ts#L5)*
+*Defined in [TestUtils/FakeModelModule.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/FakeModelModule.ts#L5)*
 
 <a id="fakemodelmodule.fakemodel.fakemodel-1"></a>
 
@@ -2452,7 +2578,7 @@ ___
 
 **● FakeModel**: *[FakeModel](classes/fakemodel.md)*
 
-*Defined in [TestUtils/FakeModelModule.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/FakeModelModule.ts#L6)*
+*Defined in [TestUtils/FakeModelModule.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/FakeModelModule.ts#L6)*
 
 ___
 <a id="fakemodelmodule.fakemodel.fakemodelservice"></a>
@@ -2461,7 +2587,7 @@ ___
 
 **● FakeModelService**: *[FakeModelService](classes/fakemodelservice.md)*
 
-*Defined in [TestUtils/FakeModelModule.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/FakeModelModule.ts#L7)*
+*Defined in [TestUtils/FakeModelModule.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/FakeModelModule.ts#L7)*
 
 ___
 <a id="fakemodelmodule.fakemodel.createmockfakemodel"></a>
@@ -2470,7 +2596,7 @@ ___
 
 **● createMockFakeModel**: *[createMockFakeModel](#createmockfakemodel)*
 
-*Defined in [TestUtils/FakeModelModule.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/TestUtils/FakeModelModule.ts#L8)*
+*Defined in [TestUtils/FakeModelModule.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/TestUtils/FakeModelModule.ts#L8)*
 
 ___
 

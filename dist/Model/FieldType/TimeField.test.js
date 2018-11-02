@@ -104,4 +104,7 @@ describe("FieldType: TimeField", function () {
     it("should be serialized", function () {
         expect(TimeField_1.TimeField.serialize).to.be.true;
     });
+    it("declares it's type", function () {
+        return expect(TimeField_1.TimeField.type).to.eq("time");
+    });
 });

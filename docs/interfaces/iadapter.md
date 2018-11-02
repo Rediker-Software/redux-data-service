@@ -35,14 +35,14 @@
 
 **● createItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/IAdapter.ts#L6)*
+*Defined in [Adapters/IAdapter.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/IAdapter.ts#L6)*
 
 #### Type declaration
 ▸(item: *`T`*): `Observable`<`T`>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | item | `T` |
 
@@ -55,14 +55,14 @@ ___
 
 **● deleteItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/IAdapter.ts#L9)*
+*Defined in [Adapters/IAdapter.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/IAdapter.ts#L9)*
 
 #### Type declaration
 ▸(id: *`string`*): `Observable`<`T`>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | id | `string` |
 
@@ -75,14 +75,14 @@ ___
 
 **● fetchAll**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/IAdapter.ts#L4)*
+*Defined in [Adapters/IAdapter.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/IAdapter.ts#L4)*
 
 #### Type declaration
 ▸(requestParams?: *`any`*): `Observable`<`object`>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | `Optional` requestParams | `any` |
 
@@ -95,14 +95,14 @@ ___
 
 **● fetchItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/IAdapter.ts#L5)*
+*Defined in [Adapters/IAdapter.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/IAdapter.ts#L5)*
 
 #### Type declaration
 ▸(id: *`string`*): `Observable`<`T`>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | id | `string` |
 
@@ -115,14 +115,14 @@ ___
 
 **● patchItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/IAdapter.ts#L8)*
+*Defined in [Adapters/IAdapter.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/IAdapter.ts#L8)*
 
 #### Type declaration
 ▸(id: *`string`*, item: *`T`*): `Observable`<`T`>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | id | `string` |
 | item | `T` |
@@ -136,14 +136,14 @@ ___
 
 **● updateItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/IAdapter.ts#L7)*
+*Defined in [Adapters/IAdapter.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/IAdapter.ts#L7)*
 
 #### Type declaration
 ▸(id: *`string`*, item: *`T`*): `Observable`<`T`>
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | id | `string` |
 | item | `T` |

@@ -9,4 +9,4 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var ArrayField_1 = require("./ArrayField");
-exports.HasManyField = __assign({}, ArrayField_1.ArrayField, { serialize: false });
+exports.HasManyField = __assign({}, ArrayField_1.ArrayField, { serialize: false, type: "hasMany" });

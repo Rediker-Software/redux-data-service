@@ -13,7 +13,7 @@
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | `Optional` overrideValues | `any` |
 

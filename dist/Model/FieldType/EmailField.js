@@ -9,4 +9,4 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var StringField_1 = require("./StringField");
-exports.EmailField = __assign({}, StringField_1.StringField, { defaultValidationRules: { email: true } });
+exports.EmailField = __assign({}, StringField_1.StringField, { defaultValidationRules: { email: true }, type: "email" });

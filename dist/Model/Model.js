@@ -129,7 +129,7 @@ var Model = (function () {
         var _a = this.modelData, id = _a.id, dateUpdated = _a.dateUpdated, dateDeleted = _a.dateDeleted, data = __rest(_a, ["id", "dateUpdated", "dateDeleted"]);
         var errors = validate_js_1.validate(data, this.validationRules) || {};
         if (includeRelatedModels) {
-            errors = fp_1.flow(fp_1.omitBy(function (relatedModel) { return relatedModel == null || !relatedModel.isDirty; }), fp_1.mapValues(function (relatedModel) { return relatedModel.validate(); }), Utils_1.flattenObjectKeys, fp_1.assign(errors))(this.relatedModels);
+            errors = fp_1.flow(fp_1.omitBy(function (relatedModel) { return (relatedModel == null || !relatedModel.isDirty); }), fp_1.mapValues(function (relatedModel) { return relatedModel.validate(); }), Utils_1.flattenObjectKeys, fp_1.assign(errors))(this.relatedModels);
         }
         if (!(lodash_1.isEmpty(this.errors) && lodash_1.isEmpty(errors))) {
             this.errors = errors;
@@ -395,15 +395,15 @@ var Model = (function () {
         });
     };
     __decorate([
-        Decorators_1.attr(FieldType_1.StringField, { serialize: false }),
+        Decorators_1.attr(FieldType_1.StringField, { serialize: false, readOnly: true }),
         __metadata("design:type", String)
     ], Model.prototype, "id", void 0);
     __decorate([
-        Decorators_1.attr(FieldType_1.DateTimeField, { serialize: false }),
+        Decorators_1.attr(FieldType_1.DateTimeField, { serialize: false, readOnly: true }),
         __metadata("design:type", Date)
     ], Model.prototype, "dateUpdated", void 0);
     __decorate([
-        Decorators_1.attr(FieldType_1.DateTimeField, { serialize: false }),
+        Decorators_1.attr(FieldType_1.DateTimeField, { serialize: false, readOnly: true }),
         __metadata("design:type", Date)
     ], Model.prototype, "dateDeleted", void 0);
     return Model;

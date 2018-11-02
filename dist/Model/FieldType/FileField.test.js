@@ -75,6 +75,9 @@ describe("FieldType: FileField", function () {
     it("should be serialized", function () {
         expect(FileField_1.FileField.serialize).to.be.true;
     });
+    it("declares it's type", function () {
+        return expect(FileField_1.FileField.type).to.eq("file");
+    });
     describe("normalize", function () {
         it("normalizes a File by returning the given value", function () { return __awaiter(_this, void 0, void 0, function () {
             var serializedValue, _a;

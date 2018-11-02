@@ -70,6 +70,9 @@ describe("FieldType: URLField", function () {
     it("should be serialized", function () {
         expect(URLField_1.URLField.serialize).to.be.true;
     });
+    it("declares it's type", function () {
+        return expect(URLField_1.URLField.type).to.eq("URL");
+    });
     it("normalizes any value into a string", function () { return __awaiter(_this, void 0, void 0, function () {
         var randomNumber, _a;
         return __generator(this, function (_b) {

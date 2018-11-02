@@ -53,4 +53,5 @@ exports.TimeField = {
                     : null)];
         });
     }); },
+    type: "time",
 };

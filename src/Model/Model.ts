@@ -188,8 +188,8 @@ export class Model<T extends IModelData> implements IModel<T> {
 
     if (includeRelatedModels) {
       errors = flow(
-        omitBy(relatedModel => relatedModel == null || !relatedModel.isDirty),
-        mapValues(relatedModel => relatedModel.validate()),
+        omitBy((relatedModel: IModel<any>) => (relatedModel == null || !relatedModel.isDirty)),
+        mapValues((relatedModel: IModel<any>) => relatedModel.validate()),
         flattenObjectKeys,
         assign(errors),
       )(this.relatedModels);

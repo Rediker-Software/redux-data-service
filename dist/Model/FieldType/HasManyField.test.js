@@ -33,4 +33,7 @@ describe("FieldType: HasManyField", function () {
     it("should not be serialized", function () {
         expect(HasManyField_1.HasManyField.serialize).to.be.false;
     });
+    it("declares it's type", function () {
+        return expect(HasManyField_1.HasManyField.type).to.eq("hasMany");
+    });
 });

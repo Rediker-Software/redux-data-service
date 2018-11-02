@@ -74,6 +74,9 @@ describe("FieldType: PhoneNumberField", function () {
     it("should be serialized", function () {
         expect(PhoneNumberField_1.PhoneNumberField.serialize).to.be.true;
     });
+    it("declares it's type", function () {
+        return expect(PhoneNumberField_1.PhoneNumberField.type).to.eq("phoneNumber");
+    });
     it("normalizes any value into a string", function () { return __awaiter(_this, void 0, void 0, function () {
         var randomNumber, _a;
         return __generator(this, function (_b) {

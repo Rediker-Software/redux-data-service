@@ -42,6 +42,7 @@ exports.StringField = {
     defaultValidationRules: { type: "string" },
     defaultValue: "",
     isValidType: function (value) { return value == null || validate_js_1.isString(value); },
+    type: "string",
     normalize: function (value) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
         return [2, value != null ? String(value) : ""];
     }); }); },

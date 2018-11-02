@@ -48,11 +48,11 @@ Outgoing item data should be serialized to a json string. The incoming data will
 
 ⊕ **new RestAdapter**(pathName: *`string`*, options?: *[IRestAdapterOptions](../interfaces/irestadapteroptions.md)*): [RestAdapter](restadapter.md)
 
-*Defined in [Adapters/RestAdapter.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L20)*
+*Defined in [Adapters/RestAdapter.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L20)*
 
 **Parameters:**
 
-| Param | Type | Default value |
+| Name | Type | Default value |
 | ------ | ------ | ------ |
 | pathName | `string` | - |
 | `Default value` options | [IRestAdapterOptions](../interfaces/irestadapteroptions.md) |  {} |
@@ -69,7 +69,7 @@ ___
 
 **● apiUrl**: *`string`*
 
-*Defined in [Adapters/RestAdapter.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L20)*
+*Defined in [Adapters/RestAdapter.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L20)*
 
 ___
 <a id="pathname"></a>
@@ -78,7 +78,7 @@ ___
 
 **● pathName**: *`string`*
 
-*Defined in [Adapters/RestAdapter.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L19)*
+*Defined in [Adapters/RestAdapter.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L19)*
 
 ___
 
@@ -90,15 +90,15 @@ ___
 
 ▸ **buildHeaders**(headers: *`any`*): `any`
 
-*Defined in [Adapters/RestAdapter.ts:129](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L129)*
+*Defined in [Adapters/RestAdapter.ts:129](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L129)*
 
 Create the list of headers to use when performing ajax requests.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| headers | `any` |  - |
+| headers | `any` |  \- |
 
 **Returns:** `any`
 
@@ -109,7 +109,7 @@ ___
 
 ▸ **buildQueryParams**(payload: *`any`*): `string`
 
-*Defined in [Adapters/RestAdapter.ts:144](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L144)*
+*Defined in [Adapters/RestAdapter.ts:144](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L144)*
 
 Convert the given object into a string of query params.
 
@@ -117,9 +117,9 @@ Example: {abc: 123, hello: "world"} becomes: "abc=123&hello=world"
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| payload | `any` |  - |
+| payload | `any` |  \- |
 
 **Returns:** `string`
 
@@ -130,15 +130,15 @@ ___
 
 ▸ **createItem**(item: *`string`*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:63](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L63)*
+*Defined in [Adapters/RestAdapter.ts:63](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L63)*
 
 Perform a POST request to the API to create the given T item
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| item | `string` |  - |
+| item | `string` |  \- |
 
 **Returns:** `Observable`<`string`>
 
@@ -149,15 +149,15 @@ ___
 
 ▸ **deleteItem**(id: *`any`*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L95)*
+*Defined in [Adapters/RestAdapter.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L95)*
 
 Perform a DELETE request to the API to update the given T item based on the given id.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| id | `any` |  - |
+| id | `any` |  \- |
 
 **Returns:** `Observable`<`string`>
 
@@ -168,15 +168,15 @@ ___
 
 ▸ **fetchAll**(requestParams?: *`any`*): `Observable`<`object`>
 
-*Defined in [Adapters/RestAdapter.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L43)*
+*Defined in [Adapters/RestAdapter.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L43)*
 
 Perform a GET request to the REST endpoint, which should return an array of T items. Optionally pass in `requestParams` to define query params to send to the API for filtering the results.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| `Optional` requestParams | `any` |  - |
+| `Optional` requestParams | `any` |  \- |
 
 **Returns:** `Observable`<`object`>
 
@@ -187,15 +187,15 @@ ___
 
 ▸ **fetchItem**(id: *`string`*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:53](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L53)*
+*Defined in [Adapters/RestAdapter.ts:53](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L53)*
 
 Perform a GET request to load a single T item from the API based on the given id.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| id | `string` |  - |
+| id | `string` |  \- |
 
 **Returns:** `Observable`<`string`>
 
@@ -206,7 +206,7 @@ ___
 
 ▸ **getRestURL**(): `string`
 
-*Defined in [Adapters/RestAdapter.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L32)*
+*Defined in [Adapters/RestAdapter.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L32)*
 
 Get the route to the REST endpoint.
 
@@ -219,7 +219,7 @@ ___
 
 ▸ **makeAjaxRequest**(method: *`string`*, url: *`string`*, payload?: *`string`*, headers?: *`any`*): `Observable`<`any`>
 
-*Defined in [Adapters/RestAdapter.ts:113](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L113)*
+*Defined in [Adapters/RestAdapter.ts:113](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L113)*
 
 Perform an ajax request to the given url, using the given http method.
 
@@ -229,12 +229,12 @@ If headers are provided, they are merged with the default application headers.
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| method | `string` | - |  - |
-| url | `string` | - |  - |
-| `Optional` payload | `string` | - |  - |
-| `Default value` headers | `any` |  {} |  - |
+| method | `string` | - |  \- |
+| url | `string` | - |  \- |
+| `Optional` payload | `string` | - |  \- |
+| `Default value` headers | `any` |  {} |  \- |
 
 **Returns:** `Observable`<`any`>
 
@@ -245,16 +245,16 @@ ___
 
 ▸ **patchItem**(id: *`any`*, item: *`string`*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:85](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L85)*
+*Defined in [Adapters/RestAdapter.ts:85](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L85)*
 
 Perform a PATCH request to the API to update the given T item based on the given id.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| id | `any` |  - |
-| item | `string` |  - |
+| id | `any` |  \- |
+| item | `string` |  \- |
 
 **Returns:** `Observable`<`string`>
 
@@ -265,16 +265,16 @@ ___
 
 ▸ **updateItem**(id: *`any`*, item: *`string`*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Adapters/RestAdapter.ts#L74)*
+*Defined in [Adapters/RestAdapter.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Adapters/RestAdapter.ts#L74)*
 
 Perform a PUT request to the API to update the given T item based on the given id.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| id | `any` |  - |
-| item | `string` |  - |
+| id | `any` |  \- |
+| item | `string` |  \- |
 
 **Returns:** `Observable`<`string`>
 

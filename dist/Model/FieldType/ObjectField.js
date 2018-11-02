@@ -41,6 +41,7 @@ exports.ObjectField = {
     serialize: true,
     defaultValidationRules: { type: "object" },
     defaultValue: null,
+    type: "object",
     isValidType: function (value) { return value == null || validate_js_1.isObject(value); },
     normalize: function (value) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
         return [2, value];

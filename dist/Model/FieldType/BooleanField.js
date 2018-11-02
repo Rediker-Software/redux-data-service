@@ -42,6 +42,7 @@ exports.BooleanField = {
     defaultValidationRules: { type: "boolean" },
     defaultValue: false,
     isValidType: function (value) { return value == null || validate_js_1.isBoolean(value); },
+    type: "boolean",
     normalize: function (value) { return __awaiter(_this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             return [2, (value && typeof value === "string" && value.toLowerCase() === "false"

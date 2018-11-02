@@ -14,7 +14,9 @@
 
 * [defaultValidationRules](ifieldtype.md#defaultvalidationrules)
 * [defaultValue](ifieldtype.md#defaultvalue)
+* [readOnly](ifieldtype.md#readonly)
 * [serialize](ifieldtype.md#serialize)
+* [type](ifieldtype.md#type)
 
 ### Methods
 
@@ -32,7 +34,7 @@
 
 **● defaultValidationRules**: *`any`*
 
-*Defined in [Model/FieldType/IFieldType.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/IFieldType.ts#L4)*
+*Defined in [Model/FieldType/IFieldType.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/IFieldType.ts#L3)*
 
 ___
 <a id="defaultvalue"></a>
@@ -41,7 +43,16 @@ ___
 
 **● defaultValue**: *`T`*
 
-*Defined in [Model/FieldType/IFieldType.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/IFieldType.ts#L5)*
+*Defined in [Model/FieldType/IFieldType.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/IFieldType.ts#L4)*
+
+___
+<a id="readonly"></a>
+
+### `<Optional>` readOnly
+
+**● readOnly**: *`boolean`*
+
+*Defined in [Model/FieldType/IFieldType.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/IFieldType.ts#L6)*
 
 ___
 <a id="serialize"></a>
@@ -50,7 +61,16 @@ ___
 
 **● serialize**: *`boolean`*
 
-*Defined in [Model/FieldType/IFieldType.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/IFieldType.ts#L3)*
+*Defined in [Model/FieldType/IFieldType.ts:2](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/IFieldType.ts#L2)*
+
+___
+<a id="type"></a>
+
+###  type
+
+**● type**: *`string`*
+
+*Defined in [Model/FieldType/IFieldType.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/IFieldType.ts#L7)*
 
 ___
 
@@ -62,11 +82,11 @@ ___
 
 ▸ **isValidType**(value: * `T` &#124; `any`*): `boolean`
 
-*Defined in [Model/FieldType/IFieldType.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/IFieldType.ts#L6)*
+*Defined in [Model/FieldType/IFieldType.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/IFieldType.ts#L5)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value |  `T` &#124; `any`|
 
@@ -79,11 +99,11 @@ ___
 
 ▸ **normalize**(serializedValue: *`any`*): `Promise`<`T`>
 
-*Defined in [Model/FieldType/IFieldType.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/IFieldType.ts#L8)*
+*Defined in [Model/FieldType/IFieldType.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/IFieldType.ts#L9)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | serializedValue | `any` |
 
@@ -96,11 +116,11 @@ ___
 
 ▸ **transform**(value: *`T`*): `Promise`<`any`>
 
-*Defined in [Model/FieldType/IFieldType.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/FieldType/IFieldType.ts#L7)*
+*Defined in [Model/FieldType/IFieldType.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/FieldType/IFieldType.ts#L8)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | value | `T` |
 

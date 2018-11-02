@@ -1,7 +1,7 @@
 import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
 import { fromPairs } from "lodash";
 
-import { mapValuesWithKeys, mapWithKeys } from "../Utils";
+import { mapWithKeys } from "../Utils";
 import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, RelationshipType } from "../Model";
 import { getDataService } from "../Services";
 
@@ -47,7 +47,7 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
    * For example, a Date object will be converted into an ISO Date string when given a DateField.
    */
   public transformField(model: IModel<T> | Partial<T>) {
-    return async (fieldType: IFieldType & any, fieldName: string): Promise<[string, string]> => {
+    return async (fieldType: IFieldType & any, fieldName: string): Promise<[string, any]> => {
       let fieldValue = model[fieldName];
 
       if (fieldValue != null) {
@@ -73,7 +73,7 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
    * For example, an ISO date string will be converted into a Date object when given a DateField.
    */
   public normalizeField(data: Partial<R>) {
-    return async (fieldType: IFieldType, fieldName: string): Promise<[string, string]> => {
+    return async (fieldType: IFieldType, fieldName: string): Promise<[string, any]> => {
       let value = data[fieldName];
 
       if (fieldType.normalize) {
@@ -95,12 +95,12 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
     const transformPromises = flow(
       pickBy(property("serialize")),
       mapWithKeys(this.transformField(model)),
-    )(this.fields);
+    )(this.fields) as Promise<[string, any]>[];
 
     // promise resolves with an array of tuples in the format: [key, value][]
     // fromPairs then converts the array of tuples into an object
-    const pairs = await Promise.all(transformPromises) as any;
-    return fromPairs(pairs) as Partial<R>;
+    const pairs = await Promise.all(transformPromises);
+    return fromPairs(pairs) as any;
   }
 
   /**
@@ -122,7 +122,7 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
     const normalizeFieldPromises = flow(
       pick(fieldKeys),
       mapWithKeys(await this.normalizeField(data)),
-    )(this.fields) as Promise<[string, string]>[];
+    )(this.fields) as Promise<[string, any]>[];
 
     // promise resolves with an array of tuples in the format: [key, value][]
     // fromPairs then converts the array of tuples into an object

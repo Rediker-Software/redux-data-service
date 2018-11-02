@@ -54,4 +54,5 @@ exports.DateTimeField = {
                         : null))];
         });
     }); },
+    type: "dateTime",
 };

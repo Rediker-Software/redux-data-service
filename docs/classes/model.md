@@ -124,11 +124,11 @@ Use this decorator to specify a relationship to another Model such that this Mod
 
 ⊕ **new Model**(modelData: * `Partial`<`T`> & `object`*, meta?: *`Partial`<[IModelMeta](../interfaces/imodelmeta.md)<`T`>>*, relatedModels?: *[IModelsMap](../interfaces/imodelsmap.md)*): [Model](model.md)
 
-*Defined in [Model/Model.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L86)*
+*Defined in [Model/Model.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L86)*
 
 **Parameters:**
 
-| Param | Type | Default value |
+| Name | Type | Default value |
 | ------ | ------ | ------ |
 | modelData |  `Partial`<`T`> & `object`| - |
 | `Default value` meta | `Partial`<[IModelMeta](../interfaces/imodelmeta.md)<`T`>> |  {} |
@@ -146,7 +146,7 @@ ___
 
 **● _isDestroying**: *`boolean`* = false
 
-*Defined in [Model/Model.ts:85](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L85)*
+*Defined in [Model/Model.ts:85](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L85)*
 
 ___
 <a id="_willdestroyobservable_"></a>
@@ -155,7 +155,7 @@ ___
 
 **● _willDestroyObservable$**: *`Subject`<`boolean`>*
 
-*Defined in [Model/Model.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L86)*
+*Defined in [Model/Model.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L86)*
 
 ___
 <a id="datedeleted"></a>
@@ -166,7 +166,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[dateDeleted](../interfaces/imodel.md#datedeleted)*
 
-*Defined in [Model/Model.ts:80](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L80)*
+*Defined in [Model/Model.ts:80](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L80)*
 
 ___
 <a id="dateupdated"></a>
@@ -177,7 +177,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[dateUpdated](../interfaces/imodel.md#dateupdated)*
 
-*Defined in [Model/Model.ts:77](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L77)*
+*Defined in [Model/Model.ts:77](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L77)*
 
 ___
 <a id="fields"></a>
@@ -188,7 +188,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[fields](../interfaces/imodel.md#fields)*
 
-*Defined in [Model/Model.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L69)*
+*Defined in [Model/Model.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L69)*
 
 ___
 <a id="id"></a>
@@ -199,7 +199,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[id](../interfaces/imodel.md#id)*
 
-*Defined in [Model/Model.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L74)*
+*Defined in [Model/Model.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L74)*
 
 ___
 <a id="meta"></a>
@@ -208,7 +208,7 @@ ___
 
 **● meta**: *[IModelMeta](../interfaces/imodelmeta.md)<`T`>*
 
-*Defined in [Model/Model.ts:83](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L83)*
+*Defined in [Model/Model.ts:83](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L83)*
 
 ___
 <a id="modeldata"></a>
@@ -217,7 +217,7 @@ ___
 
 **● modelData**: *`Partial`<`T`>*
 
-*Defined in [Model/Model.ts:82](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L82)*
+*Defined in [Model/Model.ts:82](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L82)*
 
 ___
 <a id="relatedmodels"></a>
@@ -226,7 +226,7 @@ ___
 
 **● relatedModels**: *[IModelsMap](../interfaces/imodelsmap.md)*
 
-*Defined in [Model/Model.ts:84](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L84)*
+*Defined in [Model/Model.ts:84](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L84)*
 
 ___
 <a id="relationships"></a>
@@ -237,7 +237,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[relationships](../interfaces/imodel.md#relationships)*
 
-*Defined in [Model/Model.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L71)*
+*Defined in [Model/Model.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L71)*
 
 #### Type declaration
 
@@ -252,7 +252,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[serviceName](../interfaces/imodel.md#servicename)*
 
-*Defined in [Model/Model.ts:68](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L68)*
+*Defined in [Model/Model.ts:68](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L68)*
 
 ___
 <a id="validationrules"></a>
@@ -263,7 +263,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[validationRules](../interfaces/imodel.md#validationrules)*
 
-*Defined in [Model/Model.ts:70](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L70)*
+*Defined in [Model/Model.ts:70](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L70)*
 
 ___
 
@@ -275,19 +275,19 @@ ___
 
 geterrors(): `object`seterrors(value: *`object`*): `void`
 
-*Defined in [Model/Model.ts:582](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L582)*
+*Defined in [Model/Model.ts:582](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L582)*
 
 Get the list of errors, which may have been created from calling `this.validate()` or as a response from the API.
 
 **Returns:** `object`
 
-*Defined in [Model/Model.ts:591](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L591)*
+*Defined in [Model/Model.ts:591](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L591)*
 
 Dispatch an action to Redux to set the error state of the Model.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
 | value | `object` |   |
 
@@ -300,7 +300,7 @@ ___
 
 gethasUnsavedChanges(): `boolean`
 
-*Defined in [Model/Model.ts:609](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L609)*
+*Defined in [Model/Model.ts:609](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L609)*
 
 Determine if the model or its previously loaded relationships have unsaved changes.
 
@@ -313,7 +313,7 @@ ___
 
 getisDestroying(): `boolean`
 
-*Defined in [Model/Model.ts:509](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L509)*
+*Defined in [Model/Model.ts:509](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L509)*
 
 Determine if the current instance of the Model has been marked for destruction. That is, this instance is being removed from the Redux store and its subscriptions are being torn down.
 
@@ -326,7 +326,7 @@ ___
 
 getisDirty(): `boolean`
 
-*Defined in [Model/Model.ts:600](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L600)*
+*Defined in [Model/Model.ts:600](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L600)*
 
 Determine if the Model's data has changed without being saved.
 
@@ -339,19 +339,19 @@ ___
 
 getisLoading(): `boolean`setisLoading(value: *`boolean`*): `void`
 
-*Defined in [Model/Model.ts:553](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L553)*
+*Defined in [Model/Model.ts:553](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L553)*
 
 Determine if the Model is currently loading.
 
 **Returns:** `boolean`
 
-*Defined in [Model/Model.ts:562](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L562)*
+*Defined in [Model/Model.ts:562](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L562)*
 
 Dispatch an action to Redux to set the isLoading state of the Model
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
 | value | `boolean` |   |
 
@@ -364,7 +364,7 @@ ___
 
 getisNew(): `boolean`
 
-*Defined in [Model/Model.ts:620](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L620)*
+*Defined in [Model/Model.ts:620](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L620)*
 
 Determine if the Model is a new object which has not been committed to the API yet.
 
@@ -377,7 +377,7 @@ ___
 
 getisShadow(): `boolean`
 
-*Defined in [Model/Model.ts:572](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L572)*
+*Defined in [Model/Model.ts:572](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L572)*
 
 Determine if the Model is a "shadow" object: its data is currently being loaded and this instance of the Model is used as a temporary placeholder until we get a response from the API.
 
@@ -395,7 +395,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[applyUpdates](../interfaces/imodel.md#applyupdates)*
 
-*Defined in [Model/Model.ts:295](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L295)*
+*Defined in [Model/Model.ts:295](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L295)*
 
 Since this class is meant to be immutable, you can apply new updates here. The changes will be deep merged with the existing modelData and/or meta, and a new instance of the class will be returned with those values without mutating the current instance of the class.
 
@@ -403,7 +403,7 @@ Note that this is applied locally. Chances are you will want to dispatch an acti
 
 **Parameters:**
 
-| Param | Type | Default value |
+| Name | Type | Default value |
 | ------ | ------ | ------ |
 | `Default value` modelData | `Partial`<`T`> |  null |
 | `Default value` meta | `Partial`<[IModelMeta](../interfaces/imodelmeta.md)<`T`>> |  {} |
@@ -418,15 +418,15 @@ ___
 
 ▸ **checkFieldUpdateIsAllowed**(key: *`any`*, value: *`any`*): `void`
 
-*Defined in [Model/Model.ts:351](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L351)*
+*Defined in [Model/Model.ts:351](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L351)*
 
 Throw a TypeError if the provided key is an invalid fieldType, or the value is an invalid type for that fieldType.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| key | `any` |  - |
+| key | `any` |  \- |
 | value | `any` |   |
 
 **Returns:** `void`
@@ -440,7 +440,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[forceReload](../interfaces/imodel.md#forcereload)*
 
-*Defined in [Model/Model.ts:278](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L278)*
+*Defined in [Model/Model.ts:278](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L278)*
 
 Dispatch an action to the DataService to force it to reload the model from the API.
 
@@ -453,16 +453,16 @@ ___
 
 ▸ **getField**(fieldName: *`string`*, defaultValue?: *`any`*): `any`
 
-*Defined in [Model/Model.ts:340](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L340)*
+*Defined in [Model/Model.ts:340](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L340)*
 
 This method is called by the magic getters for the properties decorated by the @attr decorator. The actual data for the decorated properties is stored in modelData.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| fieldName | `string` |  - |
-| `Optional` defaultValue | `any` |  - |
+| fieldName | `string` |  \- |
+| `Optional` defaultValue | `any` |  \- |
 
 **Returns:** `any`
 
@@ -473,11 +473,11 @@ ___
 
 ▸ **getFieldError**(fieldName: *`any`*): `any`
 
-*Defined in [Model/Model.ts:624](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L624)*
+*Defined in [Model/Model.ts:624](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L624)*
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | fieldName | `any` |
 
@@ -490,7 +490,7 @@ ___
 
 ▸ **getRelated**(fieldName: *`string`*): `any`
 
-*Defined in [Model/Model.ts:393](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L393)*
+*Defined in [Model/Model.ts:393](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L393)*
 
 This method is called by the magic getters for the properties decorated by the @belongsTo and @hasMany decorators.
 
@@ -500,9 +500,9 @@ If the content has not been loaded yet, the DataService will dispatch an action 
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| fieldName | `string` |  - |
+| fieldName | `string` |  \- |
 
 **Returns:** `any`
 
@@ -513,15 +513,15 @@ ___
 
 ▸ **getValidationRulesForField**(fieldName: *`any`*): `any`
 
-*Defined in [Model/Model.ts:238](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L238)*
+*Defined in [Model/Model.ts:238](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L238)*
 
 Get the validationRules for the given fieldName. Works with local or nested fields.
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| fieldName | `any` |  - |
+| fieldName | `any` |  \- |
 
 **Returns:** `any`
 
@@ -532,7 +532,7 @@ ___
 
 ▸ **getWillDestroyObservable$**(): `Observable`<`boolean`>
 
-*Defined in [Model/Model.ts:519](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L519)*
+*Defined in [Model/Model.ts:519](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L519)*
 
 Subscribe to this Observable to be notified when the current instance of the Model has been marked for destruction. That is, this instance is being removed from the Redux store and its subscriptions are being torn down.
 
@@ -547,7 +547,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[initializeNewModel](../interfaces/imodel.md#initializenewmodel)*
 
-*Defined in [Model/Model.ts:328](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L328)*
+*Defined in [Model/Model.ts:328](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L328)*
 
 This is a useful hook for doing model-specific initialization when creating a new, unsaved model, such as creating related Models and setting default session values.
 
@@ -562,7 +562,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[markForDestruction](../interfaces/imodel.md#markfordestruction)*
 
-*Defined in [Model/Model.ts:493](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L493)*
+*Defined in [Model/Model.ts:493](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L493)*
 
 Call this method just before this Model instance will be removed from the Redux store. This allows us to cleanly unsubscribe to any relationship Observables that were previously subscribed to, in order to avoid a possible memory leak.
 
@@ -577,13 +577,13 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[parseFieldValue](../interfaces/imodel.md#parsefieldvalue)*
 
-*Defined in [Model/Model.ts:637](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L637)*
+*Defined in [Model/Model.ts:637](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L637)*
 
 Given a fieldName as a deep path (such as "firstName" or "person.firstName"), this will use that field's own IFieldType.normalize function to parse the given value.
 
 **Parameters:**
 
-| Param | Type |
+| Name | Type |
 | ------ | ------ |
 | fieldName | `string` |
 | value | `any` |
@@ -599,7 +599,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[reset](../interfaces/imodel.md#reset)*
 
-*Defined in [Model/Model.ts:251](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L251)*
+*Defined in [Model/Model.ts:251](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L251)*
 
 Dispatch an action to Redux to reset the Model to its original state. Note: new items will be removed from the Redux store.
 
@@ -614,7 +614,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[save](../interfaces/imodel.md#save)*
 
-*Defined in [Model/Model.ts:110](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L110)*
+*Defined in [Model/Model.ts:110](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L110)*
 
 Dispatch an action to Redux to commit the pending changes to the API.
 
@@ -633,7 +633,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[saveModel](../interfaces/imodel.md#savemodel)*
 
-*Defined in [Model/Model.ts:136](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L136)*
+*Defined in [Model/Model.ts:136](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L136)*
 
 Dispatch an action to Redux to commit the pending changes to the API for just this model, without first saving any related models with pending changes (unless they're serialized with this model).
 
@@ -652,7 +652,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[saveRelatedModels](../interfaces/imodel.md#saverelatedmodels)*
 
-*Defined in [Model/Model.ts:159](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L159)*
+*Defined in [Model/Model.ts:159](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L159)*
 
 Dispatch an action to Redux to commit the pending changes to the API for any of the related models which have already been loaded and would not be serialized when this model is saved. After each model is saved, its new copy is set onto this model.
 
@@ -669,7 +669,7 @@ ___
 
 ▸ **setField**(fieldName: *`string`*, value: *`any`*): `void`
 
-*Defined in [Model/Model.ts:373](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L373)*
+*Defined in [Model/Model.ts:373](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L373)*
 
 This method is called by the magic setters for the properties decorated by the @attr decorator.
 
@@ -679,9 +679,9 @@ _The current instance of the Model will not be mutated!_
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| fieldName | `string` |  - |
+| fieldName | `string` |  \- |
 | value | `any` |   |
 
 **Returns:** `void`
@@ -693,7 +693,7 @@ ___
 
 ▸ **setMetaField**(fieldName: *`any`*, value: *`any`*): `void`
 
-*Defined in [Model/Model.ts:539](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L539)*
+*Defined in [Model/Model.ts:539](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L539)*
 
 This method is called by the magic setters for some of the meta properties.
 
@@ -701,9 +701,9 @@ Since this class is meant to be immutable, attempting to set on a property will 
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| fieldName | `any` |  - |
+| fieldName | `any` |  \- |
 | value | `any` |   |
 
 **Returns:** `void`
@@ -715,7 +715,7 @@ ___
 
 ▸ **setRelated**(fieldName: *`string`*, value: *`any`*): `void`
 
-*Defined in [Model/Model.ts:455](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L455)*
+*Defined in [Model/Model.ts:455](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L455)*
 
 This method is called by the magic setters for the properties decorated by the @belongsTo and @hasMany decorators.
 
@@ -723,9 +723,9 @@ Since the class is meant to be immutable, the related item or items will not be 
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| fieldName | `string` |  - |
+| fieldName | `string` |  \- |
 | value | `any` |   |
 
 **Returns:** `void`
@@ -737,7 +737,7 @@ ___
 
 ▸ **triggerWillDestroyObservable**(): `void`
 
-*Defined in [Model/Model.ts:482](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L482)*
+*Defined in [Model/Model.ts:482](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L482)*
 
 This is an internal method which will tell the WillDestroyObservable to emit a value
 
@@ -752,7 +752,7 @@ ___
 
 *Implementation of [IModel](../interfaces/imodel.md).[unload](../interfaces/imodel.md#unload)*
 
-*Defined in [Model/Model.ts:267](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L267)*
+*Defined in [Model/Model.ts:267](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L267)*
 
 Dispatch an action to Redux to remove this Model from its data store.
 
@@ -765,7 +765,7 @@ ___
 
 ▸ **validate**(includeRelatedModels?: *`boolean`*): [IModelKeys](../#imodelkeys)<`T`>
 
-*Defined in [Model/Model.ts:185](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L185)*
+*Defined in [Model/Model.ts:185](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L185)*
 
 Perform client-side validation on the Model based on the validationRules as defined by property decorators. The validation results will be returned immediately and dispatched to Redux.
 
@@ -775,9 +775,9 @@ If `includeRelatedModels` is set to true, any related model on this model which 
 
 **Parameters:**
 
-| Param | Type | Default value | Description |
+| Name | Type | Default value | Description |
 | ------ | ------ | ------ | ------ |
-| `Default value` includeRelatedModels | `boolean` | false |  - |
+| `Default value` includeRelatedModels | `boolean` | false |  \- |
 
 **Returns:** [IModelKeys](../#imodelkeys)<`T`>
 
@@ -788,7 +788,7 @@ ___
 
 ▸ **validateField**(fieldName: *`any`*): `any`
 
-*Defined in [Model/Model.ts:214](https://github.com/Rediker-Software/redux-data-service/blob/9e76fc2/src/Model/Model.ts#L214)*
+*Defined in [Model/Model.ts:214](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Model.ts#L214)*
 
 Perform client-side validation on the Model based on the validationRules as defined for the given `fieldName`. The field's validation results will be returned immediately and dispatched to Redux.
 
@@ -796,9 +796,9 @@ Note: this works with nested paths (such as "person.firstName") in addition to f
 
 **Parameters:**
 
-| Param | Type | Description |
+| Name | Type | Description |
 | ------ | ------ | ------ |
-| fieldName | `any` |  - |
+| fieldName | `any` |  \- |
 
 **Returns:** `any`
 

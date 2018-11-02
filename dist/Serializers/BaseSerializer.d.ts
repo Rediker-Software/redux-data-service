@@ -8,8 +8,8 @@ export declare abstract class BaseSerializer<S, T extends IModelData, R = T> imp
     readonly relationships: any;
     readonly fields: any;
     protected isRelationship: (key: any) => any;
-    transformField(model: IModel<T> | Partial<T>): (fieldType: any, fieldName: string) => Promise<[string, string]>;
-    normalizeField(data: Partial<R>): (fieldType: IFieldType<any>, fieldName: string) => Promise<[string, string]>;
+    transformField(model: IModel<T> | Partial<T>): (fieldType: any, fieldName: string) => Promise<[string, any]>;
+    normalizeField(data: Partial<R>): (fieldType: IFieldType<any>, fieldName: string) => Promise<[string, any]>;
     transform(model: IModel<T> | Partial<T>): Promise<Partial<R>>;
     normalize(data: Partial<R>): Promise<IModel<T>>;
     protected transformRelationship(fieldValue: IModel<any> | IModel<any>[], relationship: IFieldRelationship): Promise<Partial<any>>;
