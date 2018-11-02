@@ -43,6 +43,10 @@ describe("FieldType: FileField", () => {
     expect(FileField.serialize).to.be.true;
   });
 
+  it("declares it's type", () =>
+    expect(FileField.type).to.eq("file"),
+  );
+
   describe("normalize", () => {
 
     it("normalizes a File by returning the given value", async () => {

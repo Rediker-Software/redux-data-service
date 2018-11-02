@@ -6,6 +6,7 @@ export const FileField: IFieldType<File> = {
   defaultValue: null,
   isValidType: value => value == null || value instanceof File,
   normalize: (value) => value,
+  type: "file",
   transform: (file): Promise<any[]> => {
     return new Promise((resolve, reject) => {
       try {
