@@ -101,11 +101,11 @@ describe("Model", () => {
       const relatedModel = new RelatedModel(
         {
           id: relatedModelId,
+          favoriteColor,
         },
         {
-          original: {
+          changes: {
             id: relatedModelId,
-            favoriteColor,
           },
         },
       );
@@ -334,11 +334,11 @@ describe("Model", () => {
       const relatedModel = new RelatedModel(
         {
           id: relatedModelId,
+          favoriteColor,
         },
         {
-          original: {
+          changes: {
             id: relatedModelId,
-            favoriteColor,
           },
         },
       );
@@ -690,20 +690,27 @@ describe("Model", () => {
         firstModel = new service.ModelClass(originalData);
       });
 
-      it("creates a new instance of the Model with new data and sets the previous data as the meta.original", () => {
-        const secondModel = firstModel.applyUpdates({ name: lorem.word() });
-        expect(secondModel.getMeta()).to.have.property("original").to.deep.equal(originalData);
+      it("creates a new instance of the Model with new data as meta.changes", () => {
+        const secondModelChanges = { name: lorem.word() };
+        const secondModel = firstModel.applyUpdates(secondModelChanges);
+        expect(secondModel.getMeta()).to.have.property("changes").to.deep.equal(secondModelChanges);
       });
 
-      it("creates a new instance of the Model with new data without modifying the meta.original on the first model", () => {
+      it("creates a new instance of the Model without changing modelData", () => {
         const secondModel = firstModel.applyUpdates({ name: lorem.word() });
-        expect(firstModel.getMeta()).to.have.property("original").to.be.null;
+        expect(secondModel.getModelData()).to.deep.equal(originalData);
       });
 
-      it("creates a new instance of the Model with new data and doesn't change meta.original if it was already set", () => {
+      it("creates a new instance of the Model with new data without modifying the meta.changes on the first model", () => {
         const secondModel = firstModel.applyUpdates({ name: lorem.word() });
-        const thirdModel = secondModel.applyUpdates({ name: lorem.word() });
-        expect(thirdModel.getMeta()).to.have.property("original").to.deep.equal(originalData);
+        expect(firstModel.getMeta()).to.have.property("changes").to.be.null;
+      });
+
+      it("creates a new instance of the Model with new data and changes meta.changes if it was already set", () => {
+        const secondModel = firstModel.applyUpdates({ name: lorem.word() });
+        const thirdModelChanges = { name: lorem.word() };
+        const thirdModel = secondModel.applyUpdates(thirdModelChanges);
+        expect(thirdModel.getMeta()).to.have.property("changes").to.deep.equal(thirdModelChanges);
       });
 
       it("creates a new instance of the Model with new meta without modifying the meta on the first model", () => {
@@ -716,14 +723,14 @@ describe("Model", () => {
         expect(secondModel.getMeta()).to.have.property("isLoading").to.be.true;
       });
 
-      it("creates a new instance of the Model with new meta and previous data was copied over", () => {
+      it("creates a new instance of the Model with new meta without changing modelData", () => {
         const secondModel = firstModel.applyUpdates(null, { isLoading: true });
         expect(secondModel.getModelData()).to.deep.equal(originalData);
       });
 
       it("creates a new instance of the Model with empty array when updating with an empty array", () => {
         const secondModel = firstModel.applyUpdates({ languages: [] });
-        expect(secondModel).to.have.property("languages").to.be.empty;
+        expect(secondModel.getMeta()).to.have.property("changes").to.have.property("languages").to.be.empty;
       });
     });
   });

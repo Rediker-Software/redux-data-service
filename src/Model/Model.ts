@@ -92,7 +92,8 @@ export class Model<T extends IModelData> implements IModel<T> {
       isLoading: false,
       isShadow: false,
       errors: null,
-      original: null,
+      // original: null,
+      changes: null,
       ...meta,
     };
   }
@@ -252,7 +253,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     if (this.isNew) {
       this.unload();
     } else if (this.isDirty) {
-      const model = this.applyUpdates(this.meta.original, { original: null });
+      const model = this.applyUpdates(null);
       getDataService(this.serviceName)
         .actions
         .pushRecord(model)
@@ -292,32 +293,26 @@ export class Model<T extends IModelData> implements IModel<T> {
    * Note that this is applied locally. Chances are you will want to dispatch an action instead, via one of the magic setters
    * (so your components will know to update).
    */
-  public applyUpdates(modelData: Partial<T> = null, meta: Partial<IModelMeta<T>> = {}, relatedModels: any = {}): IModel<T> {
-
-    meta = { ...this.meta, ...meta };
+  public applyUpdates(changes: Partial<T> = null, meta: Partial<IModelMeta<T>> = {}, relatedModels: any = {}): IModel<T> {
     relatedModels = { ...this.relatedModels, ...relatedModels };
 
-    if (!isEmpty(modelData)) {
+    if (!isEmpty(changes)) {
 
       // Validate the input, clear relatedModels whose ids may have just changed so they can be loaded again
-      for (const key in modelData) {
-        this.checkFieldUpdateIsAllowed(key, modelData[key]);
+      for (const key in changes) {
+        this.checkFieldUpdateIsAllowed(key, changes[key]);
         const relationship = find(this.relationships, { relatedFieldName: key });
         if (relationship && relatedModels.hasOwnProperty(relationship.field)) {
           delete relatedModels[relationship.field];
         }
       }
 
-      // Store a copy of the original data before we modify it
-      if (!this.isDirty) {
-        meta.original = this.modelData;
-      }
-
-      modelData = { ...(this.modelData as object), ...(modelData as object) };
+      meta.changes = changes;
+      meta = { ...this.meta, ...meta };
     }
 
     const service = getDataService(this.serviceName);
-    return new service.ModelClass(modelData || this.modelData, meta, relatedModels);
+    return new service.ModelClass(this.modelData, meta, relatedModels);
   }
 
   /**
@@ -338,7 +333,11 @@ export class Model<T extends IModelData> implements IModel<T> {
    * @returns {any}
    */
   public getField(fieldName: string, defaultValue?: any) {
-    return fieldName in this.modelData ? this.modelData[fieldName] : defaultValue;
+    return this.meta.changes && fieldName in this.meta.changes
+      ? this.meta.changes[fieldName]
+      : fieldName in this.modelData
+        ? this.modelData[fieldName]
+        : defaultValue;
   }
 
   /**
@@ -598,7 +597,20 @@ export class Model<T extends IModelData> implements IModel<T> {
    * @returns {boolean}
    */
   public get isDirty() {
-    return this.meta.original != null;
+    return !isEmpty(this.meta.changes);
+  }
+
+  /**
+   * Determine if a specific model field of the Model's data has changed without being saved.
+   *
+   * @returns {boolean}
+   */
+  public isFieldDirty(fieldName) {
+    if (isEmpty(this.meta.changes)) {
+      return false;
+    } else {
+      return fieldName in this.meta.changes;
+    }
   }
 
   /**
