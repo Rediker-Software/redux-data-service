@@ -70,7 +70,7 @@ describe("FieldType: BooleanField", function () {
     it("should be serialized", function () {
         expect(BooleanField_1.BooleanField.serialize).to.be.true;
     });
-    it("declares it's type", function () {
+    it("declares its type", function () {
         return expect(BooleanField_1.BooleanField.type).to.eq("boolean");
     });
     describe("normalize", function () {

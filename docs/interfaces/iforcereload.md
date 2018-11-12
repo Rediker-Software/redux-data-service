@@ -22,7 +22,7 @@
 
 **● forceReload**: *`boolean`*
 
-*Defined in [Services/DataService.ts:85](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Services/DataService.ts#L85)*
+*Defined in [Services/DataService.ts:85](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Services/DataService.ts#L85)*
 
 ___
 

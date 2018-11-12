@@ -89,7 +89,7 @@ describe("FieldType: DateField", function () {
     it("should be serialized", function () {
         expect(DateField_1.DateField.serialize).to.be.true;
     });
-    it("declares it's type", function () {
+    it("declares its type", function () {
         return expect(DateField_1.DateField.type).to.eq("date");
     });
     describe("normalize", function () {

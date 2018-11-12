@@ -13,7 +13,7 @@ export interface IModelAPIData {
 export interface IModelMeta<T> {
     readonly isShadow: boolean;
     isLoading: boolean;
-    original?: Partial<T>;
+    changes?: Partial<T>;
     errors: IModelKeys<T>;
 }
 export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData, IAttrs, IRelationship {
@@ -29,7 +29,7 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
     reset(): void;
     unload(): void;
     forceReload(): void;
-    applyUpdates(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>, relationships?: any): IModel<T>;
+    applyUpdates(changes?: Partial<T>, meta?: Partial<IModelMeta<T>>, relationships?: any): IModel<T>;
     initializeNewModel(): void;
     markForDestruction(): void;
     parseFieldValue(fieldName: string, value: any): Promise<any>;

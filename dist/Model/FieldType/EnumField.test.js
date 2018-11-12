@@ -80,7 +80,7 @@ describe("FieldType: EnumField", function () {
     it("should not be serialized", function () {
         expect(EnumField.serialize).to.be.false;
     });
-    it("declares it's type", function () {
+    it("declares its type", function () {
         return expect(EnumField.type).to.eq("enum");
     });
     it("normalizes a value by returning the given value if it exists in the enum", function () { return __awaiter(_this, void 0, void 0, function () {

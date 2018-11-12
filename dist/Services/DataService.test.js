@@ -249,7 +249,7 @@ describe("DataService", function () {
                 id: "1",
                 fullText: "Egg",
             };
-            var modelMeta = { original: null };
+            var modelMeta = {};
             var model = new Model_mock_1.FakeModel(modelData, modelMeta);
             var items = immutable_1.Map()
                 .set(modelData.id, model);
@@ -274,7 +274,7 @@ describe("DataService", function () {
                 id: "1",
                 firstName: "Elton",
             };
-            var modelMeta = { original: null };
+            var modelMeta = {};
             var model = new Model_mock_1.FakeModel(modelData, modelMeta);
             var items = immutable_1.Map()
                 .set(modelData.id, model);
@@ -296,7 +296,7 @@ describe("DataService", function () {
                 id: "1",
                 fullText: "Anakin",
             };
-            var modelMeta = { original: null };
+            var modelMeta = { changes: null };
             var model = new Model_mock_1.FakeModel(modelData, modelMeta);
             var items = immutable_1.Map()
                 .set(modelData.id, model);
@@ -313,7 +313,7 @@ describe("DataService", function () {
             var sut = fakeService.setFieldReducer(stateRecord, action);
             assert.isTrue(setRecordSpy.calledWith("items", sinon_1.match(function (updatedItems) {
                 var updatedModel = updatedItems.get(modelData.id);
-                return updatedModel.modelData.fullText === action.payload.value;
+                return updatedModel.meta.changes.fullText === action.payload.value;
             })));
         });
     });

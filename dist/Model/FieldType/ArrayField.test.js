@@ -70,7 +70,7 @@ describe("FieldType: ArrayField", function () {
     it("should be serialized", function () {
         expect(ArrayField_1.ArrayField.serialize).to.be.true;
     });
-    it("declares it's type", function () {
+    it("declares its type", function () {
         return expect(ArrayField_1.ArrayField.type).to.eq("array");
     });
     it("normalizes an array by returning the given value", function () { return __awaiter(_this, void 0, void 0, function () {

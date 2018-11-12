@@ -14,22 +14,31 @@
 
 ### Properties
 
+* [changes](imodelmeta.md#changes)
 * [errors](imodelmeta.md#errors)
 * [isLoading](imodelmeta.md#isloading)
 * [isShadow](imodelmeta.md#isshadow)
-* [original](imodelmeta.md#original)
 
 ---
 
 ## Properties
 
+<a id="changes"></a>
+
+### `<Optional>` changes
+
+**● changes**: *`Partial`<`T`>*
+
+*Defined in [Model/IModel.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/IModel.ts#L18)*
+
+___
 <a id="errors"></a>
 
 ###  errors
 
 **● errors**: *[IModelKeys](../#imodelkeys)<`T`>*
 
-*Defined in [Model/IModel.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/IModel.ts#L19)*
+*Defined in [Model/IModel.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/IModel.ts#L19)*
 
 ___
 <a id="isloading"></a>
@@ -38,7 +47,7 @@ ___
 
 **● isLoading**: *`boolean`*
 
-*Defined in [Model/IModel.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/IModel.ts#L17)*
+*Defined in [Model/IModel.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/IModel.ts#L17)*
 
 ___
 <a id="isshadow"></a>
@@ -47,16 +56,7 @@ ___
 
 **● isShadow**: *`boolean`*
 
-*Defined in [Model/IModel.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/IModel.ts#L16)*
-
-___
-<a id="original"></a>
-
-### `<Optional>` original
-
-**● original**: *`Partial`<`T`>*
-
-*Defined in [Model/IModel.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/IModel.ts#L18)*
+*Defined in [Model/IModel.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/IModel.ts#L16)*
 
 ___
 
