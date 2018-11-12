@@ -185,7 +185,8 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public validate(includeRelatedModels = false): IModelKeys<T> {
     const { id, dateUpdated, dateDeleted, ...data } = this.modelData as any;
-    let errors = validate(data, this.validationRules) || {};
+    const changedData = { ...data, ...(this.meta.changes as any) };
+    let errors = validate(changedData, this.validationRules) || {};
 
     if (includeRelatedModels) {
       errors = flow(
@@ -253,8 +254,9 @@ export class Model<T extends IModelData> implements IModel<T> {
     if (this.isNew) {
       this.unload();
     } else if (this.isDirty) {
-      const model = this.applyUpdates(null);
-      getDataService(this.serviceName)
+      const service = getDataService(this.serviceName);
+      const model = new service.ModelClass(this.modelData);
+      service
         .actions
         .pushRecord(model)
         .invoke();
@@ -293,7 +295,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    * Note that this is applied locally. Chances are you will want to dispatch an action instead, via one of the magic setters
    * (so your components will know to update).
    */
-  public applyUpdates(changes: Partial<T> = null, meta: Partial<IModelMeta<T>> = {}, relatedModels: any = {}): IModel<T> {
+  public applyUpdates(changes: Partial<T> = {}, meta: Partial<IModelMeta<T>> = {}, relatedModels: any = {}): IModel<T> {
     relatedModels = { ...this.relatedModels, ...relatedModels };
 
     if (!isEmpty(changes)) {
@@ -307,9 +309,10 @@ export class Model<T extends IModelData> implements IModel<T> {
         }
       }
 
-      meta.changes = changes;
-      meta = { ...this.meta, ...meta };
+      meta.changes = { ...(this.meta.changes as any), ...(changes as any) };
     }
+
+    meta = { ...this.meta, ...meta };
 
     const service = getDataService(this.serviceName);
     return new service.ModelClass(this.modelData, meta, relatedModels);

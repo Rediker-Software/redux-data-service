@@ -320,7 +320,7 @@ describe("DataService", () => {
         id: "1",
         fullText: "Anakin",
       };
-      const modelMeta = {} as IModelMeta<IFakeModelData>;
+      const modelMeta = { changes: null } as IModelMeta<IFakeModelData>;
       const model = new FakeModel(modelData, modelMeta);
 
       const items = Map()
@@ -343,7 +343,7 @@ describe("DataService", () => {
       assert.isTrue(setRecordSpy.calledWith("items",
         match((updatedItems) => {
           const updatedModel = updatedItems.get(modelData.id);
-          return updatedModel.modelData.fullText === action.payload.value;
+          return updatedModel.meta.changes.fullText === action.payload.value;
         })));
     });
   });

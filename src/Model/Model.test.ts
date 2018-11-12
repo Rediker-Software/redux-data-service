@@ -105,7 +105,7 @@ describe("Model", () => {
         },
         {
           changes: {
-            id: relatedModelId,
+            favoriteColor: "",
           },
         },
       );
@@ -338,7 +338,7 @@ describe("Model", () => {
         },
         {
           changes: {
-            id: relatedModelId,
+            favoriteColor: "",
           },
         },
       );
