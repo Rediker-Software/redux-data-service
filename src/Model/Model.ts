@@ -92,7 +92,6 @@ export class Model<T extends IModelData> implements IModel<T> {
       isLoading: false,
       isShadow: false,
       errors: null,
-      // original: null,
       changes: null,
       ...meta,
     };

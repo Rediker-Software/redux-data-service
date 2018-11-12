@@ -15,7 +15,6 @@ export interface IModelAPIData {
 export interface IModelMeta<T> {
   readonly isShadow: boolean;
   isLoading: boolean;
-  // original?: Partial<T>;
   changes?: Partial<T>;
   errors: IModelKeys<T>;
 }
