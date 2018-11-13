@@ -7,7 +7,7 @@ import { single, validate } from "validate.js";
 import { forEach, get, isEmpty, merge, omit, find } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
-import { getDataService } from "../Services";
+import { DataService, getDataService } from "../Services";
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
 import { DateTimeField, IFieldType, StringField } from "./FieldType";
 import { attr, IFieldRelationship, RelationshipType } from "./Decorators";
@@ -403,7 +403,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     }
 
     const relationship = this.relationships[fieldName];
-    const relatedService = getDataService(relationship.serviceName);
+    const relatedService = this.getServiceForRelationship(fieldName);
     const relatedIDorIDs = this.getField(relationship.relatedFieldName);
 
     // Initialize the cache to an empty value
@@ -475,6 +475,16 @@ export class Model<T extends IModelData> implements IModel<T> {
     } else {
       throw new TypeError(`${this.serviceName}: Relationship type "${type}" unknown.`);
     }
+  }
+
+  getServiceForRelationship(relationshipKey: string): DataService<any> {
+    const relationship = this.relationships[relationshipKey];
+    if (relationship.serviceName) {
+      return getDataService(relationship.serviceName);
+    } else {
+      return getDataService(this.getField(relationship.serviceNameField));
+    }
+
   }
 
   /**

@@ -200,7 +200,7 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
       relatedModelData[modelRelatedFieldName] = model.id;
     }
 
-    const service = getDataService(relationship.serviceName);
+    const service = model.getServiceForRelationship(relationship.field);
     const relatedModel = await service.serializer.normalize(relatedModelData);
     service.actions.pushRecord(relatedModel).invoke();
 

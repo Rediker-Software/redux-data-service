@@ -19,6 +19,7 @@ export interface IFieldRelationship {
   relatedFieldName: string;
   modelRelatedFieldName?: string;
   type: RelationshipType;
+  serviceNameField?: string;
 }
 
 /**
@@ -41,6 +42,8 @@ export interface IRelationshipOptions extends IFieldOptions {
 
   /** The name of the field on the OTHER model which provides the ID of THIS model */
   modelRelatedFieldName?: string;
+
+  serviceNameField?: string;
 }
 
 /**
@@ -97,10 +100,6 @@ export function relationship(relationshipType: RelationshipType, options: IRelat
   return (target: any, key: string) => {
     const singularKey = singular(key); // eg. organizations => organization, countries => country
 
-    if (!options.serviceName) {
-      options.serviceName = singularKey;
-    }
-
     if (!options.relatedFieldName) {
       options.relatedFieldName = getRelatedFieldNameForRelationship(relationshipType, singularKey);
     }
@@ -109,16 +108,30 @@ export function relationship(relationshipType: RelationshipType, options: IRelat
       throw new ReferenceError(`Related field name "${options.relatedFieldName}" missing for relationship "${key}". Did you forget to add an @attr decorator?`);
     }
 
+    const relationshipObject = {
+      relatedFieldName: options.relatedFieldName,
+      modelRelatedFieldName: options.modelRelatedFieldName,
+      field: key,
+      type: relationshipType,
+    } as any;
+
+    if (options.serviceName) {
+      relationshipObject.serviceName = options.serviceName;
+    } else if (options.serviceNameField) {
+      Object.defineProperty(relationshipObject, "serviceName", {
+        get() {
+          target.getRelated(options.serviceNameField);
+        },
+      });
+      relationshipObject.getServiceName = (instance) => instance.getField(options.serviceName);
+    } else {
+      options.serviceName = singularKey;
+    }
+
     // Keep track of the relationship
     target.relationships = {
       ...target.relationships,
-      [key]: {
-        serviceName: options.serviceName,
-        relatedFieldName: options.relatedFieldName,
-        modelRelatedFieldName: options.modelRelatedFieldName,
-        field: key,
-        type: relationshipType,
-      },
+      [key]: relationshipObject,
     };
 
     // Replace TypeScript's property definition with our own.
