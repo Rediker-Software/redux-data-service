@@ -19,7 +19,7 @@ export interface IQueryBuilder {
   /** The current set of query params. DO NOT MUTATE THIS OBJECT DIRECTLY! */
   readonly queryParams: any;
 
-  /** Add the given sorting param to the query. Default SortDirection is "asc". */
+  /** Add the given sorting param to the query. Default SortDirection is "asc". Position is a zero-based index */
   sort: (key: string, direction?: SortDirection, position?: number) => IQueryBuilder;
 
   /** Remove the given sorting param from the query. */

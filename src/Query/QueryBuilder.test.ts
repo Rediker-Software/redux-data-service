@@ -409,24 +409,28 @@ describe("QueryBuilder", () => {
     });
 
     it("places the sort in a position specified by the parameter", () => {
-      const position = random.number(2);
+      const position = random.number({ max: 4 });
       const key1 = lorem.word();
       const key2 = lorem.word();
       const key3 = lorem.word();
+      const key4 = lorem.word();
+      const key5 = lorem.word();
 
       const currentQueryParams = {
         sort: [
           { key: key1 },
           { key: key2 },
+          { key: key3 },
+          { key: key4 },
         ],
       };
 
       const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
       
-      const sortedQuery = query.sort(key3, "asc", position);
-
+      const sortedQuery = query.sort(key5, "asc", position);
+      
       expect(sortedQuery.queryParams.sort[position]).to.deep.equal(
-        { key: key3, direction: "asc" },
+        { key: key5, direction: "asc" },
       );
     });
 
