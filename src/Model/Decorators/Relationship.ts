@@ -109,24 +109,13 @@ export function relationship(relationshipType: RelationshipType, options: IRelat
     }
 
     const relationshipObject = {
+      serviceName: options.serviceName,
+      serviceNameField: options.serviceNameField,
       relatedFieldName: options.relatedFieldName,
       modelRelatedFieldName: options.modelRelatedFieldName,
       field: key,
       type: relationshipType,
     } as any;
-
-    if (options.serviceName) {
-      relationshipObject.serviceName = options.serviceName;
-    } else if (options.serviceNameField) {
-      Object.defineProperty(relationshipObject, "serviceName", {
-        get() {
-          target.getRelated(options.serviceNameField);
-        },
-      });
-      relationshipObject.getServiceName = (instance) => instance.getField(options.serviceName);
-    } else {
-      options.serviceName = singularKey;
-    }
 
     // Keep track of the relationship
     target.relationships = {

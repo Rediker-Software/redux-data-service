@@ -3,9 +3,10 @@ import "rxjs/add/operator/skip";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 
-import { single, validate } from "validate.js";
+import { validate } from "validate.js";
 import { forEach, get, isEmpty, merge, omit, find } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
+import { singular } from "pluralize";
 
 import { DataService, getDataService } from "../Services";
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
@@ -477,12 +478,14 @@ export class Model<T extends IModelData> implements IModel<T> {
     }
   }
 
-  getServiceForRelationship(relationshipKey: string): DataService<any> {
+  public getServiceForRelationship(relationshipKey: string): DataService<any> {
     const relationship = this.relationships[relationshipKey];
     if (relationship.serviceName) {
       return getDataService(relationship.serviceName);
-    } else {
+    } else if (relationship.serviceNameField) {
       return getDataService(this.getField(relationship.serviceNameField));
+    } else {
+      return getDataService(singular(relationshipKey));
     }
 
   }
