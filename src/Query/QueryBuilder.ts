@@ -136,9 +136,10 @@ export class QueryBuilder implements IQueryBuilder {
     };
 
     if (position >= 0 && queryParams.sort && queryParams.sort.length >= 0) {
+      queryParams.sort = [...queryParams.sort];
       queryParams.sort.splice(position, 0, { key, direction });
     } else if (queryParams.sort) {
-      queryParams.sort.push({ key, direction });
+      queryParams.sort = [...queryParams.sort, { key, direction }];
     } else {
       queryParams.sort = [{ key, direction }];
     }
