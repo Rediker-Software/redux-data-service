@@ -7,12 +7,10 @@ import { BaseSerializer } from "./BaseSerializer";
 export class MemorySerializer<T extends IModelData, R = T> extends BaseSerializer<Partial<R>, T, R> {
 
   public async serialize(model: IModel<T> | Partial<T>): Promise<Partial<R>> {
-    const modelStraight = await this.transform(model);
-    return await modelStraight;    
-   // return await this.transform(model);
+    return await model as R; 
   }
 
   public async deserialize(data: Partial<R>): Promise<IModel<T>> {
-    return await this.normalize(data);
+    return await data as any;
   }
 }

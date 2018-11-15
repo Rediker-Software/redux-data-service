@@ -38,7 +38,18 @@ export class RestSerializer<T extends IModelData, R = T> extends BaseSerializer<
    */
   public async serializeQueryParams(params: IQueryParams): Promise<string> {
     return Object.keys(params)
-    .map(function (k) { return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]); })
+    .map(function (k) { 
+      let sortParam = params.sort;
+      let otherParam = params[k];
+                  
+      if (sortParam instanceof Array) {
+        otherParam = "";
+        sortParam.forEach((s) => otherParam + (s.direction === "desc" ? s.key + ":" + s.direction : s.key)) + ",";
+        otherParam = "sort=" + otherParam.substring(0,otherParam.length-1);
+      }
+                  
+      return encodeURIComponent(k) + "=" + encodeURIComponent(otherParam instanceof Array ? otherParam.join(",") : String(otherParam));
+     })
     .join("&");
     
   } 
