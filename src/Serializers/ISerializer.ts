@@ -6,7 +6,7 @@ export interface ISerializer<S, T extends IModelData, R = T> {
   deserialize: (data: R) => Promise<IModel<T>>;
   transform: (model: IModel<T>) => Promise<Partial<R>>;
   normalize: (data: Partial<R>) => Promise<IModel<T>>;
-  serializeQueryParams: (params: IQueryParams) => S;
+  serializeQueryParams: (params: IQueryParams) => Promise<S>;
 }
 
 export interface ISerializerFactory<S, T extends IModelData, R = T> {

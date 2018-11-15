@@ -4,6 +4,7 @@ import { RestSerializer } from "./RestSerializer";
 import { FakeModel } from "../Model/Model.mock";
 
 import faker from "faker";
+import { SortDirection } from "../Query/QueryBuilder";
 
 declare var intern;
 const { describe, it } = intern.getPlugin("interface.bdd");
@@ -70,6 +71,31 @@ describe("RestSerializer", () => {
       expect(deserializedModel).to.deep.equal(fakeModel);
     });
 
+  });
+
+  describe("serializeQueryParams", () => {
+
+    it("convert the given IQueryParams object into a url-encoded string", async () => {
+      const fakeQueryParamData = {        
+        page: 1,
+        pageSize: 2,
+        grade: 4,
+        values: ["bob", "jill"],
+        sort: [
+          {key: "firstName", direction: "asc" as SortDirection},
+          {key: "lastName", direction: "desc" as SortDirection},
+        ],        
+      }
+      
+      const restSerializer = new RestSerializer(FakeModel);
+      const stubNormalize = stub(restSerializer, "normalize");
+
+      const urlEncodedString = await restSerializer.serializeQueryParams(fakeQueryParamData);
+
+      expect(urlEncodedString).to.equal("page=1&pageSize=2&grade=4&values=bob,jill&sort=firstName,lastName:desc");
+    });
+
+    
   });
 
 });
