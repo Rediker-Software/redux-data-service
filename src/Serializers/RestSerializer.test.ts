@@ -82,7 +82,7 @@ describe("RestSerializer", () => {
         grade: 4,
         current: true,
         name: "alice",
-        values: ["bob", "jill"],
+        values: ["bob", "eve"],
         sort: [
           {key: "firstName", direction: "asc" as SortDirection},
           {key: "lastName", direction: "desc" as SortDirection},
