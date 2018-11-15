@@ -6,7 +6,8 @@ import { getDataService } from "../Services";
 export type SortDirection = "asc" | "desc";
 
 export interface ISort {
-  [key: string]: SortDirection;
+  key: string;
+  direction?: SortDirection;
 }
 
 export type FilterValue = string | number | boolean;
@@ -18,8 +19,8 @@ export interface IQueryBuilder {
   /** The current set of query params. DO NOT MUTATE THIS OBJECT DIRECTLY! */
   readonly queryParams: any;
 
-  /** Add the given sorting param to the query. Default SortDirection is "asc". */
-  sort: (key: string, direction?: SortDirection) => IQueryBuilder;
+  /** Add the given sorting param to the query. Default SortDirection is "asc". Position is a zero-based index */
+  sort: (key: string, direction?: SortDirection, position?: number) => IQueryBuilder;
 
   /** Remove the given sorting param from the query. */
   removeSort: (key: string) => IQueryBuilder;
@@ -44,11 +45,11 @@ export interface IQueryBuilder {
 }
 
 export interface IQueryParams {
-  sort?: ISort;
+  sort?: ISort[];
   page?: number;
   pageSize?: number;
 
-  [key: string]: FilterValue | FilterValue[] | ISort;
+  [key: string]: FilterValue | FilterValue[] | ISort [];
 }
 
 /**
@@ -129,12 +130,19 @@ export class QueryBuilder implements IQueryBuilder {
     return new QueryBuilder(this.serviceName, queryParams);
   }
 
-  public sort(key: string, direction: SortDirection = "asc"): IQueryBuilder {
-    const queryParams = merge({}, this.queryParams, {
-      sort: {
-        [key]: direction,
-      },
-    });
+  public sort(key: string, direction: SortDirection = "asc", position?: number): IQueryBuilder {
+    const queryParams = {
+      ...this.queryParams,
+    };
+
+    if (position >= 0 && queryParams.sort && queryParams.sort.length >= 0) {
+      queryParams.sort = [...queryParams.sort];
+      queryParams.sort.splice(position, 0, { key, direction });
+    } else if (queryParams.sort) {
+      queryParams.sort = [...queryParams.sort, { key, direction }];
+    } else {
+      queryParams.sort = [{ key, direction }];
+    }
 
     return new QueryBuilder(this.serviceName, queryParams);
   }
@@ -145,7 +153,7 @@ export class QueryBuilder implements IQueryBuilder {
     };
 
     if ("sort" in queryParams) {
-      delete queryParams.sort[key];
+      queryParams.sort = queryParams.sort.filter(q => q.key !== key);
       if (isEmpty(queryParams.sort)) {
         delete queryParams.sort;
       }
