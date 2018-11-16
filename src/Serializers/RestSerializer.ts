@@ -45,7 +45,7 @@ export class RestSerializer<T extends IModelData, R = T> extends BaseSerializer<
         debugger;
         otherParam = "";
         params[k].forEach((s) => otherParam += ((s.direction === "desc" ? s.key + ":" + s.direction : s.key)) + ",");
-        otherParam = otherParam.substring(0,otherParam.length-1);
+        otherParam = otherParam.substring(0, otherParam.length -1 );
         return "sort=" + otherParam;
       }
             

@@ -77,24 +77,24 @@ describe("RestSerializer", () => {
 
     it("convert the given IQueryParams object into a url-encoded string", async () => {
       const fakeQueryParamData = {        
-        page: 1,
-        pageSize: 2,
-        grade: 4,
-        values: ["bob", "jill"],
+        page: faker.random.number().toString(),
+        pageSize: faker.random.number().toString(),
+        grade: faker.random.number().toString(),
+        values: [faker.lorem.word().toString(), faker.lorem.word().toString()],
         sort: [
-          {key: "firstName", direction: "asc" as SortDirection},
-          {key: "lastName", direction: "desc" as SortDirection},
+          {key: faker.lorem.word().toString(), direction: "asc" as SortDirection},
+          {key: faker.lorem.word().toString(), direction: "desc" as SortDirection},
         ],        
-      }
-      
-      const restSerializer = new RestSerializer(FakeModel);
-      const stubNormalize = stub(restSerializer, "normalize");
+      };
 
+      const restSerializer = new RestSerializer(FakeModel);
       const urlEncodedString = await restSerializer.serializeQueryParams(fakeQueryParamData);
 
-      expect(urlEncodedString).to.equal("page=1&pageSize=2&grade=4&values=bob,jill&sort=firstName,lastName:desc");
+      expect(urlEncodedString).to.equal("page=" + fakeQueryParamData.page + "&pageSize="
+       + fakeQueryParamData.pageSize + "&grade=" + fakeQueryParamData.grade +
+        "&values=" + fakeQueryParamData.values[0] + "," + fakeQueryParamData.values[1] +
+        "&sort=" + fakeQueryParamData.sort[0].key + "," + fakeQueryParamData.sort[1].key + ":desc");
     });
-
     
   });
 
