@@ -91,14 +91,13 @@ describe("RestSerializer", () => {
 
       const restSerializer = new RestSerializer(FakeModel);
       const urlEncodedString = await restSerializer.serializeQueryParams(fakeQueryParamData);
-     
+
       // tslint:disable-next-line:max-line-length (with the backslash \ line continuation it seems to put in an extra space)
       expect(urlEncodedString).to.equal(`page=${fakeQueryParamData.page}&pageSize=${fakeQueryParamData.pageSize}&grade=${fakeQueryParamData.grade}&current=${fakeQueryParamData.current}&values=${fakeQueryParamData.values[0]},${fakeQueryParamData.values[1]}&sort=${fakeQueryParamData.sort[0].key},${fakeQueryParamData.sort[1].key}${encodeURIComponent(":")}desc`);
-
     });
 
     it("convert the given IQueryParams object into a url-encoded string with special characters in names", async () => {
-      
+
       const name1 = `${name.firstName()}%`;
       const name2 =  `${name.firstName()},o`;
 
