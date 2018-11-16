@@ -93,7 +93,7 @@ describe("RestSerializer", () => {
       expect(urlEncodedString).to.equal("page=" + fakeQueryParamData.page + "&pageSize="
        + fakeQueryParamData.pageSize + "&grade=" + fakeQueryParamData.grade +
         "&values=" + fakeQueryParamData.values[0] + "," + fakeQueryParamData.values[1] +
-        "&sort=" + fakeQueryParamData.sort[0].key + "," + fakeQueryParamData.sort[1].key + ":desc");
+        "&sort=" + fakeQueryParamData.sort[0].key + "," + fakeQueryParamData.sort[1].key + encodeURIComponent(":") + "desc");
     });
     
   });
