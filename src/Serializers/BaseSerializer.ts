@@ -6,6 +6,7 @@ import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, Rela
 import { getDataService } from "../Services";
 
 import { ISerializer } from "./ISerializer";
+import { IQueryParams } from "../Query/QueryBuilder";
 
 /**
  * The base class from which implementations of `IDataSerializer` should extend.
@@ -20,6 +21,7 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
 
   public abstract async deserialize(data: R): Promise<IModel<T>>;
   public abstract async serialize(modelData: IModel<T> | Partial<T>): Promise<S>;
+  public abstract async serializeQueryParams(params: IQueryParams): Promise<any>;
 
   public constructor(ModelClass: IModelFactory<T>) {
     this.ModelClass = ModelClass;

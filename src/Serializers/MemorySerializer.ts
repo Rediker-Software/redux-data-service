@@ -1,4 +1,5 @@
 import { IModel, IModelData } from "../Model";
+import { IQueryParams } from "../Query";
 import { BaseSerializer } from "./BaseSerializer";
 
 /**
@@ -12,5 +13,9 @@ export class MemorySerializer<T extends IModelData, R = T> extends BaseSerialize
 
   public async deserialize(data: Partial<R>): Promise<IModel<T>> {
     return await this.normalize(data);
+  }
+
+  public async serializeQueryParams(queryParams: IQueryParams): Promise<IQueryParams> {
+    return queryParams;
   }
 }
