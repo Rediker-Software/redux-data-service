@@ -1,11 +1,10 @@
 // tslint:disable:no-unused-expression
-import { spy, stub } from "sinon";
+import { stub } from "sinon";
 import { RestSerializer } from "./RestSerializer";
 import { FakeModel } from "../Model/Model.mock";
 
 import { lorem, random, name } from "faker";
 import { SortDirection } from "../Query/QueryBuilder";
-import { diffTrimmedLines } from "diff";
 
 declare var intern;
 const { describe, it } = intern.getPlugin("interface.bdd");
