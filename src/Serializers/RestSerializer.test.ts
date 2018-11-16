@@ -76,7 +76,6 @@ describe("RestSerializer", () => {
   describe("serializeQueryParams", () => {
 
     it("convert the given IQueryParams object into a url-encoded string", async () => {
-
       const fakeQueryParamData = {
         page: random.number().toString(),
         pageSize: random.number().toString(),
@@ -97,7 +96,6 @@ describe("RestSerializer", () => {
     });
 
     it("convert the given IQueryParams object into a url-encoded string with special characters in names", async () => {
-
       const name1 = `${name.firstName()}%`;
       const name2 =  `${name.firstName()},o`;
 
