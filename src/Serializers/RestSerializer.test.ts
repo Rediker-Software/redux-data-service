@@ -3,7 +3,7 @@ import { spy, stub } from "sinon";
 import { RestSerializer } from "./RestSerializer";
 import { FakeModel } from "../Model/Model.mock";
 
-import faker from "faker";
+import { lorem, random } from "faker";
 import { SortDirection } from "../Query/QueryBuilder";
 
 declare var intern;
@@ -15,7 +15,7 @@ describe("RestSerializer", () => {
   describe("serialize", () => {
 
     it("first transforms the model before serializing it", async () => {
-      const fakeModel = new FakeModel({ id: faker.random.number().toString() });
+      const fakeModel = new FakeModel({ id: random.number().toString() });
       const restSerializer = new RestSerializer(FakeModel);
       const stubTransform = stub(restSerializer, "transform");
 
@@ -25,10 +25,10 @@ describe("RestSerializer", () => {
     });
 
     it("converts the model into a JSON string", async () => {
-      const fullText = faker.lorem.word().toString();
+      const fullText = lorem.word().toString();
 
       const fakeModel = new FakeModel({
-        id: faker.random.number().toString(),
+        id: random.number().toString(),
         fullText,
       });
 
@@ -44,8 +44,8 @@ describe("RestSerializer", () => {
 
     it("converts the deserialized raw data into a Model by normalizing it", async () => {
       const fakeModelData = {
-        id: faker.random.number().toString(),
-        fullText: faker.lorem.word().toString(),
+        id: random.number().toString(),
+        fullText: lorem.word().toString(),
       };
 
       const serializedModel = JSON.stringify(fakeModelData);
@@ -59,8 +59,8 @@ describe("RestSerializer", () => {
 
     it("converts the JSON string into a model", async () => {
       const fakeModelData = {
-        id: faker.random.number().toString(),
-        fullText: faker.lorem.word().toString(),
+        id: random.number().toString(),
+        fullText: lorem.word().toString(),
       };
       const fakeModel = new FakeModel(fakeModelData);
       const serializedModel = JSON.stringify(fakeModelData);
@@ -77,13 +77,14 @@ describe("RestSerializer", () => {
 
     it("convert the given IQueryParams object into a url-encoded string", async () => {
       const fakeQueryParamData = {        
-        page: faker.random.number().toString(),
-        pageSize: faker.random.number().toString(),
-        grade: faker.random.number().toString(),
-        values: [faker.lorem.word().toString(), faker.lorem.word().toString()],
+        page: random.number().toString(),
+        pageSize: random.number().toString(),
+        grade: random.number().toString(),
+        current: random.boolean().toString(),
+        values: [lorem.word().toString(), lorem.word().toString()],
         sort: [
-          {key: faker.lorem.word().toString(), direction: "asc" as SortDirection},
-          {key: faker.lorem.word().toString(), direction: "desc" as SortDirection},
+          {key: lorem.word().toString(), direction: "asc" as SortDirection},
+          {key: lorem.word().toString(), direction: "desc" as SortDirection},
         ],        
       };
 
@@ -91,7 +92,7 @@ describe("RestSerializer", () => {
       const urlEncodedString = await restSerializer.serializeQueryParams(fakeQueryParamData);
 
       expect(urlEncodedString).to.equal("page=" + fakeQueryParamData.page + "&pageSize="
-       + fakeQueryParamData.pageSize + "&grade=" + fakeQueryParamData.grade +
+       + fakeQueryParamData.pageSize + "&grade=" + fakeQueryParamData.grade + "&current=" + fakeQueryParamData.current +
         "&values=" + fakeQueryParamData.values[0] + "," + fakeQueryParamData.values[1] +
         "&sort=" + fakeQueryParamData.sort[0].key + "," + fakeQueryParamData.sort[1].key + encodeURIComponent(":") + "desc");
     });
