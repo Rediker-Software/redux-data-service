@@ -334,9 +334,8 @@ describe("QueryBuilder", () => {
 
       query = query.sort(key);
 
-      expect(query.queryParams)
-        .to.have.property("sort")
-        .to.have.property(key)
+      expect(query.queryParams.sort[0])
+        .to.have.property("direction")
         .to.equal("asc");
     });
 
@@ -345,9 +344,8 @@ describe("QueryBuilder", () => {
 
       query = query.sort(key, "desc");
 
-      expect(query.queryParams)
-        .to.have.property("sort")
-        .to.have.property(key)
+      expect(query.queryParams.sort[0])
+        .to.have.property("direction")
         .to.equal("desc");
     });
 
@@ -363,9 +361,9 @@ describe("QueryBuilder", () => {
 
       expect(query.queryParams).to.deep.equal({
         [key]: value,
-        sort: {
-          [sortKey]: "asc",
-        },
+        sort: [
+         { key: sortKey, direction: "asc" },
+        ],
       });
     });
 
@@ -382,11 +380,11 @@ describe("QueryBuilder", () => {
 
       expect(query.queryParams)
         .to.have.property("sort")
-        .to.deep.equal({
-          [key]: "asc",
-          [key2]: "desc",
-          [key3]: "asc",
-        },
+        .to.deep.equal([
+          { key, direction: "asc" },
+          { key: key2, direction: "desc" },
+          { key: key3, direction: "asc" },
+        ],
       );
     });
 
@@ -410,6 +408,72 @@ describe("QueryBuilder", () => {
         .to.deep.equal(currentQueryParams);
     });
 
+    it("places the sort in a position specified by the parameter", () => {
+      const position = random.number({ max: 4 });
+      const key1 = lorem.word();
+      const key2 = lorem.word();
+      const key3 = lorem.word();
+      const key4 = lorem.word();
+      const key5 = lorem.word();
+
+      const currentQueryParams = {
+        sort: [
+          { key: key1 },
+          { key: key2 },
+          { key: key3 },
+          { key: key4 },
+        ],
+      };
+
+      const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
+      
+      const sortedQuery = query.sort(key5, "asc", position);
+      
+      expect(sortedQuery.queryParams.sort[position]).to.deep.equal(
+        { key: key5, direction: "asc" },
+      );
+    });
+
+    it("creates a new sort object if none exists", () => {
+      const currentQueryParams = {};
+
+      const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
+      const sortedQuery = query.sort(lorem.word());
+
+      expect(sortedQuery.queryParams.sort).to.exist;
+    });
+
+    it("creates a new sort list if no sorts existed previously", () => {
+      const currentQueryParams = {};
+
+      const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
+
+      const sortedQuery = query.sort(lorem.word());
+
+      expect(sortedQuery.queryParams.sort.length).to.equal(1);
+    });
+
+    it("pushes the sort onto the end of the list if no position is specified", () => {
+      const key1 = lorem.word();
+      const key2 = lorem.word();
+      const key3 = lorem.word();
+
+      const currentQueryParams = {
+        sort: [
+          { key: key1 },
+          { key: key2 },
+        ],
+      };
+
+      const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
+
+      const sortedQuery = query.sort(key3);
+
+      expect(sortedQuery.queryParams.sort[2]).to.deep.equal(
+        { key: key3, direction: "asc" },
+      );
+    });
+
   });
 
   describe("removing sort criteria", () => {
@@ -417,26 +481,25 @@ describe("QueryBuilder", () => {
     it("supports removing sorting criteria", () => {
       const otherSort = random.word();
       const currentQueryParams = {
-        sort: {
-          [key]: "asc" as SortDirection,
-          [otherSort]: "desc" as SortDirection,
-        },
+        sort: [
+          { key, direction: "asc" as SortDirection },
+          { key: otherSort, direction: "desc" as SortDirection },
+        ],
       };
 
       let query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
 
       query = query.removeSort(key);
 
-      expect(query.queryParams)
-        .to.have.property("sort")
-        .to.deep.equal({ [otherSort]: "desc" });
+      expect(query.queryParams.sort[0])
+        .to.deep.equal({ key: otherSort, direction: "desc" });
     });
 
     it("removes the 'sort' object from queryParams if there is one sort param and it is removed", () => {
       const currentQueryParams = {
-        sort: {
-          [key]: value,
-        },
+        sort: [
+          { key, direction: value },
+        ],
       };
 
       let query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
@@ -471,9 +534,9 @@ describe("QueryBuilder", () => {
         pageSize,
         [key]: value,
         [otherKey]: otherValue,
-        sort: {
-          [otherSort]: "asc" as SortDirection,
-        },
+        sort: [ 
+          { key: otherSort, direction: "asc" },
+        ],
       });
     });
 
@@ -482,11 +545,11 @@ describe("QueryBuilder", () => {
       const key3 = random.word();
 
       let query: IQueryBuilder = new QueryBuilder(serviceName, {
-        sort: {
-          [key]: "desc",
-          [key2]: "asc",
-          [key3]: "desc",
-        },
+        sort: [
+          { key, direction: "desc" },
+          { key: key2, direction: "asc" },
+          { key: key3, direction: "desc" },
+        ],
       });
 
       query = query
@@ -495,7 +558,7 @@ describe("QueryBuilder", () => {
 
       expect(query.queryParams)
         .to.have.property("sort")
-        .to.not.have.any.keys([key2, key3]);
+        .to.not.deep.equal([{ key: key2, direction: "asc" }, {key: key3, direction: "desc" }]);
     });
 
     it("does not throw an exception when removing a sort key that does not exist", () => {

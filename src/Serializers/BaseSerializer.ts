@@ -21,7 +21,7 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
 
   public abstract async deserialize(data: R): Promise<IModel<T>>;
   public abstract async serialize(modelData: IModel<T> | Partial<T>): Promise<S>;
-  public abstract async serializeQueryParams(params: IQueryParams): Promise<S>;
+  public abstract async serializeQueryParams(params: IQueryParams): Promise<any>;
 
   public constructor(ModelClass: IModelFactory<T>) {
     this.ModelClass = ModelClass;
