@@ -20,6 +20,11 @@ export interface IQueryManagerMeta {
   errors?: any;
 }
 
+/**
+ * Manages the data associated with a query.
+ * Holds immutable readonly fields for an IQueryBuilder, an array of IModel item results, an IQueryResponse, and an IQueryManagerMeta
+ * Each QueryManager instance should be treated as an immutable object, a new instance should be created when query data changes.
+ */
 export class QueryManager<T extends IModelData> implements IQueryManager<T> {
   public readonly query: IQueryBuilder;
   public readonly items: IModel<T>[];
