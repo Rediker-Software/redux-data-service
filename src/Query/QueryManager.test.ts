@@ -1,12 +1,11 @@
 // tslint:disable no-unused-expression
 
-import {spy, stub} from "sinon";
-import {lorem, random} from "faker";
+import { random } from "faker";
 
 import {QueryBuilder} from "./QueryBuilder";
 import {QueryManager} from "./QueryManager";
 import {fakeModelModule, initializeTestServices, seedServiceList} from "../TestUtils";
-import {IQueryResponse} from "./IQueryResponse";
+import { IFakeModelData } from "../Model";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
@@ -14,14 +13,12 @@ const { expect } = intern.getPlugin("chai");
 
 describe("QueryManager", () => {
 
-  let serviceName;
-  let key;
-  let value;
+  let fakeItems;
+  const serviceName = "fakeModel";
 
   beforeEach(() => {
-    serviceName = "fakeModel";
-    key = random.word();
-    value = random.word();
+    initializeTestServices(fakeModelModule);
+    fakeItems = seedServiceList<IFakeModelData>(serviceName);
   });
 
   it("constructs a QueryManager instance", () => {
@@ -31,22 +28,9 @@ describe("QueryManager", () => {
     });
   });
 
-  describe("iterable", () => {
-
-    it("iterates over the items", () => {
-      initializeTestServices(fakeModelModule);
-      const fakeItems = seedServiceList(serviceName);
-
-      const mockResponse = {
-        ids: fakeItems.map(fakeItem => fakeItem.id),
-      } as IQueryResponse;
-
-      const query = new QueryManager(serviceName, mockResponse);
-      for (const item of query) {
-        expect()
-      }
-    });
-
+  it("returns query items", () => {
+    const query = new QueryBuilder(serviceName, { x: random.number() });
+    const queryManager = new QueryManager(query, fakeItems);
+    expect(queryManager.items).to.deep.equal(fakeItems);
   });
-
 });
