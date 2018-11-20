@@ -3,7 +3,7 @@ import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import { spy, stub } from "sinon";
 
-import faker from "faker";
+import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
 import { omit } from "lodash";
 
@@ -97,17 +97,17 @@ describe("Mapper", () => {
       registerService(fakeService);
       registerService(fakeRelatedService);
 
-      age = faker.random.number();
-      fullText = faker.lorem.word();
-      startDateString = format(faker.date.recent(), "YYYY-MM-DD");
-      startTimeString = format(faker.date.recent(), "hh:mm:ss a");
+      age = random.number();
+      fullText = lorem.word();
+      startDateString = format(date.recent(), "YYYY-MM-DD");
+      startTimeString = format(date.recent(), "hh:mm:ss a");
 
-      fakeRelatedModelId = faker.random.number().toString();
-      modelId = faker.random.number().toString();
+      fakeRelatedModelId = random.number().toString();
+      modelId = random.number().toString();
 
       fakeRelatedModelData = {
         id: fakeRelatedModelId,
-        fullText: faker.lorem.word(),
+        fullText: lorem.word(),
         fakeModelId: modelId,
       };
 
@@ -174,10 +174,10 @@ describe("Mapper", () => {
     it("transforms hasMany relationships on the model when serialize = true", async () => {
       stub(fakeRelatedService.serializer, "transform").callThrough();
 
-      const anotherFakeRelatedModelId = faker.random.number().toString();
+      const anotherFakeRelatedModelId = random.number().toString();
       const anotherFakeRelatedModelData = {
         id: anotherFakeRelatedModelId,
-        fullText: faker.lorem.word(),
+        fullText: lorem.word(),
         fakeModelId: modelId,
       };
 
@@ -206,12 +206,12 @@ describe("Mapper", () => {
     let modelId;
 
     beforeEach(() => {
-      modelId = faker.random.number().toString();
-      fakeRelatedModelId = faker.random.number().toString();
+      modelId = random.number().toString();
+      fakeRelatedModelId = random.number().toString();
 
       fakeRelatedModel = new FakeRelatedModel({
         id: fakeRelatedModelId,
-        fullText: faker.lorem.word(),
+        fullText: lorem.word(),
       });
 
       mockSerializer = new RestSerializer(MockModel);
@@ -225,10 +225,10 @@ describe("Mapper", () => {
     });
 
     it("normalizes raw data to create an instance of the model", async () => {
-      const age = faker.random.number();
-      const fullText = faker.lorem.word();
-      const startDateString = format(faker.date.recent(), "YYYY-MM-DD");
-      const startTimeString = format(faker.date.recent(), "hh:mm:ss a");
+      const age = random.number();
+      const fullText = lorem.word();
+      const startDateString = format(date.recent(), "YYYY-MM-DD");
+      const startTimeString = format(date.recent(), "hh:mm:ss a");
 
       const rawModelData = {
         id: modelId,
@@ -307,15 +307,15 @@ describe("Mapper", () => {
         relatedModelsData = [
           {
             id: fakeRelatedModelId,
-            fullText: faker.lorem.word(),
+            fullText: lorem.word(),
           },
           {
-            id: faker.random.number.toString(),
-            fullText: faker.lorem.word(),
+            id: random.number.toString(),
+            fullText: lorem.word(),
           },
           {
-            id: faker.random.number.toString(),
-            fullText: faker.lorem.word(),
+            id: random.number.toString(),
+            fullText: lorem.word(),
           },
         ];
 
