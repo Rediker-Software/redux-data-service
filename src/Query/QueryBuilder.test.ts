@@ -1,7 +1,7 @@
 // tslint:disable no-unused-expression
 
 import { spy, stub } from "sinon";
-import { random } from "faker";
+import { lorem, random } from "faker";
 
 import { IQueryBuilder, QueryBuilder, SortDirection } from "./QueryBuilder";
 import { initializeTestServices } from "../TestUtils";
