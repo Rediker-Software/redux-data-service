@@ -29,8 +29,12 @@ export class RestAdapter implements IAdapter<string> {
    *
    * @returns {string}
    */
-  public getRestURL() {
-    return `${this.apiUrl}/${this.pathName}`;
+  public getRestURL(id?: string) {
+    let url = `${this.apiUrl}/${this.pathName}`;
+    if (id) {
+      url += `/${id}`;
+    }
+    return url;
   }
 
   /**
@@ -51,7 +55,7 @@ export class RestAdapter implements IAdapter<string> {
    * @returns {Observable<T>}
    */
   public fetchItem(id: string): Observable<string> {
-    return this.makeAjaxRequest("GET", `${this.getRestURL()}/${id}`);
+    return this.makeAjaxRequest("GET", this.getRestURL(id));
   }
 
   /**
@@ -72,7 +76,7 @@ export class RestAdapter implements IAdapter<string> {
    * @returns {Observable<T>}
    */
   public updateItem(id, item: string): Observable<string> {
-    return this.makeAjaxRequest("PUT", `${this.getRestURL()}/${id}`, item);
+    return this.makeAjaxRequest("PUT", this.getRestURL(id), item);
   }
 
   /**
@@ -93,7 +97,7 @@ export class RestAdapter implements IAdapter<string> {
    * @returns {Observable<T>}
    */
   public deleteItem(id): Observable<string> {
-    return this.makeAjaxRequest("DELETE", `${this.getRestURL()}/${id}`);
+    return this.makeAjaxRequest("DELETE", this.getRestURL(id));
   }
 
   /**
