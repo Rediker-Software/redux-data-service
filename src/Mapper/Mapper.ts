@@ -8,14 +8,12 @@ import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, Rela
 import { getDataService } from "../Services";
 
 /**
- * The base class from which implementations of `IDataSerializer` should extend.
- *
- * This class implements the `transform` and `normalize` methods on the interface, to provide a default mechanism
+ * This class implements the `transform` and `normalize` methods on the IMapper interface, to provide a default mechanism
  * to transform a model instance into a ready-to-serialize object, and to normalize a raw data object back into a model instance.
  * Any nested relationships will be side-loaded by dispatching an action to the related service.
  *
  */
-export class Mapper<M, T extends IModelData, R = T> implements IMapper<M, T, R> {
+export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   public readonly ModelClass: IModelFactory<T>;
 
   public constructor(ModelClass: IModelFactory<T>) {
