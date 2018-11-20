@@ -2,9 +2,11 @@
 
 import { random } from "faker";
 
-import {QueryBuilder} from "./QueryBuilder";
-import {QueryManager} from "./QueryManager";
-import {fakeModelModule, initializeTestServices, seedServiceList} from "../TestUtils";
+import { IQueryResponse } from ".";
+import { QueryBuilder } from "./QueryBuilder";
+import { QueryManager } from "./QueryManager";
+
+import { fakeModelModule, initializeTestServices, seedServiceList } from "../TestUtils";
 import { IFakeModelData } from "../Model";
 
 declare var intern;
@@ -14,23 +16,161 @@ const { expect } = intern.getPlugin("chai");
 describe("QueryManager", () => {
 
   let fakeItems;
+  let currentPage;
+  let totalPages;
+  let pageSize;
+  let totalCount;
+  let nextPage;
+  let previousPage;
+  let fullQueryResponse: IQueryResponse;
   const serviceName = "fakeModel";
 
   beforeEach(() => {
     initializeTestServices(fakeModelModule);
+    currentPage = random.number();
+    totalPages = random.number();
+    pageSize = random.number();
+    totalCount = random.number();
+    nextPage = random.number();
+    previousPage = random.number();
     fakeItems = seedServiceList<IFakeModelData>(serviceName);
+
+    fullQueryResponse = {
+      currentPage,
+      totalPages,
+      pageSize,
+      totalCount,
+      nextPage,
+      previousPage,
+      ids: [],
+    }; 
   });
 
   it("constructs a QueryManager instance", () => {
-    const query = new QueryBuilder(serviceName, { x: random.number() });
+    const query = new QueryBuilder(serviceName);
     expect(new QueryManager(query)).to.deep.contain({
       query,
     });
   });
 
-  it("returns query items", () => {
-    const query = new QueryBuilder(serviceName, { x: random.number() });
+  it("returns expected isLoading on meta property", () => {
+    const query = new QueryBuilder(serviceName);
+    const queryMeta = {
+      isLoading: true,
+    };
+
+    const queryManager = new QueryManager(query, fakeItems, fullQueryResponse, queryMeta);
+
+    expect(queryManager.isLoading).to.equal(true);
+  });
+
+  it("isLoading is true when response is empty and there is no isLoading property on meta", () => {
+    const query = new QueryBuilder(serviceName);
     const queryManager = new QueryManager(query, fakeItems);
+
+    expect(queryManager.isLoading).to.equal(true);
+  });
+
+  it("isLoading is false when response is not empty and there is no isLoading property on meta", () => {
+    const query = new QueryBuilder(serviceName);
+    const queryManager = new QueryManager(query, fakeItems, fullQueryResponse);
+
+    expect(queryManager.isLoading).to.equal(false);
+  });
+
+  it("returns expected errors on meta property", () => {
+    const query = new QueryBuilder(serviceName);
+    const queryMeta = {
+      errors: "errors",
+    };
+
+    const queryManager = new QueryManager(query, fakeItems, fullQueryResponse, queryMeta);
+
+    expect(queryManager.errors).to.equal(queryMeta.errors);
+  });
+
+  it("returns expected query items", () => {
+    const query = new QueryBuilder(serviceName);
+    const queryManager = new QueryManager(query, fakeItems);
+
     expect(queryManager.items).to.deep.equal(fakeItems);
+  });
+
+  it("hasNextPage returns true when response has next page", () => {
+    const query = new QueryBuilder(serviceName);
+    const queryManager = new QueryManager(query, fakeItems, fullQueryResponse);
+
+    expect(queryManager.hasNextPage()).to.equal(true);
+  });
+
+  it("hasNextPage returns false when response does not have next page", () => {
+    const queryResponseNoNextPage: IQueryResponse = {
+      currentPage,
+      totalPages,
+      pageSize,
+      totalCount,
+      nextPage: 0,
+      previousPage,
+      ids: [],
+    };
+
+    const query = new QueryBuilder(serviceName);
+    const queryManager = new QueryManager(query, fakeItems, queryResponseNoNextPage);
+
+    expect(queryManager.hasNextPage()).to.equal(false);
+  });
+
+  it("hasPreviousPage returns true when response has previous page", () => {
+    const query = new QueryBuilder(serviceName);
+    const queryManager = new QueryManager(query, fakeItems, fullQueryResponse);
+
+    expect(queryManager.hasPreviousPage()).to.equal(true);
+  });
+
+  it("hasPreviousPage returns false when response does not have previous page", () => {
+    const queryResponseNoPreviousPage: IQueryResponse = {
+      currentPage,
+      totalPages,
+      pageSize,
+      totalCount,
+      nextPage,
+      previousPage: 0,
+      ids: [],
+    };
+
+    const query = new QueryBuilder(serviceName);
+    const queryManager = new QueryManager(query, fakeItems, queryResponseNoPreviousPage);
+
+    expect(queryManager.hasPreviousPage()).to.equal(false);
+  });
+
+  it("getNextPage returns expected IQueryBuilder next page", () => {
+    const query = new QueryBuilder(serviceName, { x: random.number() });
+    const queryManager = new QueryManager(query, fakeItems, fullQueryResponse);
+    const expectedQueryBuilder = query.page(nextPage);
+
+    expect(queryManager.getNextPage()).to.deep.equal(expectedQueryBuilder);
+  });
+
+  it("getNextPage returns null when response is undefined", () => {
+    const query = new QueryBuilder(serviceName);
+    const queryManager = new QueryManager(query, fakeItems);
+
+    expect(queryManager.getNextPage()).to.equal(null);
+  });
+
+  it("getPreviousPage returns expected IQueryBuilder for previous page", () => {
+    const query = new QueryBuilder(serviceName, { x: random.number() });
+    const queryManager = new QueryManager(query, fakeItems, fullQueryResponse);
+    const expectedQueryBuilder = query.page(previousPage);
+
+    expect(queryManager.getPreviousPage()).to.deep.equal(expectedQueryBuilder);
+  });
+
+  it("getPreviousPage returns null when response is undefined", () => {
+    const query = new QueryBuilder(serviceName);
+    const queryManager = new QueryManager(query, fakeItems);
+
+    expect(queryManager.getPreviousPage()).to.equal(null);
   });
 });
