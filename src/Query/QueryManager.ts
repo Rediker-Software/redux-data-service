@@ -1,6 +1,6 @@
 import { IQueryBuilder } from "./QueryBuilder";
 import { IQueryResponse } from "./IQueryResponse";
-import { IModel, IModelData } from "..";
+import { IModel, IModelData } from "../Model";
 
 export interface IQueryManager<T extends IModelData> {
   readonly query: IQueryBuilder;
