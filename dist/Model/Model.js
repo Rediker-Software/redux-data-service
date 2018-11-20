@@ -78,7 +78,7 @@ var Model = (function () {
         this._isDestroying = false;
         this.modelData = modelData;
         this.relatedModels = relatedModels;
-        this.meta = __assign({ isLoading: false, isShadow: false, errors: null, original: null }, meta);
+        this.meta = __assign({ isLoading: false, isShadow: false, errors: null, changes: null }, meta);
     }
     Model.prototype.save = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -127,7 +127,8 @@ var Model = (function () {
     Model.prototype.validate = function (includeRelatedModels) {
         if (includeRelatedModels === void 0) { includeRelatedModels = false; }
         var _a = this.modelData, id = _a.id, dateUpdated = _a.dateUpdated, dateDeleted = _a.dateDeleted, data = __rest(_a, ["id", "dateUpdated", "dateDeleted"]);
-        var errors = validate_js_1.validate(data, this.validationRules) || {};
+        var changedData = __assign({}, data, this.meta.changes);
+        var errors = validate_js_1.validate(changedData, this.validationRules) || {};
         if (includeRelatedModels) {
             errors = fp_1.flow(fp_1.omitBy(function (relatedModel) { return (relatedModel == null || !relatedModel.isDirty); }), fp_1.mapValues(function (relatedModel) { return relatedModel.validate(); }), Utils_1.flattenObjectKeys, fp_1.assign(errors))(this.relatedModels);
         }
@@ -159,8 +160,9 @@ var Model = (function () {
             this.unload();
         }
         else if (this.isDirty) {
-            var model = this.applyUpdates(this.meta.original, { original: null });
-            Services_1.getDataService(this.serviceName)
+            var service = Services_1.getDataService(this.serviceName);
+            var model = new service.ModelClass(this.modelData);
+            service
                 .actions
                 .pushRecord(model)
                 .invoke();
@@ -180,33 +182,34 @@ var Model = (function () {
                 .invoke();
         }
     };
-    Model.prototype.applyUpdates = function (modelData, meta, relatedModels) {
-        if (modelData === void 0) { modelData = null; }
+    Model.prototype.applyUpdates = function (changes, meta, relatedModels) {
+        if (changes === void 0) { changes = {}; }
         if (meta === void 0) { meta = {}; }
         if (relatedModels === void 0) { relatedModels = {}; }
-        meta = __assign({}, this.meta, meta);
         relatedModels = __assign({}, this.relatedModels, relatedModels);
-        if (!lodash_1.isEmpty(modelData)) {
-            for (var key in modelData) {
-                this.checkFieldUpdateIsAllowed(key, modelData[key]);
+        if (!lodash_1.isEmpty(changes)) {
+            for (var key in changes) {
+                this.checkFieldUpdateIsAllowed(key, changes[key]);
                 var relationship = lodash_1.find(this.relationships, { relatedFieldName: key });
                 if (relationship && relatedModels.hasOwnProperty(relationship.field)) {
                     delete relatedModels[relationship.field];
                 }
             }
-            if (!this.isDirty) {
-                meta.original = this.modelData;
-            }
-            modelData = __assign({}, this.modelData, modelData);
+            meta.changes = __assign({}, this.meta.changes, changes);
         }
+        meta = __assign({}, this.meta, meta);
         var service = Services_1.getDataService(this.serviceName);
-        return new service.ModelClass(modelData || this.modelData, meta, relatedModels);
+        return new service.ModelClass(this.modelData, meta, relatedModels);
     };
     Model.prototype.initializeNewModel = function () {
         return;
     };
     Model.prototype.getField = function (fieldName, defaultValue) {
-        return fieldName in this.modelData ? this.modelData[fieldName] : defaultValue;
+        return this.meta.changes && fieldName in this.meta.changes
+            ? this.meta.changes[fieldName]
+            : fieldName in this.modelData
+                ? this.modelData[fieldName]
+                : defaultValue;
     };
     Model.prototype.checkFieldUpdateIsAllowed = function (key, value) {
         if (key in this.fields) {
@@ -350,11 +353,19 @@ var Model = (function () {
     });
     Object.defineProperty(Model.prototype, "isDirty", {
         get: function () {
-            return this.meta.original != null;
+            return !lodash_1.isEmpty(this.meta.changes);
         },
         enumerable: true,
         configurable: true
     });
+    Model.prototype.isFieldDirty = function (fieldName) {
+        if (lodash_1.isEmpty(this.meta.changes)) {
+            return false;
+        }
+        else {
+            return fieldName in this.meta.changes;
+        }
+    };
     Object.defineProperty(Model.prototype, "hasUnsavedChanges", {
         get: function () {
             return this.isDirty || Object

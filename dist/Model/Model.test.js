@@ -162,10 +162,10 @@ describe("Model", function () {
             }(Services_1.DataService));
             var relatedModel = new RelatedModel({
                 id: relatedModelId,
+                favoriteColor: favoriteColor,
             }, {
-                original: {
-                    id: relatedModelId,
-                    favoriteColor: favoriteColor,
+                changes: {
+                    favoriteColor: "",
                 },
             });
             var relatedModelService = new RelatedModelService();
@@ -365,10 +365,10 @@ describe("Model", function () {
             }(Services_1.DataService));
             var relatedModel = new RelatedModel({
                 id: relatedModelId,
+                favoriteColor: favoriteColor,
             }, {
-                original: {
-                    id: relatedModelId,
-                    favoriteColor: favoriteColor,
+                changes: {
+                    favoriteColor: "",
                 },
             });
             var relatedModelService = new RelatedModelService();
@@ -700,18 +700,24 @@ describe("Model", function () {
                 originalData = { id: modelId, name: name, age: age, languages: languages };
                 firstModel = new service.ModelClass(originalData);
             });
-            it("creates a new instance of the Model with new data and sets the previous data as the meta.original", function () {
-                var secondModel = firstModel.applyUpdates({ name: faker_1.lorem.word() });
-                expect(secondModel.getMeta()).to.have.property("original").to.deep.equal(originalData);
+            it("creates a new instance of the Model with new data as meta.changes", function () {
+                var secondModelChanges = { name: faker_1.lorem.word() };
+                var secondModel = firstModel.applyUpdates(secondModelChanges);
+                expect(secondModel.getMeta()).to.have.property("changes").to.deep.equal(secondModelChanges);
             });
-            it("creates a new instance of the Model with new data without modifying the meta.original on the first model", function () {
+            it("creates a new instance of the Model without changing modelData", function () {
                 var secondModel = firstModel.applyUpdates({ name: faker_1.lorem.word() });
-                expect(firstModel.getMeta()).to.have.property("original").to.be.null;
+                expect(secondModel.getModelData()).to.deep.equal(originalData);
             });
-            it("creates a new instance of the Model with new data and doesn't change meta.original if it was already set", function () {
+            it("creates a new instance of the Model with new data without modifying the meta.changes on the first model", function () {
                 var secondModel = firstModel.applyUpdates({ name: faker_1.lorem.word() });
-                var thirdModel = secondModel.applyUpdates({ name: faker_1.lorem.word() });
-                expect(thirdModel.getMeta()).to.have.property("original").to.deep.equal(originalData);
+                expect(firstModel.getMeta()).to.have.property("changes").to.be.null;
+            });
+            it("creates a new instance of the Model with new data and changes meta.changes if it was already set", function () {
+                var secondModel = firstModel.applyUpdates({ name: faker_1.lorem.word() });
+                var thirdModelChanges = { name: faker_1.lorem.word() };
+                var thirdModel = secondModel.applyUpdates(thirdModelChanges);
+                expect(thirdModel.getMeta()).to.have.property("changes").to.deep.equal(thirdModelChanges);
             });
             it("creates a new instance of the Model with new meta without modifying the meta on the first model", function () {
                 var secondModel = firstModel.applyUpdates(null, { isLoading: true });
@@ -721,13 +727,13 @@ describe("Model", function () {
                 var secondModel = firstModel.applyUpdates(null, { isLoading: true });
                 expect(secondModel.getMeta()).to.have.property("isLoading").to.be.true;
             });
-            it("creates a new instance of the Model with new meta and previous data was copied over", function () {
+            it("creates a new instance of the Model with new meta without changing modelData", function () {
                 var secondModel = firstModel.applyUpdates(null, { isLoading: true });
                 expect(secondModel.getModelData()).to.deep.equal(originalData);
             });
             it("creates a new instance of the Model with empty array when updating with an empty array", function () {
                 var secondModel = firstModel.applyUpdates({ languages: [] });
-                expect(secondModel).to.have.property("languages").to.be.empty;
+                expect(secondModel.getMeta()).to.have.property("changes").to.have.property("languages").to.be.empty;
             });
         });
     });

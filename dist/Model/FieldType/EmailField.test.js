@@ -70,7 +70,7 @@ describe("FieldType: EmailField", function () {
     it("should be serialized", function () {
         expect(EmailField_1.EmailField.serialize).to.be.true;
     });
-    it("declares it's type", function () {
+    it("declares its type", function () {
         return expect(EmailField_1.EmailField.type).to.eq("email");
     });
     it("normalizes any value into a string", function () { return __awaiter(_this, void 0, void 0, function () {

@@ -69,7 +69,7 @@ describe("FieldType: NumberField", function () {
     it("should be serialized", function () {
         expect(NumberField_1.NumberField.serialize).to.be.true;
     });
-    it("declares it's type", function () {
+    it("declares its type", function () {
         return expect(NumberField_1.NumberField.type).to.eq("number");
     });
     it("normalizes any value into a number", function () { return __awaiter(_this, void 0, void 0, function () {

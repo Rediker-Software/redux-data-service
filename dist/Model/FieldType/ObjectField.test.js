@@ -70,7 +70,7 @@ describe("FieldType: ObjectField", function () {
     it("should be serialized", function () {
         expect(ObjectField_1.ObjectField.serialize).to.be.true;
     });
-    it("declares it's type", function () {
+    it("declares its type", function () {
         return expect(ObjectField_1.ObjectField.type).to.eq("object");
     });
     it("normalizes an object by returning the given value", function () { return __awaiter(_this, void 0, void 0, function () {

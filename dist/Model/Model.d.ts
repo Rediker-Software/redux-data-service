@@ -32,7 +32,7 @@ export declare class Model<T extends IModelData> implements IModel<T> {
     reset(): void;
     unload(): void;
     forceReload(): void;
-    applyUpdates(modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>, relatedModels?: any): IModel<T>;
+    applyUpdates(changes?: Partial<T>, meta?: Partial<IModelMeta<T>>, relatedModels?: any): IModel<T>;
     initializeNewModel(): void;
     getField(fieldName: string, defaultValue?: any): any;
     protected checkFieldUpdateIsAllowed(key: any, value: any): void;
@@ -48,6 +48,7 @@ export declare class Model<T extends IModelData> implements IModel<T> {
     readonly isShadow: boolean;
     errors: { [P in keyof T]?: any; };
     readonly isDirty: boolean;
+    isFieldDirty(fieldName: any): boolean;
     readonly hasUnsavedChanges: boolean;
     readonly isNew: boolean;
     getFieldError(fieldName: any): any;

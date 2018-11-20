@@ -26,7 +26,7 @@
 
 **● modelRelatedFieldName**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Relationship.ts#L43)*
+*Defined in [Model/Decorators/Relationship.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/Decorators/Relationship.ts#L43)*
 
 The name of the field on the OTHER model which provides the ID of THIS model
 
@@ -37,7 +37,7 @@ ___
 
 **● relatedFieldName**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:40](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Relationship.ts#L40)*
+*Defined in [Model/Decorators/Relationship.ts:40](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/Decorators/Relationship.ts#L40)*
 
 The field on THIS model which provides the ID or IDs to identify the OTHER model
 
@@ -48,7 +48,7 @@ ___
 
 **● serviceName**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:37](https://github.com/Rediker-Software/redux-data-service/blob/7fb0306/src/Model/Decorators/Relationship.ts#L37)*
+*Defined in [Model/Decorators/Relationship.ts:37](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/Decorators/Relationship.ts#L37)*
 
 The service associated to the related field
 

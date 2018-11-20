@@ -33,7 +33,7 @@ describe("FieldType: BelongsToField", function () {
     it("should not be serialized", function () {
         expect(BelongsToField_1.BelongsToField.serialize).to.be.false;
     });
-    it("declares it's type", function () {
+    it("declares its type", function () {
         return expect(BelongsToField_1.BelongsToField.type).to.eq("belongsTo");
     });
 });
