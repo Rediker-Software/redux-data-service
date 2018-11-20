@@ -17,7 +17,7 @@ export interface IQueryBuilder {
   readonly serviceName: string;
 
   /** The current set of query params. DO NOT MUTATE THIS OBJECT DIRECTLY! */
-  readonly queryParams: any;
+  readonly queryParams: IQueryParams;
 
   /** Add the given sorting param to the query. Default SortDirection is "asc". Position is a zero-based index */
   sort: (key: string, direction?: SortDirection, position?: number) => IQueryBuilder;
