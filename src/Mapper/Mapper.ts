@@ -1,27 +1,20 @@
-import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
+import { flow, keys, partition, pick, pickBy, property } from "lodash/fp";
 import { fromPairs } from "lodash";
+
+import { IMapper } from ".";
 
 import { mapWithKeys } from "../Utils";
 import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, RelationshipType } from "../Model";
 import { getDataService } from "../Services";
 
-import { ISerializer } from "./ISerializer";
-import { IQueryParams } from "../Query/QueryBuilder";
-
 /**
- * The base class from which implementations of `IDataSerializer` should extend.
- *
- * This class implements the `transform` and `normalize` methods on the interface, to provide a default mechanism
+ * This class implements the `transform` and `normalize` methods on the IMapper interface, to provide a default mechanism
  * to transform a model instance into a ready-to-serialize object, and to normalize a raw data object back into a model instance.
  * Any nested relationships will be side-loaded by dispatching an action to the related service.
  *
  */
-export abstract class BaseSerializer<S, T extends IModelData, R = T> implements ISerializer<S, T, R> {
+export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   public readonly ModelClass: IModelFactory<T>;
-
-  public abstract async deserialize(data: R): Promise<IModel<T>>;
-  public abstract async serialize(modelData: IModel<T> | Partial<T>): Promise<S>;
-  public abstract async serializeQueryParams(params: IQueryParams): Promise<any>;
 
   public constructor(ModelClass: IModelFactory<T>) {
     this.ModelClass = ModelClass;
@@ -202,7 +195,7 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
       relatedModelData[modelRelatedFieldName] = model.id;
     }
 
-    const service = model.getServiceForRelationship(relationship.field);
+    const service = getDataService(relationship.serviceName);
     const relatedModel = await service.serializer.normalize(relatedModelData);
     service.actions.pushRecord(relatedModel).invoke();
 

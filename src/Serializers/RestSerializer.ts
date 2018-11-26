@@ -1,5 +1,6 @@
 import { IModel, IModelData } from "../Model";
 import { BaseSerializer } from "./BaseSerializer";
+import { IQueryParams } from "../Query/QueryBuilder";
 
 /**
  * An ISerializer implementation which will convert a given Model to or from JSON.
@@ -28,4 +29,28 @@ export class RestSerializer<T extends IModelData, R = T> extends BaseSerializer<
     data = (typeof data === "string") ? JSON.parse(data) : data;
     return await this.normalize(data);
   }
+
+  /**
+   * Converts the given IQueryParams object into a url-encoded string.
+   *
+   * @param {IQueryParams} params
+   * @returns {Promise<string>}
+   */
+  public async serializeQueryParams({ sort, ...params }: IQueryParams): Promise<string> {
+    if (sort && sort.length > 0) {
+      params.sort = sort.map(s => (s.direction === "desc" ? `${s.key}:${s.direction}` : s.key));
+    }
+
+    return Object.keys(params)
+      .map((key) => {
+        const value = params[key];
+        const encodedValue = (value instanceof Array)
+          ? (value as any[]).map(v => encodeURIComponent(v)).join(",")
+          : encodeURIComponent(String(value));
+
+        return `${encodeURIComponent(key)}=${encodedValue}`;
+      })
+      .join("&");
+  }
+
 }
