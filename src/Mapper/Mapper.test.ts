@@ -8,11 +8,13 @@ import { format, parse } from "date-fns";
 import { omit } from "lodash";
 
 import { RestSerializer } from "..";
-import { BaseService, DataService, registerService } from "../Services";
+import { BaseService, DataService, registerService, getDataService } from "../Services";
 import { attr, belongsTo, hasMany, DateField, IModelFactory, Model, NumberField, StringField, TimeField } from "../Model";
 
 import { MockAdapter } from "../Adapters/MockAdapter";
 import { ArrayField } from "../Model/FieldType";
+import { MockMapper } from "./MockMapper";
+import { Mapper } from "./Mapper";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -68,6 +70,7 @@ class FakeRelatedService extends DataService<any> {
   public readonly ModelClass: IModelFactory<any> = FakeRelatedModel;
   protected _adapter = new MockAdapter();
   protected _serializer = new RestSerializer(FakeRelatedModel);
+  protected _mapper = new Mapper(FakeRelatedModel);
 }
 
 describe("Mapper", () => {
@@ -79,18 +82,18 @@ describe("Mapper", () => {
     let fakeRelatedModelData;
     let fakeRelatedModel;
     let fakeModel;
-    let mockSerializer;
     let fakeRelatedModelId;
     let age;
     let fullText;
     let startDateString;
     let startTimeString;
     let modelId;
+    let mockMapper;
 
     beforeEach(() => {
       BaseService.registerDispatch(spy());
 
-      mockSerializer = new RestSerializer(MockModel);
+      mockMapper = new MockMapper();
       fakeService = new FakeService();
       fakeRelatedService = new FakeRelatedService();
 
@@ -127,7 +130,7 @@ describe("Mapper", () => {
     });
 
     it("transforms the model into a plain javascript object based on each field's FieldType", async () => {
-      const transformedModelData = await mockSerializer.transform(fakeModel);
+      const transformedModelData = await mockMapper.transform(fakeModel);
 
       expect(transformedModelData).to.deep.equal({
         age,
@@ -141,39 +144,37 @@ describe("Mapper", () => {
 
     it("excludes transforming fields from the model using the model's fields property", async () => {
       fakeModel.fields.age.serialize = false;
-      const transformedModelData = await mockSerializer.transform(fakeModel);
+      const transformedModelData = await mockMapper.transform(fakeModel);
 
       expect(transformedModelData).to.not.have.property("age");
     });
 
     it("excludes transforming relationships from the model by default", async () => {
-      const transformedModelData = await mockSerializer.transform(fakeModel);
+      const transformedModelData = await mockMapper.transform(fakeModel);
 
       expect(fakeModel).to.have.property("organization");
       expect(transformedModelData).to.not.have.property("organization");
     });
 
     it("transforms belongsTo relationships on the model when serialize = true", async () => {
-      stub(fakeRelatedService.serializer, "transform").callThrough();
-
+      
       fakeModel.fields.organization.serialize = true;
-      const transformedModelData = await mockSerializer.transform(fakeModel);
+      const transformedModelData = await mockMapper.transform(fakeModel);
 
       expect(transformedModelData).to.have.property("organization").to.deep.equal(omit(fakeRelatedModelData, "id"));
     });
 
     it("uses the belongsTo relationship's own data service to transform it when serialize = true", async () => {
-      const stubRelatedSerializerTransform = stub(fakeRelatedService.serializer, "transform").returns(fakeRelatedModelData);
+      const stubRelatedSerializerTransform = stub(fakeRelatedService.mapper, "transform").returns(fakeRelatedModelData);
 
       fakeModel.fields.organization.serialize = true;
-      await mockSerializer.transform(fakeModel);
+      await mockMapper.transform(fakeModel);
 
       expect(stubRelatedSerializerTransform.firstCall.args[0]).to.equal(fakeModel.organization);
     });
 
     it("transforms hasMany relationships on the model when serialize = true", async () => {
-      stub(fakeRelatedService.serializer, "transform").callThrough();
-
+      
       const anotherFakeRelatedModelId = random.number().toString();
       const anotherFakeRelatedModelData = {
         id: anotherFakeRelatedModelId,
@@ -188,7 +189,7 @@ describe("Mapper", () => {
       });
 
       fakeModel.fields.fakeItems.serialize = true;
-      const transformedModelData = await mockSerializer.transform(fakeModel);
+      const transformedModelData = await mockMapper.transform(fakeModel);
 
       expect(transformedModelData).to.have.property("fakeItems").to.deep.equal([
         omit(fakeRelatedModelData, "id"),
@@ -256,8 +257,11 @@ describe("Mapper", () => {
       let rawModelData;
       let invokeSpy;
       let pushRecordStub;
-
+      let mockMapper;
+      
       beforeEach(() => {
+        mockMapper = new MockMapper();
+
         relatedModelData = {
           id: fakeRelatedModelId,
           fullText: fakeRelatedModel.fullText,
@@ -279,20 +283,21 @@ describe("Mapper", () => {
       });
 
       it("normalizes nested related data", async () => {
-        const normalizeStub = stub(fakeRelatedService.serializer, "normalize").callThrough();
-        await mockSerializer.normalize(rawModelData);
+        const normalizeStub = stub(fakeRelatedService.mapper, "normalize").callThrough();
+        debugger
+        await mockMapper.normalize(rawModelData);
 
         expect(normalizeStub.firstCall.args[0]).to.equal(relatedModelData);
       });
 
       it("creates a pushRecord action with related data", async () => {
-        await mockSerializer.normalize(rawModelData);
+        await mockMapper.normalize(rawModelData);
 
         expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel(relatedModelData));
       });
 
       it("invokes a pushRecord action with related data", async () => {
-        await mockSerializer.normalize(rawModelData);
+        await mockMapper.normalize(rawModelData);
         expect(invokeSpy.calledOnce).to.be.true;
       });
     });
@@ -302,8 +307,10 @@ describe("Mapper", () => {
       let rawModelData;
       let invokeSpy;
       let pushRecordStub;
+      let mockMapper;
 
       beforeEach(() => {
+        mockMapper = new MockMapper();
         relatedModelsData = [
           {
             id: fakeRelatedModelId,
@@ -334,8 +341,8 @@ describe("Mapper", () => {
       });
 
       it("normalizes nested related data for each item", async () => {
-        const normalizeStub = stub(fakeRelatedService.serializer, "normalize").callThrough();
-        await mockSerializer.normalize(rawModelData);
+        const normalizeStub = stub(fakeRelatedService.mapper, "normalize").callThrough();
+        await mockMapper.normalize(rawModelData);
 
         relatedModelsData.forEach((itemData, index) => {
           expect(normalizeStub.getCall(index).args[0]).to.equal(itemData);
@@ -343,7 +350,7 @@ describe("Mapper", () => {
       });
 
       it("creates a pushRecord action for each item", async () => {
-        await mockSerializer.normalize(rawModelData);
+        await mockMapper.normalize(rawModelData);
 
         relatedModelsData.forEach((itemData, index) => {
           expect(pushRecordStub.getCall(index).args[0]).to.deep.equal(new FakeRelatedModel(itemData));
@@ -351,7 +358,7 @@ describe("Mapper", () => {
       });
 
       it("invokes a pushRecord action for each item", async () => {
-        await mockSerializer.normalize(rawModelData);
+        await mockMapper.normalize(rawModelData);
         expect(invokeSpy.callCount).to.equal(relatedModelsData.length);
       });
     });

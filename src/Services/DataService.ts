@@ -495,10 +495,11 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       .mergeMap((action) =>
         this.adapter.fetchAll(action.payload)
           .mergeMap(async ({ items, ...other }) => {
-            const promises = items.map(item => this.serializer.deserialize(item));
+            const deserializedItems = items.map(item => this.serializer.deserialize(item));
+            const normalizedResponse = deserializedItems.map(deserializedItem => this.mapper.normalize(deserializedItem));
             return {
               ...other,
-              items: await Promise.all(promises),
+              items: await Promise.all(normalizedResponse),
             };
           })
           .do(action.meta.onSuccess, action.meta.onError)
@@ -515,6 +516,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       .mergeMap(action =>
         this.adapter.fetchItem(action.payload.id)
           .mergeMap(async response => await this.serializer.deserialize(response))
+          .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
           .do(action.meta.onSuccess, action.meta.onError)
           .map(this.actions.pushRecord)
           .catch((e) => of$(
@@ -527,9 +529,11 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     return action$.ofType(this.types.CREATE_RECORD)
       .mergeMap(action =>
         of$(this.selectors.getItem(store.getState(), action.payload.id))
-          .mergeMap(async model => await this.serializer.serialize(model))
+          .mergeMap(async model => await this.mapper.transform(model))
+          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as Partial<T>))
           .mergeMap(serializedModel => this.adapter.createItem(serializedModel))
           .mergeMap(async response => await this.serializer.deserialize(response))
+          .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
           .do(action.meta.onSuccess, action.meta.onError)
           .map(this.actions.pushRecord)
           .concat(of$(this.actions.unloadRecord(action.payload)))
@@ -543,9 +547,11 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     return action$.ofType(this.types.UPDATE_RECORD)
       .mergeMap((action) =>
         of$(this.selectors.getItem(store.getState(), action.payload.id))
-          .mergeMap(async model => await this.serializer.serialize(model))
+          .mergeMap(async model => await this.mapper.transform(model))
+          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as Partial<T>))
           .mergeMap(model => this.adapter.updateItem(action.payload.id, model))
           .mergeMap(async response => await this.serializer.deserialize(response))
+          .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
           .do(action.meta.onSuccess, action.meta.onError)
           .map(this.actions.pushRecord)
           .catch((e) => of$(
@@ -558,9 +564,11 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     return action$.ofType(this.types.PATCH_RECORD)
       .mergeMap(action =>
         of$(action.payload)
-          .mergeMap(async model => await this.serializer.serialize(model))
+          .mergeMap(async model => await this.mapper.transform(model))
+          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as Partial<T>))
           .mergeMap(serializedModel => this.adapter.patchItem(action.payload.id, serializedModel))
           .mergeMap(async (response) => await this.serializer.deserialize(response))
+          .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
           .do(action.meta.onSuccess, action.meta.onError)
           .map(this.actions.pushRecord)
           .catch((e) => of$(
@@ -574,6 +582,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       .mergeMap((action) => (
         this.adapter.deleteItem(action.payload.id)
           .mergeMap(async (response) => await this.serializer.deserialize(response))
+          .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
           .do(action.meta.onSuccess, action.meta.onError)
           .map(this.actions.pushRecord)
           .catch((e) => of$(
