@@ -257,10 +257,10 @@ describe("Mapper", () => {
       let rawModelData;
       let invokeSpy;
       let pushRecordStub;
-      let mockMapper;
+      let mapper;
       
       beforeEach(() => {
-        mockMapper = new MockMapper();
+        mapper = new Mapper(MockModel);
 
         relatedModelData = {
           id: fakeRelatedModelId,
@@ -284,20 +284,18 @@ describe("Mapper", () => {
 
       it("normalizes nested related data", async () => {
         const normalizeStub = stub(fakeRelatedService.mapper, "normalize").callThrough();
-        debugger
-        await mockMapper.normalize(rawModelData);
-
+        await mapper.normalize(rawModelData);
         expect(normalizeStub.firstCall.args[0]).to.equal(relatedModelData);
       });
 
       it("creates a pushRecord action with related data", async () => {
-        await mockMapper.normalize(rawModelData);
+        // await mockMapper.normalize(rawModelData);
 
         expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel(relatedModelData));
       });
 
       it("invokes a pushRecord action with related data", async () => {
-        await mockMapper.normalize(rawModelData);
+        // await mockMapper.normalize(rawModelData);
         expect(invokeSpy.calledOnce).to.be.true;
       });
     });

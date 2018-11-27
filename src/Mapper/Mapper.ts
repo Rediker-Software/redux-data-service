@@ -195,7 +195,7 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
       relatedModelData[modelRelatedFieldName] = model.id;
     }
 
-    const service = getDataService(relationship.serviceName);
+    const service = model.getServiceForRelationship(relationship.field);
     const relatedModel = await service.mapper.normalize(relatedModelData);
     service.actions.pushRecord(relatedModel).invoke();
 
