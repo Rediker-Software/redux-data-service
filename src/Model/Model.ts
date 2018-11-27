@@ -478,16 +478,19 @@ export class Model<T extends IModelData> implements IModel<T> {
     }
   }
 
+  /**
+   * Get the DataService associated to the relationship specified at the given name of the related field
+   *
+   * @param {string} relationshipKey
+   * @returns {DataService<any>}
+   */
   public getServiceForRelationship(relationshipKey: string): DataService<any> {
     const relationship = this.relationships[relationshipKey];
-    if (relationship.serviceName) {
-      return getDataService(relationship.serviceName);
-    } else if (relationship.serviceNameField) {
-      return getDataService(this.getField(relationship.serviceNameField));
-    } else {
-      return getDataService(singular(relationshipKey));
-    }
+    const serviceName = relationship.serviceNameField
+      ? this.getField(relationship.serviceNameField)
+      : relationship.serviceName;
 
+    return getDataService(serviceName);
   }
 
   /**

@@ -1,7 +1,9 @@
-import { IDecorator } from "./IDecorator";
-import { BelongsToField, HasManyField, IFieldType } from "../FieldType";
-import { field, IFieldOptions, IFieldTypes } from "./Field";
 import { singular } from "pluralize";
+
+import { Omit } from "../../Omit";
+import { BelongsToField, HasManyField, IFieldType } from "../FieldType";
+import { IDecorator } from "./IDecorator";
+import { field, IFieldOptions, IFieldTypes } from "./Field";
 
 export enum RelationshipType {
   BelongsTo = "BelongsTo",
@@ -9,17 +11,29 @@ export enum RelationshipType {
 }
 
 /**
- * A simple interface for identifying that the given `field` relates to the given `serviceName` via the `relatedFieldName`.
+ * This is the meta-data about a related field on a `Model`, such as a `BelongsTo` or `HasMany` field.
+ * It enables us to lazy-load the related model(s) given a field which specifies the related ID(s) and the related service name.
  *
  * For example, field "student" relates to the "student" service through the "studentId" relatedFieldName.
  */
 export interface IFieldRelationship {
+  /** The name of the field this relationship decorates */
   field: string;
-  serviceName: string;
-  relatedFieldName: string;
-  modelRelatedFieldName?: string;
-  type: RelationshipType;
+
+  /** The name of the service associated to the related field */
+  serviceName?: string;
+
+  /** When no serviceName is given, we will use the value of this field to get the name of the related service */
   serviceNameField?: string;
+
+  /** The field on THIS model which provides the ID or IDs to identify the OTHER model */
+  relatedFieldName: string;
+
+  /** The name of the field on the OTHER model which provides the ID of THIS model */
+  modelRelatedFieldName?: string;
+
+  /** The type of relationship, i.e. BelongsTo (one-to-one or one-to-many) or HasMany (many-to-many, many-to-one) */
+  type: RelationshipType;
 }
 
 /**
@@ -33,17 +47,7 @@ export interface IRelationship extends IFieldTypes {
   setRelated(key, value): void;
 }
 
-export interface IRelationshipOptions extends IFieldOptions {
-  /** The service associated to the related field */
-  serviceName?: string;
-
-  /** The field on THIS model which provides the ID or IDs to identify the OTHER model */
-  relatedFieldName?: string;
-
-  /** The name of the field on the OTHER model which provides the ID of THIS model */
-  modelRelatedFieldName?: string;
-
-  serviceNameField?: string;
+export interface IRelationshipOptions extends Partial<Omit<IFieldOptions, "type"> & Omit<IFieldRelationship, "type" | "field">> {
 }
 
 /**
@@ -102,6 +106,10 @@ export function relationship(relationshipType: RelationshipType, options: IRelat
 
     if (!options.relatedFieldName) {
       options.relatedFieldName = getRelatedFieldNameForRelationship(relationshipType, singularKey);
+    }
+
+    if (!options.serviceNameField && !options.serviceName) {
+      options.serviceName = singularKey;
     }
 
     if (process.env.NODE_ENV !== "production" && !options.serialize && !(options.relatedFieldName in target)) {

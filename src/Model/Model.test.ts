@@ -1094,6 +1094,47 @@ describe("Model", () => {
     });
   });
 
+  describe("Model#getServiceForRelationship", () => {
+    let model;
+    let fakeServiceName;
+
+    beforeEach(() => {
+      class Example extends Model<any> {
+        public serviceName = "example";
+
+        @attr(StringField)
+        public objectType: string;
+
+        @belongsTo({ serviceNameField: "objectType" })
+        public relatedThing: any;
+
+        @belongsTo()
+        public student: any;
+      }
+
+      fakeServiceName = random.word();
+      model = new Example({ id: random.word(), objectType: fakeServiceName });
+    });
+
+    it("uses a relationship's serviceNameField to get the related service", () => {
+      const fakeService = { name: fakeServiceName } as any;
+      registerService(fakeService);
+
+      expect(
+        model.getServiceForRelationship("relatedThing"),
+      ).to.equal(fakeService);
+    });
+
+    it("uses the relationship's field name to determine the serviceName by default to get the related service", () => {
+      const fakeStudentService = { name: "student" } as any;
+      registerService(fakeStudentService);
+
+      expect(
+        model.getServiceForRelationship("student"),
+      ).to.equal(fakeStudentService);
+    });
+  });
+
   describe("Model#isDirty", () => {
 
     it("considers the model to be dirty when a field has changed", () => {
