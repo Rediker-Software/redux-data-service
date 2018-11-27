@@ -1,4 +1,4 @@
-import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
+import { flow, keys, partition, pick, pickBy, property } from "lodash/fp";
 import { fromPairs } from "lodash";
 
 import { mapWithKeys } from "../Utils";
