@@ -3,10 +3,12 @@ import { IModuleMap } from "./Services";
 import { IConfigureStore } from "./Store";
 import { ISerializerFactory } from "./Serializers";
 import { IAdapterFactory } from "./Adapters/IAdapter";
+import { IMapperFactory } from "./Mapper";
 export interface IConfiguration {
     modules: IModuleMap;
     adapter?: IAdapterFactory<any>;
     serializer?: ISerializerFactory<any, any, any>;
+    mapper?: IMapperFactory<any>;
 }
 export declare function getConfiguration(): IConfiguration;
 export declare function configure(config: IConfiguration, configureStore?: IConfigureStore): Store<any>;

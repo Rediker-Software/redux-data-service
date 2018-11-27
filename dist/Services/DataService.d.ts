@@ -18,6 +18,7 @@ import { ISerializer, ISerializerFactory } from "../Serializers";
 import { IAdapter, IAdapterFactory } from "../Adapters/IAdapter";
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
+import { IMapperFactory, IMapper } from "../Mapper";
 export declare type IRequestCacheKey = string;
 export interface IRequestCache {
     isLoading: boolean;
@@ -57,9 +58,11 @@ export interface IForceReload {
 export declare abstract class DataService<T extends IModelData, R = T> extends BaseService<DataServiceStateRecord<T>> {
     abstract readonly ModelClass: IModelFactory<T>;
     protected readonly AdapterClass: IAdapterFactory<any>;
+    protected readonly MapperClass: IMapperFactory<any>;
     protected readonly SerializerClass: ISerializerFactory<any, T, R>;
-    protected _serializer: ISerializer<any, T, R>;
     protected _adapter: IAdapter<any>;
+    protected _mapper: IMapper<any>;
+    protected _serializer: ISerializer<any, T, R>;
     protected shadowObject: IModel<T>;
     protected observablesByIdCache: {
         [id: string]: Observable<IModel<T>>;
@@ -72,6 +75,7 @@ export declare abstract class DataService<T extends IModelData, R = T> extends B
     };
     private readonly DataServiceStateRecord;
     readonly adapter: IAdapter<any>;
+    readonly mapper: IMapper<any, any>;
     readonly serializer: ISerializer<any, T, R>;
     getDefaultState(): DataServiceStateRecord<T>;
     getShadowObject(): IModel<T>;

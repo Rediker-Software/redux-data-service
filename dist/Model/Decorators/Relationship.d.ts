@@ -1,5 +1,6 @@
-import { IDecorator } from "./IDecorator";
+import { Omit } from "../../Omit";
 import { IFieldType } from "../FieldType";
+import { IDecorator } from "./IDecorator";
 import { IFieldOptions, IFieldTypes } from "./Field";
 export declare enum RelationshipType {
     BelongsTo = "BelongsTo",
@@ -7,7 +8,8 @@ export declare enum RelationshipType {
 }
 export interface IFieldRelationship {
     field: string;
-    serviceName: string;
+    serviceName?: string;
+    serviceNameField?: string;
     relatedFieldName: string;
     modelRelatedFieldName?: string;
     type: RelationshipType;
@@ -19,10 +21,7 @@ export interface IRelationship extends IFieldTypes {
     getRelated(key: any): any;
     setRelated(key: any, value: any): void;
 }
-export interface IRelationshipOptions extends IFieldOptions {
-    serviceName?: string;
-    relatedFieldName?: string;
-    modelRelatedFieldName?: string;
+export interface IRelationshipOptions extends Partial<Omit<IFieldOptions, "type"> & Omit<IFieldRelationship, "type" | "field">> {
 }
 export declare const getFieldTypeForRelationship: (relationshipType: RelationshipType) => IFieldType<any>;
 export declare const getRelatedFieldNameForRelationship: (relationshipType: RelationshipType, baseName: string) => string;

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var faker_1 = require("faker");
 var sinon_1 = require("sinon");
 var RestAdapter_1 = require("./RestAdapter");
 var _a = intern.getPlugin("interface.bdd"), describe = _a.describe, it = _a.it, beforeEach = _a.beforeEach, afterEach = _a.afterEach;
@@ -42,5 +43,14 @@ describe("RestAdapter", function () {
         expect(xhr.onCreate.callCount).to.equal(1, "it should send an xhr request");
         expect(xhr.onCreate.firstCall.args[0]).to.have.property("url").to.equal(restUrl + "/2", "it should send a request to the correct url");
         expect(xhr.onCreate.firstCall.args[0]).to.have.property("method").to.equal("GET", "it should send a request with the correct HTTP method");
+    });
+    describe("getRestURL", function () {
+        it("returns apiUrl/pathName when no id is passed", function () {
+            expect(restAdapter.getRestURL()).to.equal(restUrl);
+        });
+        it("returns apiUrl/pathName/id when an id is passed", function () {
+            var id = faker_1.random.number();
+            expect(restAdapter.getRestURL(id)).to.equal(restUrl + "/" + id);
+        });
     });
 });

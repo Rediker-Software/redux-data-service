@@ -71,6 +71,13 @@ var MemorySerializer = (function (_super) {
             });
         });
     };
+    MemorySerializer.prototype.serializeQueryParams = function (queryParams) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2, queryParams];
+            });
+        });
+    };
     return MemorySerializer;
 }(BaseSerializer_1.BaseSerializer));
 exports.MemorySerializer = MemorySerializer;

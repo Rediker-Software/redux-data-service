@@ -1069,6 +1069,53 @@ describe("Model", function () {
             });
         });
     });
+    describe("Model#getServiceForRelationship", function () {
+        var model;
+        var fakeServiceName;
+        beforeEach(function () {
+            var Example = (function (_super) {
+                __extends(Example, _super);
+                function Example() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.serviceName = "example";
+                    return _this;
+                }
+                __decorate([
+                    Decorators_1.attr(FieldType_1.StringField),
+                    __metadata("design:type", String)
+                ], Example.prototype, "objectType", void 0);
+                __decorate([
+                    Decorators_1.attr(FieldType_1.StringField),
+                    __metadata("design:type", String)
+                ], Example.prototype, "relatedThingId", void 0);
+                __decorate([
+                    Decorators_1.belongsTo({ serviceNameField: "objectType" }),
+                    __metadata("design:type", Object)
+                ], Example.prototype, "relatedThing", void 0);
+                __decorate([
+                    Decorators_1.attr(FieldType_1.StringField),
+                    __metadata("design:type", String)
+                ], Example.prototype, "studentId", void 0);
+                __decorate([
+                    Decorators_1.belongsTo(),
+                    __metadata("design:type", Object)
+                ], Example.prototype, "student", void 0);
+                return Example;
+            }(Model_1.Model));
+            fakeServiceName = faker_1.random.word();
+            model = new Example({ id: faker_1.random.word(), objectType: fakeServiceName });
+        });
+        it("uses a relationship's serviceNameField to get the related service", function () {
+            var fakeService = { name: fakeServiceName };
+            Services_1.registerService(fakeService);
+            expect(model.getServiceForRelationship("relatedThing")).to.equal(fakeService);
+        });
+        it("uses the relationship's field name to determine the serviceName by default to get the related service", function () {
+            var fakeStudentService = { name: "student" };
+            Services_1.registerService(fakeStudentService);
+            expect(model.getServiceForRelationship("student")).to.equal(fakeStudentService);
+        });
+    });
     describe("Model#isDirty", function () {
         it("considers the model to be dirty when a field has changed", function () {
             TestUtils_1.initializeTestServices(TestUtils_1.fakeModelModule);

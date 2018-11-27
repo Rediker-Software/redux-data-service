@@ -8,7 +8,7 @@
 
 ## Indexable
 
-\[key: `string`\]:&nbsp; [FilterValue](../#filtervalue) &#124; [FilterValue](../#filtervalue)[] &#124; [ISort](isort.md)
+\[key: `string`\]:&nbsp; [FilterValue](../#filtervalue) &#124; [FilterValue](../#filtervalue)[] &#124; [ISort](isort.md)[]
 
 ## Index
 
@@ -28,7 +28,7 @@
 
 **● page**: *`number`*
 
-*Defined in [Query/QueryBuilder.ts:48](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Query/QueryBuilder.ts#L48)*
+*Defined in [Query/QueryBuilder.ts:49](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Query/QueryBuilder.ts#L49)*
 
 ___
 <a id="pagesize"></a>
@@ -37,16 +37,16 @@ ___
 
 **● pageSize**: *`number`*
 
-*Defined in [Query/QueryBuilder.ts:49](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Query/QueryBuilder.ts#L49)*
+*Defined in [Query/QueryBuilder.ts:50](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Query/QueryBuilder.ts#L50)*
 
 ___
 <a id="sort"></a>
 
 ### `<Optional>` sort
 
-**● sort**: *[ISort](isort.md)*
+**● sort**: *[ISort](isort.md)[]*
 
-*Defined in [Query/QueryBuilder.ts:47](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Query/QueryBuilder.ts#L47)*
+*Defined in [Query/QueryBuilder.ts:48](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Query/QueryBuilder.ts#L48)*
 
 ___
 

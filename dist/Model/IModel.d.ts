@@ -1,3 +1,4 @@
+import { DataService } from "../Services";
 import { IAttrs, IRelationship } from "./Decorators";
 export declare type IModelKeys<T, U = any> = {
     [P in keyof T]?: U;
@@ -33,6 +34,7 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
     initializeNewModel(): void;
     markForDestruction(): void;
     parseFieldValue(fieldName: string, value: any): Promise<any>;
+    getServiceForRelationship(relationshipKey: string): DataService<any>;
 }
 export interface IModelFactory<T extends IModelData> {
     new (modelData?: Partial<T>, meta?: Partial<IModelMeta<T>>, relatedModels?: IModelsMap): IModel<T>;

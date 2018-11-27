@@ -2,6 +2,7 @@ import "rxjs/add/operator/takeUntil";
 import "rxjs/add/operator/skip";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
+import { DataService } from "../Services";
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
 import { IFieldType } from "./FieldType";
 import { IFieldRelationship } from "./Decorators";
@@ -39,6 +40,7 @@ export declare class Model<T extends IModelData> implements IModel<T> {
     setField(fieldName: string, value: any): void;
     getRelated(fieldName: string): any;
     setRelated(fieldName: string, value: any): void;
+    getServiceForRelationship(relationshipKey: string): DataService<any>;
     protected triggerWillDestroyObservable(): void;
     markForDestruction(): void;
     readonly isDestroying: boolean;

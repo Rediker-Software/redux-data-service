@@ -66,6 +66,13 @@ var MockSerializer = (function (_super) {
             });
         });
     };
+    MockSerializer.prototype.serializeQueryParams = function (queryParams) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2, queryParams];
+            });
+        });
+    };
     return MockSerializer;
 }(BaseSerializer_1.BaseSerializer));
 exports.MockSerializer = MockSerializer;

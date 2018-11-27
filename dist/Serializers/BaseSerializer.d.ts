@@ -1,9 +1,11 @@
 import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship } from "../Model";
 import { ISerializer } from "./ISerializer";
+import { IQueryParams } from "../Query/QueryBuilder";
 export declare abstract class BaseSerializer<S, T extends IModelData, R = T> implements ISerializer<S, T, R> {
     readonly ModelClass: IModelFactory<T>;
     abstract deserialize(data: R): Promise<IModel<T>>;
     abstract serialize(modelData: IModel<T> | Partial<T>): Promise<S>;
+    abstract serializeQueryParams(params: IQueryParams): Promise<any>;
     constructor(ModelClass: IModelFactory<T>);
     readonly relationships: any;
     readonly fields: any;

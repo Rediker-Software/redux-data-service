@@ -26,7 +26,7 @@
 
 **● fieldName**: *`keyof T`*
 
-*Defined in [Services/DataService.ts:70](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Services/DataService.ts#L70)*
+*Defined in [Services/DataService.ts:70](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Services/DataService.ts#L70)*
 
 ___
 <a id="id"></a>
@@ -35,7 +35,7 @@ ___
 
 **● id**: *`string`*
 
-*Defined in [Services/DataService.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Services/DataService.ts#L69)*
+*Defined in [Services/DataService.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Services/DataService.ts#L69)*
 
 ___
 <a id="value"></a>
@@ -44,7 +44,7 @@ ___
 
 **● value**: *`any`*
 
-*Defined in [Services/DataService.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Services/DataService.ts#L71)*
+*Defined in [Services/DataService.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Services/DataService.ts#L71)*
 
 ___
 

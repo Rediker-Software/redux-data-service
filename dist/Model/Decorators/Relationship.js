@@ -8,9 +8,9 @@ var __assign = (this && this.__assign) || Object.assign || function(t) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var pluralize_1 = require("pluralize");
 var FieldType_1 = require("../FieldType");
 var Field_1 = require("./Field");
-var pluralize_1 = require("pluralize");
 var RelationshipType;
 (function (RelationshipType) {
     RelationshipType["BelongsTo"] = "BelongsTo";
@@ -41,7 +41,7 @@ function relationship(relationshipType, options) {
     return function (target, key) {
         var _a;
         var singularKey = pluralize_1.singular(key);
-        if (!options.serviceName) {
+        if (!options.serviceName && !options.serviceNameField) {
             options.serviceName = singularKey;
         }
         if (!options.relatedFieldName) {
@@ -52,6 +52,7 @@ function relationship(relationshipType, options) {
         }
         target.relationships = __assign({}, target.relationships, (_a = {}, _a[key] = {
             serviceName: options.serviceName,
+            serviceNameField: options.serviceNameField,
             relatedFieldName: options.relatedFieldName,
             modelRelatedFieldName: options.modelRelatedFieldName,
             field: key,

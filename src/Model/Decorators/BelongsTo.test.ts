@@ -42,17 +42,18 @@ describe("@belongsTo", () => {
     myClass = new MyClass();
   });
 
-  it("creates a field decorator which with a BelongsTo FieldType", () => {
+  it("creates a field decorator with a BelongsTo FieldType", () => {
     expect(myClass.fields).to.have.property("student").to.deep.contain(BelongsToField, "it keeps track of the field's FieldType correctly");
   });
 
   it("creates a BelongsTo relationship", () => {
     expect(myClass.relationships).to.have.property("student").to.deep.equal({
-      type: RelationshipType.BelongsTo,
-      field: "student",
+      serviceName: "student",
+      serviceNameField: undefined,
       relatedFieldName: "studentId",
       modelRelatedFieldName: undefined,
-      serviceName: "student",
+      field: "student",
+      type: RelationshipType.BelongsTo,
     });
   });
 

@@ -255,21 +255,19 @@ describe("QueryBuilder", function () {
         it("adds the given sorting criteria with a default SortDirection of 'asc'", function () {
             var query = new QueryBuilder_1.QueryBuilder(serviceName);
             query = query.sort(key);
-            expect(query.queryParams)
-                .to.have.property("sort")
-                .to.have.property(key)
+            expect(query.queryParams.sort[0])
+                .to.have.property("direction")
                 .to.equal("asc");
         });
         it("adds the given sorting criteria with the given SortDirection", function () {
             var query = new QueryBuilder_1.QueryBuilder(serviceName);
             query = query.sort(key, "desc");
-            expect(query.queryParams)
-                .to.have.property("sort")
-                .to.have.property(key)
+            expect(query.queryParams.sort[0])
+                .to.have.property("direction")
                 .to.equal("desc");
         });
         it("spreads the current queryParams onto the queryParams of the new object when sorting", function () {
-            var _a, _b, _c;
+            var _a, _b;
             var sortKey = faker_1.random.word();
             var currentQueryParams = (_a = {},
                 _a[key] = value,
@@ -278,13 +276,12 @@ describe("QueryBuilder", function () {
             query = query.sort(sortKey);
             expect(query.queryParams).to.deep.equal((_b = {},
                 _b[key] = value,
-                _b.sort = (_c = {},
-                    _c[sortKey] = "asc",
-                    _c),
+                _b.sort = [
+                    { key: sortKey, direction: "asc" },
+                ],
                 _b));
         });
         it("supports adding multiple sorting criteria via chaining", function () {
-            var _a;
             var query = new QueryBuilder_1.QueryBuilder(serviceName);
             var key2 = faker_1.random.word();
             var key3 = faker_1.random.word();
@@ -294,11 +291,11 @@ describe("QueryBuilder", function () {
                 .sort(key3);
             expect(query.queryParams)
                 .to.have.property("sort")
-                .to.deep.equal((_a = {},
-                _a[key] = "asc",
-                _a[key2] = "desc",
-                _a[key3] = "asc",
-                _a));
+                .to.deep.equal([
+                { key: key, direction: "asc" },
+                { key: key2, direction: "desc" },
+                { key: key3, direction: "asc" },
+            ]);
         });
         it("creates a new instance when sorting criteria is added", function () {
             var oldQuery = new QueryBuilder_1.QueryBuilder(serviceName);
@@ -315,29 +312,71 @@ describe("QueryBuilder", function () {
             expect(query.queryParams)
                 .to.deep.equal(currentQueryParams);
         });
+        it("places the sort in a position specified by the parameter", function () {
+            var position = faker_1.random.number({ max: 4 });
+            var key1 = faker_1.lorem.word();
+            var key2 = faker_1.lorem.word();
+            var key3 = faker_1.lorem.word();
+            var key4 = faker_1.lorem.word();
+            var key5 = faker_1.lorem.word();
+            var currentQueryParams = {
+                sort: [
+                    { key: key1 },
+                    { key: key2 },
+                    { key: key3 },
+                    { key: key4 },
+                ],
+            };
+            var query = new QueryBuilder_1.QueryBuilder(serviceName, currentQueryParams);
+            var sortedQuery = query.sort(key5, "asc", position);
+            expect(sortedQuery.queryParams.sort[position]).to.deep.equal({ key: key5, direction: "asc" });
+        });
+        it("creates a new sort object if none exists", function () {
+            var currentQueryParams = {};
+            var query = new QueryBuilder_1.QueryBuilder(serviceName, currentQueryParams);
+            var sortedQuery = query.sort(faker_1.lorem.word());
+            expect(sortedQuery.queryParams.sort).to.exist;
+        });
+        it("creates a new sort list if no sorts existed previously", function () {
+            var currentQueryParams = {};
+            var query = new QueryBuilder_1.QueryBuilder(serviceName, currentQueryParams);
+            var sortedQuery = query.sort(faker_1.lorem.word());
+            expect(sortedQuery.queryParams.sort.length).to.equal(1);
+        });
+        it("pushes the sort onto the end of the list if no position is specified", function () {
+            var key1 = faker_1.lorem.word();
+            var key2 = faker_1.lorem.word();
+            var key3 = faker_1.lorem.word();
+            var currentQueryParams = {
+                sort: [
+                    { key: key1 },
+                    { key: key2 },
+                ],
+            };
+            var query = new QueryBuilder_1.QueryBuilder(serviceName, currentQueryParams);
+            var sortedQuery = query.sort(key3);
+            expect(sortedQuery.queryParams.sort[2]).to.deep.equal({ key: key3, direction: "asc" });
+        });
     });
     describe("removing sort criteria", function () {
         it("supports removing sorting criteria", function () {
-            var _a, _b;
             var otherSort = faker_1.random.word();
             var currentQueryParams = {
-                sort: (_a = {},
-                    _a[key] = "asc",
-                    _a[otherSort] = "desc",
-                    _a),
+                sort: [
+                    { key: key, direction: "asc" },
+                    { key: otherSort, direction: "desc" },
+                ],
             };
             var query = new QueryBuilder_1.QueryBuilder(serviceName, currentQueryParams);
             query = query.removeSort(key);
-            expect(query.queryParams)
-                .to.have.property("sort")
-                .to.deep.equal((_b = {}, _b[otherSort] = "desc", _b));
+            expect(query.queryParams.sort[0])
+                .to.deep.equal({ key: otherSort, direction: "desc" });
         });
         it("removes the 'sort' object from queryParams if there is one sort param and it is removed", function () {
-            var _a;
             var currentQueryParams = {
-                sort: (_a = {},
-                    _a[key] = value,
-                    _a),
+                sort: [
+                    { key: key, direction: value },
+                ],
             };
             var query = new QueryBuilder_1.QueryBuilder(serviceName, currentQueryParams);
             query = query.removeSort(key);
@@ -345,7 +384,7 @@ describe("QueryBuilder", function () {
                 .to.not.have.property("sort");
         });
         it("spreads the current queryParams onto the queryParams of the new object when sorting criteria is removed", function () {
-            var _a, _b;
+            var _a;
             var otherKey = faker_1.random.word();
             var otherValue = faker_1.random.word();
             var sortKey = faker_1.random.word();
@@ -367,28 +406,27 @@ describe("QueryBuilder", function () {
                 },
                 _a[key] = value,
                 _a[otherKey] = otherValue,
-                _a.sort = (_b = {},
-                    _b[otherSort] = "asc",
-                    _b),
+                _a.sort = [
+                    { key: otherSort, direction: "asc" },
+                ],
                 _a));
         });
         it("supports removing multiple sorting criteria via chaining", function () {
-            var _a;
             var key2 = faker_1.random.word();
             var key3 = faker_1.random.word();
             var query = new QueryBuilder_1.QueryBuilder(serviceName, {
-                sort: (_a = {},
-                    _a[key] = "desc",
-                    _a[key2] = "asc",
-                    _a[key3] = "desc",
-                    _a),
+                sort: [
+                    { key: key, direction: "desc" },
+                    { key: key2, direction: "asc" },
+                    { key: key3, direction: "desc" },
+                ],
             });
             query = query
                 .removeSort(key2)
                 .removeSort(key3);
             expect(query.queryParams)
                 .to.have.property("sort")
-                .to.not.have.any.keys([key2, key3]);
+                .to.not.deep.equal([{ key: key2, direction: "asc" }, { key: key3, direction: "desc" }]);
         });
         it("does not throw an exception when removing a sort key that does not exist", function () {
             var oldQuery = new QueryBuilder_1.QueryBuilder(serviceName);

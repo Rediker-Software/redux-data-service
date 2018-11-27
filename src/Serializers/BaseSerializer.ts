@@ -1,4 +1,4 @@
-import { flow, keys, map, omit, partition, pick, pickBy, property } from "lodash/fp";
+import { flow, keys, partition, pick, pickBy, property } from "lodash/fp";
 import { fromPairs } from "lodash";
 
 import { mapWithKeys } from "../Utils";
@@ -202,7 +202,7 @@ export abstract class BaseSerializer<S, T extends IModelData, R = T> implements 
       relatedModelData[modelRelatedFieldName] = model.id;
     }
 
-    const service = getDataService(relationship.serviceName);
+    const service = model.getServiceForRelationship(relationship.field);
     const relatedModel = await service.serializer.normalize(relatedModelData);
     service.actions.pushRecord(relatedModel).invoke();
 
