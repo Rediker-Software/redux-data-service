@@ -116,19 +116,17 @@ export function relationship(relationshipType: RelationshipType, options: IRelat
       throw new ReferenceError(`Related field name "${options.relatedFieldName}" missing for relationship "${key}". Did you forget to add an @attr decorator?`);
     }
 
-    const relationshipObject = {
-      serviceName: options.serviceName,
-      serviceNameField: options.serviceNameField,
-      relatedFieldName: options.relatedFieldName,
-      modelRelatedFieldName: options.modelRelatedFieldName,
-      field: key,
-      type: relationshipType,
-    } as any;
-
     // Keep track of the relationship
     target.relationships = {
       ...target.relationships,
-      [key]: relationshipObject,
+      [key]: {
+        serviceName: options.serviceName,
+        serviceNameField: options.serviceNameField,
+        relatedFieldName: options.relatedFieldName,
+        modelRelatedFieldName: options.modelRelatedFieldName,
+        field: key,
+        type: relationshipType,
+      },
     };
 
     // Replace TypeScript's property definition with our own.
