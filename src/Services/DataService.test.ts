@@ -13,6 +13,7 @@ import { createMockServiceState } from "../TestUtils";
 import { IModelMeta } from "../Model";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model/Model.mock";
 import { MockAdapter } from "../Adapters/MockAdapter";
+import { MockMapper } from "../Mapper/MockMapper";
 import { MockSerializer } from "../Serializers";
 import { configure } from "../Configure";
 
@@ -60,7 +61,7 @@ describe("DataService", () => {
   });
 
   describe("adapter", () => {
-    it("uses the adapter from the config if one was not defined in the child class", () => {
+    it("uses the adapter from the config if one was not defined in the child class and there is no this.AdapterClass", () => {
       class MockService extends DataService<IFakeModelData> {
         public name = "";
         public ModelClass = null;
@@ -71,16 +72,69 @@ describe("DataService", () => {
 
       expect(mockService.adapter).to.be.an.instanceOf(MockAdapter);
     });
+
+    it("uses the adapter from the this.AdapterClass if one is not defined in the child class", () => {
+      class MockService extends DataService<IFakeModelData> {
+        public name = "";
+        public ModelClass = null;
+        public AdapterClass = MockAdapter;
+      }
+
+      configure({ modules: null, adapter: null });
+      const mockService = new MockService();
+
+      expect(mockService.adapter).to.be.an.instanceOf(MockAdapter);
+    });
+  });
+
+  describe("mapper", () => {
+    it("uses the mapper from the config if one was not defined in the child class and there is no this.MapperClass", () => {
+      class MockService extends DataService<IFakeModelData> {
+        public name = "";
+        public ModelClass = null;
+      }
+
+      configure({ modules: null, mapper: MockMapper });
+      const mockService = new MockService();
+
+      expect(mockService.mapper).to.be.an.instanceOf(MockMapper);
+    });
+
+    it("uses the mapper from the this.MapperClass if one is not defined in the child class", () => {
+      class MockService extends DataService<IFakeModelData> {
+        public name = "";
+        public ModelClass = null;
+        public MapperClass = MockMapper;
+      }
+
+      configure({ modules: null, mapper: null });
+      const mockService = new MockService();
+
+      expect(mockService.mapper).to.be.an.instanceOf(MockMapper);
+    });
   });
 
   describe("serializer", () => {
-    it("uses the serializer from the config if one was not defined in the child class", () => {
+    it("uses the serializer from the config if one was not defined in the child class and there is no this.SerializerClass", () => {
       class MockService extends DataService<IFakeModelData> {
         public name = "";
         public ModelClass = null;
       }
 
       configure({ modules: null, serializer: MockSerializer });
+      const mockService = new MockService();
+
+      expect(mockService.serializer).to.be.an.instanceOf(MockSerializer);
+    });
+
+    it("uses the serializer from the this.SerializerClass if one is not defined in the child class", () => {
+      class MockService extends DataService<IFakeModelData> {
+        public name = "";
+        public ModelClass = null;
+        public SerializerClass = MockSerializer;
+      }
+
+      configure({ modules: null, serializer: null });
       const mockService = new MockService();
 
       expect(mockService.serializer).to.be.an.instanceOf(MockSerializer);

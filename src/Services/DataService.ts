@@ -24,12 +24,12 @@ import { createSelector } from "reselect";
 
 import { getConfiguration } from "../Configure";
 import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
-import { ISerializer, ISerializerFactory, RestSerializer } from "../Serializers";
+import { ISerializer, ISerializerFactory } from "../Serializers";
 import { IAdapter, IAdapterFactory } from "../Adapters/IAdapter";
-import { RestAdapter } from "../Adapters/RestAdapter";
 
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
+import { IMapperFactory, IMapper } from "../Mapper";
 
 export type IRequestCacheKey = string;
 
@@ -104,12 +104,14 @@ export interface IForceReload {
  */
 export abstract class DataService<T extends IModelData, R = T> extends BaseService<DataServiceStateRecord<T>> {
   public abstract readonly ModelClass: IModelFactory<T>;
-  protected readonly AdapterClass: IAdapterFactory<any> = RestAdapter;
-  protected readonly SerializerClass: ISerializerFactory<any, T, R> = RestSerializer;
+  protected readonly AdapterClass: IAdapterFactory<any>;
+  protected readonly MapperClass: IMapperFactory<any>;
+  protected readonly SerializerClass: ISerializerFactory<any, T, R>;
 
-  protected _serializer: ISerializer<any, T, R>;
   protected _adapter: IAdapter<any>;
-
+  protected _mapper: IMapper<any>;
+  protected _serializer: ISerializer<any, T, R>;
+  
   protected shadowObject: IModel<T> = null;
   protected observablesByIdCache: { [id: string]: Observable<IModel<T>> } = {};
   protected observablesByIdsCache: { [id: string]: Observable<IModel<T>[]> } = {};
@@ -122,16 +124,25 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
   public get adapter() {
     if (!this._adapter) {
-      const Adapter = getConfiguration().adapter || this.AdapterClass;
+      const Adapter = this.AdapterClass || getConfiguration().adapter;
       this._adapter = new Adapter(this.name);
     }
 
     return this._adapter;
   }
 
+  public get mapper() {
+    if (!this._mapper) {
+      const Mapper = this.MapperClass || getConfiguration().mapper;
+      this._mapper = new Mapper(this.ModelClass);
+    }
+
+    return this._mapper;
+  }
+
   public get serializer() {
     if (!this._serializer) {
-      const Serializer = getConfiguration().serializer || this.SerializerClass;
+      const Serializer = this.SerializerClass || getConfiguration().serializer;
       this._serializer = new Serializer(this.ModelClass);
     }
 
