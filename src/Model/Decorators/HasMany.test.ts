@@ -53,6 +53,7 @@ describe("@hasMany", () => {
       relatedFieldName: "studentIds",
       modelRelatedFieldName: undefined,
       serviceName: "student",
+      serviceNameField: undefined,
     });
   });
 

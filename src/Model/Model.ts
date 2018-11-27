@@ -3,15 +3,16 @@ import "rxjs/add/operator/skip";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 
-import { single, validate } from "validate.js";
+import { validate } from "validate.js";
 import { forEach, get, isEmpty, merge, omit, find } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
-import { getDataService } from "../Services";
+import { DataService, getDataService } from "../Services";
+import { addPenultimateFieldToPath, flattenObjectKeys } from "../Utils";
+
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
 import { DateTimeField, IFieldType, StringField } from "./FieldType";
 import { attr, IFieldRelationship, RelationshipType } from "./Decorators";
-import { addPenultimateFieldToPath, flattenObjectKeys } from "../Utils";
 
 /**
  * # Model
@@ -403,7 +404,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     }
 
     const relationship = this.relationships[fieldName];
-    const relatedService = getDataService(relationship.serviceName);
+    const relatedService = this.getServiceForRelationship(fieldName);
     const relatedIDorIDs = this.getField(relationship.relatedFieldName);
 
     // Initialize the cache to an empty value
@@ -475,6 +476,21 @@ export class Model<T extends IModelData> implements IModel<T> {
     } else {
       throw new TypeError(`${this.serviceName}: Relationship type "${type}" unknown.`);
     }
+  }
+
+  /**
+   * Get the DataService associated to the relationship specified at the given name of the related field
+   *
+   * @param {string} relationshipKey
+   * @returns {DataService<any>}
+   */
+  public getServiceForRelationship(relationshipKey: string): DataService<any> {
+    const relationship = this.relationships[relationshipKey];
+    const serviceName = relationship.serviceNameField
+      ? this.getField(relationship.serviceNameField)
+      : relationship.serviceName;
+
+    return getDataService(serviceName);
   }
 
   /**
