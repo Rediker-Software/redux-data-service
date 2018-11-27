@@ -2,7 +2,7 @@
 
 # Interface: IFieldRelationship
 
-A simple interface for identifying that the given `field` relates to the given `serviceName` via the `relatedFieldName`.
+This is the meta-data about a related field on a `Model`, such as a `BelongsTo` or `HasMany` field. It enables us to lazy-load the related model(s) given a field which specifies the related ID(s) and the related service name.
 
 For example, field "student" relates to the "student" service through the "studentId" relatedFieldName.
 
@@ -18,6 +18,7 @@ For example, field "student" relates to the "student" service through the "stude
 * [modelRelatedFieldName](ifieldrelationship.md#modelrelatedfieldname)
 * [relatedFieldName](ifieldrelationship.md#relatedfieldname)
 * [serviceName](ifieldrelationship.md#servicename)
+* [serviceNameField](ifieldrelationship.md#servicenamefield)
 * [type](ifieldrelationship.md#type)
 
 ---
@@ -30,7 +31,9 @@ For example, field "student" relates to the "student" service through the "stude
 
 **● field**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/Decorators/Relationship.ts#L17)*
+*Defined in [Model/Decorators/Relationship.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/Decorators/Relationship.ts#L21)*
+
+The name of the field this relationship decorates
 
 ___
 <a id="modelrelatedfieldname"></a>
@@ -39,7 +42,9 @@ ___
 
 **● modelRelatedFieldName**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/Decorators/Relationship.ts#L20)*
+*Defined in [Model/Decorators/Relationship.ts:33](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/Decorators/Relationship.ts#L33)*
+
+The name of the field on the OTHER model which provides the ID of THIS model
 
 ___
 <a id="relatedfieldname"></a>
@@ -48,16 +53,31 @@ ___
 
 **● relatedFieldName**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/Decorators/Relationship.ts#L19)*
+*Defined in [Model/Decorators/Relationship.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/Decorators/Relationship.ts#L30)*
+
+The field on THIS model which provides the ID or IDs to identify the OTHER model
 
 ___
 <a id="servicename"></a>
 
-###  serviceName
+### `<Optional>` serviceName
 
 **● serviceName**: *`string`*
 
-*Defined in [Model/Decorators/Relationship.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/Decorators/Relationship.ts#L18)*
+*Defined in [Model/Decorators/Relationship.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/Decorators/Relationship.ts#L24)*
+
+The name of the service associated to the related field
+
+___
+<a id="servicenamefield"></a>
+
+### `<Optional>` serviceNameField
+
+**● serviceNameField**: *`string`*
+
+*Defined in [Model/Decorators/Relationship.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/Decorators/Relationship.ts#L27)*
+
+When no serviceName is given, we will use the value of this field to get the name of the related service
 
 ___
 <a id="type"></a>
@@ -66,7 +86,9 @@ ___
 
 **● type**: *[RelationshipType](../enums/relationshiptype.md)*
 
-*Defined in [Model/Decorators/Relationship.ts:21](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Model/Decorators/Relationship.ts#L21)*
+*Defined in [Model/Decorators/Relationship.ts:36](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/Decorators/Relationship.ts#L36)*
+
+The type of relationship, i.e. BelongsTo (one-to-one or one-to-many) or HasMany (many-to-many, many-to-one)
 
 ___
 

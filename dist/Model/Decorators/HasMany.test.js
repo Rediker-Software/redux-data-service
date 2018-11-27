@@ -51,6 +51,7 @@ describe("@hasMany", function () {
             relatedFieldName: "studentIds",
             modelRelatedFieldName: undefined,
             serviceName: "student",
+            serviceNameField: undefined,
         });
     });
 });

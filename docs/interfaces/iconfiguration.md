@@ -11,6 +11,7 @@
 ### Properties
 
 * [adapter](iconfiguration.md#adapter)
+* [mapper](iconfiguration.md#mapper)
 * [modules](iconfiguration.md#modules)
 * [serializer](iconfiguration.md#serializer)
 
@@ -24,7 +25,16 @@
 
 **● adapter**: *[IAdapterFactory](iadapterfactory.md)<`any`>*
 
-*Defined in [Configure.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Configure.ts#L12)*
+*Defined in [Configure.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Configure.ts#L14)*
+
+___
+<a id="mapper"></a>
+
+### `<Optional>` mapper
+
+**● mapper**: *[IMapperFactory](imapperfactory.md)<`any`>*
+
+*Defined in [Configure.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Configure.ts#L16)*
 
 ___
 <a id="modules"></a>
@@ -33,7 +43,7 @@ ___
 
 **● modules**: *[IModuleMap](imodulemap.md)*
 
-*Defined in [Configure.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Configure.ts#L11)*
+*Defined in [Configure.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Configure.ts#L13)*
 
 ___
 <a id="serializer"></a>
@@ -42,7 +52,7 @@ ___
 
 **● serializer**: *[ISerializerFactory](iserializerfactory.md)<`any`, `any`, `any`>*
 
-*Defined in [Configure.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/5a6fe9c/src/Configure.ts#L13)*
+*Defined in [Configure.ts:15](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Configure.ts#L15)*
 
 ___
 

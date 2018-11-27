@@ -44,6 +44,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var BaseSerializer_1 = require("./BaseSerializer");
 var RestSerializer = (function (_super) {
@@ -73,6 +82,25 @@ var RestSerializer = (function (_super) {
                         return [4, this.normalize(data)];
                     case 1: return [2, _a.sent()];
                 }
+            });
+        });
+    };
+    RestSerializer.prototype.serializeQueryParams = function (_a) {
+        var sort = _a.sort, params = __rest(_a, ["sort"]);
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_b) {
+                if (sort && sort.length > 0) {
+                    params.sort = sort.map(function (s) { return (s.direction === "desc" ? s.key + ":" + s.direction : s.key); });
+                }
+                return [2, Object.keys(params)
+                        .map(function (key) {
+                        var value = params[key];
+                        var encodedValue = (value instanceof Array)
+                            ? value.map(function (v) { return encodeURIComponent(v); }).join(",")
+                            : encodeURIComponent(String(value));
+                        return encodeURIComponent(key) + "=" + encodedValue;
+                    })
+                        .join("&")];
             });
         });
     };

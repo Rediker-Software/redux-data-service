@@ -234,7 +234,7 @@ var BaseSerializer = (function () {
                         if (!relatedModelData.hasOwnProperty(modelRelatedFieldName)) {
                             relatedModelData[modelRelatedFieldName] = model.id;
                         }
-                        service = Services_1.getDataService(relationship.serviceName);
+                        service = model.getServiceForRelationship(relationship.field);
                         return [4, service.serializer.normalize(relatedModelData)];
                     case 1:
                         relatedModel = _a.sent();

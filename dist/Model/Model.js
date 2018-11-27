@@ -68,9 +68,9 @@ var validate_js_1 = require("validate.js");
 var lodash_1 = require("lodash");
 var fp_1 = require("lodash/fp");
 var Services_1 = require("../Services");
+var Utils_1 = require("../Utils");
 var FieldType_1 = require("./FieldType");
 var Decorators_1 = require("./Decorators");
-var Utils_1 = require("../Utils");
 var Model = (function () {
     function Model(modelData, meta, relatedModels) {
         if (meta === void 0) { meta = {}; }
@@ -238,7 +238,7 @@ var Model = (function () {
             return undefined;
         }
         var relationship = this.relationships[fieldName];
-        var relatedService = Services_1.getDataService(relationship.serviceName);
+        var relatedService = this.getServiceForRelationship(fieldName);
         var relatedIDorIDs = this.getField(relationship.relatedFieldName);
         if (this.isShadow && relationship.type === Decorators_1.RelationshipType.BelongsTo) {
             this.relatedModels[fieldName] = relatedService.getShadowObject();
@@ -287,6 +287,13 @@ var Model = (function () {
         else {
             throw new TypeError(this.serviceName + ": Relationship type \"" + type + "\" unknown.");
         }
+    };
+    Model.prototype.getServiceForRelationship = function (relationshipKey) {
+        var relationship = this.relationships[relationshipKey];
+        var serviceName = relationship.serviceNameField
+            ? this.getField(relationship.serviceNameField)
+            : relationship.serviceName;
+        return Services_1.getDataService(serviceName);
     };
     Model.prototype.triggerWillDestroyObservable = function () {
         if (this._willDestroyObservable$) {

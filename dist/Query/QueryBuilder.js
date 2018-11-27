@@ -35,20 +35,25 @@ var QueryBuilder = (function () {
         var queryParams = __assign({}, this.queryParams, { pageSize: pageSize });
         return new QueryBuilder(this.serviceName, queryParams);
     };
-    QueryBuilder.prototype.sort = function (key, direction) {
+    QueryBuilder.prototype.sort = function (key, direction, position) {
         if (direction === void 0) { direction = "asc"; }
-        var _a;
-        var queryParams = lodash_1.merge({}, this.queryParams, {
-            sort: (_a = {},
-                _a[key] = direction,
-                _a),
-        });
+        var queryParams = __assign({}, this.queryParams);
+        if (position >= 0 && queryParams.sort && queryParams.sort.length >= 0) {
+            queryParams.sort = queryParams.sort.slice();
+            queryParams.sort.splice(position, 0, { key: key, direction: direction });
+        }
+        else if (queryParams.sort) {
+            queryParams.sort = queryParams.sort.concat([{ key: key, direction: direction }]);
+        }
+        else {
+            queryParams.sort = [{ key: key, direction: direction }];
+        }
         return new QueryBuilder(this.serviceName, queryParams);
     };
     QueryBuilder.prototype.removeSort = function (key) {
         var queryParams = __assign({}, this.queryParams);
         if ("sort" in queryParams) {
-            delete queryParams.sort[key];
+            queryParams.sort = queryParams.sort.filter(function (q) { return q.key !== key; });
             if (lodash_1.isEmpty(queryParams.sort)) {
                 delete queryParams.sort;
             }

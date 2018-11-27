@@ -121,6 +121,7 @@ describe("@relationship", function () {
             expect(myClass.relationships).to.have.property("student").to.deep.equal({
                 field: "student",
                 serviceName: "student",
+                serviceNameField: undefined,
                 relatedFieldName: "studentId",
                 modelRelatedFieldName: undefined,
                 type: Relationship_1.RelationshipType.BelongsTo,
@@ -154,6 +155,7 @@ describe("@relationship", function () {
             expect(myClass.relationships).to.have.property("someKid").to.deep.equal({
                 field: "someKid",
                 serviceName: "student",
+                serviceNameField: undefined,
                 relatedFieldName: "someKidId",
                 modelRelatedFieldName: undefined,
                 type: Relationship_1.RelationshipType.BelongsTo,
@@ -182,6 +184,7 @@ describe("@relationship", function () {
             expect(myClass.relationships).to.have.property("someKid").to.deep.equal({
                 field: "someKid",
                 serviceName: "student",
+                serviceNameField: undefined,
                 relatedFieldName: "studentFK",
                 modelRelatedFieldName: undefined,
                 type: Relationship_1.RelationshipType.BelongsTo,
@@ -212,6 +215,39 @@ describe("@relationship", function () {
                 relatedFieldName: "orgIds",
             })(myClass, "organization"); }).to.throw(ReferenceError, "missing for relationship");
         });
+        it("builds the IFieldRelationship object using a custom service name field", function () {
+            var MyClass = (function () {
+                function MyClass() {
+                    this.validate = sinon_1.stub();
+                    this.getRelated = sinon_1.stub();
+                    this.setRelated = sinon_1.stub();
+                    this.getField = sinon_1.stub();
+                    this.setField = sinon_1.stub();
+                }
+                __decorate([
+                    Attr_1.attr(FieldType_1.StringField),
+                    __metadata("design:type", String)
+                ], MyClass.prototype, "objectType", void 0);
+                __decorate([
+                    Attr_1.attr(FieldType_1.StringField),
+                    __metadata("design:type", String)
+                ], MyClass.prototype, "someKidId", void 0);
+                __decorate([
+                    Relationship_1.relationship(Relationship_1.RelationshipType.BelongsTo, { serviceNameField: "objectType" }),
+                    __metadata("design:type", Object)
+                ], MyClass.prototype, "someKid", void 0);
+                return MyClass;
+            }());
+            var myClass = new MyClass();
+            expect(myClass.relationships).to.have.property("someKid").to.deep.equal({
+                field: "someKid",
+                serviceName: undefined,
+                serviceNameField: "objectType",
+                relatedFieldName: "someKidId",
+                modelRelatedFieldName: undefined,
+                type: Relationship_1.RelationshipType.BelongsTo,
+            });
+        });
     });
     describe("@relationship - supports BelongsTo and HasMany", function () {
         it("builds the IFieldRelationship object with the correct type and relatedFieldName for BelongsTo", function () {
@@ -238,6 +274,7 @@ describe("@relationship", function () {
             expect(myClass.relationships).to.have.property("student").to.deep.equal({
                 field: "student",
                 serviceName: "student",
+                serviceNameField: undefined,
                 relatedFieldName: "studentId",
                 modelRelatedFieldName: undefined,
                 type: Relationship_1.RelationshipType.BelongsTo,
@@ -267,6 +304,7 @@ describe("@relationship", function () {
             expect(myClass.relationships).to.have.property("students").to.deep.equal({
                 field: "students",
                 serviceName: "student",
+                serviceNameField: undefined,
                 relatedFieldName: "studentIds",
                 modelRelatedFieldName: undefined,
                 type: Relationship_1.RelationshipType.HasMany,

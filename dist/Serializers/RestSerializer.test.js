@@ -49,7 +49,7 @@ describe("RestSerializer", function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        fakeModel = new Model_mock_1.FakeModel({ id: faker_1.default.random.number().toString() });
+                        fakeModel = new Model_mock_1.FakeModel({ id: faker_1.random.number().toString() });
                         restSerializer = new RestSerializer_1.RestSerializer(Model_mock_1.FakeModel);
                         stubTransform = sinon_1.stub(restSerializer, "transform");
                         return [4, restSerializer.serialize(fakeModel)];
@@ -65,9 +65,9 @@ describe("RestSerializer", function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        fullText = faker_1.default.lorem.word().toString();
+                        fullText = faker_1.lorem.word().toString();
                         fakeModel = new Model_mock_1.FakeModel({
-                            id: faker_1.default.random.number().toString(),
+                            id: faker_1.random.number().toString(),
                             fullText: fullText,
                         });
                         restSerializer = new RestSerializer_1.RestSerializer(Model_mock_1.FakeModel);
@@ -87,8 +87,8 @@ describe("RestSerializer", function () {
                 switch (_a.label) {
                     case 0:
                         fakeModelData = {
-                            id: faker_1.default.random.number().toString(),
-                            fullText: faker_1.default.lorem.word().toString(),
+                            id: faker_1.random.number().toString(),
+                            fullText: faker_1.lorem.word().toString(),
                         };
                         serializedModel = JSON.stringify(fakeModelData);
                         restSerializer = new RestSerializer_1.RestSerializer(Model_mock_1.FakeModel);
@@ -107,8 +107,8 @@ describe("RestSerializer", function () {
                 switch (_a.label) {
                     case 0:
                         fakeModelData = {
-                            id: faker_1.default.random.number().toString(),
-                            fullText: faker_1.default.lorem.word().toString(),
+                            id: faker_1.random.number().toString(),
+                            fullText: faker_1.lorem.word().toString(),
                         };
                         fakeModel = new Model_mock_1.FakeModel(fakeModelData);
                         serializedModel = JSON.stringify(fakeModelData);
@@ -117,6 +117,60 @@ describe("RestSerializer", function () {
                     case 1:
                         deserializedModel = _a.sent();
                         expect(deserializedModel).to.deep.equal(fakeModel);
+                        return [2];
+                }
+            });
+        }); });
+    });
+    describe("serializeQueryParams", function () {
+        it("convert the given IQueryParams object into a url-encoded string", function () { return __awaiter(_this, void 0, void 0, function () {
+            var fakeQueryParamData, restSerializer, urlEncodedString;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        fakeQueryParamData = {
+                            page: faker_1.random.number().toString(),
+                            pageSize: faker_1.random.number().toString(),
+                            grade: faker_1.random.number().toString(),
+                            current: faker_1.random.boolean().toString(),
+                            values: [faker_1.name.firstName(), faker_1.name.firstName()],
+                            sort: [
+                                { key: faker_1.name.firstName(), direction: "asc" },
+                                { key: faker_1.name.firstName(), direction: "desc" },
+                            ],
+                        };
+                        restSerializer = new RestSerializer_1.RestSerializer(Model_mock_1.FakeModel);
+                        return [4, restSerializer.serializeQueryParams(fakeQueryParamData)];
+                    case 1:
+                        urlEncodedString = _a.sent();
+                        expect(urlEncodedString).to.equal("page=" + fakeQueryParamData.page + "&pageSize=" + fakeQueryParamData.pageSize + "&grade=" + fakeQueryParamData.grade + "&current=" + fakeQueryParamData.current + "&values=" + fakeQueryParamData.values[0] + "," + fakeQueryParamData.values[1] + "&sort=" + fakeQueryParamData.sort[0].key + "," + fakeQueryParamData.sort[1].key + encodeURIComponent(":") + "desc");
+                        return [2];
+                }
+            });
+        }); });
+        it("convert the given IQueryParams object into a url-encoded string with special characters in names", function () { return __awaiter(_this, void 0, void 0, function () {
+            var name1, name2, fakeQueryParamData, restSerializer, urlEncodedString;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        name1 = faker_1.name.firstName() + "%";
+                        name2 = faker_1.name.firstName() + ",o";
+                        fakeQueryParamData = {
+                            page: faker_1.random.number(),
+                            pageSize: faker_1.random.number(),
+                            grade: faker_1.random.number(),
+                            current: faker_1.random.boolean(),
+                            values: [faker_1.name.firstName(), faker_1.name.firstName()],
+                            sort: [
+                                { key: "" + name1, direction: "asc" },
+                                { key: "" + name2, direction: "desc" },
+                            ],
+                        };
+                        restSerializer = new RestSerializer_1.RestSerializer(Model_mock_1.FakeModel);
+                        return [4, restSerializer.serializeQueryParams(fakeQueryParamData)];
+                    case 1:
+                        urlEncodedString = _a.sent();
+                        expect(urlEncodedString).to.equal("page=" + fakeQueryParamData.page + "&pageSize=" + fakeQueryParamData.pageSize + "&grade=" + fakeQueryParamData.grade + "&current=" + fakeQueryParamData.current + "&values=" + fakeQueryParamData.values[0] + "," + fakeQueryParamData.values[1] + "&sort=" + encodeURIComponent(name1) + "," + encodeURIComponent(name2) + encodeURIComponent(":") + "desc");
                         return [2];
                 }
             });

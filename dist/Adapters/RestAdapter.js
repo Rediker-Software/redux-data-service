@@ -16,26 +16,30 @@ var RestAdapter = (function () {
         this.pathName = pathName;
         this.apiUrl = options.apiUrl || process.env.API_URL;
     }
-    RestAdapter.prototype.getRestURL = function () {
-        return this.apiUrl + "/" + this.pathName;
+    RestAdapter.prototype.getRestURL = function (id) {
+        var url = this.apiUrl + "/" + this.pathName;
+        if (id) {
+            url += "/" + id;
+        }
+        return url;
     };
     RestAdapter.prototype.fetchAll = function (requestParams) {
         return this.makeAjaxRequest("GET", this.getRestURL(), requestParams);
     };
     RestAdapter.prototype.fetchItem = function (id) {
-        return this.makeAjaxRequest("GET", this.getRestURL() + "/" + id);
+        return this.makeAjaxRequest("GET", this.getRestURL(id));
     };
     RestAdapter.prototype.createItem = function (item) {
         return this.makeAjaxRequest("POST", this.getRestURL(), item);
     };
     RestAdapter.prototype.updateItem = function (id, item) {
-        return this.makeAjaxRequest("PUT", this.getRestURL() + "/" + id, item);
+        return this.makeAjaxRequest("PUT", this.getRestURL(id), item);
     };
     RestAdapter.prototype.patchItem = function (id, item) {
         return this.makeAjaxRequest("PATCH", this.getRestURL() + "/" + id, item);
     };
     RestAdapter.prototype.deleteItem = function (id) {
-        return this.makeAjaxRequest("DELETE", this.getRestURL() + "/" + id);
+        return this.makeAjaxRequest("DELETE", this.getRestURL(id));
     };
     RestAdapter.prototype.makeAjaxRequest = function (method, url, payload, headers) {
         if (headers === void 0) { headers = {}; }

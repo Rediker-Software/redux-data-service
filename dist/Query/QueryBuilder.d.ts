@@ -1,12 +1,13 @@
 export declare type SortDirection = "asc" | "desc";
 export interface ISort {
-    [key: string]: SortDirection;
+    key: string;
+    direction?: SortDirection;
 }
 export declare type FilterValue = string | number | boolean;
 export interface IQueryBuilder {
     readonly serviceName: string;
-    readonly queryParams: any;
-    sort: (key: string, direction?: SortDirection) => IQueryBuilder;
+    readonly queryParams: IQueryParams;
+    sort: (key: string, direction?: SortDirection, position?: number) => IQueryBuilder;
     removeSort: (key: string) => IQueryBuilder;
     filter: (key: string, value: FilterValue | FilterValue[]) => IQueryBuilder;
     removeFilter: (key: string) => IQueryBuilder;
@@ -16,10 +17,10 @@ export interface IQueryBuilder {
     invoke: () => void;
 }
 export interface IQueryParams {
-    sort?: ISort;
+    sort?: ISort[];
     page?: number;
     pageSize?: number;
-    [key: string]: FilterValue | FilterValue[] | ISort;
+    [key: string]: FilterValue | FilterValue[] | ISort[];
 }
 export declare class QueryBuilder implements IQueryBuilder {
     readonly serviceName: string;
@@ -30,7 +31,7 @@ export declare class QueryBuilder implements IQueryBuilder {
     removeFilter(key: string): IQueryBuilder;
     page(pageNumber: number): IQueryBuilder;
     pageSize(pageSize: number): IQueryBuilder;
-    sort(key: string, direction?: SortDirection): IQueryBuilder;
+    sort(key: string, direction?: SortDirection, position?: number): IQueryBuilder;
     removeSort(key: string): IQueryBuilder;
     invoke(): void;
     getHashCode(): string;

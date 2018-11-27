@@ -29,6 +29,7 @@ var object_hash_1 = require("object-hash");
 var TestUtils_1 = require("../TestUtils");
 var Model_mock_1 = require("../Model/Model.mock");
 var MockAdapter_1 = require("../Adapters/MockAdapter");
+var MockMapper_1 = require("../Mapper/MockMapper");
 var Serializers_1 = require("../Serializers");
 var Configure_1 = require("../Configure");
 var DataService_1 = require("./DataService");
@@ -70,7 +71,7 @@ describe("DataService", function () {
         assert.isFunction(fakeService.actions.fetchAll);
     });
     describe("adapter", function () {
-        it("uses the adapter from the config if one was not defined in the child class", function () {
+        it("uses the adapter from the config if one was not defined in the child class and there is no this.AdapterClass", function () {
             var MockService = (function (_super) {
                 __extends(MockService, _super);
                 function MockService() {
@@ -85,9 +86,58 @@ describe("DataService", function () {
             var mockService = new MockService();
             expect(mockService.adapter).to.be.an.instanceOf(MockAdapter_1.MockAdapter);
         });
+        it("uses the adapter from the this.AdapterClass if one is not defined in the child class", function () {
+            var MockService = (function (_super) {
+                __extends(MockService, _super);
+                function MockService() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.name = "";
+                    _this.ModelClass = null;
+                    _this.AdapterClass = MockAdapter_1.MockAdapter;
+                    return _this;
+                }
+                return MockService;
+            }(DataService_1.DataService));
+            Configure_1.configure({ modules: null, adapter: null });
+            var mockService = new MockService();
+            expect(mockService.adapter).to.be.an.instanceOf(MockAdapter_1.MockAdapter);
+        });
+    });
+    describe("mapper", function () {
+        it("uses the mapper from the config if one was not defined in the child class and there is no this.MapperClass", function () {
+            var MockService = (function (_super) {
+                __extends(MockService, _super);
+                function MockService() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.name = "";
+                    _this.ModelClass = null;
+                    return _this;
+                }
+                return MockService;
+            }(DataService_1.DataService));
+            Configure_1.configure({ modules: null, mapper: MockMapper_1.MockMapper });
+            var mockService = new MockService();
+            expect(mockService.mapper).to.be.an.instanceOf(MockMapper_1.MockMapper);
+        });
+        it("uses the mapper from the this.MapperClass if one is not defined in the child class", function () {
+            var MockService = (function (_super) {
+                __extends(MockService, _super);
+                function MockService() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.name = "";
+                    _this.ModelClass = null;
+                    _this.MapperClass = MockMapper_1.MockMapper;
+                    return _this;
+                }
+                return MockService;
+            }(DataService_1.DataService));
+            Configure_1.configure({ modules: null, mapper: null });
+            var mockService = new MockService();
+            expect(mockService.mapper).to.be.an.instanceOf(MockMapper_1.MockMapper);
+        });
     });
     describe("serializer", function () {
-        it("uses the serializer from the config if one was not defined in the child class", function () {
+        it("uses the serializer from the config if one was not defined in the child class and there is no this.SerializerClass", function () {
             var MockService = (function (_super) {
                 __extends(MockService, _super);
                 function MockService() {
@@ -99,6 +149,22 @@ describe("DataService", function () {
                 return MockService;
             }(DataService_1.DataService));
             Configure_1.configure({ modules: null, serializer: Serializers_1.MockSerializer });
+            var mockService = new MockService();
+            expect(mockService.serializer).to.be.an.instanceOf(Serializers_1.MockSerializer);
+        });
+        it("uses the serializer from the this.SerializerClass if one is not defined in the child class", function () {
+            var MockService = (function (_super) {
+                __extends(MockService, _super);
+                function MockService() {
+                    var _this = _super !== null && _super.apply(this, arguments) || this;
+                    _this.name = "";
+                    _this.ModelClass = null;
+                    _this.SerializerClass = Serializers_1.MockSerializer;
+                    return _this;
+                }
+                return MockService;
+            }(DataService_1.DataService));
+            Configure_1.configure({ modules: null, serializer: null });
             var mockService = new MockService();
             expect(mockService.serializer).to.be.an.instanceOf(Serializers_1.MockSerializer);
         });

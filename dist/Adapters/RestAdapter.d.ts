@@ -7,7 +7,7 @@ export declare class RestAdapter implements IAdapter<string> {
     readonly pathName: string;
     readonly apiUrl: string;
     constructor(pathName: string, options?: IRestAdapterOptions);
-    getRestURL(): string;
+    getRestURL(id?: string): string;
     fetchAll(requestParams?: any): Observable<{
         items: string[];
     }>;
