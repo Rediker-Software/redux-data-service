@@ -104,12 +104,12 @@ export function relationship(relationshipType: RelationshipType, options: IRelat
   return (target: any, key: string) => {
     const singularKey = singular(key); // eg. organizations => organization, countries => country
 
-    if (!options.relatedFieldName) {
-      options.relatedFieldName = getRelatedFieldNameForRelationship(relationshipType, singularKey);
+    if (!options.serviceName && !options.serviceNameField) {
+      options.serviceName = singularKey;
     }
 
-    if (!options.serviceNameField && !options.serviceName) {
-      options.serviceName = singularKey;
+    if (!options.relatedFieldName) {
+      options.relatedFieldName = getRelatedFieldNameForRelationship(relationshipType, singularKey);
     }
 
     if (process.env.NODE_ENV !== "production" && !options.serialize && !(options.relatedFieldName in target)) {

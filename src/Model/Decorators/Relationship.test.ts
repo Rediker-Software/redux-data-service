@@ -129,7 +129,7 @@ describe("@relationship", () => {
       expect(myClass.fields).to.have.property("student").to.deep.contain(BelongsToField, "it keeps track of the field's FieldType correctly");
     });
 
-    it("builds the IFieldRelationship object using the property name to determine the relateFieldName by default", () => {
+    it("builds the IFieldRelationship object using the property name as the service name by default", () => {
       expect(myClass.relationships).to.have.property("student").to.deep.equal({
         field: "student",
         serviceName: "student",
