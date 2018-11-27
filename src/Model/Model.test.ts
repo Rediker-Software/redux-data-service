@@ -1105,8 +1105,14 @@ describe("Model", () => {
         @attr(StringField)
         public objectType: string;
 
+        @attr(StringField)
+        public relatedThingId: string;
+
         @belongsTo({ serviceNameField: "objectType" })
         public relatedThing: any;
+
+        @attr(StringField)
+        public studentId: string;
 
         @belongsTo()
         public student: any;
