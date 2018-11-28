@@ -53,6 +53,7 @@ class FakeService extends DataService<any> {
   public readonly ModelClass: IModelFactory<any> = MockModel;
   protected _adapter = new MockAdapter();
   protected _serializer = new RestSerializer(MockModel);
+  protected _mapper = new Mapper(MockModel);
 }
 
 class FakeRelatedModel extends Model<any> {
@@ -88,12 +89,14 @@ describe("Mapper", () => {
     let startDateString;
     let startTimeString;
     let modelId;
-    let mockMapper;
+    let mapper;
+    let fakeRelatedFieldType;
+    let relatedFieldTransformFunction;
 
     beforeEach(() => {
       BaseService.registerDispatch(spy());
 
-      mockMapper = new MockMapper();
+      mapper = new Mapper(MockModel);
       fakeService = new FakeService();
       fakeRelatedService = new FakeRelatedService();
 
@@ -114,6 +117,21 @@ describe("Mapper", () => {
         fakeModelId: modelId,
       };
 
+      relatedFieldTransformFunction = spy();
+      fakeRelatedFieldType = {
+        transform: relatedFieldTransformFunction, 
+      };
+
+      /* serialize: boolean;
+      defaultValidationRules: any;
+      defaultValue: T;
+      isValidType(value: T | any): boolean;
+      readOnly?: boolean;
+      type: string;
+      transform?(value: T): Promise<any>;
+      normalize(serializedValue: any): Promise<T>; 
+      */
+
       fakeRelatedModel = new FakeRelatedModel(fakeRelatedModelData);
 
       stub(fakeRelatedService, "getById").returns(Observable.of(fakeRelatedModel));
@@ -130,7 +148,7 @@ describe("Mapper", () => {
     });
 
     it("transforms the model into a plain javascript object based on each field's FieldType", async () => {
-      const transformedModelData = await mockMapper.transform(fakeModel);
+      const transformedModelData = await mapper.transform(fakeModel);
 
       expect(transformedModelData).to.deep.equal({
         age,
@@ -144,13 +162,13 @@ describe("Mapper", () => {
 
     it("excludes transforming fields from the model using the model's fields property", async () => {
       fakeModel.fields.age.serialize = false;
-      const transformedModelData = await mockMapper.transform(fakeModel);
+      const transformedModelData = await mapper.transform(fakeModel);
 
       expect(transformedModelData).to.not.have.property("age");
     });
 
     it("excludes transforming relationships from the model by default", async () => {
-      const transformedModelData = await mockMapper.transform(fakeModel);
+      const transformedModelData = await mapper.transform(fakeModel);
 
       expect(fakeModel).to.have.property("organization");
       expect(transformedModelData).to.not.have.property("organization");
@@ -159,18 +177,18 @@ describe("Mapper", () => {
     it("transforms belongsTo relationships on the model when serialize = true", async () => {
       
       fakeModel.fields.organization.serialize = true;
-      const transformedModelData = await mockMapper.transform(fakeModel);
+      const transformedModelData = await mapper.transform(fakeModel);
 
       expect(transformedModelData).to.have.property("organization").to.deep.equal(omit(fakeRelatedModelData, "id"));
     });
 
     it("uses the belongsTo relationship's own data service to transform it when serialize = true", async () => {
-      const stubRelatedSerializerTransform = stub(fakeRelatedService.mapper, "transform").returns(fakeRelatedModelData);
+    // const stubRelatedSerializerTransform = stub(fakeRelatedFieldType, "transform").returns(fakeRelatedModelData);
 
       fakeModel.fields.organization.serialize = true;
-      await mockMapper.transform(fakeModel);
+      await mapper.transform(fakeModel);
 
-      expect(stubRelatedSerializerTransform.firstCall.args[0]).to.equal(fakeModel.organization);
+      expect(relatedFieldTransformFunction.firstCall.args[0]).to.equal(fakeModel.organization);
     });
 
     it("transforms hasMany relationships on the model when serialize = true", async () => {
@@ -189,7 +207,7 @@ describe("Mapper", () => {
       });
 
       fakeModel.fields.fakeItems.serialize = true;
-      const transformedModelData = await mockMapper.transform(fakeModel);
+      const transformedModelData = await mapper.transform(fakeModel);
 
       expect(transformedModelData).to.have.property("fakeItems").to.deep.equal([
         omit(fakeRelatedModelData, "id"),
@@ -289,13 +307,12 @@ describe("Mapper", () => {
       });
 
       it("creates a pushRecord action with related data", async () => {
-        // await mockMapper.normalize(rawModelData);
-
+        await mapper.normalize(rawModelData);
         expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel(relatedModelData));
       });
 
       it("invokes a pushRecord action with related data", async () => {
-        // await mockMapper.normalize(rawModelData);
+        await mapper.normalize(rawModelData);
         expect(invokeSpy.calledOnce).to.be.true;
       });
     });
@@ -305,10 +322,10 @@ describe("Mapper", () => {
       let rawModelData;
       let invokeSpy;
       let pushRecordStub;
-      let mockMapper;
+      let mapper;
 
       beforeEach(() => {
-        mockMapper = new MockMapper();
+        mapper = new Mapper(MockModel);
         relatedModelsData = [
           {
             id: fakeRelatedModelId,
@@ -340,7 +357,7 @@ describe("Mapper", () => {
 
       it("normalizes nested related data for each item", async () => {
         const normalizeStub = stub(fakeRelatedService.mapper, "normalize").callThrough();
-        await mockMapper.normalize(rawModelData);
+        await mapper.normalize(rawModelData);
 
         relatedModelsData.forEach((itemData, index) => {
           expect(normalizeStub.getCall(index).args[0]).to.equal(itemData);
@@ -348,7 +365,7 @@ describe("Mapper", () => {
       });
 
       it("creates a pushRecord action for each item", async () => {
-        await mockMapper.normalize(rawModelData);
+        await mapper.normalize(rawModelData);
 
         relatedModelsData.forEach((itemData, index) => {
           expect(pushRecordStub.getCall(index).args[0]).to.deep.equal(new FakeRelatedModel(itemData));
@@ -356,7 +373,7 @@ describe("Mapper", () => {
       });
 
       it("invokes a pushRecord action for each item", async () => {
-        await mockMapper.normalize(rawModelData);
+        await mapper.normalize(rawModelData);
         expect(invokeSpy.callCount).to.equal(relatedModelsData.length);
       });
     });

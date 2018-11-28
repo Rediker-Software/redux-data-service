@@ -14,12 +14,13 @@ import { IModelMeta } from "../Model";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model/Model.mock";
 import { MockAdapter } from "../Adapters/MockAdapter";
 import { MockMapper } from "../Mapper/MockMapper";
-import { MockSerializer } from "../Serializers";
+import { MockSerializer, RestSerializer } from "../Serializers";
 import { configure } from "../Configure";
 
 import { DataService, IDataServiceState, IRequestCacheKey } from "./DataService";
 import { BaseService } from "./BaseService";
 import { registerService } from "./ServiceProvider";
+import { IMapper } from "../Mapper";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -34,15 +35,22 @@ describe("DataService", () => {
   let fakeModels;
   let state;
   const serviceName = "fakeModel";
+  let mockMapper;
+  let mockSerializer;
 
   beforeEach(() => {
     configure({ modules: null });
     mockAdapter = new MockAdapter();
+    mockMapper = new MockMapper();
+    // added to try this out - zimmy
+    mockSerializer = new RestSerializer(FakeModel);
 
     class FakeService extends DataService<IFakeModelData> {
       public name = serviceName;
       public ModelClass = FakeModel;
       protected _adapter = mockAdapter;
+      protected _mapper = mockMapper;
+      protected _serializer = mockSerializer; // added to try to fix issue - Zimmy
     }
 
     fakeService = new FakeService();
@@ -605,6 +613,21 @@ describe("DataService", () => {
         .subscribe(noop, noop,
           () => {
             assert.isTrue(mockAdapter.fetchItem.called);
+          });
+    });
+
+    it("fetchItem should call normalize after serialize", () => {
+      const cachedItemId = fakeModels[0].id;
+      const deserializedObject = { name: "Test Name" };
+      const fetchRecordAction = fakeService.actions.fetchRecord({ id: cachedItemId }, null);
+      const normalizedStub = stub(fakeService.mapper, "normalize");
+      
+      stub(fakeService.mockSerializer, "deserialize").returns (deserializedObject);
+
+      fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            assert.isTrue(normalizedStub.firstCall.args[0] === deserializedObject);
           });
     });
   });
