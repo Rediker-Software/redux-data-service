@@ -14,7 +14,7 @@ import { IModelMeta } from "../Model";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model/Model.mock";
 import { MockAdapter } from "../Adapters/MockAdapter";
 import { MockMapper } from "../Mapper/MockMapper";
-import { MockSerializer, RestSerializer } from "../Serializers";
+import { MockSerializer } from "../Serializers";
 import { configure } from "../Configure";
 
 import { DataService, IDataServiceState, IRequestCacheKey } from "./DataService";
@@ -42,15 +42,14 @@ describe("DataService", () => {
     configure({ modules: null });
     mockAdapter = new MockAdapter();
     mockMapper = new MockMapper();
-    // added to try this out - zimmy
-    mockSerializer = new RestSerializer(FakeModel);
+    mockSerializer = new MockSerializer(FakeModel);
 
     class FakeService extends DataService<IFakeModelData> {
       public name = serviceName;
       public ModelClass = FakeModel;
       protected _adapter = mockAdapter;
       protected _mapper = mockMapper;
-      protected _serializer = mockSerializer; // added to try to fix issue - Zimmy
+      protected _serializer = mockSerializer; 
     }
 
     fakeService = new FakeService();
@@ -617,12 +616,12 @@ describe("DataService", () => {
     });
 
     it("fetchItem should call normalize after serialize", () => {
-      const cachedItemId = fakeModels[0].id;
+      const nonCachedItemId = 51;
       const deserializedObject = { name: "Test Name" };
-      const fetchRecordAction = fakeService.actions.fetchRecord({ id: cachedItemId }, null);
+      const fetchRecordAction = fakeService.actions.fetchRecord({ id: nonCachedItemId }, null);
       const normalizedStub = stub(fakeService.mapper, "normalize");
       
-      stub(fakeService.mockSerializer, "deserialize").returns (deserializedObject);
+      stub(fakeService.serializer, "deserialize").returns (deserializedObject);
 
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
@@ -642,13 +641,28 @@ describe("DataService", () => {
       const expectedResult = { fullText: "puppy" };
       const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
       const pushRecordAction = stub(fakeService.actions, "pushRecord");
-
+      
       mockAdapter.createItem.returns(Observable.of(expectedResult));
 
       fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
         .subscribe(noop, noop,
           () => {
             assert.isTrue(mockAdapter.createItem.calledWithMatch(JSON.stringify(expectedResult)));
+          });
+    });
+
+    it("createRecordAction should call normalize after serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { fullText: "zella puppy" };
+      const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
+      const normalizedStub = stub(fakeService.mapper, "normalize");
+
+      stub(fakeService.serializer, "deserialize").returns(expectedResult);
+
+      fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            assert.isTrue(normalizedStub.firstCall.args[0] === expectedResult);
           });
     });
 
@@ -717,6 +731,21 @@ describe("DataService", () => {
           });
     });
 
+    it("updateItem should call normailize after serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy" };
+      const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
+      const normalizedStub = stub(fakeService.mapper, "normalize");
+
+      stub(fakeService.serializer, "deserialize").returns(expectedResult);
+
+      fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            assert.isTrue(normalizedStub.firstCall.args[0] === expectedResult);
+          });
+    });
+
     it("should call onSuccess callback with result", () => {
       const onSuccess = spy();
       const expectedResult = { id: 123, fullText: "puppy" };
@@ -779,6 +808,21 @@ describe("DataService", () => {
           });
     });
 
+    it("patchItem should call normalize after serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy" };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+      const normalizedStub = stub(fakeService.mapper, "normalize");
+
+      stub(fakeService.serializer, "deserialize").returns(expectedResult);
+      
+      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            assert.isTrue(normalizedStub.firstCall.args[0] === expectedResult);
+          });
+    });
+
     it("should call onSuccess with expected result", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "puppy" };
@@ -821,6 +865,21 @@ describe("DataService", () => {
         .subscribe(noop, noop,
           () => {
             assert.isTrue(mockAdapter.deleteItem.calledOnceWith(expectedResult.id));
+          });
+    });
+
+    it("deleteItem should call normalize after serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: 123, fullText: "zella puppy" };
+      const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
+      const normalizedStub = stub(fakeService.mapper, "normalize");
+
+      stub(fakeService.serializer, "deserialize").returns(expectedResult);
+
+      fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            assert.isTrue(normalizedStub.firstCall.args[0] === expectedResult);
           });
     });
 
