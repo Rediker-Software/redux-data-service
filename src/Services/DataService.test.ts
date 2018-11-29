@@ -617,7 +617,7 @@ describe("DataService", () => {
 
     it("fetchItem should call normalize after serialize", () => {
       const nonCachedItemId = 51;
-      const deserializedObject = { name: "Test Name" };
+      const deserializedObject = { name: "Zella puppy" };
       const fetchRecordAction = fakeService.actions.fetchRecord({ id: nonCachedItemId }, null);
       const normalizedStub = stub(fakeService.mapper, "normalize");
       
@@ -626,7 +626,37 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(normalizedStub.firstCall.args[0] === deserializedObject);
+            expect(normalizedStub.firstCall.args[0]).to.equal(deserializedObject);
+          });
+    });
+
+    it("fetchItem should call transform before serialize", () => {
+      const nonCachedItemId = 51;
+      const deserializedObject = { name: "Zella puppy transform" };
+      const fetchRecordAction = fakeService.actions.fetchRecord({ id: nonCachedItemId }, null);
+      const transformStub = stub(fakeService.mapper, "transform");
+      
+      stub(fakeService.serializer, "serialize").returns (deserializedObject);
+
+      fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(transformStub.firstCall.args[0]).to.equal(deserializedObject);
+          });
+    });
+
+    it("fetchItem should serialize the result from transform", () => {
+      const nonCachedItemId = 51;
+      const deserializedObject = { name: "Zella puppy serialize transform" };
+      const fetchRecordAction = fakeService.actions.fetchRecord({ id: nonCachedItemId }, null);
+      
+      stub(fakeService.mapper, "transform").returns(deserializedObject);
+      const serialStub = stub(fakeService.serializer, "serialize");
+
+      fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(serialStub.firstCall.args[0]).to.equal(deserializedObject);
           });
     });
   });
@@ -662,7 +692,38 @@ describe("DataService", () => {
       fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(normalizedStub.firstCall.args[0] === expectedResult);
+            expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("createRecordAction should call transform before serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { fullText: "zella puppy transform" };
+      const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
+
+      stub(fakeService.mapper, "transform").returns(expectedResult);
+      const serialStub = stub(fakeService.serializer, "serialize");
+
+      fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("createRecordAction should serialize the result from transform", () => {
+      const onSuccess = spy();
+      const expectedResult = { fullText: "zella puppy serialize transform" };
+      const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
+      
+      const transformStub = stub(fakeService.mapper, "transform");
+
+      stub(fakeService.serializer, "serialize").returns(expectedResult);
+
+      fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
           });
     });
 
@@ -742,7 +803,37 @@ describe("DataService", () => {
       fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(normalizedStub.firstCall.args[0] === expectedResult);
+            expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("updateItem should call transform before serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy transform" };
+      const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
+      const transformStub = stub(fakeService.mapper, "transform");
+
+      stub(fakeService.serializer, "serialize").returns(expectedResult);
+
+      fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("updateItem should serialize the result from transform", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy serialize transform" };
+      const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
+
+      stub(fakeService.mapper, "transform").returns(expectedResult);
+      const serialStub = stub(fakeService.serializer, "serialize");
+
+      fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
           });
     });
 
@@ -810,7 +901,7 @@ describe("DataService", () => {
 
     it("patchItem should call normalize after serialize", () => {
       const onSuccess = spy();
-      const expectedResult = { id: "123", fullText: "zella puppy" };
+      const expectedResult = { id: "123", fullText: "zella puppy normalize" };
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
       const normalizedStub = stub(fakeService.mapper, "normalize");
 
@@ -819,7 +910,37 @@ describe("DataService", () => {
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(normalizedStub.firstCall.args[0] === expectedResult);
+            expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("patchItem should call tranform before serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy transform" };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+      const tranformStub = stub(fakeService.mapper, "transform");
+
+      stub(fakeService.serializer, "serialize").returns(expectedResult);
+      
+      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(tranformStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("patchItem should serialize the result from transform", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy serialize transform" };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+      
+      stub(fakeService.mapper, "transform").returns(expectedResult);
+      const serialStub = stub(fakeService.serializer, "serialize");
+      
+      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
           });
     });
 
@@ -877,10 +998,40 @@ describe("DataService", () => {
       stub(fakeService.serializer, "deserialize").returns(expectedResult);
 
       fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
-        .subscribe(noop, noop,
-          () => {
-            assert.isTrue(normalizedStub.firstCall.args[0] === expectedResult);
-          });
+      .subscribe(noop, noop,
+        () => {
+          expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
+        });
+    });
+
+    it("deleteItem should call tranform before serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: 123, fullText: "zella puppy transform" };
+      const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
+      const transformStub = stub(fakeService.mapper, "transform");
+
+      stub(fakeService.serializer, "serialize").returns(expectedResult);
+
+      fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
+      .subscribe(noop, noop,
+        () => {
+          expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
+        });
+    });
+
+    it("deleteItem should serialize the result from transform", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: 123, fullText: "zella puppy serialize transform" };
+      const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
+      
+      stub(fakeService.mapper, "transform").returns(expectedResult);
+      const serialStub = stub(fakeService.serializer, "serialize");
+
+      fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
+      .subscribe(noop, noop,
+        () => {
+          expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
+        });
     });
 
     it("should call onSuccess callback with result", () => {
