@@ -183,12 +183,12 @@ describe("Mapper", () => {
     });
 
     it("uses the belongsTo relationship's own data service to transform it when serialize = true", async () => {
-    // const stubRelatedSerializerTransform = stub(fakeRelatedFieldType, "transform").returns(fakeRelatedModelData);
+      const stubRelatedMapperTransform = stub(fakeRelatedService.mapper, "transform").returns(fakeRelatedModelData);
 
       fakeModel.fields.organization.serialize = true;
       await mapper.transform(fakeModel);
 
-      expect(relatedFieldTransformFunction.firstCall.args[0]).to.equal(fakeModel.organization);
+      expect(stubRelatedMapperTransform.firstCall.args[0]).to.equal(fakeModel.organization);
     });
 
     it("transforms hasMany relationships on the model when serialize = true", async () => {
