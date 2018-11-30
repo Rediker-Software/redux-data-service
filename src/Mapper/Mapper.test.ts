@@ -8,12 +8,11 @@ import { format, parse } from "date-fns";
 import { omit } from "lodash";
 
 import { RestSerializer } from "..";
-import { BaseService, DataService, registerService, getDataService } from "../Services";
+import { BaseService, DataService, registerService } from "../Services";
 import { attr, belongsTo, hasMany, DateField, IModelFactory, Model, NumberField, StringField, TimeField } from "../Model";
 
 import { MockAdapter } from "../Adapters/MockAdapter";
 import { ArrayField } from "../Model/FieldType";
-import { MockMapper } from "./MockMapper";
 import { Mapper } from "./Mapper";
 
 declare var intern;
@@ -121,16 +120,6 @@ describe("Mapper", () => {
       fakeRelatedFieldType = {
         transform: relatedFieldTransformFunction, 
       };
-
-      /* serialize: boolean;
-      defaultValidationRules: any;
-      defaultValue: T;
-      isValidType(value: T | any): boolean;
-      readOnly?: boolean;
-      type: string;
-      transform?(value: T): Promise<any>;
-      normalize(serializedValue: any): Promise<T>; 
-      */
 
       fakeRelatedModel = new FakeRelatedModel(fakeRelatedModelData);
 
