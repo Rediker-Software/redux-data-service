@@ -20,11 +20,10 @@ import { configure } from "../Configure";
 import { DataService, IDataServiceState, IRequestCacheKey } from "./DataService";
 import { BaseService } from "./BaseService";
 import { registerService } from "./ServiceProvider";
-import { IMapper } from "../Mapper";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
-const { assert, expect } = intern.getPlugin("chai");
+const { expect } = intern.getPlugin("chai");
 
 const noop = () => null;
 
@@ -64,7 +63,7 @@ describe("DataService", () => {
   });
 
   it("has an action creator for triggering a fetchAll query", () => {
-    assert.isFunction(fakeService.actions.fetchAll);
+    expect(typeof fakeService.actions.fetchAll).to.equal("function");
   });
 
   describe("adapter", () => {
@@ -158,7 +157,7 @@ describe("DataService", () => {
       const actual = fakeService.actions.fetchAll({ filter: "all" });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
 
     it("should trigger query with the query params and an onSuccess callback", () => {
@@ -171,12 +170,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.fetchAll({ filter: "all" }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a GET request to the API", () => {
-    assert.isFunction(fakeService.actions.fetchRecord);
+    expect(typeof fakeService.actions.fetchRecord).to.equal("function");
   });
 
   describe("fetchRecord action creator", () => {
@@ -189,7 +188,7 @@ describe("DataService", () => {
       const actual = fakeService.actions.fetchRecord({ id: 123 });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
 
     it("should trigger a GET request to the API and accepting an onSuccess callback", () => {
@@ -203,12 +202,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.fetchRecord({ id: cachedItemId }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a CREATE request to the API", () => {
-    assert.isFunction(fakeService.actions.createRecord);
+    expect(typeof fakeService.actions.createRecord).to.equal("function");
   });
 
   describe("createRecord action creator", () => {
@@ -222,12 +221,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.createRecord({ fakeField: "rabbit" }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a PUT request to the API", () => {
-    assert.isFunction(fakeService.actions.updateRecord);
+    expect(typeof fakeService.actions.updateRecord).to.equal("function");
   });
 
   describe("updateRecord action creator", () => {
@@ -241,12 +240,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.updateRecord({ fakeField: "rabbit" }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a PATCH request to the API", () => {
-    assert.isFunction(fakeService.actions.patchRecord);
+    expect(typeof fakeService.actions.patchRecord).to.equal("function");
   });
 
   describe("patchRecord action creator", () => {
@@ -260,12 +259,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.patchRecord({ fakeField: "rabbit" }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a DELETE_RECORD request to the API", () => {
-    assert.isFunction(fakeService.actions.deleteRecord);
+    expect(typeof fakeService.actions.deleteRecord).to.equal("function");
   });
 
   describe("deleteRecord action creator", () => {
@@ -279,12 +278,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.deleteRecord({ id: 123 }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a SET_FIELD request", () => {
-    assert.isFunction(fakeService.actions.setField);
+    expect(typeof fakeService.actions.setField).to.equal("function");
   });
 
   describe("setField action creator", () => {
@@ -298,12 +297,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.setField({ id: 123, fieldName: "firstName", value: "Hank" });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has a reducer for setting the field of a record", () => {
-    assert.isFunction(fakeService.setFieldReducer);
+    expect(typeof fakeService.setFieldReducer).to.equal("function");
   });
 
   describe("setFieldReducer", () => {
@@ -345,7 +344,7 @@ describe("DataService", () => {
         .get("items")
         .get(modelData.id);
 
-      assert.equal(updatedItem.fullText, action.payload.value);
+      expect(updatedItem.fullText, action.payload.value).to.be.equal;
     });
 
     it("should not set the items on the record when id not found in items", () => {
@@ -373,7 +372,7 @@ describe("DataService", () => {
 
       const sut = fakeService.setFieldReducer(stateRecord, action);
 
-      assert.isFalse(setRecordSpy.calledWith("items"));
+      expect(setRecordSpy.calledWith("items")).to.be.false;
     });
 
     it("should update items with updated record when id found in items", () => {
@@ -401,16 +400,16 @@ describe("DataService", () => {
 
       const sut = fakeService.setFieldReducer(stateRecord, action);
 
-      assert.isTrue(setRecordSpy.calledWith("items",
+      expect(setRecordSpy.calledWith("items",
         match((updatedItems) => {
           const updatedModel = updatedItems.get(modelData.id);
           return updatedModel.meta.changes.fullText === action.payload.value;
-        })));
+        }))).to.be.true;
     });
   });
 
   it("has an epic for performing a fetchAll request with the query params", () => {
-    assert.isFunction(fakeService.fetchAllEpic);
+    expect(typeof fakeService.fetchAllEpic).to.equal("function");
   });
 
   describe("fetchAll caching", () => {
@@ -425,7 +424,7 @@ describe("DataService", () => {
       fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchAll.calledWithMatch(payload));
+            expect(mockAdapter.fetchAll.calledWithMatch(payload)).to.be.true;
           });
     });
 
@@ -440,7 +439,7 @@ describe("DataService", () => {
       fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(pushAllAction.calledWithMatch(expectedResult));
+            expect(pushAllAction.calledWithMatch(expectedResult)).to.be.true;
           });
     });
   });
@@ -519,7 +518,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a GET request", () => {
-    assert.isFunction(fakeService.fetchRecordEpic);
+    expect(typeof fakeService.fetchRecordEpic).to.equal("function");
   });
 
   describe("fetchRecordEpic", () => {
@@ -548,7 +547,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(pushRecordAction.calledWithMatch(new fakeService.ModelClass(expectedResult)));
+            expect(pushRecordAction.calledWithMatch(new fakeService.ModelClass(expectedResult))).to.be.true;
           });
     });
 
@@ -559,7 +558,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isFalse(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.false;
           });
     });
 
@@ -569,7 +568,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.true;
           });
     });
 
@@ -580,7 +579,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isFalse(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.false;
           });
     });
 
@@ -590,7 +589,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.true;
           });
     });
 
@@ -601,7 +600,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.true;
           });
     });
 
@@ -611,7 +610,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.true;
           });
     });
 
@@ -662,7 +661,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a CREATE request", () => {
-    assert.isFunction(fakeService.createRecordEpic);
+    expect(typeof fakeService.createRecordEpic).to.equal("function");
   });
 
   describe("createRecordEpic", () => {
@@ -677,7 +676,7 @@ describe("DataService", () => {
       fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.createItem.calledWithMatch(JSON.stringify(expectedResult)));
+            expect(mockAdapter.createItem.calledWithMatch(JSON.stringify(expectedResult))).to.be.true;
           });
     });
 
@@ -738,7 +737,7 @@ describe("DataService", () => {
       fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(onSuccess.calledWithMatch(expectedResult));
+            expect(onSuccess.calledWithMatch(expectedResult)).to.be.true;
           });
     });
 
@@ -753,7 +752,7 @@ describe("DataService", () => {
       fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(pushRecordAction.calledWithMatch(expectedResult));
+            expect(pushRecordAction.calledWithMatch(expectedResult)).to.be.true;
           });
     });
 
@@ -774,7 +773,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a PUT request", () => {
-    assert.isFunction(fakeService.updateRecordEpic);
+    expect(typeof fakeService.updateRecordEpic).to.equal("function");
   });
 
   describe("updateRecordEpic", () => {
@@ -788,7 +787,7 @@ describe("DataService", () => {
       fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.updateItem.calledWithMatch(expectedResult.id, JSON.stringify({ fullText: "puppy" })));
+            expect(mockAdapter.updateItem.calledWithMatch(expectedResult.id, JSON.stringify({ fullText: "puppy" }))).to.be.true;
           });
     });
 
@@ -847,7 +846,7 @@ describe("DataService", () => {
       fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(onSuccess.calledWithMatch(expectedResult));
+            expect(onSuccess.calledWithMatch(expectedResult)).to.be.true;
           });
     });
 
@@ -882,7 +881,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a PATCH request", () => {
-    assert.isFunction(fakeService.patchRecordEpic);
+    expect(typeof fakeService.patchRecordEpic).to.equal("function");
   });
 
   describe("patchRecordEpic", () => {
@@ -895,7 +894,7 @@ describe("DataService", () => {
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.patchItem.calledWithMatch(expectedResult.id, JSON.stringify({ fullText: "puppy" })));
+            expect(mockAdapter.patchItem.calledWithMatch(expectedResult.id, JSON.stringify({ fullText: "puppy" }))).to.be.true;
           });
     });
 
@@ -972,7 +971,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a DELETE request", () => {
-    assert.isFunction(fakeService.deleteRecordEpic);
+    expect(typeof fakeService.deleteRecordEpic).to.equal("function");
   });
 
   describe("deleteRecordEpic", () => {
@@ -985,7 +984,7 @@ describe("DataService", () => {
       fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.deleteItem.calledOnceWith(expectedResult.id));
+            expect(mockAdapter.deleteItem.calledOnceWith(expectedResult.id)).to.be.true;
           });
     });
 
