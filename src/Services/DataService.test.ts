@@ -693,18 +693,20 @@ describe("DataService", () => {
           });
     });
 
-    // it("should fire pushRecord with response", () => {
-    //   const expectedResult = { fullText: "puppy" };
-    //   const onSuccess = stub(fakeService.action.meta, "onSuccess").returns(expectedResult);
-    //   const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
-    //   const pushRecordAction = stub(fakeService.actions, "pushRecord");
+    it("should fire pushRecord with response", () => {
+      const onSuccess = spy();
+      const expectedResult = { fullText: "puppy" };
+      const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
+      const pushRecordAction = stub(fakeService.actions, "pushRecord");
 
-    //   fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
-    //     .subscribe(noop, noop,
-    //       () => {
-    //         expect(pushRecordAction.calledWithMatch(expectedResult)).to.be.true;
-    //       });
-    // });
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
+
+      fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(pushRecordAction.calledWithMatch(expectedResult)).to.be.true;
+          });
+    });
 
     it("should use the store's getState() method", () => {
       const expectedResult = { id: "123" };
@@ -800,19 +802,22 @@ describe("DataService", () => {
           });
     });
 
-    // it("should call pushRecord with result", () => {
-    //   const onSuccess = spy();
-    //   const expectedResult = { id: "123", fullText: "puppy" };
-    //   const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
-    //   const pushRecordAction = stub(fakeService.actions, "pushRecord");
-    //   mockAdapter.updateItem.returns(Observable.of(expectedResult));
+    it("should call pushRecord with result", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "puppy" };
+      const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
+      const pushRecordAction = stub(fakeService.actions, "pushRecord");
+      
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
+      // mockAdapter.updateItem.returns(Observable.of(expectedResult));
 
-    //   fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
-    //     .subscribe(noop, noop,
-    //       () => {
-    //         expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new FakeModel(expectedResult));
-    //       });
-    // });
+      fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(expectedResult); 
+            // new FakeModel(expectedResult));
+          });
+    });
 
     it("should use the store's getState() method", () => {
       const expectedResult = { id: "123" };
@@ -908,19 +913,20 @@ describe("DataService", () => {
         );
     });
 
-    // it("should call pushRecord with expected result", () => {
-    //   const onSuccess = spy();
-    //   const expectedResult = { id: "123", fullText: "puppy" };
-    //   const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
-    //   const pushRecordAction = stub(fakeService.actions, "pushRecord");
-    //   mockAdapter.patchItem.returns(Observable.of(expectedResult));
+    it("should call pushRecord with expected result", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "puppy" };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+      const pushRecordAction = stub(fakeService.actions, "pushRecord");
 
-    //   fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
-    //     .subscribe(noop, noop,
-    //       () => {
-    //         expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new FakeModel(expectedResult));
-    //       });
-    // });
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
+
+      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(expectedResult);
+          });
+    });
   });
 
   it("has an epic for performing a DELETE request", () => {
@@ -969,19 +975,20 @@ describe("DataService", () => {
         );
     });
 
-    // it("should call pushRecord with resopnse", () => {
-    //   const onSuccess = spy();
-    //   const expectedResult = { id: "123", fullText: "puppy" };
-    //   const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
-    //   const pushRecordAction = stub(fakeService.actions, "pushRecord");
-    //   mockAdapter.deleteItem.returns(Observable.of(expectedResult));
+    it("should call pushRecord with resopnse", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "puppy" };
+      const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
+      const pushRecordAction = stub(fakeService.actions, "pushRecord");
 
-    //   fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
-    //     .subscribe(noop, noop,
-    //       () => {
-    //         expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new FakeModel(expectedResult));
-    //       });
-    // });
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
+
+      fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(expectedResult);
+          });
+    });
   });
 
   describe("GetBy methods", () => {
