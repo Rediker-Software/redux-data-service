@@ -89,8 +89,6 @@ describe("Mapper", () => {
     let startTimeString;
     let modelId;
     let mapper;
-    let fakeRelatedFieldType;
-    let relatedFieldTransformFunction;
 
     beforeEach(() => {
       BaseService.registerDispatch(spy());
@@ -114,11 +112,6 @@ describe("Mapper", () => {
         id: fakeRelatedModelId,
         fullText: lorem.word(),
         fakeModelId: modelId,
-      };
-
-      relatedFieldTransformFunction = spy();
-      fakeRelatedFieldType = {
-        transform: relatedFieldTransformFunction, 
       };
 
       fakeRelatedModel = new FakeRelatedModel(fakeRelatedModelData);
