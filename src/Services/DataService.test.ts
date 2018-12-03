@@ -619,14 +619,14 @@ describe("DataService", () => {
       const nonCachedItemId = 51;
       const deserializedObject = { name: "Zella puppy" };
       const fetchRecordAction = fakeService.actions.fetchRecord({ id: nonCachedItemId }, null);
-      const normalizedStub = stub(fakeService.mapper, "normalize");
+      const normalizeStub = stub(fakeService.mapper, "normalize");
       
       stub(fakeService.serializer, "deserialize").returns (deserializedObject);
 
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            expect(normalizedStub.firstCall.args[0]).to.equal(deserializedObject);
+            expect(normalizeStub.firstCall.args[0]).to.equal(deserializedObject);
           });
     });
   });
@@ -636,18 +636,18 @@ describe("DataService", () => {
   });
 
   describe("createRecordEpic", () => {
-    it("createRecordEpic should call normalize before deserialize", () => {
+    it("createRecordEpic should call normalize after deserialize", () => {
       const onSuccess = spy();
       const expectedResult = { fullText: "zella puppy" };
       const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
-      const normalizedStub = stub(fakeService.mapper, "normalize");
+      const normalizeStub = stub(fakeService.mapper, "normalize");
 
       stub(fakeService.serializer, "deserialize").returns(expectedResult);
 
       fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
+            expect(normalizeStub.firstCall.args[0]).to.equal(expectedResult);
           });
     });
 
