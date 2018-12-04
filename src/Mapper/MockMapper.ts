@@ -5,6 +5,10 @@ export class MockMapper implements IMapper<any> {
     return model;
   }
 
+  public async transformList(models) {
+    return models;
+  }
+
   public async normalize(data) {
     return data;
   }    

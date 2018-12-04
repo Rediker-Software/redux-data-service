@@ -99,6 +99,16 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   }
 
   /**
+   * Transforms a given list of Models into an array of items of R
+   * @param {IModel[]} models
+   * @returns {Promise<R[]>} 
+   */
+  public async transformList(models: IModel<T>[]): Promise<R[]> {
+    const transformedModels = models.map(async model => await this.transform(model) as R);
+    return await Promise.all(transformedModels);
+  }
+
+  /**
    * Creates a new IModel by normalizing the given raw data.
    * If a nested relationship was included in the payload, it will be side-loaded.
    *

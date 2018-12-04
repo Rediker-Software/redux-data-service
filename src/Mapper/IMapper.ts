@@ -2,6 +2,7 @@ import { IModel, IModelData, IModelFactory } from "../Model";
 
 export interface IMapper<T extends IModelData, R = T> {
   transform: (model: IModel<T> | Partial<T>) => Promise<Partial<R>>;
+  transformList: (models: IModel<T>[]) => Promise<R[]>;
   normalize: (data: Partial<R>) => Promise<IModel<T>>;
 }
 
