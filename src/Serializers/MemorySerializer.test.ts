@@ -1,5 +1,4 @@
 // tslint:disable no-unused-expression
-import { omit } from "lodash";
 
 import { fakeModelModule, initializeTestServices, seedService } from "../TestUtils";
 
