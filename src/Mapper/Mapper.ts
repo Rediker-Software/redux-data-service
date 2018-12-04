@@ -6,6 +6,7 @@ import { IMapper } from ".";
 import { mapWithKeys } from "../Utils";
 import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, RelationshipType } from "../Model";
 import { getDataService } from "../Services";
+import { IRawQueryResponse, IQueryResponse } from "../Query";
 
 /**
  * This class implements the `transform` and `normalize` methods on the IMapper interface, to provide a default mechanism
@@ -138,6 +139,30 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
     }
 
     return model;
+  }
+
+  /**
+   * Creates a new IModel by normalizing the given raw data.
+   * If a nested relationship was included in the payload, it will be side-loaded.
+   *
+   * @param {IRawQueryResponse<R>} data
+   * @returns {IQueryResponse}
+   */
+  public async normalizeQueryResponse(data: IRawQueryResponse<R>): Promise<IQueryResponse> {
+    const iQueryResponse = { ...data } as any;
+    const normalizedItems = [];
+
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < data.items.length; i++ ) {
+      const normalized = await this.normalize(data.items[i]);
+      normalizedItems.push(normalized);
+    }
+    const serviceName = (normalizedItems[0] as any).serviceName;
+    const service = getDataService(serviceName);
+    
+    service.actions.pushAll(normalizedItems).invoke();
+    iQueryResponse.ids = normalizedItems.map(normalized => (normalized.ids));
+    return iQueryResponse;
   }
 
   /**
