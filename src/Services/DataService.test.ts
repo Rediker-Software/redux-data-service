@@ -23,7 +23,7 @@ import { registerService } from "./ServiceProvider";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
-const { assert, expect } = intern.getPlugin("chai");
+const { expect } = intern.getPlugin("chai");
 
 const noop = () => null;
 
@@ -34,15 +34,21 @@ describe("DataService", () => {
   let fakeModels;
   let state;
   const serviceName = "fakeModel";
+  let mockMapper;
+  let mockSerializer;
 
   beforeEach(() => {
     configure({ modules: null });
     mockAdapter = new MockAdapter();
+    mockMapper = new MockMapper();
+    mockSerializer = new MockSerializer(FakeModel);
 
     class FakeService extends DataService<IFakeModelData> {
       public name = serviceName;
       public ModelClass = FakeModel;
       protected _adapter = mockAdapter;
+      protected _mapper = mockMapper;
+      protected _serializer = mockSerializer; 
     }
 
     fakeService = new FakeService();
@@ -57,7 +63,7 @@ describe("DataService", () => {
   });
 
   it("has an action creator for triggering a fetchAll query", () => {
-    assert.isFunction(fakeService.actions.fetchAll);
+    expect(fakeService.actions.fetchAll).to.be.a("function");
   });
 
   describe("adapter", () => {
@@ -151,7 +157,7 @@ describe("DataService", () => {
       const actual = fakeService.actions.fetchAll({ filter: "all" });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
 
     it("should trigger query with the query params and an onSuccess callback", () => {
@@ -164,12 +170,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.fetchAll({ filter: "all" }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a GET request to the API", () => {
-    assert.isFunction(fakeService.actions.fetchRecord);
+    expect(fakeService.actions.fetchRecord).to.be.a("function");
   });
 
   describe("fetchRecord action creator", () => {
@@ -182,7 +188,7 @@ describe("DataService", () => {
       const actual = fakeService.actions.fetchRecord({ id: 123 });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
 
     it("should trigger a GET request to the API and accepting an onSuccess callback", () => {
@@ -196,12 +202,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.fetchRecord({ id: cachedItemId }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a CREATE request to the API", () => {
-    assert.isFunction(fakeService.actions.createRecord);
+    expect(fakeService.actions.createRecord).to.be.a("function");
   });
 
   describe("createRecord action creator", () => {
@@ -215,12 +221,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.createRecord({ fakeField: "rabbit" }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a PUT request to the API", () => {
-    assert.isFunction(fakeService.actions.updateRecord);
+    expect(fakeService.actions.updateRecord).to.be.a("function");
   });
 
   describe("updateRecord action creator", () => {
@@ -234,12 +240,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.updateRecord({ fakeField: "rabbit" }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a PATCH request to the API", () => {
-    assert.isFunction(fakeService.actions.patchRecord);
+    expect(fakeService.actions.patchRecord).to.be.a("function");
   });
 
   describe("patchRecord action creator", () => {
@@ -253,12 +259,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.patchRecord({ fakeField: "rabbit" }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a DELETE_RECORD request to the API", () => {
-    assert.isFunction(fakeService.actions.deleteRecord);
+    expect(fakeService.actions.deleteRecord).to.be.a("function");
   });
 
   describe("deleteRecord action creator", () => {
@@ -272,12 +278,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.deleteRecord({ id: 123 }, { onSuccess });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has an action creator for triggering a SET_FIELD request", () => {
-    assert.isFunction(fakeService.actions.setField);
+    expect(fakeService.actions.setField).to.be.a("function");
   });
 
   describe("setField action creator", () => {
@@ -291,12 +297,12 @@ describe("DataService", () => {
       const actual = fakeService.actions.setField({ id: 123, fieldName: "firstName", value: "Hank" });
 
       delete actual.invoke;
-      assert.deepEqual(actual, expected);
+      expect(actual).to.deep.equal(expected);
     });
   });
 
   it("has a reducer for setting the field of a record", () => {
-    assert.isFunction(fakeService.setFieldReducer);
+    expect(fakeService.setFieldReducer).to.be.a("function");
   });
 
   describe("setFieldReducer", () => {
@@ -338,7 +344,7 @@ describe("DataService", () => {
         .get("items")
         .get(modelData.id);
 
-      assert.equal(updatedItem.fullText, action.payload.value);
+      expect(updatedItem.fullText, action.payload.value).to.be.equal;
     });
 
     it("should not set the items on the record when id not found in items", () => {
@@ -366,7 +372,7 @@ describe("DataService", () => {
 
       const sut = fakeService.setFieldReducer(stateRecord, action);
 
-      assert.isFalse(setRecordSpy.calledWith("items"));
+      expect(setRecordSpy.calledWith("items")).to.be.false;
     });
 
     it("should update items with updated record when id found in items", () => {
@@ -394,16 +400,16 @@ describe("DataService", () => {
 
       const sut = fakeService.setFieldReducer(stateRecord, action);
 
-      assert.isTrue(setRecordSpy.calledWith("items",
+      expect(setRecordSpy.calledWith("items",
         match((updatedItems) => {
           const updatedModel = updatedItems.get(modelData.id);
           return updatedModel.meta.changes.fullText === action.payload.value;
-        })));
+        }))).to.be.true;
     });
   });
 
   it("has an epic for performing a fetchAll request with the query params", () => {
-    assert.isFunction(fakeService.fetchAllEpic);
+    expect(fakeService.fetchAllEpic).to.be.a("function");
   });
 
   describe("fetchAll caching", () => {
@@ -418,7 +424,7 @@ describe("DataService", () => {
       fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchAll.calledWithMatch(payload));
+            expect(mockAdapter.fetchAll.calledWithMatch(payload)).to.be.true;
           });
     });
 
@@ -433,7 +439,7 @@ describe("DataService", () => {
       fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(pushAllAction.calledWithMatch(expectedResult));
+            expect(pushAllAction.calledWithMatch(expectedResult)).to.be.true;
           });
     });
   });
@@ -512,7 +518,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a GET request", () => {
-    assert.isFunction(fakeService.fetchRecordEpic);
+    expect(fakeService.fetchRecordEpic).to.be.a("function");
   });
 
   describe("fetchRecordEpic", () => {
@@ -520,13 +526,14 @@ describe("DataService", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "puppy" };
       const fetchRecordAction = fakeService.actions.fetchRecord(expectedResult, { onSuccess });
-      const pushRecordAction = stub(fakeService.actions, "pushRecord");
 
-      mockAdapter.fetchItem.returns(Observable.of(expectedResult));
+      stub(mockMapper, "normalize").returns(expectedResult);
 
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
-          () => expect(onSuccess.firstCall.args[0]).to.deep.equal(new FakeModel(expectedResult)),
+          () => {          
+            expect(onSuccess.firstCall.args[0]).to.deep.equal(expectedResult);
+          },
         );
     });
 
@@ -536,12 +543,12 @@ describe("DataService", () => {
       const fetchRecordAction = fakeService.actions.fetchRecord(expectedResult, { onSuccess });
       const pushRecordAction = stub(fakeService.actions, "pushRecord");
 
-      mockAdapter.fetchItem.returns(Observable.of(expectedResult));
+      stub(mockMapper, "normalize").returns(expectedResult);
 
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(pushRecordAction.calledWithMatch(new fakeService.ModelClass(expectedResult)));
+            expect(pushRecordAction.calledWithMatch(expectedResult)).to.be.true;
           });
     });
 
@@ -552,7 +559,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isFalse(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.false;
           });
     });
 
@@ -562,7 +569,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.true;
           });
     });
 
@@ -573,7 +580,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isFalse(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.false;
           });
     });
 
@@ -583,7 +590,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.true;
           });
     });
 
@@ -594,7 +601,7 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.true;
           });
     });
 
@@ -604,28 +611,71 @@ describe("DataService", () => {
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.fetchItem.called);
+            expect(mockAdapter.fetchItem.called).to.be.true;
+          });
+    });
+
+    it("fetchRecordEpic should call normalize after deserialize", () => {
+      const nonCachedItemId = 51;
+      const deserializedObject = { name: "Zella puppy" };
+      const fetchRecordAction = fakeService.actions.fetchRecord({ id: nonCachedItemId }, null);
+      const normalizeStub = stub(fakeService.mapper, "normalize");
+      
+      stub(fakeService.serializer, "deserialize").returns(deserializedObject);
+
+      fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(normalizeStub.firstCall.args[0]).to.equal(deserializedObject);
           });
     });
   });
 
   it("has an epic for performing a CREATE request", () => {
-    assert.isFunction(fakeService.createRecordEpic);
+    expect(fakeService.createRecordEpic).to.be.a("function");
   });
 
   describe("createRecordEpic", () => {
-    it("should call adapter with expected result", () => {
+    it("createRecordEpic should call normalize after deserialize", () => {
       const onSuccess = spy();
-      const expectedResult = { fullText: "puppy" };
+      const expectedResult = { fullText: "zella puppy" };
       const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
-      const pushRecordAction = stub(fakeService.actions, "pushRecord");
+      const normalizeStub = stub(fakeService.mapper, "normalize");
 
-      mockAdapter.createItem.returns(Observable.of(expectedResult));
+      stub(fakeService.serializer, "deserialize").returns(expectedResult);
 
       fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.createItem.calledWithMatch(JSON.stringify(expectedResult)));
+            expect(normalizeStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("createRecordEpic should serialize the result from transform", () => {
+      const onSuccess = spy();
+      const expectedResult = { fullText: "zella puppy transform" };
+      const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
+
+      stub(fakeService.mapper, "transform").returns(expectedResult);
+      const serialStub = stub(fakeService.serializer, "serialize");
+
+      fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("createRecordEpic should call transform before serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = fakeModels[0];
+      const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
+      const transformStub = stub(fakeService.mapper, "transform");
+
+      fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
           });
     });
 
@@ -633,14 +683,13 @@ describe("DataService", () => {
       const onSuccess = spy();
       const expectedResult = { fullText: "puppy" };
       const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
-      const pushRecordAction = stub(fakeService.actions, "pushRecord");
 
-      mockAdapter.createItem.returns(Observable.of(expectedResult));
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(onSuccess.calledWithMatch(expectedResult));
+            expect(onSuccess.calledWithMatch(expectedResult)).to.be.true;
           });
     });
 
@@ -650,12 +699,12 @@ describe("DataService", () => {
       const createRecordAction = fakeService.actions.createRecord(expectedResult, { onSuccess });
       const pushRecordAction = stub(fakeService.actions, "pushRecord");
 
-      mockAdapter.createItem.returns(Observable.of(expectedResult));
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.createRecordEpic(ActionsObservable.of(createRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(pushRecordAction.calledWithMatch(expectedResult));
+            expect(pushRecordAction.calledWithMatch(expectedResult)).to.be.true;
           });
     });
 
@@ -676,21 +725,65 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a PUT request", () => {
-    assert.isFunction(fakeService.updateRecordEpic);
+    expect(fakeService.updateRecordEpic).to.be.a("function");
   });
 
   describe("updateRecordEpic", () => {
     it("should call updateItem with id and result", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "puppy" };
+      const expectedJSONResult = JSON.stringify(expectedResult.fullText);
       const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
-      const pushRecordAction = stub(fakeService.actions, "pushRecord");
-      mockAdapter.updateItem.returns(Observable.of(expectedResult));
+      
+      stub(fakeService.serializer, "serialize").returns(expectedJSONResult);
+      
+      fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(mockAdapter.updateItem.calledWithMatch(expectedResult.id, expectedJSONResult)).to.be.true;
+          });
+    });
+
+    it("updateRecordEpic should call normalize after deserialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy" };
+      const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
+      const normalizedStub = stub(fakeService.mapper, "normalize");
+
+      stub(fakeService.serializer, "deserialize").returns(expectedResult);
 
       fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.updateItem.calledWithMatch(expectedResult.id, JSON.stringify({ fullText: "puppy" })));
+            expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("updateRecordEpic should call serialize with the results from transform", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy transform" };
+      const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
+      
+      stub(fakeService.mapper, "transform").returns(expectedResult);
+      const serialStub = stub(fakeService.serializer, "serialize");
+
+      fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("updateRecordEpic should call transform before serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = fakeModels[0];
+      const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
+      const transformStub = stub(fakeService.mapper, "transform");
+
+      fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
           });
     });
 
@@ -698,13 +791,13 @@ describe("DataService", () => {
       const onSuccess = spy();
       const expectedResult = { id: 123, fullText: "puppy" };
       const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
-      const pushRecordAction = stub(fakeService.actions, "pushRecord");
-      mockAdapter.updateItem.returns(Observable.of(expectedResult));
+      
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(onSuccess.calledWithMatch(expectedResult));
+            expect(onSuccess.calledWithMatch(expectedResult)).to.be.true;
           });
     });
 
@@ -713,12 +806,14 @@ describe("DataService", () => {
       const expectedResult = { id: "123", fullText: "puppy" };
       const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
       const pushRecordAction = stub(fakeService.actions, "pushRecord");
-      mockAdapter.updateItem.returns(Observable.of(expectedResult));
+      
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new FakeModel(expectedResult));
+            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(expectedResult); 
+
           });
     });
 
@@ -739,20 +834,67 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a PATCH request", () => {
-    assert.isFunction(fakeService.patchRecordEpic);
+    expect(fakeService.patchRecordEpic).to.be.a("function");
   });
 
   describe("patchRecordEpic", () => {
     it("should call patchItem with id and expected result", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "puppy" };
+      const expectedJSONResult = JSON.stringify(expectedResult.fullText);
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
-      mockAdapter.patchItem.returns(Observable.of(expectedResult));
+      
+      stub(fakeService.serializer, "serialize").returns(expectedJSONResult);
 
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.patchItem.calledWithMatch(expectedResult.id, JSON.stringify({ fullText: "puppy" })));
+            expect(mockAdapter.patchItem.calledWithMatch(expectedResult.id, expectedJSONResult)).to.be.true;
+          });
+    });
+
+    it("patchRecordEpic should call normalize after deserialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy normalize" };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+      const normalizedStub = stub(fakeService.mapper, "normalize");
+
+      stub(fakeService.serializer, "deserialize").returns(expectedResult);
+      
+      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("patchRecordEpic should call transform before serialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy transform" };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+      const transformStub = stub(fakeService.mapper, "transform");
+
+      stub(fakeService.serializer, "serialize").returns(expectedResult);
+      
+      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
+          });
+    });
+
+    it("patchRecordEpic should serialize the result from transform", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: "123", fullText: "zella puppy serialize transform" };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+      
+      stub(fakeService.mapper, "transform").returns(expectedResult);
+      const serialStub = stub(fakeService.serializer, "serialize");
+      
+      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
           });
     });
 
@@ -760,11 +902,12 @@ describe("DataService", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "puppy" };
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
-      mockAdapter.patchItem.returns(Observable.of(expectedResult));
+
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
         .subscribe(noop, noop,
-          () => expect(onSuccess.firstCall.args[0]).to.deep.equal(new FakeModel(expectedResult)),
+          () => expect(onSuccess.firstCall.args[0]).to.deep.equal(expectedResult),
         );
     });
 
@@ -773,18 +916,19 @@ describe("DataService", () => {
       const expectedResult = { id: "123", fullText: "puppy" };
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
       const pushRecordAction = stub(fakeService.actions, "pushRecord");
-      mockAdapter.patchItem.returns(Observable.of(expectedResult));
+
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new FakeModel(expectedResult));
+            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(expectedResult);
           });
     });
   });
 
   it("has an epic for performing a DELETE request", () => {
-    assert.isFunction(fakeService.deleteRecordEpic);
+    expect(fakeService.deleteRecordEpic).to.be.a("function");
   });
 
   describe("deleteRecordEpic", () => {
@@ -797,33 +941,50 @@ describe("DataService", () => {
       fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            assert.isTrue(mockAdapter.deleteItem.calledOnceWith(expectedResult.id));
+            expect(mockAdapter.deleteItem.calledOnceWith(expectedResult.id)).to.be.true;
           });
+    });
+
+    it("deleteRecordEpic should call normalize after deserialize", () => {
+      const onSuccess = spy();
+      const expectedResult = { id: 123, fullText: "zella puppy" };
+      const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
+      const normalizedStub = stub(fakeService.mapper, "normalize");
+
+      stub(fakeService.serializer, "deserialize").returns(expectedResult);
+
+      fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
+      .subscribe(noop, noop,
+        () => {
+          expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
+        });
     });
 
     it("should call onSuccess callback with result", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "puppy" };
       const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
-      mockAdapter.deleteItem.returns(Observable.of(expectedResult));
+      
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
         .subscribe(noop, noop,
-          () => expect(onSuccess.firstCall.args[0]).to.deep.equal(new FakeModel(expectedResult)),
+          () => expect(onSuccess.firstCall.args[0]).to.deep.equal(expectedResult),
         );
     });
 
-    it("should call pushRecord with resopnse", () => {
+    it("should call pushRecord with response", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "puppy" };
       const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
       const pushRecordAction = stub(fakeService.actions, "pushRecord");
-      mockAdapter.deleteItem.returns(Observable.of(expectedResult));
+
+      stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(new FakeModel(expectedResult));
+            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(expectedResult);
           });
     });
   });

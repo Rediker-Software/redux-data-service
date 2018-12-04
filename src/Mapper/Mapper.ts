@@ -156,11 +156,11 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   }
 
   /**
-   * Transform the given relatedModel using its own serializer.
+   * Transform the given relatedModel using its own mapper.
    */
   protected async transformRelatedModel(relatedModel: IModel<any>) {
     return await getDataService(relatedModel.serviceName)
-      .serializer
+      .mapper
       .transform(relatedModel);
   }
 
@@ -183,7 +183,7 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   }
 
   /**
-   * Given the relatedModelData of a single item, normalize the data using the relationship's own serializer,
+   * Given the relatedModelData of a single item, normalize the data using the relationship's own mapper,
    * converting it into a Model instance, then dispatch that related Model to its data service and return the Model.
    */
   protected async loadRelatedModel(model: IModel<T>, relatedModelData: any, relationship: IFieldRelationship) {
@@ -195,8 +195,8 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
       relatedModelData[modelRelatedFieldName] = model.id;
     }
 
-    const service = getDataService(relationship.serviceName);
-    const relatedModel = await service.serializer.normalize(relatedModelData);
+    const service = model.getServiceForRelationship(relationship.field);
+    const relatedModel = await service.mapper.normalize(relatedModelData);
     service.actions.pushRecord(relatedModel).invoke();
 
     return relatedModel;
