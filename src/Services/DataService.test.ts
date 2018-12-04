@@ -41,7 +41,7 @@ describe("DataService", () => {
     configure({ modules: null });
     mockAdapter = new MockAdapter();
     mockMapper = new MockMapper();
-    mockSerializer = new MockSerializer(FakeModel);
+    mockSerializer = new MockSerializer();
 
     class FakeService extends DataService<IFakeModelData> {
       public name = serviceName;

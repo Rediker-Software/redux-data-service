@@ -3,7 +3,6 @@ import { omit } from "lodash";
 
 import { fakeModelModule, initializeTestServices, seedService } from "../TestUtils";
 
-import { FakeModel } from "../Model/Model.mock";
 import { MemorySerializer } from "./MemorySerializer";
 
 declare var intern;
@@ -15,19 +14,19 @@ describe("MemorySerializer", () => {
 
   beforeEach(() => {
     initializeTestServices(fakeModelModule);
-    serializer = new MemorySerializer(FakeModel);
+    serializer = new MemorySerializer();
   });
 
-  it("serialize() returns the raw model data", async () => {
+  it("serialize() returns the same model data", async () => {
     const fakeModel = seedService("fakeModel") as any;
     expect(await serializer.serialize(fakeModel))
-      .to.deep.contain(omit(fakeModel.modelData, ["id", "dateUpdated", "dateDeleted"]));
+      .to.deep.equal(fakeModel);
   });
 
-  it("deserialize() returns the model when given raw data", async () => {
+  it("deserialize() returns the same data", async () => {
     const fakeModel = seedService("fakeModel") as any;
     expect(await serializer.deserialize(fakeModel.modelData))
-      .to.deep.equal(fakeModel);
+      .to.deep.equal(fakeModel.modelData);
   });
 
 });

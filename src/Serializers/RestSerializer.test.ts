@@ -1,7 +1,7 @@
 // tslint:disable:no-unused-expression
-import { stub } from "sinon";
 import { RestSerializer } from "./RestSerializer";
-import { FakeModel } from "../Model/Model.mock";
+import { FakeModel, IModelData } from "../Model";
+import { MockMapper } from "../Mapper";
 
 import { lorem, random, name } from "faker";
 import { SortDirection } from "../Query/QueryBuilder";
@@ -11,64 +11,41 @@ const { describe, it } = intern.getPlugin("interface.bdd");
 const { expect } = intern.getPlugin("chai");
 
 describe("RestSerializer", () => {
-
+  const mapper = new MockMapper();
   describe("serialize", () => {
-
-    it("first transforms the model before serializing it", async () => {
-      const fakeModel = new FakeModel({ id: random.number().toString() });
-      const restSerializer = new RestSerializer(FakeModel);
-      const stubTransform = stub(restSerializer, "transform");
-
-      await restSerializer.serialize(fakeModel);
-
-      expect(stubTransform.firstCall.args[0]).to.equal(fakeModel);
-    });
 
     it("converts the model into a JSON string", async () => {
       const fullText = lorem.word().toString();
+      const id = random.number().toString();
 
       const fakeModel = new FakeModel({
-        id: random.number().toString(),
+        id,
         fullText,
       });
 
-      const restSerializer = new RestSerializer(FakeModel);
-      const serializedModel = await restSerializer.serialize(fakeModel);
+      const mapped = await mapper.transform(fakeModel);
+      const restSerializer = new RestSerializer();
+      const serializedModel = await restSerializer.serialize(mapped as Partial<IModelData>);
 
-      expect(serializedModel).to.equal(JSON.stringify({ fullText }));
+      expect(serializedModel).to.equal(JSON.stringify({ id, fullText }));
     });
 
   });
 
   describe("deserialize", () => {
 
-    it("converts the deserialized raw data into a Model by normalizing it", async () => {
-      const fakeModelData = {
-        id: random.number().toString(),
-        fullText: lorem.word().toString(),
-      };
-
-      const serializedModel = JSON.stringify(fakeModelData);
-      const restSerializer = new RestSerializer(FakeModel);
-      const stubNormalize = stub(restSerializer, "normalize");
-
-      await restSerializer.deserialize(serializedModel);
-
-      expect(stubNormalize.firstCall.args[0]).to.deep.equal(fakeModelData);
-    });
-
     it("converts the JSON string into a model", async () => {
       const fakeModelData = {
         id: random.number().toString(),
         fullText: lorem.word().toString(),
       };
-      const fakeModel = new FakeModel(fakeModelData);
+
       const serializedModel = JSON.stringify(fakeModelData);
-      const restSerializer = new RestSerializer(FakeModel);
+      const restSerializer = new RestSerializer();
 
       const deserializedModel = await restSerializer.deserialize(serializedModel);
 
-      expect(deserializedModel).to.deep.equal(fakeModel);
+      expect(deserializedModel).to.deep.equal(fakeModelData);
     });
 
   });
@@ -88,7 +65,7 @@ describe("RestSerializer", () => {
         ],
       };
 
-      const restSerializer = new RestSerializer(FakeModel);
+      const restSerializer = new RestSerializer();
       const urlEncodedString = await restSerializer.serializeQueryParams(fakeQueryParamData);
 
       // tslint:disable-next-line:max-line-length (with the backslash \ line continuation it seems to put in an extra space)
@@ -111,7 +88,7 @@ describe("RestSerializer", () => {
         ],
       };
 
-      const restSerializer = new RestSerializer(FakeModel);
+      const restSerializer = new RestSerializer();
       const urlEncodedString = await restSerializer.serializeQueryParams(fakeQueryParamData);
 
       // tslint:disable-next-line:max-line-length (with the backslash \ line continuation it seems to put in an extra space)

@@ -51,7 +51,7 @@ class FakeService extends DataService<any> {
   public readonly name = "fakeModel";
   public readonly ModelClass: IModelFactory<any> = MockModel;
   protected _adapter = new MockAdapter();
-  protected _serializer = new RestSerializer(MockModel);
+  protected _serializer = new RestSerializer();
   protected _mapper = new Mapper(MockModel);
 }
 
@@ -69,7 +69,7 @@ class FakeRelatedService extends DataService<any> {
   public readonly name = "fakeRelatedModel";
   public readonly ModelClass: IModelFactory<any> = FakeRelatedModel;
   protected _adapter = new MockAdapter();
-  protected _serializer = new RestSerializer(FakeRelatedModel);
+  protected _serializer = new RestSerializer();
   protected _mapper = new Mapper(FakeRelatedModel);
 }
 
@@ -202,7 +202,7 @@ describe("Mapper", () => {
     let fakeService;
     let fakeRelatedService;
     let fakeRelatedModel;
-    let mockSerializer;
+    let mapper;
     let fakeRelatedModelId;
     let modelId;
 
@@ -215,9 +215,9 @@ describe("Mapper", () => {
         fullText: lorem.word(),
       });
 
-      mockSerializer = new RestSerializer(MockModel);
       fakeService = new FakeService();
       fakeRelatedService = new FakeRelatedService();
+      mapper = new Mapper(MockModel);
 
       stub(fakeRelatedService, "getById").returns(Observable.of(fakeRelatedModel));
 
@@ -240,7 +240,7 @@ describe("Mapper", () => {
         organizationId: fakeRelatedModelId,
       };
 
-      const model = await mockSerializer.normalize(rawModelData);
+      const model = await mapper.normalize(rawModelData);
 
       expect(model).to.deep.contain({
         age,
@@ -257,7 +257,6 @@ describe("Mapper", () => {
       let rawModelData;
       let invokeSpy;
       let pushRecordStub;
-      let mapper;
       
       beforeEach(() => {
         mapper = new Mapper(MockModel);
@@ -304,7 +303,6 @@ describe("Mapper", () => {
       let rawModelData;
       let invokeSpy;
       let pushRecordStub;
-      let mapper;
 
       beforeEach(() => {
         mapper = new Mapper(MockModel);

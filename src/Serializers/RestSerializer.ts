@@ -1,33 +1,32 @@
 import { IModel, IModelData } from "../Model";
-import { BaseSerializer } from "./BaseSerializer";
 import { IQueryParams } from "../Query/QueryBuilder";
+import { ISerializer } from "../Serializers";
 
 /**
  * An ISerializer implementation which will convert a given Model to or from JSON.
  */
-export class RestSerializer<T extends IModelData, R = T> extends BaseSerializer<string, T, R> {
+export class RestSerializer<T extends IModelData, R = T> implements ISerializer<string, R> {
 
   /**
    * Converts the given IModel into a JSON string.
    *
    * @param {IModel<T extends IModelData> | Partial<T extends IModelData>} model
-   * @returns {Promise<S>}
+   * @returns {Promise<string>}
    */
   public async serialize(model: IModel<T> | Partial<T>): Promise<string> {
-    const modelData = await this.transform(model);
+    const modelData = (model as any).modelData;
     return JSON.stringify(modelData);
   }
 
   /**
    * Converts the given JSON string into an IModel.
    *
-   * @param {IModel<T extends IModelData>} data
+   * @param {any} data
    * @param data
-   * @returns {Promise<IModel<T extends IModelData>>}
+   * @returns {Promise<R>>}
    */
-  public async deserialize(data: any): Promise<IModel<T>> {
-    data = (typeof data === "string") ? JSON.parse(data) : data;
-    return await this.normalize(data);
+  public async deserialize(data: any): Promise<R> {
+    return (typeof data === "string") ? JSON.parse(data) as R : data as R;
   }
 
   /**

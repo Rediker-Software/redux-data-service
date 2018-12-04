@@ -1,8 +1,8 @@
 import { FakeModel } from "../Model/Model.mock";
 import { IQueryParams } from "../Query";
-import { BaseSerializer } from "./BaseSerializer";
+import { ISerializer } from ".";
 
-export class MockSerializer extends BaseSerializer<any, any> {
+export class MockSerializer implements ISerializer<any, any> {
   public async serialize() {
     return "";
   }
