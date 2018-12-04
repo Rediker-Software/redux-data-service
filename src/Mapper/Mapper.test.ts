@@ -157,7 +157,7 @@ describe("Mapper", () => {
     });
 
     it("transforms belongsTo relationships on the model when serialize = true", async () => {
-      
+
       fakeModel.fields.organization.serialize = true;
       const transformedModelData = await mapper.transform(fakeModel);
 
