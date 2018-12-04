@@ -63,7 +63,7 @@ describe("DataService", () => {
   });
 
   it("has an action creator for triggering a fetchAll query", () => {
-    expect(typeof fakeService.actions.fetchAll).to.equal("function");
+    expect(fakeService.actions.fetchAll).to.be.a("function");
   });
 
   describe("adapter", () => {
@@ -175,7 +175,7 @@ describe("DataService", () => {
   });
 
   it("has an action creator for triggering a GET request to the API", () => {
-    expect(typeof fakeService.actions.fetchRecord).to.equal("function");
+    expect(fakeService.actions.fetchRecord).to.be.a("function");
   });
 
   describe("fetchRecord action creator", () => {
@@ -207,7 +207,7 @@ describe("DataService", () => {
   });
 
   it("has an action creator for triggering a CREATE request to the API", () => {
-    expect(typeof fakeService.actions.createRecord).to.equal("function");
+    expect(fakeService.actions.createRecord).to.be.a("function");
   });
 
   describe("createRecord action creator", () => {
@@ -226,7 +226,7 @@ describe("DataService", () => {
   });
 
   it("has an action creator for triggering a PUT request to the API", () => {
-    expect(typeof fakeService.actions.updateRecord).to.equal("function");
+    expect(fakeService.actions.updateRecord).to.be.a("function");
   });
 
   describe("updateRecord action creator", () => {
@@ -245,7 +245,7 @@ describe("DataService", () => {
   });
 
   it("has an action creator for triggering a PATCH request to the API", () => {
-    expect(typeof fakeService.actions.patchRecord).to.equal("function");
+    expect(fakeService.actions.patchRecord).to.be.a("function");
   });
 
   describe("patchRecord action creator", () => {
@@ -264,7 +264,7 @@ describe("DataService", () => {
   });
 
   it("has an action creator for triggering a DELETE_RECORD request to the API", () => {
-    expect(typeof fakeService.actions.deleteRecord).to.equal("function");
+    expect(fakeService.actions.deleteRecord).to.be.a("function");
   });
 
   describe("deleteRecord action creator", () => {
@@ -283,7 +283,7 @@ describe("DataService", () => {
   });
 
   it("has an action creator for triggering a SET_FIELD request", () => {
-    expect(typeof fakeService.actions.setField).to.equal("function");
+    expect(fakeService.actions.setField).to.be.a("function");
   });
 
   describe("setField action creator", () => {
@@ -302,7 +302,7 @@ describe("DataService", () => {
   });
 
   it("has a reducer for setting the field of a record", () => {
-    expect(typeof fakeService.setFieldReducer).to.equal("function");
+    expect(fakeService.setFieldReducer).to.be.a("function");
   });
 
   describe("setFieldReducer", () => {
@@ -409,7 +409,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a fetchAll request with the query params", () => {
-    expect(typeof fakeService.fetchAllEpic).to.equal("function");
+    expect(fakeService.fetchAllEpic).to.be.a("function");
   });
 
   describe("fetchAll caching", () => {
@@ -518,7 +518,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a GET request", () => {
-    expect(typeof fakeService.fetchRecordEpic).to.equal("function");
+    expect(fakeService.fetchRecordEpic).to.be.a("function");
   });
 
   describe("fetchRecordEpic", () => {
@@ -621,7 +621,7 @@ describe("DataService", () => {
       const fetchRecordAction = fakeService.actions.fetchRecord({ id: nonCachedItemId }, null);
       const normalizeStub = stub(fakeService.mapper, "normalize");
       
-      stub(fakeService.serializer, "deserialize").returns (deserializedObject);
+      stub(fakeService.serializer, "deserialize").returns(deserializedObject);
 
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
@@ -632,7 +632,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a CREATE request", () => {
-    expect(typeof fakeService.createRecordEpic).to.equal("function");
+    expect(fakeService.createRecordEpic).to.be.a("function");
   });
 
   describe("createRecordEpic", () => {
@@ -725,7 +725,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a PUT request", () => {
-    expect(typeof fakeService.updateRecordEpic).to.equal("function");
+    expect(fakeService.updateRecordEpic).to.be.a("function");
   });
 
   describe("updateRecordEpic", () => {
@@ -834,7 +834,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a PATCH request", () => {
-    expect(typeof fakeService.patchRecordEpic).to.equal("function");
+    expect(fakeService.patchRecordEpic).to.be.a("function");
   });
 
   describe("patchRecordEpic", () => {
@@ -928,7 +928,7 @@ describe("DataService", () => {
   });
 
   it("has an epic for performing a DELETE request", () => {
-    expect(typeof fakeService.deleteRecordEpic).to.equal("function");
+    expect(fakeService.deleteRecordEpic).to.be.a("function");
   });
 
   describe("deleteRecordEpic", () => {
@@ -945,7 +945,7 @@ describe("DataService", () => {
           });
     });
 
-    it("deleteRecordEpic should call normalize before deserialize", () => {
+    it("deleteRecordEpic should call normalize after deserialize", () => {
       const onSuccess = spy();
       const expectedResult = { id: 123, fullText: "zella puppy" };
       const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
