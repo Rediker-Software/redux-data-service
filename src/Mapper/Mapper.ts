@@ -142,8 +142,7 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   }
 
   /**
-   * Creates a new IModel by normalizing the given raw data.
-   * If a nested relationship was included in the payload, it will be side-loaded.
+   * Supports converting a raw query response object from the API into an IQueryResponse object.
    *
    * @param {IRawQueryResponse<R>} data
    * @returns {IQueryResponse}
