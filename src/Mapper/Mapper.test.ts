@@ -14,6 +14,9 @@ import { MockAdapter } from "../Adapters/MockAdapter";
 import { ArrayField } from "../Model/FieldType";
 import { Mapper } from "./Mapper";
 
+import { IRawQueryResponse, IQueryResponse } from "../Query";
+import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model/Model.mock";
+
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
 const { expect } = intern.getPlugin("chai");
@@ -356,4 +359,46 @@ describe("Mapper", () => {
     });
 
   });
+
+  describe("normalizeQueryResponse", () => {
+    let fakeModels;
+    let fakeService;
+    let fakePushAll;
+    let mapper;
+    let fakeRawQueryParams;
+
+    beforeEach(() => {
+
+    class RawQueryParams implements IRawQueryResponse<MockModel> {
+      public currentPage: number;
+      public totalPages: number;
+      public pageSize: number;
+      public totalCount: number;
+      public nextPage: number;
+      public previousPage: number;
+      public hasPrevious: boolean;
+      public hasNext: number;
+      public items: MockModel[];
+    }   
+
+    fakeRawQueryParams  = new RawQueryParams();
+    fakeModels = createMockFakeModels();
+    fakeRawQueryParams.items  = fakeModels;
+
+    mapper = new Mapper(MockModel);
+    fakeService = new FakeService();
+    registerService(fakeService);
+
+    fakePushAll = stub(fakeService.actions, "pushAll");
+    stub(mapper, "normalize").returns(fakeModels);
+    
+  });
+
+    it("normalizeQueryResponse calls pushAll", () => {
+        mapper.normalizeQueryResponse(fakeRawQueryParams);
+        expect(fakePushAll.firstCall.args[0]).to.deep.equal({ items: fakeModels });
+  });
+
+  });
+
 });
