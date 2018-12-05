@@ -7,7 +7,6 @@ import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
 import { omit } from "lodash";
 
-import { RestSerializer } from "..";
 import { BaseService, DataService, registerService } from "../Services";
 import { attr, belongsTo, hasMany, DateField, IModelFactory, Model, NumberField, StringField, TimeField } from "../Model";
 
@@ -51,7 +50,6 @@ class FakeService extends DataService<any> {
   public readonly name = "fakeModel";
   public readonly ModelClass: IModelFactory<any> = MockModel;
   protected _adapter = new MockAdapter();
-  protected _serializer = new RestSerializer();
   protected _mapper = new Mapper(MockModel);
 }
 
@@ -69,7 +67,6 @@ class FakeRelatedService extends DataService<any> {
   public readonly name = "fakeRelatedModel";
   public readonly ModelClass: IModelFactory<any> = FakeRelatedModel;
   protected _adapter = new MockAdapter();
-  protected _serializer = new RestSerializer();
   protected _mapper = new Mapper(FakeRelatedModel);
 }
 
