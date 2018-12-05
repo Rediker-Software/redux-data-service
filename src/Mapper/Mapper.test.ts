@@ -361,7 +361,7 @@ describe("Mapper", () => {
   });
 
   describe("normalizeQueryResponse", () => {
-    let fakeModels;
+    let fakeModel;
     let fakeService;
     let fakePushAll;
     let mapper;
@@ -382,21 +382,21 @@ describe("Mapper", () => {
     }   
 
     fakeRawQueryParams  = new RawQueryParams();
-    fakeModels = createMockFakeModels();
-    fakeRawQueryParams.items  = fakeModels;
+    fakeModel = createMockFakeModels(1);
+    fakeRawQueryParams.items  = [fakeModel];
 
     mapper = new Mapper(MockModel);
     fakeService = new FakeService();
     registerService(fakeService);
 
     fakePushAll = stub(fakeService.actions, "pushAll");
-    stub(mapper, "normalize").returns(fakeModels);
+    stub(mapper, "normalize").returns(fakeModel);
     
   });
 
     it("normalizeQueryResponse calls pushAll", () => {
         mapper.normalizeQueryResponse(fakeRawQueryParams);
-        expect(fakePushAll.firstCall.args[0]).to.deep.equal({ items: fakeModels });
+        expect(fakePushAll.firstCall.args[0]).to.deep.equal({ items: fakeModel });
   });
 
   });
