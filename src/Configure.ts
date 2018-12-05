@@ -12,7 +12,7 @@ import { IMapperFactory, Mapper } from "./Mapper";
 export interface IConfiguration {
   modules: IModuleMap;
   adapter?: IAdapterFactory<any>;
-  serializer?: ISerializerFactory<any, any, any>;
+  serializer?: ISerializerFactory<any, any>;
   mapper?: IMapperFactory<any>;
 }
 

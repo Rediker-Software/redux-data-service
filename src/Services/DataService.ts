@@ -106,11 +106,11 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   public abstract readonly ModelClass: IModelFactory<T>;
   protected readonly AdapterClass: IAdapterFactory<any>;
   protected readonly MapperClass: IMapperFactory<any>;
-  protected readonly SerializerClass: ISerializerFactory<any, T, R>;
+  protected readonly SerializerClass: ISerializerFactory<any, R>;
 
   protected _adapter: IAdapter<any>;
   protected _mapper: IMapper<any>;
-  protected _serializer: ISerializer<any, T, R>;
+  protected _serializer: ISerializer<any, R>;
   
   protected shadowObject: IModel<T> = null;
   protected observablesByIdCache: { [id: string]: Observable<IModel<T>> } = {};
@@ -530,7 +530,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       .mergeMap(action =>
         of$(this.selectors.getItem(store.getState(), action.payload.id))
           .mergeMap(async model => await this.mapper.transform(model))
-          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as Partial<T>))
+          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as R))
           .mergeMap(serializedModel => this.adapter.createItem(serializedModel))
           .mergeMap(async response => await this.serializer.deserialize(response))
           .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
@@ -548,7 +548,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       .mergeMap((action) =>
         of$(this.selectors.getItem(store.getState(), action.payload.id))
           .mergeMap(async model => await this.mapper.transform(model))
-          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as Partial<T>))
+          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as R))
           .mergeMap(model => this.adapter.updateItem(action.payload.id, model))
           .mergeMap(async response => await this.serializer.deserialize(response))
           .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
@@ -565,7 +565,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       .mergeMap(action =>
         of$(action.payload)
           .mergeMap(async model => await this.mapper.transform(model))
-          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as Partial<T>))
+          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as R))
           .mergeMap(serializedModel => this.adapter.patchItem(action.payload.id, serializedModel))
           .mergeMap(async (response) => await this.serializer.deserialize(response))
           .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))

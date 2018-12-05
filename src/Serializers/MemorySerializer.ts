@@ -1,18 +1,17 @@
-import { IModel, IModelData } from "../Model";
 import { IQueryParams } from "../Query";
-import { BaseSerializer } from "./BaseSerializer";
+import { ISerializer } from ".";
 
 /**
  * An in-memory ISerializer implementation for testing and local development purposes.
  */
-export class MemorySerializer<T extends IModelData, R = T> extends BaseSerializer<Partial<R>, T, R> {
+export class MemorySerializer<S = any, R = any> implements ISerializer<S, R> {
 
-  public async serialize(model: IModel<T> | Partial<T>): Promise<Partial<R>> {
-    return await this.transform(model);
+  public async serialize(model: R): Promise<S> {
+    return model as any;
   }
 
-  public async deserialize(data: Partial<R>): Promise<IModel<T>> {
-    return await this.normalize(data);
+  public async deserialize(data: S): Promise<R> {
+    return data as any;
   }
 
   public async serializeQueryParams(queryParams: IQueryParams): Promise<IQueryParams> {
