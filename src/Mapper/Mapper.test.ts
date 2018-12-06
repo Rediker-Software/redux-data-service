@@ -126,6 +126,13 @@ describe("Mapper", () => {
       fakeModel = new MockModel(mockModelData);
     });
 
+    afterEach(() => {
+      // revert changes done to the class prototype to prevent some tests from impacting others
+      fakeModel.fields.age.serialize = true;
+      fakeModel.fields.organization.serialize = false;
+      fakeModel.fields.fakeItems.serialize = false;
+    });
+
     it("transforms the model into a plain javascript object based on each field's FieldType", async () => {
       const transformedModelData = await mapper.transform(fakeModel);
       expect(transformedModelData).to.deep.equal({
@@ -200,15 +207,15 @@ describe("Mapper", () => {
       let secondModelId;
       let secondFakeModel;
       let secondMockModelData;
-  
+
       beforeEach(() => {
         BaseService.registerDispatch(spy());
-  
+
         mapper = new Mapper(MockModel);
         fakeService = new FakeService();
-  
+
         registerService(fakeService);
-  
+
         secondStartDateString = format(date.recent(), "YYYY-MM-DD");
         secondStartTimeString = format(date.recent(), "hh:mm:ss a");
 
@@ -221,13 +228,12 @@ describe("Mapper", () => {
           age,
           startDate: parse(secondStartDateString, "YYYY-MM-DD", new Date()),
           startTime: parse(secondStartTimeString, "hh:mm:ss a", new Date()),
-          organizationId: fakeRelatedModelId,
+          organizationId: secondFakeRelatedModelId,
         };
         secondFakeModel = new MockModel(secondMockModelData);
       });
-  
+
       it("transforms a list of models into an array of raw API data", async () => {
-        debugger;
         const transformedModelData = await mapper.transformList([fakeModel, secondFakeModel]);
 
         expect(transformedModelData[0]).to.deep.equal({
