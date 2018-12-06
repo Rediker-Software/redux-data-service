@@ -14,8 +14,8 @@ import { MockAdapter } from "../Adapters/MockAdapter";
 import { ArrayField } from "../Model/FieldType";
 import { Mapper } from "./Mapper";
 
-import { IRawQueryResponse, IQueryResponse } from "../Query";
-import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model/Model.mock";
+import { IRawQueryResponse } from "../Query";
+import { createMockFakeModels } from "../Model/Model.mock";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -366,7 +366,7 @@ describe("Mapper", () => {
     let fakePushAll;
     let mapper;
     let fakeRawQueryParams;
-
+    
     beforeEach(() => {
 
     class RawQueryParams implements IRawQueryResponse<MockModel> {
@@ -382,20 +382,22 @@ describe("Mapper", () => {
     }   
 
     fakeRawQueryParams  = new RawQueryParams();
-    fakeModel = createMockFakeModels(1);
-    fakeRawQueryParams.items  = [fakeModel];
 
     mapper = new Mapper(MockModel);
     fakeService = new FakeService();
+    
     registerService(fakeService);
-
+    
+    fakeModel = createMockFakeModels(1);
+    fakeRawQueryParams.items  = [fakeModel];
+    
     fakePushAll = stub(fakeService.actions, "pushAll");
     stub(mapper, "normalize").returns(fakeModel);
     
   });
 
-    it("normalizeQueryResponse calls pushAll", () => {
-        mapper.normalizeQueryResponse(fakeRawQueryParams);
+    it("normalizeQueryResponse calls pushAll", async () => {
+        await mapper.normalizeQueryResponse(fakeRawQueryParams);
         expect(fakePushAll.firstCall.args[0]).to.deep.equal({ items: fakeModel });
   });
 
