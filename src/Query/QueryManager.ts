@@ -50,11 +50,11 @@ export class QueryManager<T extends IModelData> implements IQueryManager<T> {
   }
 
   public hasNextPage(): boolean {
-    return this.response && this.response.nextPage > 0;
+    return this.response && this.response.hasNext;
   }
 
   public hasPreviousPage(): boolean {
-    return this.response && this.response.previousPage > 0;
+    return this.response && this.response.hasPrevious;
   }
 
   public getNextPage(): IQueryBuilder {

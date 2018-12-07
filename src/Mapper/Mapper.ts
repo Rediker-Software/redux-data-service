@@ -147,17 +147,14 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
    * @param {IRawQueryResponse<R>} data
    * @returns {IQueryResponse}
    */
-  public async normalizeQueryResponse(data: IRawQueryResponse<R>): Promise<IQueryResponse> {
-    const iQueryResponse = { ...data } as any;
-    const normalizedItems = await data.items.map( async item => await this.normalize(item));
-    const normalizedArray = await Promise.all(normalizedItems);
-  
-    const serviceName = (normalizedArray[0][0] as any).serviceName;
-    const service = getDataService(serviceName);
-    
-    service.actions.pushAll(normalizedItems);
-    iQueryResponse.ids = normalizedArray.map(normalized => (normalized.id));
-    return iQueryResponse;
+  public async normalizeQueryResponse({ items, ...data}: IRawQueryResponse<R>): Promise<IQueryResponse & { items: IModel<T>[]}> {
+    const result: IQueryResponse & { items: IModel<T>[]} = data as any;
+
+    const normalizedItems = await items.map( async item => await this.normalize(item));
+    result.items = await Promise.all(normalizedItems);
+    result.ids = result.items.map(normalized => (normalized.id));
+
+    return result;
   }
 
   /**

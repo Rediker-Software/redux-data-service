@@ -5,6 +5,8 @@ export interface IQueryResponse {
   totalCount: number;
   nextPage: number;
   previousPage: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
   ids: string[];
   errors?: string[];
 }
