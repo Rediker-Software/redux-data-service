@@ -11,5 +11,9 @@ export class MockMapper implements IMapper<any> {
 
   public async normalize(data) {
     return data;
-  }    
+  }  
+
+  public async normalizeQueryResponse(data) {
+    return data;
+  }
 }

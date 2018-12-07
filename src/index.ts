@@ -8,3 +8,4 @@ export * from "./Services";
 export * from "./TestUtils";
 export * from "./Utils";
 export * from "./Validators";
+export * from "./Query";

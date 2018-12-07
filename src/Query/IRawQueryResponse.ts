@@ -1,4 +1,4 @@
-export interface IQueryResponse {
+export interface IRawQueryResponse<R> {
   currentPage: number;
   totalPages: number;
   pageSize: number;
@@ -7,6 +7,5 @@ export interface IQueryResponse {
   previousPage: number;
   hasPrevious: boolean;
   hasNext: boolean;
-  ids: string[];
-  errors?: string[];
+  items: R[];
 }
