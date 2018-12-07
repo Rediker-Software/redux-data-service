@@ -23,16 +23,22 @@ describe("QueryManager", () => {
   let nextPage;
   let previousPage;
   let fullQueryResponse: IQueryResponse;
+  let hasPrevious;
+  let hasNext;
   const serviceName = "fakeModel";
 
   beforeEach(() => {
     initializeTestServices(fakeModelModule);
+
     currentPage = random.number();
     totalPages = random.number();
     pageSize = random.number();
     totalCount = random.number();
     nextPage = random.number();
     previousPage = random.number();
+    hasPrevious = random.boolean;
+    hasNext = random.boolean;
+
     fakeItems = seedServiceList<IFakeModelData>(serviceName);
 
     fullQueryResponse = {
@@ -42,6 +48,8 @@ describe("QueryManager", () => {
       totalCount,
       nextPage,
       previousPage,
+      hasPrevious,
+      hasNext,
       ids: [],
     }; 
   });
@@ -96,52 +104,18 @@ describe("QueryManager", () => {
     expect(queryManager.items).to.deep.equal(fakeItems);
   });
 
-  it("hasNextPage returns true when response has next page", () => {
+  it("hasNextPage returns the given hasNext value from the IQueryResponse", () => {
     const query = new QueryBuilder(serviceName);
     const queryManager = new QueryManager(query, fakeItems, fullQueryResponse);
 
-    expect(queryManager.hasNextPage()).to.equal(true);
+    expect(queryManager.hasNextPage()).to.equal(hasNext);
   });
 
-  it("hasNextPage returns false when response does not have next page", () => {
-    const queryResponseNoNextPage: IQueryResponse = {
-      currentPage,
-      totalPages,
-      pageSize,
-      totalCount,
-      nextPage: 0,
-      previousPage,
-      ids: [],
-    };
-
-    const query = new QueryBuilder(serviceName);
-    const queryManager = new QueryManager(query, fakeItems, queryResponseNoNextPage);
-
-    expect(queryManager.hasNextPage()).to.equal(false);
-  });
-
-  it("hasPreviousPage returns true when response has previous page", () => {
+  it("hasPreviousPage returns the given hasPrevious value from the IQueryResponse", () => {
     const query = new QueryBuilder(serviceName);
     const queryManager = new QueryManager(query, fakeItems, fullQueryResponse);
 
-    expect(queryManager.hasPreviousPage()).to.equal(true);
-  });
-
-  it("hasPreviousPage returns false when response does not have previous page", () => {
-    const queryResponseNoPreviousPage: IQueryResponse = {
-      currentPage,
-      totalPages,
-      pageSize,
-      totalCount,
-      nextPage,
-      previousPage: 0,
-      ids: [],
-    };
-
-    const query = new QueryBuilder(serviceName);
-    const queryManager = new QueryManager(query, fakeItems, queryResponseNoPreviousPage);
-
-    expect(queryManager.hasPreviousPage()).to.equal(false);
+    expect(queryManager.hasPreviousPage()).to.equal(hasPrevious);
   });
 
   it("getNextPage returns expected IQueryBuilder next page", () => {

@@ -8,10 +8,26 @@ import { format, parse } from "date-fns";
 import { omit } from "lodash";
 
 import { BaseService, DataService, registerService } from "../Services";
-import { attr, belongsTo, hasMany, DateField, IModelFactory, Model, NumberField, StringField, TimeField } from "../Model";
+import {
+  attr,
+  belongsTo,
+  createMockFakeModel,
+  createMockFakeModelArray,
+  DateField,
+  FakeModel,
+  hasMany,
+  IFakeModelData,
+  IModelFactory,
+  Model,
+  NumberField,
+  StringField,
+  TimeField,
+} from "../Model";
 
 import { MockAdapter } from "../Adapters/MockAdapter";
 import { ArrayField } from "../Model/FieldType";
+import { IRawQueryResponse } from "../Query";
+
 import { Mapper } from "./Mapper";
 
 declare var intern;
@@ -171,7 +187,7 @@ describe("Mapper", () => {
     });
 
     it("transforms hasMany relationships on the model when serialize = true", async () => {
-      
+
       const anotherFakeRelatedModelId = random.number().toString();
       const anotherFakeRelatedModelData = {
         id: anotherFakeRelatedModelId,
@@ -254,7 +270,7 @@ describe("Mapper", () => {
       let rawModelData;
       let invokeSpy;
       let pushRecordStub;
-      
+
       beforeEach(() => {
         mapper = new Mapper(MockModel);
 
@@ -356,4 +372,59 @@ describe("Mapper", () => {
     });
 
   });
+
+  describe("normalizeQueryResponse", () => {
+    let fakeModelData;
+    let fakeService;
+    let mapper;
+    let fakeRawQueryParams;
+
+    beforeEach(() => {
+      mapper = new Mapper(FakeModel);
+      fakeService = new FakeService();
+
+      registerService(fakeService);
+
+      fakeModelData = createMockFakeModelArray();
+
+      fakeRawQueryParams = {
+        currentPage: random.number(),
+        totalPages: random.number(),
+        pageSize: random.number(),
+        totalCount: random.number(),
+        nextPage: random.number(),
+        previousPage: random.number(),
+        hasPrevious: random.boolean(),
+        hasNext: random.boolean(),
+        items: fakeModelData,
+      } as IRawQueryResponse<IFakeModelData>;
+    });
+
+    it("normalizeQueryResponse returns an object with normalized items", async () => {
+      const result = await mapper.normalizeQueryResponse(fakeRawQueryParams);
+
+      expect(result.items).to.deep.equal(
+        fakeModelData.map(modelData => createMockFakeModel(modelData)),
+      );
+    });
+
+    it("normalizeQueryResponse returns an object with ids from the normalized items", async () => {
+      const result = await mapper.normalizeQueryResponse(fakeRawQueryParams);
+
+      expect(result.ids).to.deep.equal(
+        fakeModelData.map(modelData => modelData.id),
+      );
+    });
+
+    it("normalizeQueryResponse returns an object with the expected pagination information", async () => {
+      const { items, ...paginationInfo } = fakeRawQueryParams;
+      const result = await mapper.normalizeQueryResponse(fakeRawQueryParams);
+
+      expect(result).to.include(
+        paginationInfo,
+      );
+    });
+
+  });
+
 });

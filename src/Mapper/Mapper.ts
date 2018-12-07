@@ -6,6 +6,7 @@ import { IMapper } from ".";
 import { mapWithKeys } from "../Utils";
 import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, RelationshipType } from "../Model";
 import { getDataService } from "../Services";
+import { IRawQueryResponse, IQueryResponse } from "../Query";
 
 /**
  * This class implements the `transform` and `normalize` methods on the IMapper interface, to provide a default mechanism
@@ -138,6 +139,22 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
     }
 
     return model;
+  }
+
+  /**
+   * Supports converting a raw query response object from the API into an IQueryResponse object.
+   *
+   * @param {IRawQueryResponse<R>} data
+   * @returns {IQueryResponse}
+   */
+  public async normalizeQueryResponse({ items, ...data}: IRawQueryResponse<R>): Promise<IQueryResponse & { items: IModel<T>[]}> {
+    const result: IQueryResponse & { items: IModel<T>[]} = data as any;
+
+    const normalizedItems = await items.map( async item => await this.normalize(item));
+    result.items = await Promise.all(normalizedItems);
+    result.ids = result.items.map(normalized => (normalized.id));
+
+    return result;
   }
 
   /**
