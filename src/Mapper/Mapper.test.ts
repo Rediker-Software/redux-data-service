@@ -5,7 +5,7 @@ import { spy, stub } from "sinon";
 
 import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
-import { omit } from "lodash";
+import { omit, range } from "lodash";
 
 import { BaseService, DataService, registerService } from "../Services";
 import {
@@ -142,9 +142,15 @@ describe("Mapper", () => {
       fakeModel = new MockModel(mockModelData);
     });
 
+    afterEach(() => {
+      // revert changes done to the class prototype to prevent some tests from impacting others
+      fakeModel.fields.age.serialize = true;
+      fakeModel.fields.organization.serialize = false;
+      fakeModel.fields.fakeItems.serialize = false;
+    });
+
     it("transforms the model into a plain javascript object based on each field's FieldType", async () => {
       const transformedModelData = await mapper.transform(fakeModel);
-
       expect(transformedModelData).to.deep.equal({
         age,
         fullText,
@@ -208,6 +214,62 @@ describe("Mapper", () => {
         omit(fakeRelatedModelData, "id"),
         omit(anotherFakeRelatedModelData, "id"),
       ]);
+    });
+
+    describe("transformList", () => {
+      let secondStartDateString;
+      let secondStartTimeString;
+      let secondFakeRelatedModelId;
+      let secondModelId;
+      let secondFakeModel;
+      let secondMockModelData;
+
+      beforeEach(() => {
+        BaseService.registerDispatch(spy());
+
+        mapper = new Mapper(MockModel);
+        fakeService = new FakeService();
+
+        registerService(fakeService);
+
+        secondStartDateString = format(date.recent(), "YYYY-MM-DD");
+        secondStartTimeString = format(date.recent(), "hh:mm:ss a");
+
+        secondFakeRelatedModelId = random.number().toString();
+        secondModelId = random.number().toString();
+
+        secondMockModelData = {
+          id: secondModelId,
+          fullText,
+          age,
+          startDate: parse(secondStartDateString, "YYYY-MM-DD", new Date()),
+          startTime: parse(secondStartTimeString, "hh:mm:ss a", new Date()),
+          organizationId: secondFakeRelatedModelId,
+        };
+        secondFakeModel = new MockModel(secondMockModelData);
+      });
+
+      it("transforms a list of models into an array of raw API data", async () => {
+        const transformedModelData = await mapper.transformList([fakeModel, secondFakeModel]);
+
+        expect(transformedModelData[0]).to.deep.equal({
+          age,
+          fullText,
+          startDate: startDateString,
+          startTime: startTimeString,
+          organizationId: fakeRelatedModelId,
+          fakeItemIds: [],
+        });
+
+        expect(transformedModelData[1]).to.deep.equal({
+          age,
+          fullText,
+          startDate: secondStartDateString,
+          startTime: secondStartTimeString,
+          organizationId: secondFakeRelatedModelId,
+          fakeItemIds: [],
+        });
+      });
     });
   });
 
