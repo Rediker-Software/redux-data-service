@@ -30,20 +30,21 @@ import { IAdapter, IAdapterFactory } from "../Adapters/IAdapter";
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
 import { IMapperFactory, IMapper } from "../Mapper";
+import { IQueryManager, IQueryBuilder, IQueryResponse } from "../Query";
 
 export type IRequestCacheKey = string;
 
-export interface IRequestCache {
-  isLoading: boolean;
-  errors: string[] | string | any | null;
-  ids: List<string>;
-}
+// export interface IRequestCache {
+//   isLoading: boolean;
+//   errors: string[] | string | any | null;
+//   ids: List<string>;
+// }
 
-export type IRequestCacheRecord = Record<IRequestCache> & Readonly<IRequestCache>;
+// export type IRequestCacheRecord = Record<IRequestCache> & Readonly<IRequestCache>;
 
 export interface IDataServiceState<T extends IModelData> {
   items: Map<string, IModel<T>>;
-  requestCache: Map<IRequestCacheKey, IRequestCacheRecord>;
+  requestCache: Map<IRequestCacheKey, IQueryManager<T>>;
 }
 
 export interface IPostActionHandlers {
@@ -55,11 +56,11 @@ export type DataServiceStateRecord<T extends IModelData> =
   Record<IDataServiceState<T>>
   & Readonly<IDataServiceState<T>>;
 
-export const RequestCacheRecord = Record<IRequestCache>({
-  isLoading: false,
-  errors: null,
-  ids: List(),
-});
+// export const RequestCacheRecord = Record<IRequestCache>({
+//   isLoading: false,
+//   errors: null,
+//   ids: List(),
+// });
 
 export interface IPushAll<T extends IModelData> {
   items: IModel<T>[];
@@ -280,6 +281,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       SET_FIELD: this.makeActionType("SET_FIELD"),
       SET_META_FIELD: this.makeActionType("SET_META_FIELD"),
       SET_RELATIONSHIP: this.makeActionType("SET_RELATIONSHIP"),
+      SET_QUERY_RESPONSE: this.makeActionType("SET_QUERY_RESPONSE"),
     };
   }
 
@@ -306,6 +308,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       setField: this.makeActionCreator<ISetField<T>>(this.types.SET_FIELD),
       setMetaField: this.makeActionCreator<ISetMetaField<T>>(this.types.SET_META_FIELD),
       setRelationship: this.makeActionCreator<ISetMetaField<T>>(this.types.SET_RELATIONSHIP),
+      setQueryResponse: this.makeActionCreator<IQueryBuilder, IQueryResponse>(this.types.SET_QUERY_RESPONSE),
     };
   }
 
@@ -374,6 +377,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       [this.types.SET_FIELD]: this.setFieldReducer,
       [this.types.SET_META_FIELD]: this.setMetaFieldReducer,
       [this.types.SET_RELATIONSHIP]: this.setRelationshipReducer,
+      [this.types.SET_QUERY_RESPONSE]: this.setQueryResponseReducer,
     };
   }
 
