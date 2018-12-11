@@ -4,7 +4,6 @@
 
 ## Type parameters
 #### S 
-#### T :  [IModelData](imodeldata.md)
 #### R 
 ## Hierarchy
 
@@ -24,17 +23,17 @@
 
 ###  constructor
 
-⊕ **new ISerializerFactory**(ModelClass: *[IModelFactory](imodelfactory.md)<`T`>*): [ISerializer](iserializer.md)<`S`, `T`, `R`>
+⊕ **new ISerializerFactory**(ModelClass: *`S`*): [ISerializer](iserializer.md)<`S`, `R`>
 
-*Defined in [Serializers/ISerializer.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Serializers/ISerializer.ts#L12)*
+*Defined in [Serializers/ISerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/ISerializer.ts#L9)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| ModelClass | [IModelFactory](imodelfactory.md)<`T`> |
+| ModelClass | `S` |
 
-**Returns:** [ISerializer](iserializer.md)<`S`, `T`, `R`>
+**Returns:** [ISerializer](iserializer.md)<`S`, `R`>
 
 ___
 

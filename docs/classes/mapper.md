@@ -36,9 +36,11 @@ This class implements the `transform` and `normalize` methods on the IMapper int
 * [loadRelatedModel](mapper.md#loadrelatedmodel)
 * [normalize](mapper.md#normalize)
 * [normalizeField](mapper.md#normalizefield)
+* [normalizeQueryResponse](mapper.md#normalizequeryresponse)
 * [processNestedRelationship](mapper.md#processnestedrelationship)
 * [transform](mapper.md#transform)
 * [transformField](mapper.md#transformfield)
+* [transformList](mapper.md#transformlist)
 * [transformRelatedModel](mapper.md#transformrelatedmodel)
 * [transformRelationship](mapper.md#transformrelationship)
 
@@ -52,7 +54,7 @@ This class implements the `transform` and `normalize` methods on the IMapper int
 
 ⊕ **new Mapper**(ModelClass: *[IModelFactory](../interfaces/imodelfactory.md)<`T`>*): [Mapper](mapper.md)
 
-*Defined in [Mapper/Mapper.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L17)*
+*Defined in [Mapper/Mapper.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L18)*
 
 **Parameters:**
 
@@ -72,7 +74,7 @@ ___
 
 **● ModelClass**: *[IModelFactory](../interfaces/imodelfactory.md)<`T`>*
 
-*Defined in [Mapper/Mapper.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L17)*
+*Defined in [Mapper/Mapper.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L18)*
 
 ___
 
@@ -84,7 +86,7 @@ ___
 
 getfields(): `any`
 
-*Defined in [Mapper/Mapper.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L27)*
+*Defined in [Mapper/Mapper.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L28)*
 
 **Returns:** `any`
 
@@ -95,7 +97,7 @@ ___
 
 getrelationships(): `any`
 
-*Defined in [Mapper/Mapper.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L23)*
+*Defined in [Mapper/Mapper.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L24)*
 
 **Returns:** `any`
 
@@ -109,7 +111,7 @@ ___
 
 ▸ **isRelationship**(key: *`any`*): `any`
 
-*Defined in [Mapper/Mapper.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L31)*
+*Defined in [Mapper/Mapper.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L32)*
 
 **Parameters:**
 
@@ -126,9 +128,9 @@ ___
 
 ▸ **loadRelatedModel**(model: *[IModel](../interfaces/imodel.md)<`T`>*, relatedModelData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*): `Promise`<[IModel](../interfaces/imodel.md)<`any`>>
 
-*Defined in [Mapper/Mapper.ts:189](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L189)*
+*Defined in [Mapper/Mapper.ts:216](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L216)*
 
-Given the relatedModelData of a single item, normalize the data using the relationship's own serializer, converting it into a Model instance, then dispatch that related Model to its data service and return the Model.
+Given the relatedModelData of a single item, normalize the data using the relationship's own mapper, converting it into a Model instance, then dispatch that related Model to its data service and return the Model.
 
 **Parameters:**
 
@@ -147,7 +149,7 @@ ___
 
 ▸ **normalize**(data: *`Partial`<`R`>*): `Promise`<[IModel](../interfaces/imodel.md)<`T`>>
 
-*Defined in [Mapper/Mapper.ts:108](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L108)*
+*Defined in [Mapper/Mapper.ts:119](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L119)*
 
 Creates a new IModel by normalizing the given raw data. If a nested relationship was included in the payload, it will be side-loaded.
 
@@ -166,7 +168,7 @@ ___
 
 ▸ **normalizeField**(data: *`Partial`<`R`>*): `(Anonymous function)`
 
-*Defined in [Mapper/Mapper.ts:70](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L70)*
+*Defined in [Mapper/Mapper.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L71)*
 
 Returns a function, which when called, converts a single field on the provided raw data into its object equivalent if the given IFieldType implements the optional "normalize" method.
 
@@ -183,13 +185,35 @@ For example, an ISO date string will be converted into a Date object when given 
 **Returns:** `(Anonymous function)`
 
 ___
+<a id="normalizequeryresponse"></a>
+
+###  normalizeQueryResponse
+
+▸ **normalizeQueryResponse**(__namedParameters: *`object`*): `Promise`< [IQueryResponse](../interfaces/iqueryresponse.md) & `object`>
+
+*Defined in [Mapper/Mapper.ts:160](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L160)*
+
+Supports converting a raw query response object from the API into an IQueryResponse object.
+
+**Parameters:**
+
+**__namedParameters: `object`**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| data | [data]() |  \- |
+| items | `R`[] |
+
+**Returns:** `Promise`< [IQueryResponse](../interfaces/iqueryresponse.md) & `object`>
+
+___
 <a id="processnestedrelationship"></a>
 
 ### `<Protected>` processNestedRelationship
 
 ▸ **processNestedRelationship**(model: *[IModel](../interfaces/imodel.md)<`T`>*, nestedData: *`any`*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*): `Promise`< `string` &#124; `string`[]>
 
-*Defined in [Mapper/Mapper.ts:172](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L172)*
+*Defined in [Mapper/Mapper.ts:199](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L199)*
 
 Process the nestedData for the given relationship.
 
@@ -213,7 +237,7 @@ ___
 
 ▸ **transform**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `Promise`<`Partial`<`R`>>
 
-*Defined in [Mapper/Mapper.ts:89](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L89)*
+*Defined in [Mapper/Mapper.ts:90](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L90)*
 
 Transforms the given Model into a plain javascript object based on the Model's fieldTypes. Each fieldType with `serialize = false` will be excluded.
 
@@ -232,7 +256,7 @@ ___
 
 ▸ **transformField**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `(Anonymous function)`
 
-*Defined in [Mapper/Mapper.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L44)*
+*Defined in [Mapper/Mapper.ts:45](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L45)*
 
 Returns a function, which when called, transforms the given fieldName on the provided model into its serialized equivalent if the given IFieldType implements the optional "transform" method.
 
@@ -249,15 +273,34 @@ For example, a Date object will be converted into an ISO Date string when given 
 **Returns:** `(Anonymous function)`
 
 ___
+<a id="transformlist"></a>
+
+###  transformList
+
+▸ **transformList**(models: *[IModel](../interfaces/imodel.md)<`T`>[]*): `Promise`<`R`[]>
+
+*Defined in [Mapper/Mapper.ts:107](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L107)*
+
+Transforms a given list of Models into an array of items of R
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| models | [IModel](../interfaces/imodel.md)<`T`>[] |  \- |
+
+**Returns:** `Promise`<`R`[]>
+
+___
 <a id="transformrelatedmodel"></a>
 
 ### `<Protected>` transformRelatedModel
 
 ▸ **transformRelatedModel**(relatedModel: *[IModel](../interfaces/imodel.md)<`any`>*): `Promise`<`object`>
 
-*Defined in [Mapper/Mapper.ts:161](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L161)*
+*Defined in [Mapper/Mapper.ts:188](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L188)*
 
-Transform the given relatedModel using its own serializer.
+Transform the given relatedModel using its own mapper.
 
 **Parameters:**
 
@@ -274,7 +317,7 @@ ___
 
 ▸ **transformRelationship**(fieldValue: * [IModel](../interfaces/imodel.md)<`any`> &#124; [IModel](../interfaces/imodel.md)<`any`>[]*, relationship: *[IFieldRelationship](../interfaces/ifieldrelationship.md)*): `Promise`<`object`>
 
-*Defined in [Mapper/Mapper.ts:146](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/Mapper.ts#L146)*
+*Defined in [Mapper/Mapper.ts:173](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/Mapper.ts#L173)*
 
 Transform the given model or array of models depending on the relationship type.
 

@@ -29,7 +29,7 @@
 
 **● changes**: *`Partial`<`T`>*
 
-*Defined in [Model/IModel.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/IModel.ts#L19)*
+*Defined in [Model/IModel.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Model/IModel.ts#L19)*
 
 ___
 <a id="errors"></a>
@@ -38,7 +38,7 @@ ___
 
 **● errors**: *[IModelKeys](../#imodelkeys)<`T`>*
 
-*Defined in [Model/IModel.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/IModel.ts#L20)*
+*Defined in [Model/IModel.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Model/IModel.ts#L20)*
 
 ___
 <a id="isloading"></a>
@@ -47,7 +47,7 @@ ___
 
 **● isLoading**: *`boolean`*
 
-*Defined in [Model/IModel.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/IModel.ts#L18)*
+*Defined in [Model/IModel.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Model/IModel.ts#L18)*
 
 ___
 <a id="isshadow"></a>
@@ -56,7 +56,7 @@ ___
 
 **● isShadow**: *`boolean`*
 
-*Defined in [Model/IModel.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Model/IModel.ts#L17)*
+*Defined in [Model/IModel.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Model/IModel.ts#L17)*
 
 ___
 

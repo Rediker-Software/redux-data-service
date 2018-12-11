@@ -12,43 +12,83 @@
 
 ## Index
 
-### Properties
+### Methods
 
 * [normalize](mockmapper.md#normalize)
+* [normalizeQueryResponse](mockmapper.md#normalizequeryresponse)
 * [transform](mockmapper.md#transform)
+* [transformList](mockmapper.md#transformlist)
 
 ---
 
-## Properties
+## Methods
 
 <a id="normalize"></a>
 
 ###  normalize
 
-**● normalize**: *`any`* =  stub().callsFake(data =>
-    of$({
-      data,
-    }),
-  )
+▸ **normalize**(data: *`any`*): `Promise`<`any`>
 
-*Implementation of [IMapper](../interfaces/imapper.md).[normalize](../interfaces/imapper.md#normalize)*
+*Defined in [Mapper/MockMapper.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/MockMapper.ts#L12)*
 
-*Defined in [Mapper/MockMapper.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/MockMapper.ts#L12)*
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| data | `any` |
+
+**Returns:** `Promise`<`any`>
+
+___
+<a id="normalizequeryresponse"></a>
+
+###  normalizeQueryResponse
+
+▸ **normalizeQueryResponse**(data: *`any`*): `Promise`<`any`>
+
+*Defined in [Mapper/MockMapper.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/MockMapper.ts#L16)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| data | `any` |
+
+**Returns:** `Promise`<`any`>
 
 ___
 <a id="transform"></a>
 
 ###  transform
 
-**● transform**: *`any`* =  stub().callsFake(model =>
-    of$({
-      ...model,
-    }),
-  )
+▸ **transform**(model: *`any`*): `Promise`<`any`>
 
-*Implementation of [IMapper](../interfaces/imapper.md).[transform](../interfaces/imapper.md#transform)*
+*Defined in [Mapper/MockMapper.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/MockMapper.ts#L4)*
 
-*Defined in [Mapper/MockMapper.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/MockMapper.ts#L6)*
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| model | `any` |
+
+**Returns:** `Promise`<`any`>
+
+___
+<a id="transformlist"></a>
+
+###  transformList
+
+▸ **transformList**(models: *`any`*): `Promise`<`any`>
+
+*Defined in [Mapper/MockMapper.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/MockMapper.ts#L8)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| models | `any` |
+
+**Returns:** `Promise`<`any`>
 
 ___
 

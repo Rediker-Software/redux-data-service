@@ -19,7 +19,9 @@
 ### Properties
 
 * [normalize](imapper.md#normalize)
+* [normalizeQueryResponse](imapper.md#normalizequeryresponse)
 * [transform](imapper.md#transform)
+* [transformList](imapper.md#transformlist)
 
 ---
 
@@ -31,7 +33,7 @@
 
 **● normalize**: *`function`*
 
-*Defined in [Mapper/IMapper.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/IMapper.ts#L5)*
+*Defined in [Mapper/IMapper.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/IMapper.ts#L7)*
 
 #### Type declaration
 ▸(data: *`Partial`<`R`>*): `Promise`<[IModel](imodel.md)<`T`>>
@@ -45,13 +47,33 @@
 **Returns:** `Promise`<[IModel](imodel.md)<`T`>>
 
 ___
+<a id="normalizequeryresponse"></a>
+
+###  normalizeQueryResponse
+
+**● normalizeQueryResponse**: *`function`*
+
+*Defined in [Mapper/IMapper.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/IMapper.ts#L8)*
+
+#### Type declaration
+▸(data: *[IRawQueryResponse](irawqueryresponse.md)<`R`>*): `Promise`<[IQueryResponse](iqueryresponse.md)>
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| data | [IRawQueryResponse](irawqueryresponse.md)<`R`> |
+
+**Returns:** `Promise`<[IQueryResponse](iqueryresponse.md)>
+
+___
 <a id="transform"></a>
 
 ###  transform
 
 **● transform**: *`function`*
 
-*Defined in [Mapper/IMapper.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/a126781/src/Mapper/IMapper.ts#L4)*
+*Defined in [Mapper/IMapper.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/IMapper.ts#L5)*
 
 #### Type declaration
 ▸(model: * [IModel](imodel.md)<`T`> &#124; `Partial`<`T`>*): `Promise`<`Partial`<`R`>>
@@ -63,6 +85,26 @@ ___
 | model |  [IModel](imodel.md)<`T`> &#124; `Partial`<`T`>|
 
 **Returns:** `Promise`<`Partial`<`R`>>
+
+___
+<a id="transformlist"></a>
+
+###  transformList
+
+**● transformList**: *`function`*
+
+*Defined in [Mapper/IMapper.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/IMapper.ts#L6)*
+
+#### Type declaration
+▸(models: *[IModel](imodel.md)<`T`>[]*): `Promise`<`R`[]>
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| models | [IModel](imodel.md)<`T`>[] |
+
+**Returns:** `Promise`<`R`[]>
 
 ___
 
