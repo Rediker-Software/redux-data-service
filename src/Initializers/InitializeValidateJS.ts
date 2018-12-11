@@ -1,7 +1,7 @@
 import * as validateJS from "validate.js";
 import { forEach } from "lodash";
 
-import * as Validators from "../Validators";
+import * as Validators from "../FieldValidators";
 
 export interface IValidator {
   (validate: validateJS.ValidateJS): void;

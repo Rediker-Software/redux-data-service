@@ -3,7 +3,7 @@
 import { validate } from "validate.js";
 import { parse } from "date-fns";
 import { DateField } from "./DateField";
-import { initializeDateTimeValidator } from "../../Validators";
+import { initializeDateTimeValidator } from "../../FieldValidators";
 
 declare var intern;
 const { describe, it, before } = intern.getPlugin("interface.bdd");

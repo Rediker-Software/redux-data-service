@@ -4,7 +4,7 @@ import { validate } from "validate.js";
 import { random } from "faker";
 
 import { PhoneNumberField } from "./PhoneNumberField";
-import { initializePhoneNumberValidator } from "../../Validators";
+import { initializePhoneNumberValidator } from "../../FieldValidators";
 
 declare var intern;
 const { describe, it, before } = intern.getPlugin("interface.bdd");
