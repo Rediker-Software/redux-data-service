@@ -1,6 +1,3 @@
-import * as webpack from "webpack";
-
-import * as CleanWebpackPlugin from "clean-webpack-plugin";
 import { TsConfigPathsPlugin } from "awesome-typescript-loader";
 
 import { join } from "path";
@@ -28,10 +25,6 @@ export default new Config().merge({
     path: outPath,
     publicPath: "/",
   },
-  plugins: [
-    new CleanWebpackPlugin([outPath], {verbose: true, allowExternal: true}),
-    new webpack.optimize.AggressiveMergingPlugin(),
-  ],
   optimization: {
     splitChunks: {
       cacheGroups: {

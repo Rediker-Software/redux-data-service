@@ -5,7 +5,9 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/Rediker-Software/redux-data-service.git"
@@ -46,7 +48,8 @@
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
     "webpack-config": "^7.5.0",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.10",
+    "circular-dependency-plugin": "^5.0.2"
   },
   "dependencies": {
     "date-fns": "2.0.0-alpha.7",

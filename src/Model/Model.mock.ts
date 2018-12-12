@@ -4,8 +4,14 @@ import { merge } from "lodash";
 
 import { IModel, IModelData } from "./IModel";
 import { Model } from "./Model";
+import * as testThing from "./Model";
 import { StringField } from "./FieldType";
 import { attr } from "./Decorators";
+
+const x = Model;
+const y = testThing;
+
+debugger;
 
 export class FakeModel extends Model<IFakeModelData> implements IFakeModel {
   public serviceName = "fakeModel";
