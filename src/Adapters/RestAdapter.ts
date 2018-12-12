@@ -120,7 +120,7 @@ export class RestAdapter implements IAdapter<string> {
       headers: this.buildHeaders(headers),
       method,
       responseType: "json",
-      url: (method !== "GET" || isEmpty(payload) ? url : `${url}?${this.buildQueryParams(payload)}`),
+      url: (method !== "GET" || isEmpty(payload) ? url : `${url}?${payload}`),
     }).map((x) => x.response);
   }
 
@@ -136,18 +136,5 @@ export class RestAdapter implements IAdapter<string> {
       "Content-Type": "application/json",
     };
   }
-
-  /**
-   * Convert the given object into a string of query params.
-   *
-   * Example: {abc: 123, hello: "world"} becomes: "abc=123&hello=world"
-   *
-   * @param payload
-   * @returns {string}
-   */
-  protected buildQueryParams(payload: any): string {
-    return Object.keys(payload)
-      .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(payload[k])}`)
-      .join("&");
-  }
+  
 }
