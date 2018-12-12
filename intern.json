@@ -1,8 +1,8 @@
 {
   "browser": {
     "requires": [
-      "test-dist/test.bundle.js",
-      "test-dist/vendor.bundle.js"
+      "test-dist/test.js",
+      "test-dist/vendor.js"
     ],
     "suites": [
       "test-dist/*.test.js"
