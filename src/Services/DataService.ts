@@ -30,17 +30,9 @@ import { IAdapter, IAdapterFactory } from "../Adapters/IAdapter";
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
 import { IMapperFactory, IMapper } from "../Mapper";
-import { IQueryManager, IQueryBuilder, IQueryResponse } from "../Query";
+import { IQueryManager, IQueryBuilder, IQueryResponse, QueryManager } from "../Query";
 
 export type IRequestCacheKey = string;
-
-// export interface IRequestCache {
-//   isLoading: boolean;
-//   errors: string[] | string | any | null;
-//   ids: List<string>;
-// }
-
-// export type IRequestCacheRecord = Record<IRequestCache> & Readonly<IRequestCache>;
 
 export interface IDataServiceState<T extends IModelData> {
   items: Map<string, IModel<T>>;
@@ -55,12 +47,6 @@ export interface IPostActionHandlers {
 export type DataServiceStateRecord<T extends IModelData> =
   Record<IDataServiceState<T>>
   & Readonly<IDataServiceState<T>>;
-
-// export const RequestCacheRecord = Record<IRequestCache>({
-//   isLoading: false,
-//   errors: null,
-//   ids: List(),
-// });
 
 export interface IPushAll<T extends IModelData> {
   items: IModel<T>[];
@@ -120,7 +106,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
   private readonly DataServiceStateRecord = Record<IDataServiceState<T>>({
     items: Map<string, IModel<T>>(),
-    requestCache: Map<IRequestCacheKey, IRequestCacheRecord>(),
+    requestCache: Map<IRequestCacheKey, IQueryManager<T>>(),
   });
 
   public get adapter() {
@@ -296,7 +282,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       ...actions,
       createRecord: this.makeActionCreator<IModelId, IPostActionHandlers>(this.types.CREATE_RECORD),
       deleteRecord: this.makeActionCreator<IModelId, IPostActionHandlers>(this.types.DELETE_RECORD),
-      fetchAll: this.makeActionCreator<any, IPostActionHandlers & IForceReload>(this.types.FETCH_ALL),
+      fetchAll: this.makeActionCreator<IQueryBuilder, IPostActionHandlers & IForceReload>(this.types.FETCH_ALL),
       fetchRecord: this.makeActionCreator<IModelId, IPostActionHandlers & IForceReload>(this.types.FETCH_RECORD),
       patchRecord: this.makeActionCreator<Partial<T>, IPostActionHandlers>(this.types.PATCH_RECORD),
       pushAll: this.makeActionCreator(this.types.PUSH_ALL),
@@ -381,18 +367,18 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     };
   }
 
-  public fetchAllReducer = (state: DataServiceStateRecord<T>, action: IAction<any>) =>
+  public fetchAllReducer = (state: DataServiceStateRecord<T>, action: IAction<IQueryBuilder>) =>
     state.update("requestCache", (requestCache) => (
-      requestCache.update(JSON.stringify(action.payload), (requestCacheRecord) => (
-        requestCacheRecord
+      requestCache.update(action.payload.getHashCode(), (queryManager) => (
+        queryManager
           ? (
             this.shouldFetchAll(action, state)
-              ? requestCacheRecord.set("isLoading", true)
-              : requestCacheRecord
+              ? queryManager.items.map(item => 
+                item.applyUpdates({ isLoading: true }))
+              : queryManager
           )
-          : new RequestCacheRecord({ isLoading: true })
-      ))
-    ))
+          : new QueryManager<T>(action.payload, null, null, { isLoading: true })
+      ))))    
 
   public pushAllReducer = (state: DataServiceStateRecord<T>, action: IAction<IPushAll<T>>) => state.withMutations((record) => {
     const ids = [];
@@ -471,6 +457,19 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       } else if (process.env.NODE_ENV !== "production") {
         // tslint:disable-next-line
         console.warn(`${this.name}: setRelationshipReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
+      }
+    })
+
+    public setQueryResponseReducer = (state: DataServiceStateRecord<T>, action: IAction<ISetField<T>>) =>
+    state.withMutations((record) => {
+      const { id, fieldName, value } = action.payload;
+      if (record.items.has(id)) {
+        record.update("items", (items) => items.update(id, (item: IModel<T>) => {
+          return item.applyUpdates(undefined, undefined, { [fieldName]: value });
+        }));
+      } else if (process.env.NODE_ENV !== "production") {
+        // tslint:disable-next-line
+        console.warn(`${this.name}: setQueryResponseReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
       }
     })
 
