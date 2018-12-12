@@ -8,3 +8,4 @@ export interface IFieldType<T = any> {
   transform?(value: T): Promise<any>;
   normalize(serializedValue: any): Promise<T>;
 }
+
