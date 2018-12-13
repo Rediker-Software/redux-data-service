@@ -5,10 +5,7 @@ import { merge } from "lodash";
 import { IModel, IModelData } from "./IModel";
 import { Model } from "./Model";
 import { StringField } from "./FieldType";
-import { attr } from "./Decorators/Attr";
-
-const x = Model;
-debugger;
+import { attr } from "./Decorators";
 
 export class FakeModel extends Model<IFakeModelData> implements IFakeModel {
   public serviceName = "fakeModel";

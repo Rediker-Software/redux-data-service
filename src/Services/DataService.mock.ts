@@ -1,9 +1,7 @@
 // tslint:disable:max-classes-per-file
 import { DataService } from "./DataService";
-import { IModelFactory } from "../Model/IModel";
+import { IModelFactory } from "../Model";
 import { FakeModel, IFakeModelData } from "../Model/Model.mock";
-
-debugger;
 
 export class FakeModelService extends DataService<IFakeModelData> {
   public readonly name = "fakeModel";

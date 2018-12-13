@@ -7,14 +7,29 @@ import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
 import { omit, range } from "lodash";
 
+import { BaseService, DataService, registerService } from "../Services";
 import {
+  attr,
+  belongsTo,
+  createMockFakeModel,
+  createMockFakeModelArray,
+  DateField,
+  FakeModel,
+  hasMany,
+  IFakeModelData,
+  IModelFactory,
   Model,
-} from "../Model/Model";
+  NumberField,
+  StringField,
+  TimeField,
+} from "../Model";
 
-const x = Model;
+import { MockAdapter } from "../Adapters/MockAdapter";
+import { ArrayField } from "../Model/FieldType";
+import { IRawQueryResponse } from "../Query";
 
-debugger;
-/*
+import { Mapper } from "./Mapper";
+
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
 const { expect } = intern.getPlugin("chai");
@@ -475,4 +490,3 @@ describe("Mapper", () => {
   });
 
 });
-*/
