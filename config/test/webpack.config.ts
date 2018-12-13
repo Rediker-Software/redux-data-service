@@ -66,7 +66,7 @@ export default new Config().extend({
     new webpack.optimize.AggressiveMergingPlugin(),
     new CircularDependencyPlugin({
       exclude: /node_modules/,
-      failOnError: true,
+      failOnError: false,
       cwd: process.cwd(),
     }),
   ],

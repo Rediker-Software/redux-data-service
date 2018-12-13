@@ -3,14 +3,11 @@ import { lorem, random } from "faker";
 import { merge } from "lodash";
 
 import { IModel, IModelData } from "./IModel";
-import { Model } from "./Model";
-import * as testThing from "./Model";
+import { Model } from "../";
 import { StringField } from "./FieldType";
 import { attr } from "./Decorators";
 
 const x = Model;
-const y = testThing;
-
 debugger;
 
 export class FakeModel extends Model<IFakeModelData> implements IFakeModel {
