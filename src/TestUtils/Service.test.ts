@@ -1,7 +1,8 @@
 // tslint:disable:no-unused-expression
 
 import { getConfiguration } from "../Configure";
-import { DataService, getService } from "../Services";
+import { DataService } from "../Services/DataService";
+import { getService } from "../Services/ServiceProvider";
 import { IFakeModelData } from "../Model/Model.mock";
 
 import { RestAdapter } from "../Adapters/RestAdapter";

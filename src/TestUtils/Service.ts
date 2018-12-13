@@ -1,9 +1,10 @@
-import { forEach, isEmpty, defaults, upperFirst } from "lodash";
+import { defaults, forEach, isEmpty, upperFirst } from "lodash";
 import { Store } from "redux";
 import { spy, stub, useFakeXMLHttpRequest } from "sinon";
 
-import { IModel, IModelData } from "../Model";
-import { getDataService, IAction, IModuleMap, IService } from "../Services";
+import { IModel, IModelData } from "../Model/IModel";
+import { IAction, IService } from "../Services/IService";
+import { getDataService, IModuleMap } from "../Services/ServiceProvider";
 import { configure, IConfiguration } from "../Configure";
 import { MemoryAdapter } from "../Adapters/MemoryAdapter";
 import { MemorySerializer } from "../Serializers/MemorySerializer";

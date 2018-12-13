@@ -1,10 +1,10 @@
 import { random } from "faker";
 import { spy, stub } from "sinon";
 
-import { fakeModelModule, initializeTestServices, seedService } from "../TestUtils";
-
-import { getDataService } from "../Services";
 import { MemoryAdapter } from "./MemoryAdapter";
+import { initializeTestServices, seedService } from "../TestUtils/Service";
+import { fakeModelModule } from "../TestUtils/FakeModelModule";
+import { getDataService } from "../Services/ServiceProvider";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");

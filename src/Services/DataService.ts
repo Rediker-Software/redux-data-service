@@ -23,13 +23,13 @@ import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 
 import { getConfiguration } from "../Configure";
-import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
-import { ISerializer, ISerializerFactory } from "../Serializers";
+import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model/IModel";
+import { ISerializer, ISerializerFactory } from "../Serializers/ISerializer";
 import { IAdapter, IAdapterFactory } from "../Adapters/IAdapter";
 
 import { BaseService } from "./BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
-import { IMapperFactory, IMapper } from "../Mapper";
+import { IMapperFactory, IMapper } from "../Mapper/IMapper";
 
 export type IRequestCacheKey = string;
 

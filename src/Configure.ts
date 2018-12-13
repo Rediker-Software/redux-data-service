@@ -2,12 +2,15 @@ import { Store } from "redux";
 import { from as from$ } from "rxjs/observable/from";
 
 import { initialize } from "./Initialize";
-import { BaseService, getEpics, getReducers, IModuleMap, initializeServices } from "./Services";
-import { configureStore as defaultConfigureStore, IConfigureStore } from "./Store";
-import { ISerializerFactory, RestSerializer } from "./Serializers";
+import { configureStore as defaultConfigureStore, IConfigureStore } from "./Store/ConfigureStore";
+import { getEpics, getReducers, IModuleMap, initializeServices } from "./Services/ServiceProvider";
 import { IAdapterFactory } from "./Adapters/IAdapter";
-import { RestAdapter } from "./Adapters";
-import { IMapperFactory, Mapper } from "./Mapper";
+import { ISerializerFactory } from "./Serializers/ISerializer";
+import { IMapperFactory } from "./Mapper/IMapper";
+import { RestAdapter } from "./Adapters/RestAdapter";
+import { RestSerializer } from "./Serializers/RestSerializer";
+import { Mapper } from "./Mapper/Mapper";
+import { BaseService } from "./Services/BaseService";
 
 export interface IConfiguration {
   modules: IModuleMap;

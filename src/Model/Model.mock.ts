@@ -3,9 +3,9 @@ import { lorem, random } from "faker";
 import { merge } from "lodash";
 
 import { IModel, IModelData } from "./IModel";
-import { Model } from "../";
+import { Model } from "./Model";
 import { StringField } from "./FieldType";
-import { attr } from "./Decorators";
+import { attr } from "./Decorators/Attr";
 
 const x = Model;
 debugger;

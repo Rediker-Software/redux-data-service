@@ -7,28 +7,9 @@ import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
 import { omit, range } from "lodash";
 
-import { BaseService, DataService, registerService } from "../Services";
 import {
-  attr,
-  belongsTo,
-  createMockFakeModel,
-  createMockFakeModelArray,
-  DateField,
-  FakeModel,
-  hasMany,
-  IFakeModelData,
-  IModelFactory,
   Model,
-  NumberField,
-  StringField,
-  TimeField,
-} from "../Model";
-
-import { MockAdapter } from "../Adapters/MockAdapter";
-import { ArrayField } from "../Model/FieldType";
-import { IRawQueryResponse } from "../Query";
-
-import { Mapper } from "./Mapper";
+} from "../Model/Model";
 
 const x = Model;
 

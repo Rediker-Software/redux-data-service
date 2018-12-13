@@ -1,5 +1,5 @@
-import { IQueryParams } from "../Query";
-import { ISerializer } from ".";
+import { IQueryParams } from "../Query/QueryBuilder";
+import { ISerializer } from "./ISerializer";
 
 /**
  * An in-memory ISerializer implementation for testing and local development purposes.
