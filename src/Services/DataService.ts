@@ -373,11 +373,10 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
         queryManager
           ? (
             this.shouldFetchAll(action, state)
-              ? queryManager.items.map(item => 
-                item.applyUpdates({ isLoading: true }))
-              : queryManager
-          )
-          : new QueryManager<T>(action.payload, null, null, { isLoading: true })
+              ? queryManager.items.map(item => item.applyUpdates(null, null, { isLoading: true })
+              : queryManager )
+            ) 
+            : new QueryManager<T>(action.payload, null, null, { isLoading: true })
       ))))    
 
   public pushAllReducer = (state: DataServiceStateRecord<T>, action: IAction<IPushAll<T>>) => state.withMutations((record) => {
@@ -388,9 +387,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
         ids.push(item.id);
       });
     }));
-    record.update("requestCache", (requestCache) =>
-      requestCache.set(hash(action.meta.queryParams || {}), new RequestCacheRecord({ ids: List(ids) })),
-    );
   })
 
   public pushRecordReducer = (state: DataServiceStateRecord<T>, action: IAction<IModel<T>>) => state.withMutations((record) => {

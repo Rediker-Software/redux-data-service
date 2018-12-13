@@ -185,7 +185,8 @@ export function seedServiceList<T extends IModelData>(serviceName: string, count
   }
 
   const service = getDataService(serviceName);
-  service.actions.pushAll({ items: seededData }, { queryParams: overrideValues }).invoke();
+//  service.actions.pushAll({ items: seededData }, { queryParams: overrideValues }).invoke();
+  service.actions.setQueryResponse({ items: seededData }, { queryParams: overrideValues }).invoke();
 
   return seededData;
 }
