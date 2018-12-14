@@ -300,114 +300,7 @@ describe("DataService", () => {
       expect(actual).to.deep.equal(expected);
     });
   });
-
-  it("has a reducer for setting the field of a record", () => {
-    expect(fakeService.setFieldReducer).to.be.a("function");
-  });
-
-  describe("setFieldReducer", () => {
-    let setRecordSpy;
-
-    beforeEach(() => {
-      setRecordSpy = spy(Record.prototype, "set");
-    });
-
-    afterEach(() => {
-      setRecordSpy.restore();
-    });
-
-    it("should set the field on the item with the new value", () => {
-      const modelData = {
-        id: "1",
-        fullText: "Egg",
-      };
-      const modelMeta = {} as IModelMeta<IFakeModelData>;
-      const model = new FakeModel(modelData, modelMeta);
-
-      const items = Map()
-        .set(modelData.id, model);
-
-      const stateRecord = Record({ items })();
-
-      const action = {
-        type: `${serviceName}/SET_FIELD`,
-        payload: {
-          id: modelData.id,
-          fieldName: "fullText",
-          value: "Chicken",
-        },
-        meta: {},
-      };
-
-      const sut = fakeService.setFieldReducer(stateRecord, action);
-      const updatedItem = sut
-        .get("items")
-        .get(modelData.id);
-
-      expect(updatedItem.fullText, action.payload.value).to.be.equal;
-    });
-
-    it("should not set the items on the record when id not found in items", () => {
-      const modelData = {
-        id: "1",
-        firstName: "Elton",
-      };
-      const modelMeta = {} as IModelMeta<IFakeModelData>;
-      const model = new FakeModel(modelData, modelMeta);
-
-      const items = Map()
-        .set(modelData.id, model);
-
-      const stateRecord = Record({ items })();
-
-      const action = {
-        type: `${serviceName}/SET_FIELD`,
-        payload: {
-          id: "not likely to exist",
-          fieldName: "firstName",
-          value: "Sir Elton",
-        },
-        meta: {},
-      };
-
-      const sut = fakeService.setFieldReducer(stateRecord, action);
-
-      expect(setRecordSpy.calledWith("items")).to.be.false;
-    });
-
-    it("should update items with updated record when id found in items", () => {
-      const modelData = {
-        id: "1",
-        fullText: "Anakin",
-      };
-      const modelMeta = { changes: null } as IModelMeta<IFakeModelData>;
-      const model = new FakeModel(modelData, modelMeta);
-
-      const items = Map()
-        .set(modelData.id, model);
-
-      const stateRecord = Record({ items })();
-
-      const action = {
-        type: `${serviceName}/SET_FIELD`,
-        payload: {
-          id: modelData.id,
-          fieldName: "fullText",
-          value: "Darth",
-        },
-        meta: {},
-      };
-
-      const sut = fakeService.setFieldReducer(stateRecord, action);
-
-      expect(setRecordSpy.calledWith("items",
-        match((updatedItems) => {
-          const updatedModel = updatedItems.get(modelData.id);
-          return updatedModel.meta.changes.fullText === action.payload.value;
-        }))).to.be.true;
-    });
-  });
-
+  
   it("has an epic for performing a fetchAll request with the query params", () => {
     expect(fakeService.fetchAllEpic).to.be.a("function");
   });
@@ -441,20 +334,6 @@ describe("DataService", () => {
           () => {
             expect(pushAllAction.calledWithMatch(expectedResult)).to.be.true;
           });
-    });
-  });
-
-  describe("pushAllReducer", () => {
-    it("updates the state's requestCache, after the pushAllReducer fires", () => {
-      const queryParams = { fakeField: "fakeVal" };
-
-      const updatedState: IDataServiceState<any> =
-        fakeService.pushAllReducer(state.fakeModel, fakeService.actions.pushAll({ items: fakeModels }, { queryParams }));
-
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as IRequestCacheKey);
-      expect(cachedRequest.toJS()).to.deep.equal(
-        { ids: fakeModels.map((x) => x.id), isLoading: false, errors: null },
-        "cached request value is properly initilized");
     });
   });
 

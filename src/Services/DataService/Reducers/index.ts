@@ -1,4 +1,6 @@
+export * from "../DataService";
 export * from "./FetchAllReducer";
+export * from "../IDataServiceState";
 export * from "./PushAllReducer";
 export * from "./PushRecordReducer";
 export * from "./SetFieldReducer";
