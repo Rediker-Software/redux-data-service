@@ -1,5 +1,5 @@
-import { QueryCacheRecord } from "../../../Query";
-import { IModelData } from "../../../Model";
+import { QueryCacheRecord } from "../../../Query/QueryCacheRecord";
+import { IModelData } from "../../../Model/IModel";
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 import { FetchAllAction, shouldFetchAll } from "../ShouldFetchAll";
 

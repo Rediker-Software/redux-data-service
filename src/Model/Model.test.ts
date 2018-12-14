@@ -6,16 +6,22 @@ import { of as of$ } from "rxjs/observable/of";
 import { Subject } from "rxjs/Subject";
 import { lorem, random } from "faker";
 
-import { BaseService, DataService, registerService } from "../Services";
 import { initializeValidateJS } from "../Initializers";
 
 import { Model } from "./Model";
 import { IModelData } from "./IModel";
-import { attr, belongsTo, hasMany, required } from "./Decorators";
 
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
-import { initializeTestServices, seedService, fakeModelModule } from "../TestUtils";
 import { IFakeModelData } from "./Model.mock";
+import { attr } from "./Decorators/Attr";
+import { initializeTestServices, seedService } from "../TestUtils/Service";
+import { fakeModelModule } from "../TestUtils/FakeModelModule";
+import { belongsTo } from "./Decorators/BelongsTo";
+import { registerService } from "../Services/ServiceProvider";
+import { hasMany } from "./Decorators/HasMany";
+import { DataService } from "../Services/DataService";
+import { BaseService } from "../Services/BaseService";
+import { required } from "./Decorators/Required";
 
 declare var intern;
 const { describe, it, beforeEach, before } = intern.getPlugin("interface.bdd");

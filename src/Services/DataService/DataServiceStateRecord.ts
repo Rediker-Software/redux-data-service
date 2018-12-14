@@ -1,7 +1,7 @@
 import { Map, Record } from "immutable";
 
-import { IModel, IModelData } from "../../Model";
-import { IQueryCacheRecord } from "../../Query";
+import { IModel, IModelData } from "../../Model/IModel";
+import { IQueryCacheRecord } from "../../Query/QueryCacheRecord";
 import { IDataServiceState } from "./IDataServiceState";
 
 export type IDataServiceStateRecord<T extends IModelData> = Record<IDataServiceState<T>> & Readonly<IDataServiceState<T>>;

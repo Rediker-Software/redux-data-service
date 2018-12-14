@@ -1,6 +1,6 @@
 import { IAction } from "../IService";
 import { IDataServiceStateRecord } from "./DataServiceStateRecord";
-import { IQueryBuilder } from "../../Query";
+import { IQueryBuilder } from "../../Query/QueryBuilder";
 import { IPostActionHandlers } from "./IPostActionHandlers";
 import { IForceReload } from "./IForceReload";
 

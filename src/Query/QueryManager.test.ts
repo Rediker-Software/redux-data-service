@@ -2,12 +2,12 @@
 
 import { random } from "faker";
 
-import { IQueryResponse } from ".";
 import { QueryBuilder } from "./QueryBuilder";
 import { QueryManager } from "./QueryManager";
-
-import { fakeModelModule, initializeTestServices, seedServiceList } from "../TestUtils";
-import { IFakeModelData } from "../Model";
+import { IQueryResponse } from "./IQueryResponse";
+import { initializeTestServices, seedServiceList } from "../TestUtils/Service";
+import { fakeModelModule } from "../TestUtils/FakeModelModule";
+import { IFakeModelData } from "../Model/Model.mock";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");

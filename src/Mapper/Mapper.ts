@@ -1,12 +1,14 @@
 import { flow, keys, partition, pick, pickBy, property } from "lodash/fp";
 import { fromPairs } from "lodash";
 
-import { IMapper } from ".";
-
-import { mapWithKeys } from "../Utils";
-import { IModel, IModelData, IModelFactory, IFieldType, IFieldRelationship, RelationshipType } from "../Model";
-import { getDataService } from "../Services";
-import { IRawQueryResponse, IQueryResponse } from "../Query";
+import { IMapper } from "./IMapper";
+import { IModel, IModelData, IModelFactory } from "../Model/IModel";
+import { IFieldType } from "../Model/FieldType";
+import { IRawQueryResponse } from "../Query/IRawQueryResponse";
+import { IQueryResponse } from "../Query/IQueryResponse";
+import { IFieldRelationship, RelationshipType } from "../Model/Decorators/Relationship";
+import { getDataService } from "../Services/ServiceProvider";
+import { mapWithKeys } from "../Utils/Lodash";
 
 /**
  * This class implements the `transform` and `normalize` methods on the IMapper interface, to provide a default mechanism

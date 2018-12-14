@@ -7,12 +7,14 @@ import { validate } from "validate.js";
 import { forEach, get, isEmpty, merge, omit, find } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
-import { DataService, getDataService } from "../Services";
-import { addPenultimateFieldToPath, flattenObjectKeys } from "../Utils";
-
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
 import { DateTimeField, IFieldType, StringField } from "./FieldType";
-import { attr, IFieldRelationship, RelationshipType } from "./Decorators";
+import { addPenultimateFieldToPath } from "../Utils/String";
+import { getDataService } from "../Services/ServiceProvider";
+import { IFieldRelationship, RelationshipType } from "./Decorators/Relationship";
+import { DataService } from "../Services/DataService";
+import { flattenObjectKeys } from "../Utils/Lodash";
+import { attr } from "./Decorators/Attr";
 
 /**
  * # Model

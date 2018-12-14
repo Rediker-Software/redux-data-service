@@ -1,10 +1,9 @@
 import { Observable } from "rxjs/Observable";
 import { of as of$ } from "rxjs/observable/of";
 
-import { seedService, seedServiceList } from "../TestUtils";
-
-import { IModelData } from "../Model";
 import { IAdapter } from "./IAdapter";
+import { IModelData } from "../Model/IModel";
+import { seedService, seedServiceList } from "../TestUtils/Service";
 
 /**
  * An in-memory IAdapter implementation which returns fake data when it is requested.

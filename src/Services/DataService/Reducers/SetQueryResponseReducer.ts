@@ -1,4 +1,4 @@
-import { IModel, IModelData } from "../../../Model";
+import { IModel, IModelData } from "../../../Model/IModel";
 import { IAction } from "../../IService";
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 import { ISetField } from "./SetFieldReducer";
