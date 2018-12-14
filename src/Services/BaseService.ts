@@ -25,7 +25,7 @@ import "rxjs/add/operator/shareReplay";
  * As such, when overriding those methods you will likely want to build upon and return what was outputted from the
  * parent method.
  *
- * The `reducers` should map an `ActionType` to a "micro" reducer. A single, final `reducer` that is exported will
+ * The `Reducers` should map an `ActionType` to a "micro" reducer. A single, final `reducer` that is exported will
  * fire the "micro" reducer associated to the given action type, in lieu of creating one large hairy switch statement.
  *
  * `IActionTypes` are namespaced to the given service `name` provided to the constructor. This is
@@ -163,7 +163,7 @@ export abstract class BaseService<S> implements IService<S> {
 
   /**
    * Returns a single IReducer function which triggers the methods
-   * mapped in the internal `reducers` object to the given IAction type.
+   * mapped in the internal `Reducers` object to the given IAction type.
    *
    * This is the function that is actually injected into and later triggered by Redux.
    */
@@ -184,7 +184,7 @@ export abstract class BaseService<S> implements IService<S> {
 
   /**
    * Returns a map of IActionTypes, which are string "constants" that represent the type of an IAction.
-   * When an IAction is dispatched to Redux via an IActionCreator, one or many reducers or epics may act on that IAction
+   * When an IAction is dispatched to Redux via an IActionCreator, one or many Reducers or epics may act on that IAction
    *
    * @returns {IActionTypes}
    */
@@ -198,7 +198,7 @@ export abstract class BaseService<S> implements IService<S> {
 
   /**
    * Returns a map of IActionCreators, which when dispatched to Redux,
-   * one or many reducers or epics may act on that IAction.
+   * one or many Reducers or epics may act on that IAction.
    *
    * @returns {IActionCreators}
    */
@@ -240,7 +240,7 @@ export abstract class BaseService<S> implements IService<S> {
    * promises.
    *
    * Notes:
-   *  - When an IAction is dispatched to Redux, it hits the reducers BEFORE the epics.
+   *  - When an IAction is dispatched to Redux, it hits the Reducers BEFORE the epics.
    *  - Before you can use something from RxJS (such as an operator), you must import it first.
    *
    * @returns {IActionEpic[]}

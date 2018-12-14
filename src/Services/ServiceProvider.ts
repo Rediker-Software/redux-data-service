@@ -1,7 +1,7 @@
 import { forEach, mapValues, upperFirst } from "lodash";
 
 import { IActionEpic, IReducers, IService, IServiceFactory } from "./IService";
-import { DataService } from "./DataService";
+import { DataService } from "./DataService/DataService";
 
 import { IModelData, IModelFactory } from "../Model";
 import { isApplicationInitialized } from "../Initialize";

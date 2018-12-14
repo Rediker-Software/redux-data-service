@@ -49,7 +49,7 @@ export interface IQueryParams {
   page?: number;
   pageSize?: number;
 
-  [key: string]: FilterValue | FilterValue[] | ISort [];
+  [key: string]: FilterValue | FilterValue[] | ISort[];
 }
 
 /**

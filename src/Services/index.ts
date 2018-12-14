@@ -1,4 +1,4 @@
 export * from "./IService";
 export * from "./BaseService";
-export * from "./DataService";
+export * from "./DataService/DataService";
 export * from "./ServiceProvider";
