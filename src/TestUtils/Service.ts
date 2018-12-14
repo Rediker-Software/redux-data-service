@@ -37,7 +37,7 @@ let _FakeXHR;
 export function initializeTestServices(modules: IModuleMap, shouldStubActionCreators = true, configOptions: Partial<IConfiguration> = {}): Store<any> {
   const store = configure(defaults({}, configOptions, {
     modules,
-    adapter: MemoryAdapter,
+    // adapter: MemoryAdapter,
     serializer: MemorySerializer,
   }));
 
