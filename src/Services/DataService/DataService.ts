@@ -50,18 +50,12 @@ import {
 } from "./Reducers";
 
 import { DataServiceStateRecord, IDataServiceStateRecord } from "./DataServiceStateRecord";
-
-export interface IPostActionHandlers {
-  onSuccess?: (data: any) => void;
-  onError?: (errors: any) => void;
-}
+import { shouldFetchAll } from "./ShouldFetchAll";
+import { IPostActionHandlers } from "./IPostActionHandlers";
+import { IForceReload } from "./IForceReload";
 
 export interface IModelId {
   id: string;
-}
-
-export interface IForceReload {
-  forceReload: boolean;
 }
 
 /**
@@ -375,7 +369,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
   public fetchAllEpic(action$: IObserveableAction, store: Store<IDataServiceStateRecord<T>>) {
     return action$.ofType(this.types.FETCH_ALL)
-      .filter((action) => this.shouldFetchAll(action, store.getState()))
+      .filter((action) => shouldFetchAll(store.getState(), action))
       .mergeMap((action) =>
         this.adapter.fetchAll(action.payload)
           .mergeMap(async ({ items, ...other }) => {
@@ -473,11 +467,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
             this.actions.setMetaField({ id: action.payload.id, errors: e.xhr.response }),
           ))
       ));
-  }
-
-  protected shouldFetchAll(action, state) {
-    const requestCache = this.selectors.getRequestCache(state, action.payload);
-    return requestCache == null || requestCache.ids.isEmpty() || (action.meta && action.meta.forceReload);
   }
 
   private shouldFetchItem = (action, state) =>
