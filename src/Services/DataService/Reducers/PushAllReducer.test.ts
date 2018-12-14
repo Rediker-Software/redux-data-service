@@ -4,11 +4,9 @@ import "rxjs/add/observable/of";
 import { random } from "faker";
 import { spy } from "sinon";
 
-import { initializeTestServices, seedServiceList } from "../../../TestUtils/Service";
-import { fakeModelModule } from "../../../TestUtils/FakeModelModule";
-
 import { DataServiceStateRecord } from "../DataServiceStateRecord";
 import { pushAllReducer } from "./PushAllReducer";
+import { createMockFakeModels } from "../../../Model/Model.mock";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
@@ -18,12 +16,11 @@ describe("pushAllReducer", () => {
   let state;
 
   beforeEach(() => {
-    initializeTestServices(fakeModelModule);
     state = DataServiceStateRecord();
   });
 
   it("adds the given array of items to the state", () => {
-    const items = seedServiceList("fakeModel");
+    const items = createMockFakeModels();
 
     const action = {
       type: random.word(),

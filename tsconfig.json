@@ -9,7 +9,8 @@
     "noImplicitReturns": false,
     "removeComments": true,
     "strictNullChecks": false,
-    "outDir": "dist",
+    "outDir": "./dist",
+    "baseUrl": "./src",
     "skipLibCheck": true,
     "lib": [
       "es2017",
