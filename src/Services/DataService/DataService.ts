@@ -15,53 +15,45 @@ import { Observable } from "rxjs/Observable";
 import { of as of$ } from "rxjs/observable/of";
 import { combineLatest as combineLatest$ } from "rxjs/observable/combineLatest";
 
-import { List, Map, Record } from "immutable";
 import { uniqueId } from "lodash";
 import * as hash from "object-hash";
 import { Store } from "redux";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 
-import { getConfiguration } from "../Configure";
-import { IModel, IModelData, IModelMeta, IModelFactory } from "../Model";
-import { ISerializer, ISerializerFactory } from "../Serializers";
-import { IAdapter, IAdapterFactory } from "../Adapters/IAdapter";
+import { getConfiguration } from "../../Configure";
+import { IModel, IModelData, IModelMeta, IModelFactory } from "../../Model";
+import { ISerializer, ISerializerFactory } from "../../Serializers";
+import { IAdapter, IAdapterFactory } from "../../Adapters/IAdapter";
 
-import { BaseService } from "./BaseService";
-import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "./IService";
-import { IMapperFactory, IMapper } from "../Mapper";
-import { IQueryManager, IQueryBuilder, IQueryResponse, QueryManager } from "../Query";
+import { BaseService } from "../BaseService";
+import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "../IService";
+import { IMapperFactory, IMapper } from "../../Mapper";
 
-export type IRequestCacheKey = string;
+import {
+  IQueryBuilder,
+  IQueryCache,
+  IQueryCacheRecord,
+  IQueryManager,
+  IQueryResponse,
+  QueryCacheRecord,
+  QueryManager,
+} from "../../Query";
 
-export interface IDataServiceState<T extends IModelData> {
-  items: Map<string, IModel<T>>;
-  requestCache: Map<IRequestCacheKey, IQueryManager<T>>;
-}
+import {
+  fetchAllReducer, ISetField, ISetMetaField,
+  pushAllReducer,
+  pushRecordReducer,
+  setFieldReducer, setMetaFieldReducer, setQueryResponseReducer, setRelationshipReducer,
+  unloadAllReducer,
+  unloadRecordReducer,
+} from "./Reducers";
+
+import { DataServiceStateRecord, IDataServiceStateRecord } from "./DataServiceStateRecord";
 
 export interface IPostActionHandlers {
   onSuccess?: (data: any) => void;
   onError?: (errors: any) => void;
-}
-
-export type DataServiceStateRecord<T extends IModelData> =
-  Record<IDataServiceState<T>>
-  & Readonly<IDataServiceState<T>>;
-
-export interface IPushAll<T extends IModelData> {
-  items: IModel<T>[];
-}
-
-export interface ISetField<T extends IModelData> {
-  id: string;
-  fieldName: keyof T;
-  value: any;
-}
-
-export interface ISetMetaField<T extends IModelData> {
-  id: string;
-  fieldName: keyof IModelMeta<T>;
-  value: any;
 }
 
 export interface IModelId {
@@ -89,7 +81,7 @@ export interface IForceReload {
  * @abstract
  * @class
  */
-export abstract class DataService<T extends IModelData, R = T> extends BaseService<DataServiceStateRecord<T>> {
+export abstract class DataService<T extends IModelData, R = T> extends BaseService<IDataServiceStateRecord<T>> {
   public abstract readonly ModelClass: IModelFactory<T>;
   protected readonly AdapterClass: IAdapterFactory<any>;
   protected readonly MapperClass: IMapperFactory<any>;
@@ -98,16 +90,11 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   protected _adapter: IAdapter<any>;
   protected _mapper: IMapper<any>;
   protected _serializer: ISerializer<any, R>;
-  
+
   protected shadowObject: IModel<T> = null;
   protected observablesByIdCache: { [id: string]: Observable<IModel<T>> } = {};
   protected observablesByIdsCache: { [id: string]: Observable<IModel<T>[]> } = {};
   protected observablesByQueryCache: { [id: string]: Observable<IModel<T>[]> } = {};
-
-  private readonly DataServiceStateRecord = Record<IDataServiceState<T>>({
-    items: Map<string, IModel<T>>(),
-    requestCache: Map<IRequestCacheKey, IQueryManager<T>>(),
-  });
 
   public get adapter() {
     if (!this._adapter) {
@@ -136,8 +123,8 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     return this._serializer;
   }
 
-  public getDefaultState(): DataServiceStateRecord<T> {
-    return new this.DataServiceStateRecord();
+  public getDefaultState(): IDataServiceStateRecord<T> {
+    return DataServiceStateRecord();
   }
 
   public getShadowObject(): IModel<T> {
@@ -293,8 +280,8 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       updateRecord: this.makeActionCreator<IModelId, IPostActionHandlers>(this.types.UPDATE_RECORD),
       setField: this.makeActionCreator<ISetField<T>>(this.types.SET_FIELD),
       setMetaField: this.makeActionCreator<ISetMetaField<T>>(this.types.SET_META_FIELD),
-      setRelationship: this.makeActionCreator<ISetMetaField<T>>(this.types.SET_RELATIONSHIP),
-      setQueryResponse: this.makeActionCreator<IQueryBuilder, IQueryResponse>(this.types.SET_QUERY_RESPONSE),
+      setRelationship: this.makeActionCreator<ISetField<T>>(this.types.SET_RELATIONSHIP),
+      setQueryResponse: this.makeActionCreator<IQueryCache>(this.types.SET_QUERY_RESPONSE),
     };
   }
 
@@ -306,19 +293,19 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     const selectors = super.createSelectors();
     const { getServiceState } = selectors;
 
-    const getAllItems = createSelector(getServiceState, (store: DataServiceStateRecord<T>) => store.items);
+    const getAllItems = createSelector(getServiceState, (store: IDataServiceStateRecord<T>) => store.items);
 
     const getRequestCache = createCachedSelector(
       getServiceState,
-      (state, queryParams) => queryParams,
-      (store, queryParams) => store.requestCache.get(hash(queryParams || {})),
-    )((state, queryParams) => hash(queryParams || {}));
+      (state, query: IQueryBuilder) => query,
+      (store, query: IQueryBuilder) => store.requestCache.get(query.getHashCode()),
+    )((state, query: IQueryBuilder) => query.getHashCode());
 
     const getItems = createCachedSelector(
       getAllItems,
-      (state, queryParams) => getRequestCache(state, queryParams),
-      (items, requestCache: IRequestCache) => requestCache ? requestCache.ids.map(id => items.get(id)).valueSeq() : null,
-    )((state, queryParams) => hash(queryParams || {}));
+      (state, query: IQueryBuilder) => getRequestCache(state, query),
+      (items, requestCache: IQueryCache) => requestCache ? requestCache.response.ids.map(id => items.get(id)) : null,
+    )((state, query: IQueryBuilder) => query.getHashCode());
 
     const getItemsByIds = createCachedSelector(
       (state, ids) => ids,
@@ -355,119 +342,17 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
     return {
       ...reducers,
-      [this.types.FETCH_ALL]: this.fetchAllReducer,
-      [this.types.PUSH_ALL]: this.pushAllReducer,
-      [this.types.PUSH_RECORD]: this.pushRecordReducer,
-      [this.types.UNLOAD_ALL]: this.unloadAllReducer,
-      [this.types.UNLOAD_RECORD]: this.unloadRecordReducer,
-      [this.types.SET_FIELD]: this.setFieldReducer,
-      [this.types.SET_META_FIELD]: this.setMetaFieldReducer,
-      [this.types.SET_RELATIONSHIP]: this.setRelationshipReducer,
-      [this.types.SET_QUERY_RESPONSE]: this.setQueryResponseReducer,
+      [this.types.FETCH_ALL]: fetchAllReducer,
+      [this.types.PUSH_ALL]: pushAllReducer,
+      [this.types.PUSH_RECORD]: pushRecordReducer,
+      [this.types.UNLOAD_ALL]: unloadAllReducer,
+      [this.types.UNLOAD_RECORD]: unloadRecordReducer,
+      [this.types.SET_FIELD]: setFieldReducer,
+      [this.types.SET_META_FIELD]: setMetaFieldReducer,
+      [this.types.SET_RELATIONSHIP]: setRelationshipReducer,
+      [this.types.SET_QUERY_RESPONSE]: setQueryResponseReducer,
     };
   }
-
-  public fetchAllReducer = (state: DataServiceStateRecord<T>, action: IAction<IQueryBuilder>) =>
-    state.update("requestCache", (requestCache) => (
-      requestCache.update(action.payload.getHashCode(), (queryManager) => (
-        queryManager
-          ? (
-            this.shouldFetchAll(action, state)
-              ? queryManager.items.map(item => item.applyUpdates(null, null, { isLoading: true })
-              : queryManager )
-            ) 
-            : new QueryManager<T>(action.payload, null, null, { isLoading: true })
-      ))))    
-
-  public pushAllReducer = (state: DataServiceStateRecord<T>, action: IAction<IPushAll<T>>) => state.withMutations((record) => {
-    const ids = [];
-    record.update("items", (items) => items.withMutations((itemsMap) => {
-      action.payload.items.forEach((item) => {
-        itemsMap.update(item.id, () => item);
-        ids.push(item.id);
-      });
-    }));
-  })
-
-  public pushRecordReducer = (state: DataServiceStateRecord<T>, action: IAction<IModel<T>>) => state.withMutations((record) => {
-    const item = action.payload;
-    record.set("items", record.items.update(item.id, () => item));
-  })
-
-  public unloadAllReducer = (state: DataServiceStateRecord<T>) => {
-    state.items.forEach((oldModel) => {
-      oldModel.markForDestruction();
-    });
-    return this.getDefaultState();
-  }
-
-  public unloadRecordReducer = (state: DataServiceStateRecord<T>, action: IAction<IModelId>) =>
-    state.withMutations((record) => {
-      const { id } = action.payload;
-      const oldModel = record.items.get(id);
-      if (oldModel) {
-        oldModel.markForDestruction();
-      }
-      record.set("items", record.items.delete(id));
-    })
-
-  public setErrorsReducer = (state: DataServiceStateRecord<T>, action: IAction) =>
-    state.withMutations((record) =>
-      record.update("requestCache", (requestCache) =>
-        requestCache.update(hash(action.meta.queryParams || {}), (requestCacheRecord) =>
-          requestCacheRecord && requestCacheRecord.set("errors", action.payload.errors),
-        ),
-      ),
-    )
-
-  public setFieldReducer = (state: DataServiceStateRecord<T>, action: IAction<ISetField<T>>) =>
-    state.withMutations((record) => {
-      const { id, fieldName, value } = action.payload;
-      if (record.items.has(id)) {
-        record.update("items", (items) => items.update(id, (item: IModel<T>) => {
-          return item.applyUpdates({ [fieldName]: value } as Partial<T>);
-        }));
-      } else if (process.env.NODE_ENV !== "production") {
-        // tslint:disable-next-line
-        console.warn(`${this.name}: setFieldReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
-      }
-    })
-
-  public setMetaFieldReducer = (state: DataServiceStateRecord<T>, action: IAction<ISetMetaField<T>>) =>
-    state.withMutations((record) => {
-      const { id, fieldName, value } = action.payload;
-      if (record.items.has(id)) {
-        record.update("items", (items) => items.update(id, (item: IModel<T>) => {
-          return item.applyUpdates(null, { [fieldName]: value });
-        }));
-      }
-    })
-
-  public setRelationshipReducer = (state: DataServiceStateRecord<T>, action: IAction<ISetField<T>>) =>
-    state.withMutations((record) => {
-      const { id, fieldName, value } = action.payload;
-      if (record.items.has(id)) {
-        record.update("items", (items) => items.update(id, (item: IModel<T>) => {
-          return item.applyUpdates(undefined, undefined, { [fieldName]: value });
-        }));
-      } else if (process.env.NODE_ENV !== "production") {
-        // tslint:disable-next-line
-        console.warn(`${this.name}: setRelationshipReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
-      }
-    })
-
-    public setQueryResponseReducer = (state: DataServiceStateRecord<T>, action: IAction<ISetField<T>>) =>
-    state.withMutations((record) => {
-      const { id, fieldName, value } = action.payload;
-      if (record.items.has(id)) {
-        record.update("items", (items) => items.update(id, (item: IModel<T>) => {
-          return item.applyUpdates(undefined, undefined, { [fieldName]: value });
-        }));
-      } else if (process.env.NODE_ENV !== "production") {
-        // tslint:disable-next-line
-        console.warn(`${this.name}: setQueryResponseReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
-      }
-    })
 
   // ---------------------
   //        EPICS
@@ -488,7 +373,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     return epics;
   }
 
-  public fetchAllEpic(action$: IObserveableAction, store: Store<DataServiceStateRecord<T>>) {
+  public fetchAllEpic(action$: IObserveableAction, store: Store<IDataServiceStateRecord<T>>) {
     return action$.ofType(this.types.FETCH_ALL)
       .filter((action) => this.shouldFetchAll(action, store.getState()))
       .mergeMap((action) =>
@@ -509,7 +394,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       );
   }
 
-  public fetchRecordEpic(action$: IObserveableAction, store: Store<DataServiceStateRecord<T>>): Observable<IAction<T>> {
+  public fetchRecordEpic(action$: IObserveableAction, store: Store<IDataServiceStateRecord<T>>): Observable<IAction<T>> {
     return action$.ofType(this.types.FETCH_RECORD)
       .filter(action => this.shouldFetchItem(action, store.getState()))
       .mergeMap(action =>
@@ -524,7 +409,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       );
   }
 
-  public createRecordEpic(action$: IObserveableAction<IModelId>, store: Store<DataServiceStateRecord<T>>) {
+  public createRecordEpic(action$: IObserveableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {
     return action$.ofType(this.types.CREATE_RECORD)
       .mergeMap(action =>
         of$(this.selectors.getItem(store.getState(), action.payload.id))
@@ -542,7 +427,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       );
   }
 
-  public updateRecordEpic(action$: IObserveableAction<IModelId>, store: Store<DataServiceStateRecord<T>>) {
+  public updateRecordEpic(action$: IObserveableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {
     return action$.ofType(this.types.UPDATE_RECORD)
       .mergeMap((action) =>
         of$(this.selectors.getItem(store.getState(), action.payload.id))

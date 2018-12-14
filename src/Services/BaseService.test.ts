@@ -143,7 +143,7 @@ describe("BaseService", () => {
       );
     });
 
-    it("exposes the reducers output", () => {
+    it("exposes the Reducers output", () => {
       expect(output).to.equal(returnValue);
     });
 

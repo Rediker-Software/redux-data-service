@@ -9,17 +9,17 @@ import { Map, Record } from "immutable";
 import { createMockStore } from "redux-test-utils";
 import hash from "object-hash";
 
-import { createMockServiceState } from "../TestUtils";
-import { IModelMeta } from "../Model";
-import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model/Model.mock";
-import { MockAdapter } from "../Adapters/MockAdapter";
-import { MockMapper } from "../Mapper/MockMapper";
-import { MockSerializer } from "../Serializers";
-import { configure } from "../Configure";
+import { createMockServiceState } from "../../TestUtils";
+import { IModelMeta } from "../../Model";
+import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
+import { MockAdapter } from "../../Adapters/MockAdapter";
+import { MockMapper } from "../../Mapper/MockMapper";
+import { MockSerializer } from "../../Serializers";
+import { configure } from "../../Configure";
 
-import { DataService, IDataServiceState, IRequestCacheKey } from "./DataService";
-import { BaseService } from "./BaseService";
-import { registerService } from "./ServiceProvider";
+import { DataService, IDataServiceState, IRequestCacheKey } from "./";
+import { BaseService } from "../BaseService";
+import { registerService } from "../ServiceProvider";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
