@@ -367,7 +367,7 @@ describe("DataService", () => {
       const updatedState: IDataServiceState<any> =
         fakeService.setErrorsReducer(state.fakeModel, fakeService.actions.setErrors({ errors }, { queryParams }));
 
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as IRequestCacheKey);
+      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as string);
       expect(cachedRequest.toJS()).to.deep.include({
         ids: [],
         isLoading: false,
@@ -388,7 +388,7 @@ describe("DataService", () => {
       const updatedState: IDataServiceState<any> =
         fakeService.setErrorsReducer(state.fakeModel, fakeService.actions.setErrors({ errors }, { queryParams }));
 
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as IRequestCacheKey);
+      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as string);
       expect(cachedRequest.toJS()).to.deep.include({
         ids: existingIds,
         isLoading: false,

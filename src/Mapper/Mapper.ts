@@ -2,11 +2,8 @@ import { flow, keys, partition, pick, pickBy, property } from "lodash/fp";
 import { fromPairs } from "lodash";
 
 import { IMapper } from "./IMapper";
-import { IModel, IModelData, IModelFactory } from "../Model/IModel";
-import { IFieldType } from "../Model/FieldType";
-import { IRawQueryResponse } from "../Query/IRawQueryResponse";
-import { IQueryResponse } from "../Query/IQueryResponse";
-import { IFieldRelationship, RelationshipType } from "../Model/Decorators/Relationship";
+import { IFieldRelationship, IFieldType, IModel, IModelData, IModelFactory, RelationshipType } from "../Model";
+import { IQueryResponse, IRawQueryResponse } from "../Query";
 import { getDataService } from "../Services/ServiceProvider";
 import { mapWithKeys } from "../Utils/Lodash";
 
@@ -104,7 +101,7 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   /**
    * Transforms a given list of Models into an array of items of R
    * @param {IModel[]} models
-   * @returns {Promise<R[]>} 
+   * @returns {Promise<R[]>}
    */
   public async transformList(models: IModel<T>[]): Promise<R[]> {
     const transformedModels = models.map(async model => await this.transform(model) as R);
@@ -159,10 +156,10 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
    * @param {IRawQueryResponse<R>} data
    * @returns {IQueryResponse}
    */
-  public async normalizeQueryResponse({ items, ...data}: IRawQueryResponse<R>): Promise<IQueryResponse & { items: IModel<T>[]}> {
-    const result: IQueryResponse & { items: IModel<T>[]} = data as any;
+  public async normalizeQueryResponse({ items, ...data }: IRawQueryResponse<R>): Promise<IQueryResponse & { items: IModel<T>[] }> {
+    const result: IQueryResponse & { items: IModel<T>[] } = data as any;
 
-    const normalizedItems = await items.map( async item => await this.normalize(item));
+    const normalizedItems = await items.map(async item => await this.normalize(item));
     result.items = await Promise.all(normalizedItems);
     result.ids = result.items.map(normalized => (normalized.id));
 
