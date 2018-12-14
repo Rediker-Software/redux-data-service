@@ -1,4 +1,4 @@
-import { DataService } from "../Services";
+import { DataService } from "../Services/DataService/DataService";
 import { IAttrs, IRelationship } from "./Decorators";
 
 export type IModelKeys<T, U = any> = {[P in keyof T]?: U} | null;
