@@ -9,7 +9,8 @@ import { fakeModelModule } from "../../../TestUtils/FakeModelModule";
 import { initializeTestServices, seedService } from "../../../TestUtils/Service";
 
 import { DataServiceStateRecord } from "../DataServiceStateRecord";
-import { setFieldReducer, ISetField } from "./SetFieldReducer";
+import { setFieldReducer } from "./SetFieldReducer";
+import { ISetField } from "../ISetField";
 import { FakeModel } from "../../../Model/Model.mock";
 import { IAction } from "../../IService";
 
