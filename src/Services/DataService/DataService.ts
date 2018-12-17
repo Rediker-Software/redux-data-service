@@ -37,7 +37,6 @@ import {
   setFieldReducer, setMetaFieldReducer, setQueryResponseReducer, setRelationshipReducer,
   unloadAllReducer,
   unloadRecordReducer,
-  setErrorsReducer,
 } from "./Reducers";
 
 import { DataServiceStateRecord, IDataServiceStateRecord } from "./DataServiceStateRecord";
@@ -234,7 +233,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       PATCH_RECORD: this.makeActionType("PATCH_RECORD"),
       PUSH_ALL: this.makeActionType("PUSH_ALL"),
       PUSH_RECORD: this.makeActionType("PUSH_RECORD"),
-      SET_ERRORS: this.makeActionType("SET_ERRORS"),
       UNLOAD_ALL: this.makeActionType("UNLOAD_ALL"),
       UNLOAD_RECORD: this.makeActionType("UNLOAD_RECORD"),
       UPDATE_RECORD: this.makeActionType("UPDATE_RECORD"),
@@ -261,7 +259,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       patchRecord: this.makeActionCreator<Partial<T>, IPostActionHandlers>(this.types.PATCH_RECORD),
       pushAll: this.makeActionCreator(this.types.PUSH_ALL),
       pushRecord: this.makeActionCreator<IModel<T>>(this.types.PUSH_RECORD),
-      setErrors: this.makeActionCreator(this.types.SET_ERRORS),
       unloadAll: this.makeActionCreator<undefined>(this.types.UNLOAD_ALL),
       unloadRecord: this.makeActionCreator<IModelId>(this.types.UNLOAD_RECORD),
       updateRecord: this.makeActionCreator<IModelId, IPostActionHandlers>(this.types.UPDATE_RECORD),
@@ -338,7 +335,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       [this.types.SET_META_FIELD]: setMetaFieldReducer,
       [this.types.SET_RELATIONSHIP]: setRelationshipReducer,
       [this.types.SET_QUERY_RESPONSE]: setQueryResponseReducer,
-      [this.types.SET_ERRORS]: setErrorsReducer,
     };
   }
 

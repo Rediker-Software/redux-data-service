@@ -11,6 +11,8 @@ export type FetchAllAction = IAction<IQueryBuilder, IPostActionHandlers & IForce
  * an existing request cache associated to the action's query params.
  */
 export function shouldFetchAll(state: IDataServiceStateRecord<any>, action: FetchAllAction) {
-  return state.requestCache
-    .has(action.payload.getHashCode()) || (action.meta && action.meta.forceReload);
+  const hasQuery = state.requestCache.has(action.payload.getHashCode());
+  const shouldForceReload = action.meta != null && action.meta.forceReload;
+
+  return !hasQuery || shouldForceReload;
 }
