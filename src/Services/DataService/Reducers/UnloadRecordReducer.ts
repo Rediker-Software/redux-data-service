@@ -4,14 +4,14 @@ import { IModelId } from "../DataService";
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 
 export function unloadRecordReducer<T extends IModelData>(state: IDataServiceStateRecord<T>, action: IAction<IModelId>) {
-  return state.withMutations((record) => {
-    const { id } = action.payload;
-    const oldModel = record.items.get(id);
+  const { id } = action.payload;
+  const model = state.items.get(id);
 
-    if (oldModel) {
-      oldModel.markForDestruction();
-    }
+  if (model) {
+    model.markForDestruction();
+  }
 
-    record.set("items", record.items.delete(id));
-  });
+  return state.update("items",
+    (items) => items.delete(id),
+  );
 }
