@@ -1,18 +1,19 @@
-import { IModel, IModelData } from "../../../Model";
 import { IAction } from "../../IService";
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
-import { ISetField } from "./SetFieldReducer";
+import { IQueryCache } from "../../../Query/IQueryCache";
+import { QueryCacheRecord } from "../../../Query/QueryCacheRecord";
 
-export function setQueryResponseReducer<T extends IModelData>(state: IDataServiceStateRecord<T>, action: IAction<ISetField<T>>) {
-  return state.withMutations((record) => {
-    const { id, fieldName, value } = action.payload;
-    if (record.items.has(id)) {
-      record.update("items", (items) => items.update(id, (item: IModel<T>) => {
-        return item.applyUpdates(undefined, undefined, { [fieldName]: value });
-      }));
-    } else if (process.env.NODE_ENV !== "production") {
-      // tslint:disable-next-line
-      console.warn(`${this.name}: setQueryResponseReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
-    }
-  });
+export function setQueryResponseReducer(state: IDataServiceStateRecord<any>, action: IAction<IQueryCache>) {
+  const queryCache: IQueryCache = action.payload;
+
+  return state.update("requestCache", (requestCache) => requestCache.update(
+    queryCache.query.getHashCode(),
+    (existingQueryCache) => {
+      if (existingQueryCache) {
+        return existingQueryCache.merge(queryCache);
+      } else {
+        return QueryCacheRecord(queryCache);
+      }
+    },
+  ));
 }

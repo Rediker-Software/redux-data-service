@@ -1,6 +1,6 @@
 import { FakeModel } from "../Model/Model.mock";
-import { IQueryParams } from "../Query";
-import { ISerializer } from ".";
+import { IQueryParams } from "../Query/QueryBuilder";
+import { ISerializer } from "./ISerializer";
 
 export class MockSerializer implements ISerializer<any, any> {
   public async serialize() {

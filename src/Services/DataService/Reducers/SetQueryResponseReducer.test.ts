@@ -1,67 +1,110 @@
-// tslint:disable:no-empty max-classes-per-file no-unused-expression
-import { match, spy, stub } from "sinon";
-import { ActionsObservable } from "redux-observable";
-import { Observable } from "rxjs/Observable";
+// tslint:disable: no-unused-expression
 import "rxjs/add/observable/of";
-import { Subject } from "rxjs/Subject";
 
-import { Map, Record } from "immutable";
-import { createMockStore } from "redux-test-utils";
-import hash from "object-hash";
+import { Map } from "immutable";
 
-import { createMockServiceState } from "../../../TestUtils";
-import { IModelMeta } from "../../../Model";
-import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../../Model/Model.mock";
-import { MockAdapter } from "../../../Adapters/MockAdapter";
-import { MockMapper } from "../../../Mapper/MockMapper";
-import { MockSerializer } from "../../../Serializers";
-import { configure } from "../../../Configure";
+import { random } from "faker";
+import { spy } from "sinon";
 
-import { DataService, IDataServiceState, IRequestCacheKey } from "./";
-import { BaseService } from "../../BaseService";
-import { registerService } from "../../ServiceProvider";
+import { DataServiceStateRecord } from "../DataServiceStateRecord";
+import { QueryBuilder } from "../../../Query/QueryBuilder";
+import { IQueryCache } from "../../../Query/IQueryCache";
+import { setQueryResponseReducer } from "./SetQueryResponseReducer";
+import { QueryCacheRecord } from "../../../Query/QueryCacheRecord";
+import { createMockQueryResponse } from "../../../Query/IQueryCache.mock";
 
 declare var intern;
-const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
+const { describe, it } = intern.getPlugin("interface.bdd");
 const { expect } = intern.getPlugin("chai");
 
-const noop = () => null;
+describe("setQueryResponseReducer", () => {
 
-describe("DataService", () => {
-  let fakeService;
-  let mockAdapter;
-  let store;
-  let fakeModels;
-  let state;
-  const serviceName = "fakeModel";
-  let mockMapper;
-  let mockSerializer;
+  it("creates a new QueryCacheRecord with the given queryCache", () => {
+    const state = DataServiceStateRecord();
+    const query = new QueryBuilder(random.word());
+    const queryCache: IQueryCache = { query };
 
-  beforeEach(() => {
-    configure({ modules: null });
-    mockAdapter = new MockAdapter();
-    mockMapper = new MockMapper();
-    mockSerializer = new MockSerializer();
+    const action = {
+      type: random.word(),
+      invoke: spy(),
+      payload: queryCache,
+    };
 
-    class FakeService extends DataService<IFakeModelData> {
-      public name = serviceName;
-      public ModelClass = FakeModel;
-      protected _adapter = mockAdapter;
-      protected _mapper = mockMapper;
-      protected _serializer = mockSerializer; 
-    }
+    const updatedState = setQueryResponseReducer(state, action);
 
-    fakeService = new FakeService();
-    registerService(fakeService);
-
-    fakeModels = createMockFakeModels();
-
-    state = createMockServiceState<IFakeModelData>(fakeService, [
-      fakeService.actions.pushAll({ items: fakeModels }),
-    ]);
-    store = createMockStore(state);
+    expect(
+      updatedState.requestCache.get(query.getHashCode()).toJS(),
+    ).to.have.property("query").to.equal(query);
   });
 
-  // TODO: Tests go here
+  it("updates an existing QueryCacheRecord with the given queryCache", () => {
+    const response = spy();
+    const isLoading = random.boolean();
+    const query = new QueryBuilder(random.word());
+
+    const queryCache: IQueryCache = {
+      query,
+      response,
+    };
+
+    const state = DataServiceStateRecord({
+      requestCache: Map({
+        [query.getHashCode()]: QueryCacheRecord(queryCache),
+      }),
+    });
+
+    const action = {
+      type: random.word(),
+      invoke: spy(),
+      payload: {
+        query,
+        isLoading,
+      },
+    };
+
+    const updatedState = setQueryResponseReducer(state, action);
+    const recordObject = updatedState.requestCache.get(query.getHashCode()).toJS();
+
+    expect(recordObject).to.deep.equal({
+      query,
+      response,
+      isLoading,
+      errors: undefined,
+    });
+  });
+
+  it("replaces the old response ids with the new response ids for an existing QueryCacheRecord", () => {
+    const response = createMockQueryResponse();
+    const newResponse = createMockQueryResponse();
+    const query = new QueryBuilder(random.word());
+
+    const queryCache: IQueryCache = {
+      query,
+      response,
+    };
+
+    const state = DataServiceStateRecord({
+      requestCache: Map({
+        [query.getHashCode()]: QueryCacheRecord(queryCache),
+      }),
+    });
+
+    const action = {
+      type: random.word(),
+      invoke: spy(),
+      payload: {
+        query,
+        response: newResponse,
+      },
+    };
+
+    const updatedState = setQueryResponseReducer(state, action);
+    const recordObject = updatedState.requestCache.get(query.getHashCode()).toJS();
+
+    expect(recordObject)
+      .to.have.property("response")
+      .to.have.property("ids")
+      .to.deep.equal(newResponse.ids);
+  });
 
 });

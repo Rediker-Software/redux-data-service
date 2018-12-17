@@ -1,4 +1,4 @@
-import { IModelData, IModel } from "../../../Model";
+import { IModelData, IModel } from "../../../Model/IModel";
 import { IAction } from "../../IService";
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 

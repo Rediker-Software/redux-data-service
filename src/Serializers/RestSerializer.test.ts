@@ -1,7 +1,8 @@
 // tslint:disable:no-unused-expression
 import { RestSerializer } from "./RestSerializer";
-import { FakeModel, IModelData } from "../Model";
-import { MockMapper } from "../Mapper";
+import { IModelData } from "../Model/IModel";
+import { FakeModel } from "../Model/Model.mock";
+import { MockMapper } from "../Mapper/MockMapper";
 
 import { lorem, random, name } from "faker";
 import { SortDirection } from "../Query/QueryBuilder";

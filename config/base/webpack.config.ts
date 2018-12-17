@@ -1,6 +1,4 @@
-import * as webpack from "webpack";
-
-import * as CleanWebpackPlugin from "clean-webpack-plugin";
+import { TsConfigPathsPlugin } from "awesome-typescript-loader";
 
 import { join } from "path";
 import Config from "webpack-config";
@@ -27,20 +25,25 @@ export default new Config().merge({
     path: outPath,
     publicPath: "/",
   },
-  plugins: [
-    new CleanWebpackPlugin([outPath], {verbose: true, allowExternal: true}),
-    new webpack.optimize.CommonsChunkPlugin({
-      filename: "[name].js",
-      minChunks: Infinity,
-      name: "vendor",
-    }),
-    new webpack.optimize.AggressiveMergingPlugin(),
-  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendor",
+          chunks: "all",
+        },
+      },
+    },
+  },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
     // Fix webpack's default behavior to not load packages with jsnext:main module
     // https://github.com/Microsoft/TypeScript/issues/11677
     mainFields: ["browser", "main"],
+    plugins: [
+      new TsConfigPathsPlugin({configFileName: "config/test/tsconfig.json"}),
+    ],
   },
   target: "web",
 });

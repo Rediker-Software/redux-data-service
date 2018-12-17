@@ -1,5 +1,6 @@
-import { IModel, IModelData, IModelFactory } from "../Model";
-import { IQueryResponse, IRawQueryResponse } from "../Query";
+import { IModel, IModelData, IModelFactory } from "../Model/IModel";
+import { IRawQueryResponse } from "../Query/IRawQueryResponse";
+import { IQueryResponse } from "../Query/IQueryResponse";
 
 export interface IMapper<T extends IModelData, R = T> {
   transform: (model: IModel<T> | Partial<T>) => Promise<Partial<R>>;

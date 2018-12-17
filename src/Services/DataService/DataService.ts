@@ -22,23 +22,13 @@ import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 
 import { getConfiguration } from "../../Configure";
-import { IModel, IModelData, IModelMeta, IModelFactory } from "../../Model";
-import { ISerializer, ISerializerFactory } from "../../Serializers";
+import { IModel, IModelData, IModelMeta, IModelFactory } from "../../Model/IModel";
+import { ISerializer, ISerializerFactory } from "../../Serializers/ISerializer";
 import { IAdapter, IAdapterFactory } from "../../Adapters/IAdapter";
 
 import { BaseService } from "../BaseService";
 import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "../IService";
-import { IMapperFactory, IMapper } from "../../Mapper";
-
-import {
-  IQueryBuilder,
-  IQueryCache,
-  IQueryCacheRecord,
-  IQueryManager,
-  IQueryResponse,
-  QueryCacheRecord,
-  QueryManager,
-} from "../../Query";
+import { IMapperFactory, IMapper } from "../../Mapper/IMapper";
 
 import {
   fetchAllReducer, ISetField, ISetMetaField,
@@ -53,6 +43,8 @@ import { DataServiceStateRecord, IDataServiceStateRecord } from "./DataServiceSt
 import { shouldFetchAll } from "./ShouldFetchAll";
 import { IPostActionHandlers } from "./IPostActionHandlers";
 import { IForceReload } from "./IForceReload";
+import { IQueryBuilder } from "../../Query/QueryBuilder";
+import { IQueryCache } from "../../Query/IQueryCache";
 
 export interface IModelId {
   id: string;

@@ -9,15 +9,16 @@ import { Map, Record } from "immutable";
 import { createMockStore } from "redux-test-utils";
 import hash from "object-hash";
 
-import { createMockServiceState } from "../../TestUtils";
-import { IModelMeta } from "../../Model";
+import { createMockServiceState } from "../../TestUtils/Service";
+import { IModelMeta } from "../../Model/IModel";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
 import { MockAdapter } from "../../Adapters/MockAdapter";
 import { MockMapper } from "../../Mapper/MockMapper";
-import { MockSerializer } from "../../Serializers";
+import { MockSerializer } from "../../Serializers/MockSerializer";
 import { configure } from "../../Configure";
 
-import { DataService, IDataServiceState, IRequestCacheKey } from "./";
+import { DataService } from "./DataService";
+import { IDataServiceState } from "./IDataServiceState";
 import { BaseService } from "../BaseService";
 import { registerService } from "../ServiceProvider";
 
@@ -300,7 +301,7 @@ describe("DataService", () => {
       expect(actual).to.deep.equal(expected);
     });
   });
-  
+
   it("has an epic for performing a fetchAll request with the query params", () => {
     expect(fakeService.fetchAllEpic).to.be.a("function");
   });
@@ -366,7 +367,7 @@ describe("DataService", () => {
       const updatedState: IDataServiceState<any> =
         fakeService.setErrorsReducer(state.fakeModel, fakeService.actions.setErrors({ errors }, { queryParams }));
 
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as IRequestCacheKey);
+      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as string);
       expect(cachedRequest.toJS()).to.deep.include({
         ids: [],
         isLoading: false,
@@ -387,7 +388,7 @@ describe("DataService", () => {
       const updatedState: IDataServiceState<any> =
         fakeService.setErrorsReducer(state.fakeModel, fakeService.actions.setErrors({ errors }, { queryParams }));
 
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as IRequestCacheKey);
+      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as string);
       expect(cachedRequest.toJS()).to.deep.include({
         ids: existingIds,
         isLoading: false,

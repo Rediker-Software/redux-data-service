@@ -1,6 +1,6 @@
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 import { IAction } from "../../IService";
-import { IModel, IModelData } from "../../../Model";
+import { IModel, IModelData } from "../../../Model/IModel";
 
 export interface ISetField<T extends IModelData> {
   id: string;

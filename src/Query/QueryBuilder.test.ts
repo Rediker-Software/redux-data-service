@@ -4,8 +4,8 @@ import { spy, stub } from "sinon";
 import { lorem, random } from "faker";
 
 import { IQueryBuilder, QueryBuilder, SortDirection } from "./QueryBuilder";
-import { initializeTestServices } from "../TestUtils";
-import { registerService } from "../Services";
+import { initializeTestServices } from "../TestUtils/Service";
+import { registerService } from "../Services/ServiceProvider";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");

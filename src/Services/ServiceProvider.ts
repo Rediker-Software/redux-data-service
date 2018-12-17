@@ -3,9 +3,9 @@ import { forEach, mapValues, upperFirst } from "lodash";
 import { IActionEpic, IReducers, IService, IServiceFactory } from "./IService";
 import { DataService } from "./DataService/DataService";
 
-import { IModelData, IModelFactory } from "../Model";
+import { IModelData, IModelFactory } from "../Model/IModel";
 import { isApplicationInitialized } from "../Initialize";
-import { ISerializerFactory } from "../Serializers";
+import { ISerializerFactory } from "../Serializers/ISerializer";
 import { IAdapterFactory } from "../Adapters/IAdapter";
 
 export interface IServiceMap {

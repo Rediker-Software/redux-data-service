@@ -1,5 +1,5 @@
 import { IAction } from "../../IService";
-import { IModel, IModelData, IModelMeta } from "../../../Model";
+import { IModel, IModelData, IModelMeta } from "../../../Model/IModel";
 
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 
