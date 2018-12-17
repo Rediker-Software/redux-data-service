@@ -1,7 +1,7 @@
 import { IModel, IModelData } from "../../../Model/IModel";
 import { IAction } from "../../IService";
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
-import { ISetField } from "./SetFieldReducer";
+import { ISetField } from "../ISetField";
 
 export function setRelationshipReducer<T extends IModelData>(state: IDataServiceStateRecord<T>, action: IAction<ISetField<T>>) {
   return state.withMutations((record) => {
@@ -12,7 +12,7 @@ export function setRelationshipReducer<T extends IModelData>(state: IDataService
       }));
     } else if (process.env.NODE_ENV !== "production") {
       // tslint:disable-next-line
-      console.warn(`${this.name}: setRelationshipReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
+      console.warn(`setRelationshipReducer - attempted to set "${value}" on field "${fieldName}" for unknown id "${id}"`);
     }
   });
 }

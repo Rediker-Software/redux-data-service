@@ -1,67 +1,110 @@
-// // tslint:disable:no-empty max-classes-per-file no-unused-expression
-// import { match, spy, stub } from "sinon";
-// import { ActionsObservable } from "redux-observable";
-// import { Observable } from "rxjs/Observable";
-// import "rxjs/add/observable/of";
-// import { Subject } from "rxjs/Subject";
-//
-// import { Map, Record } from "immutable";
-// import { createMockStore } from "redux-test-utils";
-// import hash from "object-hash";
-//
-// import { createMockServiceState } from "../../../TestUtils";
-// import { IModelMeta } from "../../../Model";
-// import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../../Model/Model.mock";
-// import { MockAdapter } from "../../../Adapters/MockAdapter";
-// import { MockMapper } from "../../../Mapper/MockMapper";
-// import { MockSerializer } from "../../../Serializers";
-// import { configure } from "../../../Configure";
-//
-// import { DataService, IDataServiceState, IRequestCacheKey } from "./";
-// import { BaseService } from "../../BaseService";
-// import { registerService } from "../../ServiceProvider";
-//
-// declare var intern;
-// const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
-// const { expect } = intern.getPlugin("chai");
-//
-// const noop = () => null;
-//
-// describe("DataService", () => {
-//   let fakeService;
-//   let mockAdapter;
-//   let store;
-//   let fakeModels;
-//   let state;
-//   const serviceName = "fakeModel";
-//   let mockMapper;
-//   let mockSerializer;
-//
-//   beforeEach(() => {
-//     configure({ modules: null });
-//     mockAdapter = new MockAdapter();
-//     mockMapper = new MockMapper();
-//     mockSerializer = new MockSerializer();
-//
-//     class FakeService extends DataService<IFakeModelData> {
-//       public name = serviceName;
-//       public ModelClass = FakeModel;
-//       protected _adapter = mockAdapter;
-//       protected _mapper = mockMapper;
-//       protected _serializer = mockSerializer;
-//     }
-//
-//     fakeService = new FakeService();
-//     registerService(fakeService);
-//
-//     fakeModels = createMockFakeModels();
-//
-//     state = createMockServiceState<IFakeModelData>(fakeService, [
-//       fakeService.actions.pushAll({ items: fakeModels }),
-//     ]);
-//     store = createMockStore(state);
-//   });
-//
-//   // TODO: Tests go here
-//
-// });
+// tslint:disable:no-empty max-classes-per-file no-unused-expression
+import { spy } from "sinon";
+import "rxjs/add/observable/of";
+
+import { Map, Record } from "immutable";
+
+import { initializeTestServices, seedService } from "../../../TestUtils/Service";
+import { fakeModelModule } from "../../../TestUtils/FakeModelModule";
+
+import { ISetField } from "../ISetField";
+import { DataServiceStateRecord } from "../DataServiceStateRecord";
+import { IAction } from "../../IService";
+import { setRelationshipReducer } from "./SetRelationshipReducer";
+
+declare var intern;
+const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
+const { expect } = intern.getPlugin("chai");
+
+describe("setRelationshipReducer", () => {
+  let model;
+  let setRecordSpy;
+  let serviceName;
+
+  beforeEach(() => {
+    initializeTestServices(fakeModelModule);
+    model = seedService("fakeModel");
+    setRecordSpy = spy(Record.prototype, "set");
+    serviceName = "fakeModel";
+  });
+
+  afterEach(() => {
+    setRecordSpy.restore();
+  });
+
+  it("should set the relationship on the item with the new value", () => {
+    const state = DataServiceStateRecord({
+      items: Map({
+        [model.id]: model,
+      }),
+    });
+
+    const action: IAction<ISetField<any>, any> = {
+      type: `${serviceName}/SET_RELATIONSHIP`,
+      payload: {
+        id: model.id,
+        fieldName: "poultryCollection",
+        value: "Chicken",
+      },
+      meta: {},
+      invoke: spy(),
+    };
+    const newState = setRelationshipReducer(state, action);
+    const updatedItem = newState
+      .get("items", null)
+      .get(model.id) as any;
+
+    const updatedItemRelationship = updatedItem.relatedModels[action.payload.fieldName];
+
+    expect(updatedItemRelationship).to.equal(action.payload.value);
+  });
+
+  it("should not set the relationships on the record items when id not found", () => {
+    const state = DataServiceStateRecord({
+      items: Map({
+        [model.id]: model,
+      }),
+    });
+    
+    const action = {
+      type: `${serviceName}/SET_RELATIONSHIP`,
+      payload: {
+        id: "not likely to exist",
+        fieldName: "singerCollection",
+        value: "Sir Elton",
+      },
+      meta: {},
+      invoke: spy(),
+    };
+
+    const newState = setRelationshipReducer(state, action);
+
+    expect(setRecordSpy.calledWith("items")).to.be.false;
+  });
+
+  it("should update items with relationships id found in items", () => {
+    const state = DataServiceStateRecord({
+      items: Map({
+        [model.id]: model,
+      }),
+    });
+
+    const action = {
+      type: `${serviceName}/SET_RELATIONSHIP`,
+      payload: {
+        id: model.id,
+        fieldName: "vaderCollection",
+        value: "Darth",
+      },
+      meta: {},
+      invoke: spy(),
+    };
+
+    const newState = setRelationshipReducer(state, action);
+    const newModel = newState.items.get(model.id) as any;
+
+    const newRelatedModel = newModel.relatedModels[action.payload.fieldName];
+    expect(newRelatedModel)
+      .to.equal(action.payload.value);
+  });
+});
