@@ -11,7 +11,8 @@ export interface ISetField<T extends IModelData> {
 export function setFieldReducer<T extends IModelData>(state: IDataServiceStateRecord<T>, action: IAction<ISetField<T>>) {
   return state.withMutations((record) => {
     const { id, fieldName, value } = action.payload;
-    if (record.items.has(id)) {
+    if (record.items.has(id)) { 
+      debugger;
       record.update("items", (items) => items.update(id, (item: IModel<T>) => {
         return item.applyUpdates({ [fieldName]: value } as Partial<T>);
       }));
