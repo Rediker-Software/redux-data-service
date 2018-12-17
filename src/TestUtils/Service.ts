@@ -8,6 +8,8 @@ import { getDataService, IModuleMap } from "../Services/ServiceProvider";
 import { configure, IConfiguration } from "../Configure";
 import { MemoryAdapter } from "../Adapters/MemoryAdapter";
 import { MemorySerializer } from "../Serializers/MemorySerializer";
+import { IQueryCache, IQueryParams, IQueryResponse, QueryBuilder, QueryCacheRecord } from "../Query";
+import { createMockQueryResponse } from "../Query/IQueryCache.mock";
 
 export interface IModelDataCreatorMap {
   [name: string]: (overrideValues?: any) => IModel<any>;
@@ -171,14 +173,18 @@ export function seedService<T extends IModelData>(serviceName: string, overrideV
 }
 
 /**
- * Adds multiple seeds to the redux store for a single specified service.
- * If `overrideValues` are provided, they will be added to the service's requestCache as queryParams.
+ * Adds the given number of seeds to the redux store for a single specified service.
+ * If `overrideValues` are provided, they will be passed to each item.
  *
- * @param serviceName service to seed
- * @param count number of seeds
- * @param overrideValues values to override in seeds
+ * The given `options` param may be used to set the query params or the shape of the response envelope.
+ * If `options.queryParams` are not given, the `overrideValues` will be used by default.
  */
-export function seedServiceList<T extends IModelData>(serviceName: string, count: number = 5, overrideValues: Partial<T> = {}): IModel<T>[] {
+export function seedServiceList<T extends IModelData>(
+  serviceName: string,
+  count: number = 5,
+  overrideValues: Partial<T> = {},
+  options: Partial<{ queryParams: IQueryParams } & IQueryResponse> = {},
+): IModel<T>[] {
   const seededData: IModel<T>[] = [];
 
   for (let i = 0; i < count; i++) {
@@ -186,8 +192,18 @@ export function seedServiceList<T extends IModelData>(serviceName: string, count
   }
 
   const service = getDataService(serviceName);
-//  service.actions.pushAll({ items: seededData }, { queryParams: overrideValues }).invoke();
-  service.actions.setQueryResponse({ items: seededData }, { queryParams: overrideValues }).invoke();
+  const { queryParams, ...response} = options;
+
+  service
+    .actions
+    .setQueryResponse({
+      query: new QueryBuilder(serviceName, queryParams || overrideValues as any),
+      response: createMockQueryResponse({
+        ids: seededData.map(x => x.id),
+        ...response,
+      }),
+    })
+    .invoke();
 
   return seededData;
 }

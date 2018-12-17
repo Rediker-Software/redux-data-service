@@ -1,8 +1,11 @@
 // tslint:disable:no-unused-expression
 
+import { spy, stub } from "sinon";
+import { random } from "faker";
+
 import { getConfiguration } from "../Configure";
 import { DataService } from "../Services/DataService";
-import { getService } from "../Services/ServiceProvider";
+import { getDataService, getService } from "../Services/ServiceProvider";
 import { IFakeModelData } from "../Model/Model.mock";
 
 import { RestAdapter } from "../Adapters/RestAdapter";
@@ -13,6 +16,7 @@ import { MemorySerializer } from "../Serializers/MemorySerializer";
 
 import { fakeModelModule } from "./FakeModelModule";
 import { getActionStubMap, getFakedXHRHistory, initializeTestServices, seedService, seedServiceList, seedServices } from "./Service";
+import { IQueryResponse } from "../Query";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
@@ -182,6 +186,82 @@ describe("initializeTestServices", () => {
           expect(itemModel.getData()).to.have.all.keys(fakeModelDataKeys);
         });
       });
+
+      it("dispatches a setQueryResponse action with the given query params", () => {
+        const fakeService = getDataService("fakeModel");
+
+        const setQueryResponseStub = stub(fakeService.actions, "setQueryResponse").returns({
+          invoke: spy(),
+        });
+
+        const queryParams = {
+          hello: random.word(),
+        };
+
+        seedServiceList("fakeModel", 5, {}, {
+          queryParams,
+        });
+
+        expect(setQueryResponseStub.firstCall.args[0])
+          .to.have.property("query")
+          .to.have.property("queryParams")
+          .to.deep.equal(queryParams);
+      });
+
+      it("dispatches a setQueryResponse action using the overrideValues by default if no query params given", () => {
+        const fakeService = getDataService("fakeModel");
+
+        const setQueryResponseStub = stub(fakeService.actions, "setQueryResponse").returns({
+          invoke: spy(),
+        });
+
+        const overrideValues = {
+          fullText: random.word(),
+        };
+
+        seedServiceList<any>("fakeModel", 5, overrideValues);
+
+        expect(setQueryResponseStub.firstCall.args[0])
+          .to.have.property("query")
+          .to.have.property("queryParams")
+          .to.deep.equal(overrideValues);
+      });
+
+      it("dispatches a setQueryResponse action with the ids of the generated items", () => {
+        const fakeService = getDataService("fakeModel");
+
+        const setQueryResponseStub = stub(fakeService.actions, "setQueryResponse").returns({
+          invoke: spy(),
+        });
+
+        const items = seedServiceList<any>("fakeModel");
+
+        expect(setQueryResponseStub.firstCall.args[0])
+          .to.have.property("response")
+          .to.have.property("ids")
+          .to.deep.equal(items.map(item => item.id));
+      });
+
+      it("dispatches a setQueryResponse action with the given response values", () => {
+        const fakeService = getDataService("fakeModel");
+
+        const setQueryResponseStub = stub(fakeService.actions, "setQueryResponse").returns({
+          invoke: spy(),
+        });
+
+        const fakeResponseValues: Partial<IQueryResponse> = {
+          totalCount: random.number(),
+          nextPage: random.number(),
+          previousPage: random.number(),
+        };
+
+        seedServiceList<any>("fakeModel", 5, {}, fakeResponseValues);
+
+        expect(setQueryResponseStub.firstCall.args[0])
+          .to.have.property("response")
+          .to.deep.include(fakeResponseValues);
+      });
+
     });
 
     describe("seedServices", () => {
