@@ -1,67 +1,62 @@
-// // tslint:disable:no-empty max-classes-per-file no-unused-expression
-// import { match, spy, stub } from "sinon";
-// import { ActionsObservable } from "redux-observable";
-// import { Observable } from "rxjs/Observable";
-// import "rxjs/add/observable/of";
-// import { Subject } from "rxjs/Subject";
-//
-// import { Map, Record } from "immutable";
-// import { createMockStore } from "redux-test-utils";
-// import hash from "object-hash";
-//
-// import { createMockServiceState } from "../../../TestUtils";
-// import { IModelMeta } from "../../../Model";
-// import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../../Model/Model.mock";
-// import { MockAdapter } from "../../../Adapters/MockAdapter";
-// import { MockMapper } from "../../../Mapper/MockMapper";
-// import { MockSerializer } from "../../../Serializers";
-// import { configure } from "../../../Configure";
-//
-// import { DataService, IDataServiceState, IRequestCacheKey } from "./";
-// import { BaseService } from "../../BaseService";
-// import { registerService } from "../../ServiceProvider";
-//
-// declare var intern;
-// const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
-// const { expect } = intern.getPlugin("chai");
-//
-// const noop = () => null;
-//
-// describe("DataService", () => {
-//   let fakeService;
-//   let mockAdapter;
-//   let store;
-//   let fakeModels;
-//   let state;
-//   const serviceName = "fakeModel";
-//   let mockMapper;
-//   let mockSerializer;
-//
-//   beforeEach(() => {
-//     configure({ modules: null });
-//     mockAdapter = new MockAdapter();
-//     mockMapper = new MockMapper();
-//     mockSerializer = new MockSerializer();
-//
-//     class FakeService extends DataService<IFakeModelData> {
-//       public name = serviceName;
-//       public ModelClass = FakeModel;
-//       protected _adapter = mockAdapter;
-//       protected _mapper = mockMapper;
-//       protected _serializer = mockSerializer;
-//     }
-//
-//     fakeService = new FakeService();
-//     registerService(fakeService);
-//
-//     fakeModels = createMockFakeModels();
-//
-//     state = createMockServiceState<IFakeModelData>(fakeService, [
-//       fakeService.actions.pushAll({ items: fakeModels }),
-//     ]);
-//     store = createMockStore(state);
-//   });
-//
-//   // TODO: Tests go here
-//
-// });
+// tslint:disable no-unused-expression
+
+import { Map } from "immutable";
+
+import { spy, stub } from "sinon";
+import { random } from "faker";
+
+import { createMockFakeModels } from "../../../Model/Model.mock";
+import { DataServiceStateRecord } from "../DataServiceStateRecord";
+import { unloadAllReducer } from "./UnloadAllReducer";
+
+declare var intern;
+const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
+const { expect } = intern.getPlugin("chai");
+
+describe("unloadAllReducer", () => {
+
+  describe("when the item to be removed exists in the state", () => {
+    let items;
+    let action;
+    let state;
+
+    beforeEach(() => {
+      items = createMockFakeModels(3);
+      action = {
+        type: random.word(),
+        invoke: spy(),
+      };
+      state = DataServiceStateRecord({
+        items: Map({
+          [items[0].id]: items[0],
+          [items[1].id]: items[1],
+          [items[2].id]: items[2],
+        }),
+      });
+    });
+
+    it("returns a new state with no items", () => {
+      const newState = unloadAllReducer(state, action);
+
+      expect(
+        newState.items.isEmpty(),
+      ).to.be.true;
+    });
+
+    it(`calls "markForDestruction" on each existing model in the state`, () => {
+      items.forEach(item => {
+        stub(item, "markForDestruction");
+      });
+
+      unloadAllReducer(state, action);
+
+      items.forEach(item => {
+        expect(
+          item.markForDestruction.calledOnce,
+        ).to.be.true;
+      });
+    });
+
+  });
+
+});

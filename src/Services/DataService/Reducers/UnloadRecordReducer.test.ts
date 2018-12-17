@@ -3,11 +3,11 @@
 import { Map } from "immutable";
 
 import { stub, spy } from "sinon";
-import { lorem, random } from "faker";
+import { random } from "faker";
 
-import {unloadRecordReducer} from "./UnloadRecordReducer";
-import { DataServiceStateRecord } from "../DataServiceStateRecord";
 import { createMockFakeModel } from "../../../Model/Model.mock";
+import { DataServiceStateRecord } from "../DataServiceStateRecord";
+import { unloadRecordReducer } from "./UnloadRecordReducer";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
