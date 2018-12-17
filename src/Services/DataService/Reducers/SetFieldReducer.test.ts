@@ -81,7 +81,7 @@ describe("setFieldReducer", () => {
       expect(setRecordSpy.calledWith("items")).to.be.false;
     });
 
-    it("should update items with updated record when id found in items", () =>{
+    it("should update items with updated record when id found in items", () => {
 
       const state = DataServiceStateRecord({
         items: Map({
