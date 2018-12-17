@@ -37,6 +37,7 @@ import {
   setFieldReducer, setMetaFieldReducer, setQueryResponseReducer, setRelationshipReducer,
   unloadAllReducer,
   unloadRecordReducer,
+  setErrorsReducer,
 } from "./Reducers";
 
 import { DataServiceStateRecord, IDataServiceStateRecord } from "./DataServiceStateRecord";
@@ -337,6 +338,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       [this.types.SET_META_FIELD]: setMetaFieldReducer,
       [this.types.SET_RELATIONSHIP]: setRelationshipReducer,
       [this.types.SET_QUERY_RESPONSE]: setQueryResponseReducer,
+      [this.types.SET_ERRORS]: setErrorsReducer,
     };
   }
 

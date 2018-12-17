@@ -354,49 +354,7 @@ describe("DataService", () => {
       expect(expectedValues).to.deep.equal(itemsData);
     });
   });
-
-  describe("setErrors reducer", () => {
-    it("updates the state adding errors that occurred during the fetchAllEpic", () => {
-      const queryParams = { fakeField: "fakeVal" };
-
-      state = createMockServiceState<IFakeModelData>(fakeService, [
-        fakeService.actions.pushAll({ items: [] }, { queryParams }),
-      ]);
-
-      const errors = ["test error"];
-      const updatedState: IDataServiceState<any> =
-        fakeService.setErrorsReducer(state.fakeModel, fakeService.actions.setErrors({ errors }, { queryParams }));
-
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as string);
-      expect(cachedRequest.toJS()).to.deep.include({
-        ids: [],
-        isLoading: false,
-        errors,
-      }, "cached request value is properly initilized");
-    });
-
-    it("preserves the ids", () => {
-      const expectedValues = createMockFakeModels(2);
-      const existingIds = expectedValues.map((val) => val.id);
-      const queryParams = { fakeField: "fakeVal" };
-
-      state = createMockServiceState<IFakeModelData>(fakeService, [
-        fakeService.actions.pushAll({ items: expectedValues }, { queryParams }),
-      ]);
-
-      const errors = ["test error"];
-      const updatedState: IDataServiceState<any> =
-        fakeService.setErrorsReducer(state.fakeModel, fakeService.actions.setErrors({ errors }, { queryParams }));
-
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as string);
-      expect(cachedRequest.toJS()).to.deep.include({
-        ids: existingIds,
-        isLoading: false,
-        errors,
-      }, "cached request value is properly initialized");
-    });
-  });
-
+  
   it("has an epic for performing a GET request", () => {
     expect(fakeService.fetchRecordEpic).to.be.a("function");
   });
