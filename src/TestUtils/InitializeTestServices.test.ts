@@ -6,11 +6,9 @@ import { MemorySerializer, RestSerializer } from "../Serializers";
 
 import { initializeTestServices } from "./InitializeTestServices";
 import { fakeModelModule } from "./FakeModelModule";
-import { DataService, getService } from "../Services";
-import { IFakeModelData } from "../Model/Model.mock";
+import { getService } from "../Services";
 import { QueryBuilder } from "../Query";
-import { getActionStubMap } from "./Stub/StubActionCreators";
-import { getFakedXHRHistory } from "./Stub/StubXhr";
+import { getFakedXHRHistory } from "./StubXhr";
 
 declare var intern;
 const { describe, it } = intern.getPlugin("interface.bdd");
@@ -50,58 +48,14 @@ describe("initializeTestServices", () => {
 
   });
 
-  describe("stubbed xhr actions", () => {
-
-    it("has a working spy on the invoke method", () => {
-      initializeTestServices(fakeModelModule);
-
-      const service = getService("fakeModel") as DataService<IFakeModelData>;
-      service.actions.fetchAll({}).invoke();
-      expect(getActionStubMap().fakeModel.fetchAll.base.calledOnce).to.be.true;
-      expect(getActionStubMap().fakeModel.fetchAll.invokeSpy.calledOnce).to.be.true;
-    });
-
-    it("has a working base stub", () => {
-      initializeTestServices(fakeModelModule);
-
-      const service = getService("fakeModel") as DataService<IFakeModelData>;
-      service.actions.fetchAll({});
-      expect(getActionStubMap().fakeModel.fetchAll.base.called).to.be.true;
-      expect(getActionStubMap().fakeModel.fetchAll.invokeSpy.called).to.be.false;
-    });
-
-    it("returns a valid IAction", () => {
-      initializeTestServices(fakeModelModule);
-
-      const service = getService("fakeModel") as DataService<IFakeModelData>;
-      const suspectedIAction = service.actions.fetchAll({});
-      expect(suspectedIAction).to.have.all.keys(["invoke", "meta", "payload", "type"]);
-    });
-
-    it("resets the stubs when initializeTestServices is called again", () => {
-      initializeTestServices(fakeModelModule);
-      const service = getService("fakeModel") as DataService<IFakeModelData>;
-      service.actions.fetchAll({});
-      expect(getActionStubMap().fakeModel.fetchAll.base.calledOnce).to.be.true;
-
-      initializeTestServices(fakeModelModule);
-      const newService = getService("fakeModel") as DataService<IFakeModelData>;
-      newService.actions.fetchAll({});
-      expect(getActionStubMap().fakeModel.fetchAll.base.calledOnce).to.be.true;
-    });
-
-    it("takes an optional argument to bypass stubbing methods", () => {
-      initializeTestServices(fakeModelModule, false);
-
-      expect(getActionStubMap()).to.be.empty;
-    });
+  describe("stubbed xhr", () => {
 
     it("uses fake xhr when stubs are not in use", () => {
       initializeTestServices(fakeModelModule, false, { adapter: RestAdapter, serializer: RestSerializer });
 
       const service = getService("fakeModel") as any;
       service.AdapterClass = RestAdapter;
-      
+
       const initHistorySize = getFakedXHRHistory().length;
 
       service

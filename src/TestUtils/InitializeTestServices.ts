@@ -6,8 +6,8 @@ import { MemoryAdapter } from "../Adapters";
 import { MemorySerializer } from "../Serializers";
 import { IModuleMap } from "../Services";
 
+import { stubXHR } from "./StubXhr";
 import { initializeMockDataCreators } from "./Mock/MockDataCreators";
-import { resetActionStubMap, stubActionCreators, stubXHR } from "../TestUtils/Stub";
 
 /**
  * Registers the services, short circuits their XHR epics and returns a Redux store.
@@ -23,10 +23,5 @@ export function initializeTestServices(modules: IModuleMap, shouldStubActionCrea
   initializeMockDataCreators(modules);
   stubXHR();
 
-  if (shouldStubActionCreators) {
-    stubActionCreators(modules);
-  } else {
-    resetActionStubMap();
-  }
   return store;
 }
