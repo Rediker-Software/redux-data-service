@@ -13,7 +13,7 @@ import { initializeMockDataCreators } from "./Mock/MockDataCreators";
  * Registers the services, short circuits their XHR epics and returns a Redux store.
  * Will use a MemoryAdapter and MemorySerializer by default.
  */
-export function initializeTestServices(modules: IModuleMap, shouldStubActionCreators = true, configOptions: Partial<IConfiguration> = {}): Store<any> {
+export function initializeTestServices(modules: IModuleMap, configOptions: Partial<IConfiguration> = {}): Store<any> {
   const store = configure(defaults({}, configOptions, {
     modules,
     adapter: MemoryAdapter,

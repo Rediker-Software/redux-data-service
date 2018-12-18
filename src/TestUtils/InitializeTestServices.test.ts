@@ -51,7 +51,7 @@ describe("initializeTestServices", () => {
   describe("stubbed xhr", () => {
 
     it("uses fake xhr when stubs are not in use", () => {
-      initializeTestServices(fakeModelModule, false, { adapter: RestAdapter, serializer: RestSerializer });
+      initializeTestServices(fakeModelModule, { adapter: RestAdapter, serializer: RestSerializer });
 
       const service = getService("fakeModel") as any;
       service.AdapterClass = RestAdapter;
