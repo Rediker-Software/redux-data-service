@@ -1,5 +1,7 @@
+import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
 import { ajax } from "rxjs/observable/dom/ajax";
+
 import { isEmpty } from "lodash";
 
 import { IAdapter } from "./IAdapter";
