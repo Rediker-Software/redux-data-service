@@ -21,7 +21,6 @@ import { Store } from "redux";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 
-import { ISetField } from ".";
 import { getConfiguration } from "../../Configure";
 import { IModel, IModelData, IModelMeta, IModelFactory } from "../../Model/IModel";
 import { ISerializer, ISerializerFactory } from "../../Serializers/ISerializer";
@@ -32,7 +31,8 @@ import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors,
 import { IMapperFactory, IMapper } from "../../Mapper/IMapper";
 
 import {
-  fetchAllReducer, ISetMetaField,
+  fetchAllReducer,
+  ISetMetaField,
   pushAllReducer,
   pushRecordReducer,
   setFieldReducer, setMetaFieldReducer, setQueryResponseReducer, setRelationshipReducer,
@@ -46,6 +46,7 @@ import { IPostActionHandlers } from "./IPostActionHandlers";
 import { IForceReload } from "./IForceReload";
 import { IQueryBuilder } from "../../Query/QueryBuilder";
 import { IQueryCache } from "../../Query/IQueryCache";
+import { ISetField } from "./ISetField";
 
 export interface IModelId {
   id: string;

@@ -1,4 +1,4 @@
-import { initializeMockDataCreators } from "./MockDataCreators";
+import { initializeMockDataCreators } from "./Mock/MockDataCreators";
 import { MemorySerializer } from "Serializers";
 import { configure } from "Configure";
 import { defaults } from "lodash";

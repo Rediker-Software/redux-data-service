@@ -6,18 +6,6 @@ export interface IModelDataCreatorMap {
 }
 
 let _modelDataCreatorMap: IModelDataCreatorMap = {};
-/**
- * Looks like
- * {
- *    [moduleName] : {
- *      [actionName] : {
- *        base: main stub on action
- *        invokeSpy: A Sinon Spy
- *      }
- *    }
- * }
- *
- */
 
 /** Build a modelDataCreatorMap for later use in the seedService* functions */
 export function initializeMockDataCreators(modules) {
