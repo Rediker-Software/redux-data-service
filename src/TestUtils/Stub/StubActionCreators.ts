@@ -4,7 +4,7 @@ let actionStubMap: any = {};
 
 /** Stub all actions in each service */
 export function stubActionCreators(modules) {
-  actionStubMap = {};
+  resetActionStubMap();
   Object.keys(modules).forEach((moduleName) => {
     const stubMapEntry = stubService(moduleName);
     if (stubMapEntry) { // if it had any stubbed actions
@@ -27,4 +27,8 @@ export function restoreActionStubs() {
 
 export function getActionStubMap() {
   return actionStubMap;
+}
+
+export function resetActionStubMap() {
+  actionStubMap = {};
 }
