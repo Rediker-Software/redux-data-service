@@ -21,6 +21,7 @@ import { Store } from "redux";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
 
+import { ISetField } from ".";
 import { getConfiguration } from "../../Configure";
 import { IModel, IModelData, IModelMeta, IModelFactory } from "../../Model/IModel";
 import { ISerializer, ISerializerFactory } from "../../Serializers/ISerializer";
@@ -31,7 +32,7 @@ import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors,
 import { IMapperFactory, IMapper } from "../../Mapper/IMapper";
 
 import {
-  fetchAllReducer, ISetField, ISetMetaField,
+  fetchAllReducer, ISetMetaField,
   pushAllReducer,
   pushRecordReducer,
   setFieldReducer, setMetaFieldReducer, setQueryResponseReducer, setRelationshipReducer,

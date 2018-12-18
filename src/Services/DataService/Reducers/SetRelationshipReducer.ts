@@ -1,7 +1,6 @@
+import { ISetField, IDataServiceStateRecord } from "..";
 import { IModel, IModelData } from "../../../Model/IModel";
 import { IAction } from "../../IService";
-import { IDataServiceStateRecord } from "../DataServiceStateRecord";
-import { ISetField } from "../ISetField";
 
 export function setRelationshipReducer<T extends IModelData>(state: IDataServiceStateRecord<T>, action: IAction<ISetField<T>>) {
   return state.withMutations((record) => {
