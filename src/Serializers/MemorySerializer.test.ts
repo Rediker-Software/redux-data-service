@@ -1,6 +1,6 @@
 // tslint:disable no-unused-expression
 
-import { initializeTestServices, seedService } from "../TestUtils/Service";
+import { initializeTestServices, seedService } from "../TestUtils";
 import { fakeModelModule } from "../TestUtils/FakeModelModule";
 
 import { MemorySerializer } from "./MemorySerializer";

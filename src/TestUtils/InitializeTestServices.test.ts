@@ -99,7 +99,9 @@ describe("initializeTestServices", () => {
     it("uses fake xhr when stubs are not in use", () => {
       initializeTestServices(fakeModelModule, false, { adapter: RestAdapter, serializer: RestSerializer });
 
-      const service = getService("fakeModel") as DataService<IFakeModelData>;
+      const service = getService("fakeModel") as any;
+      service.AdapterClass = RestAdapter;
+      
       const initHistorySize = getFakedXHRHistory().length;
 
       service

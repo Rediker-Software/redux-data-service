@@ -3,7 +3,7 @@ import { of as of$ } from "rxjs/observable/of";
 
 import { IAdapter } from "./IAdapter";
 import { IModelData } from "../Model/IModel";
-import { seedService, seedServiceList } from "../TestUtils/Service";
+import { seedService, seedServiceList } from "../TestUtils/Seed";
 
 /**
  * An in-memory IAdapter implementation which returns fake data when it is requested.

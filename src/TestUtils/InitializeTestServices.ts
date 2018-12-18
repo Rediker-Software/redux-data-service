@@ -1,7 +1,13 @@
-import { initializeMockDataCreators } from "./Mock/MockDataCreators";
-import { MemorySerializer } from "Serializers";
-import { configure } from "Configure";
+import { Store } from "redux";
 import { defaults } from "lodash";
+
+import { configure, IConfiguration } from "../Configure";
+import { MemoryAdapter } from "../Adapters";
+import { MemorySerializer } from "../Serializers";
+import { IModuleMap } from "../Services";
+
+import { initializeMockDataCreators } from "./Mock/MockDataCreators";
+import { resetActionStubMap, stubActionCreators, stubXHR } from "../TestUtils/Stub";
 
 /**
  * Registers the services, short circuits their XHR epics and returns a Redux store.
@@ -10,7 +16,7 @@ import { defaults } from "lodash";
 export function initializeTestServices(modules: IModuleMap, shouldStubActionCreators = true, configOptions: Partial<IConfiguration> = {}): Store<any> {
   const store = configure(defaults({}, configOptions, {
     modules,
-    // adapter: MemoryAdapter,
+    adapter: MemoryAdapter,
     serializer: MemorySerializer,
   }));
 
@@ -20,8 +26,7 @@ export function initializeTestServices(modules: IModuleMap, shouldStubActionCrea
   if (shouldStubActionCreators) {
     stubActionCreators(modules);
   } else {
-    actionStubMap = {};
+    resetActionStubMap();
   }
-
   return store;
 }

@@ -4,7 +4,8 @@ import "rxjs/add/observable/of";
 
 import { Map, Record } from "immutable";
 
-import { initializeTestServices, seedService } from "../../../TestUtils/Service";
+import { initializeTestServices } from "../../../TestUtils/InitializeTestServices";
+import { seedService } from "../../../TestUtils/Seed";
 import { fakeModelModule } from "../../../TestUtils/FakeModelModule";
 
 import { ISetField } from "../ISetField";

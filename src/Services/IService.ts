@@ -20,8 +20,8 @@ export interface IActionCreators {
 export type IReducer<S> = (state: S, action: IAction) => S;
 export type IReducers<S> = { [index: string]: IReducer<S> } | {};
 
-export type IObserveableAction<T extends object = any> = ActionsObservable<IAction<T>> & IAction<T>;
-export type IActionEpic<T extends object = any> = Epic<IObserveableAction<T>, {}, any>;
+export type IObservableAction<T extends object = any, M = any> = ActionsObservable<IAction<T, M>> & IAction<T, M>;
+export type IActionEpic<T extends object = any> = Epic<IObservableAction<T>, {}, any>;
 
 export interface ISelectors {
   [index: string]: (rootState: any, props?: any) => any;

@@ -7,7 +7,7 @@ import { createMockStore } from "redux-test-utils";
 
 import { MockAdapter } from "../Adapters/MockAdapter";
 import { IFakeModelData } from "../Model/Model.mock";
-import { createMockServiceState } from "../TestUtils/Service";
+import { createMockServiceState } from "../TestUtils";
 
 import { BaseService } from "./BaseService";
 import { createMockTestService } from "./BaseService.mock";

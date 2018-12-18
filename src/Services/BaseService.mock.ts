@@ -8,7 +8,7 @@ import {
   IActionEpic,
   IActionTypes,
   ISelectors,
-  IObserveableAction,
+  IObservableAction,
 } from "./IService";
 import { IAdapter } from "../Adapters/IAdapter";
 import { MockAdapter } from "../Adapters/MockAdapter";
@@ -94,7 +94,7 @@ export class MockTestService extends BaseService<MockTestServiceRecordState> {
     ];
   }
 
-  public bakeBaguettesEpic(action$: IObserveableAction): any {
+  public bakeBaguettesEpic(action$: IObservableAction): any {
     return action$.ofType(this.types.BAKE_BAGUETTES)
       .mergeMap((action) =>
         this.adapter.createItem("")
@@ -103,7 +103,7 @@ export class MockTestService extends BaseService<MockTestServiceRecordState> {
       );
   }
 
-  public eatBaguettesEpic(action$: IObserveableAction): any {
+  public eatBaguettesEpic(action$: IObservableAction): any {
     return action$.ofType(this.types.EAT_BAGUETTES)
       .mergeMap((action) =>
         this.adapter.deleteItem("0")

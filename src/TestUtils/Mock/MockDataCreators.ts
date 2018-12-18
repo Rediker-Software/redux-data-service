@@ -1,5 +1,5 @@
 import { forEach, upperFirst } from "lodash";
-import { IModel } from "Model";
+import { IModel } from "../../Model";
 
 export interface IModelDataCreatorMap {
   [name: string]: (overrideValues?: any) => IModel<any>;

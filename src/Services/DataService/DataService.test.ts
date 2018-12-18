@@ -9,7 +9,7 @@ import { Map, Record } from "immutable";
 import { createMockStore } from "redux-test-utils";
 import hash from "object-hash";
 
-import { createMockServiceState } from "../../TestUtils/Service";
+import { createMockServiceState } from "../../TestUtils";
 import { IModelMeta } from "../../Model/IModel";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
 import { MockAdapter } from "../../Adapters/MockAdapter";

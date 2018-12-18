@@ -9,12 +9,11 @@ declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
 const { expect } = intern.getPlugin("chai");
 
-describe("StubXhr", () => {
+describe("stubXhr", () => {
 
+  // beforeEach(() => {
 
-  beforeEach(() => {
-
-  });
+  // });
 
   it("needs a test", () => {
     expect(false).to.be.true;

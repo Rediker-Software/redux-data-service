@@ -14,7 +14,7 @@ import { IModelData } from "./IModel";
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
 import { IFakeModelData } from "./Model.mock";
 import { attr } from "./Decorators/Attr";
-import { initializeTestServices, seedService } from "../TestUtils/Service";
+import { initializeTestServices, seedService } from "../TestUtils";
 import { fakeModelModule } from "../TestUtils/FakeModelModule";
 import { belongsTo } from "./Decorators/BelongsTo";
 import { registerService } from "../Services/ServiceProvider";

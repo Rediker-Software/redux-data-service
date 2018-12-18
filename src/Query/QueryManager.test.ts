@@ -5,7 +5,7 @@ import { random } from "faker";
 import { QueryBuilder } from "./QueryBuilder";
 import { QueryManager } from "./QueryManager";
 import { IQueryResponse } from "./IQueryResponse";
-import { initializeTestServices, seedServiceList } from "../TestUtils/Service";
+import { initializeTestServices, seedServiceList } from "../TestUtils";
 import { fakeModelModule } from "../TestUtils/FakeModelModule";
 import { IFakeModelData } from "../Model/Model.mock";
 

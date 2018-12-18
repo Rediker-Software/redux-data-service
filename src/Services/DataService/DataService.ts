@@ -27,7 +27,7 @@ import { ISerializer, ISerializerFactory } from "../../Serializers/ISerializer";
 import { IAdapter, IAdapterFactory } from "../../Adapters/IAdapter";
 
 import { BaseService } from "../BaseService";
-import { IAction, IActionCreators, IActionTypes, IObserveableAction, ISelectors, IActionEpic } from "../IService";
+import { IAction, IActionCreators, IActionTypes, IObservableAction, ISelectors, IActionEpic } from "../IService";
 import { IMapperFactory, IMapper } from "../../Mapper/IMapper";
 
 import {
@@ -35,17 +35,23 @@ import {
   ISetMetaField,
   pushAllReducer,
   pushRecordReducer,
-  setFieldReducer, setMetaFieldReducer, setQueryResponseReducer, setRelationshipReducer,
+  setFieldReducer, 
+  setMetaFieldReducer, 
+  setQueryResponseReducer, 
+  setRelationshipReducer,
   unloadAllReducer,
   unloadRecordReducer,
 } from "./Reducers";
 
 import { DataServiceStateRecord, IDataServiceStateRecord } from "./DataServiceStateRecord";
 import { shouldFetchAll } from "./ShouldFetchAll";
-import { IPostActionHandlers } from "./IPostActionHandlers";
-import { IForceReload } from "./IForceReload";
+
 import { IQueryBuilder } from "../../Query/QueryBuilder";
 import { IQueryCache } from "../../Query/IQueryCache";
+import { IRawQueryResponse } from "../../Query";
+
+import { IForceReload } from "./IForceReload";
+import { IPostActionHandlers } from "./IPostActionHandlers";
 import { ISetField } from "./ISetField";
 
 export interface IModelId {
@@ -86,8 +92,8 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
   public get adapter() {
     if (!this._adapter) {
-      const Adapter = this.AdapterClass || getConfiguration().adapter;
-      this._adapter = new Adapter(this.name);
+      const AdapterClass = this.AdapterClass || getConfiguration().adapter;
+      this._adapter = new AdapterClass(this.name);
     }
 
     return this._adapter;
@@ -95,8 +101,8 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
   public get mapper() {
     if (!this._mapper) {
-      const Mapper = this.MapperClass || getConfiguration().mapper;
-      this._mapper = new Mapper(this.ModelClass);
+      const MapperClass = this.MapperClass || getConfiguration().mapper;
+      this._mapper = new MapperClass(this.ModelClass);
     }
 
     return this._mapper;
@@ -104,8 +110,8 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
   public get serializer() {
     if (!this._serializer) {
-      const Serializer = this.SerializerClass || getConfiguration().serializer;
-      this._serializer = new Serializer(this.ModelClass);
+      const SerializerClass = this.SerializerClass || getConfiguration().serializer;
+      this._serializer = new SerializerClass(this.ModelClass);
     }
 
     return this._serializer;
@@ -359,28 +365,22 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     return epics;
   }
 
-  public fetchAllEpic(action$: IObserveableAction, store: Store<IDataServiceStateRecord<T>>) {
+  public fetchAllEpic(action$: IObservableAction<IQueryBuilder, IPostActionHandlers & IForceReload>, store: Store<IDataServiceStateRecord<T>>) {
     return action$.ofType(this.types.FETCH_ALL)
-      .filter((action) => shouldFetchAll(store.getState(), action))
+      .filter((action) => shouldFetchAll(this.selectors.getServiceState(store.getState()), action))
       .mergeMap((action) =>
-        this.adapter.fetchAll(action.payload)
-          .mergeMap(async ({ items, ...other }) => {
-            const deserializedItems = items.map(item => this.serializer.deserialize(item));
-            const normalizedResponse = deserializedItems.map(deserializedItem => this.mapper.normalize(deserializedItem));
-            return {
-              ...other,
-              items: await Promise.all(normalizedResponse),
-            };
-          })
+        this.adapter.fetchAll(this.serializer.serializeQueryParams(action.payload.queryParams))
+          .mergeMap(async (response: IRawQueryResponse<any> ) => await this.mapper.normalizeQueryResponse(response))
           .do(action.meta.onSuccess, action.meta.onError)
-          .map(data => this.actions.pushAll(data, { queryParams: action.payload }))
+          .map(({ items }) => this.actions.pushAll({ items }))
+          .concat(({items, ...response}) => of$(this.actions.setQueryResponse({ query: action.payload, response })))
           .catch((e) => of$(
             this.actions.setErrors({ errors: e.xhr.response }, { queryParams: action.payload }),
           )),
       );
   }
 
-  public fetchRecordEpic(action$: IObserveableAction, store: Store<IDataServiceStateRecord<T>>): Observable<IAction<T>> {
+  public fetchRecordEpic(action$: IObservableAction, store: Store<IDataServiceStateRecord<T>>): Observable<IAction<T>> {
     return action$.ofType(this.types.FETCH_RECORD)
       .filter(action => this.shouldFetchItem(action, store.getState()))
       .mergeMap(action =>
@@ -395,7 +395,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       );
   }
 
-  public createRecordEpic(action$: IObserveableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {
+  public createRecordEpic(action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {
     return action$.ofType(this.types.CREATE_RECORD)
       .mergeMap(action =>
         of$(this.selectors.getItem(store.getState(), action.payload.id))
@@ -413,7 +413,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       );
   }
 
-  public updateRecordEpic(action$: IObserveableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {
+  public updateRecordEpic(action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {
     return action$.ofType(this.types.UPDATE_RECORD)
       .mergeMap((action) =>
         of$(this.selectors.getItem(store.getState(), action.payload.id))
@@ -430,7 +430,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       );
   }
 
-  public patchRecordEpic(action$: IObserveableAction<Partial<T>>) {
+  public patchRecordEpic(action$: IObservableAction<Partial<T>>) {
     return action$.ofType(this.types.PATCH_RECORD)
       .mergeMap(action =>
         of$(action.payload)
@@ -447,7 +447,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       );
   }
 
-  public deleteRecordEpic(action$: IObserveableAction<IModelId>) {
+  public deleteRecordEpic(action$: IObservableAction<IModelId>) {
     return action$.ofType(this.types.DELETE_RECORD)
       .mergeMap((action) => (
         this.adapter.deleteItem(action.payload.id)

@@ -8,6 +8,7 @@ import { random } from "faker";
 import { shouldFetchAll } from "./ShouldFetchAll";
 import { DataServiceStateRecord } from "./DataServiceStateRecord";
 import { QueryBuilder, QueryCacheRecord } from "../../Query";
+import { createMockQueryResponse } from "../../Query/IQueryCache.mock";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
@@ -25,6 +26,24 @@ describe("shouldFetchAll", () => {
     });
 
     it("returns true if the requested query is not cached in the state", () => {
+      expect(
+        shouldFetchAll(state, {
+          type: random.word(),
+          invoke: spy(),
+          payload: query,
+        }),
+      ).to.be.true;
+    });
+
+    it("returns true if the query is cached but the response is undefined", () => {
+      state = DataServiceStateRecord({
+        requestCache: Map({
+          [query.getHashCode()]: QueryCacheRecord({
+            query,
+           }),
+        }),
+      });
+      
       expect(
         shouldFetchAll(state, {
           type: random.word(),
@@ -54,7 +73,10 @@ describe("shouldFetchAll", () => {
       query = new QueryBuilder(random.word());
       state = DataServiceStateRecord({
         requestCache: Map({
-          [query.getHashCode()]: QueryCacheRecord(),
+          [query.getHashCode()]: QueryCacheRecord({
+            query,
+            response: createMockQueryResponse(),
+           }),
         }),
       });
     });

@@ -6,7 +6,8 @@ import { Map, Record } from "immutable";
 import { spy } from "sinon";
 
 import { fakeModelModule } from "../../../TestUtils/FakeModelModule";
-import { initializeTestServices, seedService } from "../../../TestUtils/Service";
+import { initializeTestServices } from "../../../TestUtils/InitializeTestServices";
+import { seedService } from "../../../TestUtils/Seed";
 
 import { DataServiceStateRecord } from "../DataServiceStateRecord";
 import { setMetaFieldReducer, ISetMetaField } from "./SetMetaFieldReducer";

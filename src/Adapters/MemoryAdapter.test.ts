@@ -2,7 +2,8 @@ import { random } from "faker";
 import { spy, stub } from "sinon";
 
 import { MemoryAdapter } from "./MemoryAdapter";
-import { initializeTestServices, seedService } from "../TestUtils/Service";
+import { initializeTestServices } from "../TestUtils/InitializeTestServices";
+import { seedService } from "../TestUtils/Seed";
 import { fakeModelModule } from "../TestUtils/FakeModelModule";
 import { getDataService } from "../Services/ServiceProvider";
 

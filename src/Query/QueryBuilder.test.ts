@@ -4,7 +4,7 @@ import { spy, stub } from "sinon";
 import { lorem, random } from "faker";
 
 import { IQueryBuilder, QueryBuilder, SortDirection } from "./QueryBuilder";
-import { initializeTestServices } from "../TestUtils/Service";
+import { initializeTestServices } from "../TestUtils/InitializeTestServices";
 import { registerService } from "../Services/ServiceProvider";
 
 declare var intern;
