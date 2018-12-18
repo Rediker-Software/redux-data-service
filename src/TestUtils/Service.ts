@@ -11,60 +11,11 @@ import { MemorySerializer } from "../Serializers/MemorySerializer";
 import { IQueryCache, IQueryParams, IQueryResponse, QueryBuilder, QueryCacheRecord } from "../Query";
 import { createMockQueryResponse } from "../Query/IQueryCache.mock";
 
-export interface IModelDataCreatorMap {
-  [name: string]: (overrideValues?: any) => IModel<any>;
-}
-
-let modelDataCreatorMap: IModelDataCreatorMap = {};
-/**
- * Looks like
- * {
- *    [moduleName] : {
- *      [actionName] : {
- *        base: main stub on action
- *        invokeSpy: A Sinon Spy
- *      }
- *    }
- * }
- *
- */
 let actionStubMap: any = {};
 let _FakedXHRHistory = [];
 let _FakeXHR;
 
-/**
- * Registers the services, short circuits their XHR epics and returns a Redux store.
- * Will use a MemoryAdapter and MemorySerializer by default.
- */
-export function initializeTestServices(modules: IModuleMap, shouldStubActionCreators = true, configOptions: Partial<IConfiguration> = {}): Store<any> {
-  const store = configure(defaults({}, configOptions, {
-    modules,
-    // adapter: MemoryAdapter,
-    serializer: MemorySerializer,
-  }));
 
-  initializeMockDataCreators(modules);
-  stubXHR();
-
-  if (shouldStubActionCreators) {
-    stubActionCreators(modules);
-  } else {
-    actionStubMap = {};
-  }
-
-  return store;
-}
-
-/** Build a modelDataCreatorMap for later use in the seedService* functions */
-export function initializeMockDataCreators(modules) {
-  modelDataCreatorMap = {};
-  forEach(modules, (moduleItem, moduleName) => {
-    const mockDataCreatorName = `createMock${upperFirst(moduleName)}`;
-    if (mockDataCreatorName in moduleItem) {
-      modelDataCreatorMap[moduleName] = moduleItem[mockDataCreatorName];
-    }
-  });
-}
 
 /** Stub all actions in each service */
 export function stubActionCreators(modules) {
