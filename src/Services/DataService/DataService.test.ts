@@ -21,6 +21,7 @@ import { DataService } from "./DataService";
 import { IDataServiceState } from "./IDataServiceState";
 import { BaseService } from "../BaseService";
 import { registerService } from "../ServiceProvider";
+import { pushRecordReducer } from "./Reducers/PushRecordReducer";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -870,7 +871,7 @@ describe("DataService", () => {
           ...itemData,
           fullText: "asdfasdf",
         };
-        const newState = fakeService.pushRecordReducer(state[serviceName], fakeService.actions.pushRecord(newItemData));
+        const newState = pushRecordReducer(state[serviceName], fakeService.actions.pushRecord(newItemData));
         let previouslyUpdated = false;
 
         itemObservable.subscribe((itemModel) => {
