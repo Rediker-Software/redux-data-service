@@ -16,7 +16,7 @@ import { MemorySerializer } from "../Serializers/MemorySerializer";
 
 import { fakeModelModule } from "./FakeModelModule";
 import { getActionStubMap, getFakedXHRHistory, initializeTestServices, seedService, seedServiceList, seedServices } from "./Service";
-import { IQueryResponse } from "../Query";
+import { IQueryResponse, QueryBuilder } from "../Query";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
@@ -97,8 +97,15 @@ describe("initializeTestServices", () => {
 
       const service = getService("fakeModel") as DataService<IFakeModelData>;
       const initHistorySize = getFakedXHRHistory().length;
-      service.actions.fetchAll({}).invoke();
-      expect(getFakedXHRHistory().length).to.be.above(initHistorySize, "calling an action changes faked xhr history stack");
+
+      service
+        .actions
+        .fetchAll(new QueryBuilder("fakeModel"))
+        .invoke();
+
+      expect(
+        getFakedXHRHistory().length,
+      ).to.be.above(initHistorySize, "calling an action changes faked xhr history stack");
     });
   });
 

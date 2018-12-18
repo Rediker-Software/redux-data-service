@@ -22,6 +22,8 @@ import { IDataServiceState } from "./IDataServiceState";
 import { BaseService } from "../BaseService";
 import { registerService } from "../ServiceProvider";
 import { pushRecordReducer } from "./Reducers/PushRecordReducer";
+import { QueryBuilder } from "../../Query";
+import { createMockQueryResponse } from "../../Query/IQueryCache.mock";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -342,17 +344,31 @@ describe("DataService", () => {
   describe("getItems selector", () => {
     it("should only select the items returned from a fetchall request, given the same obj to make the request", () => {
       const queryParams = { fakeField: "fakeVal" };
+      const queryBuilder = new QueryBuilder(serviceName, queryParams);
+
       const expectedValues = createMockFakeModels(2);
       const extraValues = [createMockFakeModel(), createMockFakeModel()];
+      const otherQueryBuilder = new QueryBuilder(serviceName, { fakeField2: "fakeVal" });
 
       state = createMockServiceState<IFakeModelData>(fakeService, [
-        fakeService.actions.pushAll({ items: expectedValues }, { queryParams }),
-        fakeService.actions.pushAll({ items: extraValues }, { queryParams: { fakeField2: "fakeVal" } }),
+        fakeService.actions.pushAll({ items: expectedValues }),
+        fakeService.actions.setQueryResponse({
+          query: queryBuilder,
+          response: createMockQueryResponse({
+            ids: expectedValues.map(item => item.id),
+          }),
+        }),
+        fakeService.actions.pushAll({ items: extraValues }),
+        fakeService.actions.setQueryResponse({
+          query: otherQueryBuilder,
+          response: createMockQueryResponse({
+            ids: extraValues.map(item => item.id),
+          }),
+        }),
       ]);
 
-      const items = fakeService.selectors.getItems(state, queryParams);
-      const itemsData = items.toJS();
-      expect(expectedValues).to.deep.equal(itemsData);
+      const items = fakeService.selectors.getItems(state, queryBuilder);
+      expect(expectedValues).to.deep.equal(items);
     });
   });
   
