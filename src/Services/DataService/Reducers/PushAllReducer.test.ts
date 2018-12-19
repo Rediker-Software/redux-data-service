@@ -4,9 +4,9 @@ import "rxjs/add/observable/of";
 import { random } from "faker";
 import { spy } from "sinon";
 
+import { createMockFakeModels } from "../../../Model/Model.mock";
 import { DataServiceStateRecord } from "../DataServiceStateRecord";
 import { pushAllReducer } from "./PushAllReducer";
-import { createMockFakeModels } from "../../../Model/Model.mock";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");

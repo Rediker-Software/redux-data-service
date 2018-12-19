@@ -9,6 +9,7 @@ export interface ISetMetaField<T extends IModelData> {
   value: any;
 }
 
+/** Sets the given meta field for the IModel instance associated to the given id */
 export function setMetaFieldReducer<T extends IModelData>(state: IDataServiceStateRecord<T>, action: IAction<ISetMetaField<T>>) {
   return state.withMutations((record) => {
     const { id, fieldName, value } = action.payload;

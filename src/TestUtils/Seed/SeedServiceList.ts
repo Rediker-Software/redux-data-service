@@ -1,7 +1,13 @@
 import { IModel, IModelData } from "../../Model";
-import { IQueryParams, IQueryResponse, QueryBuilder } from "../../Query";
 import { getDataService } from "../../Services";
-import { createMockQueryResponse } from "../../Query/IQueryCache.mock";
+
+import {
+  createMockQueryResponse,
+  IQueryParams,
+  IQueryResponse,
+  QueryBuilder,
+} from "../../Query";
+
 import { seedService } from "./SeedService";
 
 /**

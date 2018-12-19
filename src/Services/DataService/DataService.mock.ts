@@ -1,10 +1,7 @@
-// tslint:disable:max-classes-per-file
-import { IModelFactory } from "../../Model/IModel";
-import { FakeModel, IFakeModelData } from "../../Model/Model.mock";
-
-import { MockAdapter } from "../../Adapters/MockAdapter";
-import { MockMapper } from "../../Mapper/MockMapper";
-import { MockSerializer } from "../../Serializers/MockSerializer";
+import { FakeModel, IFakeModelData, IModelFactory } from "../../Model";
+import { MockAdapter } from "../../Adapters";
+import { MockMapper } from "../../Mapper";
+import { MockSerializer } from "../../Serializers";
 
 import { DataService } from "./DataService";
 

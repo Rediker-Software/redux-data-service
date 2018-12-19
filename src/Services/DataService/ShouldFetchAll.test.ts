@@ -5,10 +5,9 @@ import { Map } from "immutable";
 import { spy } from "sinon";
 import { random } from "faker";
 
-import { shouldFetchAll } from "./ShouldFetchAll";
+import { createMockQueryResponse, QueryBuilder, QueryCacheRecord } from "../../Query";
 import { DataServiceStateRecord } from "./DataServiceStateRecord";
-import { QueryBuilder, QueryCacheRecord } from "../../Query";
-import { createMockQueryResponse } from "../../Query/IQueryCache.mock";
+import { shouldFetchAll } from "./ShouldFetchAll";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
@@ -53,13 +52,13 @@ describe("shouldFetchAll", () => {
       ).to.be.true;
     });
 
-    it("returns true if the requested query is not cached in the state even when forceReload = true", () => {
+    it("returns true if the requested query is not cached in the state even when forceReload = false", () => {
       expect(
         shouldFetchAll(state, {
           type: random.word(),
           invoke: spy(),
           payload: query,
-          meta: { forceReload: true },
+          meta: { forceReload: false },
         }),
       ).to.be.true;
     });

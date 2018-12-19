@@ -6,12 +6,15 @@ import { Map } from "immutable";
 import { random } from "faker";
 import { spy } from "sinon";
 
+import {
+  createMockQueryResponse,
+  IQueryCache,
+  QueryBuilder,
+  QueryCacheRecord,
+} from "../../../Query";
+
 import { DataServiceStateRecord } from "../DataServiceStateRecord";
-import { QueryBuilder } from "../../../Query/QueryBuilder";
-import { IQueryCache } from "../../../Query/IQueryCache";
 import { setQueryResponseReducer } from "./SetQueryResponseReducer";
-import { QueryCacheRecord } from "../../../Query/QueryCacheRecord";
-import { createMockQueryResponse } from "../../../Query/IQueryCache.mock";
 
 declare var intern;
 const { describe, it } = intern.getPlugin("interface.bdd");

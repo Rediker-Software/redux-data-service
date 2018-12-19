@@ -9,19 +9,29 @@ import { lorem, random } from "faker";
 import { initializeValidateJS } from "../Initializers";
 
 import { Model } from "./Model";
+import { IFakeModelData } from "./Model.mock";
 import { IModelData } from "./IModel";
 
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
-import { IFakeModelData } from "./Model.mock";
-import { attr } from "./Decorators/Attr";
-import { initializeTestServices, seedService } from "../TestUtils";
-import { fakeModelModule } from "../TestUtils/FakeModelModule";
-import { belongsTo } from "./Decorators/BelongsTo";
-import { registerService } from "../Services/ServiceProvider";
-import { hasMany } from "./Decorators/HasMany";
-import { DataService } from "../Services/DataService";
-import { BaseService } from "../Services/BaseService";
-import { required } from "./Decorators/Required";
+
+import {
+  fakeModelModule,
+  initializeTestServices,
+  seedService,
+} from "../TestUtils";
+
+import {
+  BaseService,
+  DataService,
+  registerService,
+} from "../Services";
+
+import {
+  attr,
+  belongsTo,
+  hasMany,
+  required,
+} from "./Decorators";
 
 declare var intern;
 const { describe, it, beforeEach, before } = intern.getPlugin("interface.bdd");
@@ -50,16 +60,12 @@ describe("Model", () => {
 
   describe("Saving the model", () => {
     let service;
-    let modelId;
     let relatedModelId;
     let favoriteColor;
-    let name;
 
     beforeEach(() => {
-      modelId = random.number().toString();
       relatedModelId = random.number().toString();
       favoriteColor = lorem.word();
-      name = lorem.word();
 
       BaseService.registerDispatch(spy());
 

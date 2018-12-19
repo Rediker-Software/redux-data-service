@@ -5,8 +5,8 @@ import { Map } from "immutable";
 import { random } from "faker";
 import { spy } from "sinon";
 
-import { DataServiceStateRecord } from "../DataServiceStateRecord";
 import { createMockFakeModel } from "../../../Model/Model.mock";
+import { DataServiceStateRecord } from "../DataServiceStateRecord";
 import { pushRecordReducer } from "./PushRecordReducer";
 
 declare var intern;

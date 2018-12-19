@@ -3,13 +3,17 @@ import { from as from$ } from "rxjs/observable/from";
 
 import { initialize } from "./Initialize";
 import { configureStore as defaultConfigureStore, IConfigureStore } from "./Store/ConfigureStore";
-import { getEpics, getReducers, IModuleMap, initializeServices } from "./Services/ServiceProvider";
+
 import { IAdapterFactory } from "./Adapters/IAdapter";
-import { ISerializerFactory } from "./Serializers/ISerializer";
-import { IMapperFactory } from "./Mapper/IMapper";
 import { RestAdapter } from "./Adapters/RestAdapter";
+
+import { ISerializerFactory } from "./Serializers/ISerializer";
 import { RestSerializer } from "./Serializers/RestSerializer";
+
+import { IMapperFactory } from "./Mapper/IMapper";
 import { Mapper } from "./Mapper/Mapper";
+
+import { getEpics, getReducers, IModuleMap, initializeServices } from "./Services/ServiceProvider";
 import { BaseService } from "./Services/BaseService";
 
 export interface IConfiguration {

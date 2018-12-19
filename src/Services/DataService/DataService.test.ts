@@ -4,26 +4,21 @@ import { ActionsObservable } from "redux-observable";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import { Subject } from "rxjs/Subject";
-
-import { Map, Record } from "immutable";
 import { createMockStore } from "redux-test-utils";
-import hash from "object-hash";
 
 import { createMockServiceState } from "../../TestUtils";
-import { IModelMeta } from "../../Model/IModel";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
-import { MockAdapter } from "../../Adapters/MockAdapter";
-import { MockMapper } from "../../Mapper/MockMapper";
-import { MockSerializer } from "../../Serializers/MockSerializer";
+import { MockAdapter } from "../../Adapters";
+import { MockMapper } from "../../Mapper";
+import { MockSerializer } from "../../Serializers";
 import { configure } from "../../Configure";
+import { createMockQueryResponse, QueryBuilder } from "../../Query";
 
 import { DataService } from "./DataService";
-import { IDataServiceState } from "./IDataServiceState";
 import { BaseService } from "../BaseService";
 import { registerService } from "../ServiceProvider";
-import { pushRecordReducer } from "./Reducers/PushRecordReducer";
-import { QueryBuilder } from "../../Query";
-import { createMockQueryResponse } from "../../Query/IQueryCache.mock";
+
+import { pushRecordReducer } from "./Reducers";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");

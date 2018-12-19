@@ -1,4 +1,4 @@
-import { IQueryParams } from "../Query/QueryBuilder";
+import { IQueryParams } from "../Query";
 import { ISerializer } from "./ISerializer";
 
 /**

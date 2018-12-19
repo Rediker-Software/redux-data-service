@@ -191,7 +191,7 @@ describe("ServiceProvider", () => {
   });
 
   describe("getReducers", () => {
-    it("combines the Reducers from each service to create a root reducer which can be passed into Redux", () => {
+    it("combines the reducers from each service to create a root reducer which can be passed into Redux", () => {
       const studentReducerStub = stub().returns({
         hello: "world",
       });

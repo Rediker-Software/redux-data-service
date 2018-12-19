@@ -1,6 +1,6 @@
 import { IModel, IModelData } from "../../Model";
 import { getDataService } from "../../Services";
-import { getModelDataCreatorMap } from "../Mock/MockDataCreators";
+import { getModelDataCreatorMap } from "../Mock";
 
 /**
  * Adds seed data to the redux store for a single specific service

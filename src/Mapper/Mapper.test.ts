@@ -5,22 +5,30 @@ import { spy, stub } from "sinon";
 
 import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
-import { omit, range } from "lodash";
+import { omit } from "lodash";
 
-import { MockAdapter } from "../Adapters/MockAdapter";
-import { ArrayField, DateField, NumberField, StringField, TimeField } from "../Model/FieldType";
+import { BaseService, DataService, registerService } from "../Services";
+import {
+  ArrayField,
+  attr,
+  belongsTo,
+  createMockFakeModel,
+  createMockFakeModelArray,
+  DateField,
+  FakeModel,
+  hasMany,
+  IFakeModelData,
+  IModelFactory,
+  Model,
+  NumberField,
+  StringField,
+  TimeField,
+} from "../Model";
+
+import { MockAdapter } from "../Adapters";
+import { IRawQueryResponse } from "../Query";
 
 import { Mapper } from "./Mapper";
-import { Model } from "../Model/Model";
-import { attr } from "../Model/Decorators/Attr";
-import { belongsTo } from "../Model/Decorators/BelongsTo";
-import { hasMany } from "../Model/Decorators/HasMany";
-import { createMockFakeModel, createMockFakeModelArray, FakeModel, IFakeModelData } from "../Model/Model.mock";
-import { IRawQueryResponse } from "../Query/IRawQueryResponse";
-import { registerService } from "../Services/ServiceProvider";
-import { IModelFactory } from "../Model/IModel";
-import { DataService } from "../Services/DataService";
-import { BaseService } from "../Services/BaseService";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");

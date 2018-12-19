@@ -1,16 +1,18 @@
 // tslint:disable:no-empty max-classes-per-file no-unused-expression
-import { spy } from "sinon";
 import "rxjs/add/observable/of";
+import { spy } from "sinon";
 
 import { Map, Record } from "immutable";
 
-import { initializeTestServices } from "../../../TestUtils/InitializeTestServices";
-import { seedService } from "../../../TestUtils/Seed";
-import { fakeModelModule } from "../../../TestUtils/FakeModelModule";
+import {
+  fakeModelModule,
+  initializeTestServices,
+  seedService,
+} from "../../../TestUtils";
 
+import { IAction } from "../../IService";
 import { ISetField } from "../ISetField";
 import { DataServiceStateRecord } from "../DataServiceStateRecord";
-import { IAction } from "../../IService";
 import { setRelationshipReducer } from "./SetRelationshipReducer";
 
 declare var intern;

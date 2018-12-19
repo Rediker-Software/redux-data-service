@@ -11,7 +11,7 @@ const sourcePath = join(__dirname, "../../src");
 export default new Config().merge({
   context: sourcePath,
   entry: {
-    main: "./index.tsx",
+    main: "./index.ts",
     vendor: Object.keys(dependencies),
   },
   node: {
@@ -42,7 +42,7 @@ export default new Config().merge({
     // https://github.com/Microsoft/TypeScript/issues/11677
     mainFields: ["browser", "main"],
     plugins: [
-      new TsConfigPathsPlugin({configFileName: "config/test/tsconfig.json"}),
+      new TsConfigPathsPlugin({configFileName: "./tsconfig.json"}),
     ],
   },
   target: "web",

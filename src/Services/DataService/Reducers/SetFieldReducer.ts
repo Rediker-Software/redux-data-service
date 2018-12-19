@@ -3,6 +3,7 @@ import { IAction } from "../../IService";
 import { ISetField } from "../ISetField";
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 
+/** Sets the field on the item associated to the given id */
 export function setFieldReducer<T extends IModelData>(state: IDataServiceStateRecord<T>, action: IAction<ISetField<T>>) {
   return state.withMutations((record) => {
     const { id, fieldName, value } = action.payload;

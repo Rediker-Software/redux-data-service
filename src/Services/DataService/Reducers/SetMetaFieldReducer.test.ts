@@ -9,10 +9,10 @@ import { fakeModelModule } from "../../../TestUtils/FakeModelModule";
 import { initializeTestServices } from "../../../TestUtils/InitializeTestServices";
 import { seedService } from "../../../TestUtils/Seed";
 
-import { DataServiceStateRecord } from "../DataServiceStateRecord";
-import { setMetaFieldReducer, ISetMetaField } from "./SetMetaFieldReducer";
 import { FakeModel } from "../../../Model/Model.mock";
 import { IAction } from "../../IService";
+import { DataServiceStateRecord } from "../DataServiceStateRecord";
+import { ISetMetaField, setMetaFieldReducer } from "./SetMetaFieldReducer";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");

@@ -1,5 +1,6 @@
-import { IModel, IModelData } from "../Model/IModel";
-import { IQueryParams } from "../Query/QueryBuilder";
+import { IModel, IModelData } from "../Model";
+import { IQueryParams } from "../Query";
+
 import { ISerializer } from "./ISerializer";
 
 /**

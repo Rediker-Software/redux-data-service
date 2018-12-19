@@ -1,8 +1,9 @@
-import { ISetField } from "../ISetField";
-import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 import { IModel, IModelData } from "../../../Model/IModel";
 import { IAction } from "../../IService";
+import { ISetField } from "../ISetField";
+import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 
+/** Sets the given relationship onto the IModel associated to the given id */
 export function setRelationshipReducer<T extends IModelData>(state: IDataServiceStateRecord<T>, action: IAction<ISetField<T>>) {
   return state.withMutations((record) => {
     const { id, fieldName, value } = action.payload;

@@ -5,10 +5,9 @@ import { Map } from "immutable";
 import { spy } from "sinon";
 import { random } from "faker";
 
-import { fetchAllReducer } from "./FetchAllReducer";
+import { createMockQueryResponse, QueryBuilder, QueryCacheRecord } from "../../../Query";
 import { DataServiceStateRecord } from "../DataServiceStateRecord";
-import { QueryBuilder, QueryCacheRecord } from "../../../Query";
-import { createMockQueryResponse } from "../../../Query/IQueryCache.mock";
+import { fetchAllReducer } from "./FetchAllReducer";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");

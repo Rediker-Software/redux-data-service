@@ -5,7 +5,6 @@ import { of as of$ } from "rxjs/observable/of";
 import { spy, stub } from "sinon";
 import { createMockStore } from "redux-test-utils";
 
-import { MockAdapter } from "../Adapters/MockAdapter";
 import { IFakeModelData } from "../Model/Model.mock";
 import { createMockServiceState } from "../TestUtils";
 
@@ -22,12 +21,10 @@ const { expect } = intern.getPlugin("chai");
  */
 describe("BaseService", () => {
   let mockTestService;
-  let mockAdapter;
   let store;
   let state;
 
   beforeEach(() => {
-    mockAdapter = new MockAdapter();
 
     mockTestService = createMockTestService();
 
@@ -143,7 +140,7 @@ describe("BaseService", () => {
       );
     });
 
-    it("exposes the Reducers output", () => {
+    it("exposes the reducer's output", () => {
       expect(output).to.equal(returnValue);
     });
 
