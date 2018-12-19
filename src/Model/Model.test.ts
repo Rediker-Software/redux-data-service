@@ -6,16 +6,32 @@ import { of as of$ } from "rxjs/observable/of";
 import { Subject } from "rxjs/Subject";
 import { lorem, random } from "faker";
 
-import { BaseService, DataService, registerService } from "../Services";
 import { initializeValidateJS } from "../Initializers";
 
 import { Model } from "./Model";
+import { IFakeModelData } from "./Model.mock";
 import { IModelData } from "./IModel";
-import { attr, belongsTo, hasMany, required } from "./Decorators";
 
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
-import { initializeTestServices, seedService, fakeModelModule } from "../TestUtils";
-import { IFakeModelData } from "./Model.mock";
+
+import {
+  fakeModelModule,
+  initializeTestServices,
+  seedService,
+} from "../TestUtils";
+
+import {
+  BaseService,
+  DataService,
+  registerService,
+} from "../Services";
+
+import {
+  attr,
+  belongsTo,
+  hasMany,
+  required,
+} from "./Decorators";
 
 declare var intern;
 const { describe, it, beforeEach, before } = intern.getPlugin("interface.bdd");
@@ -44,16 +60,12 @@ describe("Model", () => {
 
   describe("Saving the model", () => {
     let service;
-    let modelId;
     let relatedModelId;
     let favoriteColor;
-    let name;
 
     beforeEach(() => {
-      modelId = random.number().toString();
       relatedModelId = random.number().toString();
       favoriteColor = lorem.word();
-      name = lorem.word();
 
       BaseService.registerDispatch(spy());
 

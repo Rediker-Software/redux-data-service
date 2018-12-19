@@ -1,9 +1,14 @@
 import { random } from "faker";
 import { spy, stub } from "sinon";
 
-import { fakeModelModule, initializeTestServices, seedService } from "../TestUtils";
-
 import { getDataService } from "../Services";
+
+import {
+  fakeModelModule,
+  initializeTestServices,
+  seedService,
+} from "../TestUtils";
+
 import { MemoryAdapter } from "./MemoryAdapter";
 
 declare var intern;
@@ -22,31 +27,22 @@ describe("MemoryAdapter", () => {
   describe("fetchAll", () => {
 
     it("seeds 20 items", () => {
-      const fakeModelService = getDataService(serviceName);
-      const stubPushAll = stub(fakeModelService.actions, "pushAll").returns({ invoke: spy() });
+      return new Promise((resolve, reject) => {
+        try {
+          memoryAdapter
+            .fetchAll()
+            .take(1)
+            .subscribe(({ items }) => {
 
-      memoryAdapter.fetchAll();
+              expect(items)
+                .to.have.length(20);
 
-      expect(stubPushAll.firstCall.args[0])
-        .to.have.property("items")
-        .to.be.an("array")
-        .to.have.length(20);
-    });
-
-    it("returns an observable with the model data of the seeded 20 items", () => {
-      const fakeModelService = getDataService(serviceName);
-      const stubPushAll = stub(fakeModelService.actions, "pushAll").callThrough();
-      const fetchAll$ = memoryAdapter.fetchAll();
-      const { items } = stubPushAll.firstCall.args[0];
-
-      let fetchAllResponse;
-      fetchAll$
-        .take(1)
-        .subscribe(response => fetchAllResponse = response);
-
-      expect(fetchAllResponse)
-        .to.have.property("items")
-        .to.deep.equal(items.map(item => item.modelData));
+              resolve();
+            });
+        } catch (e) {
+          reject(e);
+        }
+      });
     });
 
   });

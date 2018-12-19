@@ -4,22 +4,21 @@ import { ActionsObservable } from "redux-observable";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import { Subject } from "rxjs/Subject";
-
-import { Map, Record } from "immutable";
 import { createMockStore } from "redux-test-utils";
-import hash from "object-hash";
 
-import { createMockServiceState } from "../TestUtils";
-import { IModelMeta } from "../Model";
-import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../Model/Model.mock";
-import { MockAdapter } from "../Adapters/MockAdapter";
-import { MockMapper } from "../Mapper/MockMapper";
-import { MockSerializer } from "../Serializers";
-import { configure } from "../Configure";
+import { createMockServiceState } from "../../TestUtils";
+import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
+import { MockAdapter } from "../../Adapters";
+import { MockMapper } from "../../Mapper";
+import { MockSerializer } from "../../Serializers";
+import { configure } from "../../Configure";
+import { createMockQueryResponse, QueryBuilder } from "../../Query";
 
-import { DataService, IDataServiceState, IRequestCacheKey } from "./DataService";
-import { BaseService } from "./BaseService";
-import { registerService } from "./ServiceProvider";
+import { DataService } from "./DataService";
+import { BaseService } from "../BaseService";
+import { registerService } from "../ServiceProvider";
+
+import { pushRecordReducer } from "./Reducers";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -301,113 +300,6 @@ describe("DataService", () => {
     });
   });
 
-  it("has a reducer for setting the field of a record", () => {
-    expect(fakeService.setFieldReducer).to.be.a("function");
-  });
-
-  describe("setFieldReducer", () => {
-    let setRecordSpy;
-
-    beforeEach(() => {
-      setRecordSpy = spy(Record.prototype, "set");
-    });
-
-    afterEach(() => {
-      setRecordSpy.restore();
-    });
-
-    it("should set the field on the item with the new value", () => {
-      const modelData = {
-        id: "1",
-        fullText: "Egg",
-      };
-      const modelMeta = {} as IModelMeta<IFakeModelData>;
-      const model = new FakeModel(modelData, modelMeta);
-
-      const items = Map()
-        .set(modelData.id, model);
-
-      const stateRecord = Record({ items })();
-
-      const action = {
-        type: `${serviceName}/SET_FIELD`,
-        payload: {
-          id: modelData.id,
-          fieldName: "fullText",
-          value: "Chicken",
-        },
-        meta: {},
-      };
-
-      const sut = fakeService.setFieldReducer(stateRecord, action);
-      const updatedItem = sut
-        .get("items")
-        .get(modelData.id);
-
-      expect(updatedItem.fullText, action.payload.value).to.be.equal;
-    });
-
-    it("should not set the items on the record when id not found in items", () => {
-      const modelData = {
-        id: "1",
-        firstName: "Elton",
-      };
-      const modelMeta = {} as IModelMeta<IFakeModelData>;
-      const model = new FakeModel(modelData, modelMeta);
-
-      const items = Map()
-        .set(modelData.id, model);
-
-      const stateRecord = Record({ items })();
-
-      const action = {
-        type: `${serviceName}/SET_FIELD`,
-        payload: {
-          id: "not likely to exist",
-          fieldName: "firstName",
-          value: "Sir Elton",
-        },
-        meta: {},
-      };
-
-      const sut = fakeService.setFieldReducer(stateRecord, action);
-
-      expect(setRecordSpy.calledWith("items")).to.be.false;
-    });
-
-    it("should update items with updated record when id found in items", () => {
-      const modelData = {
-        id: "1",
-        fullText: "Anakin",
-      };
-      const modelMeta = { changes: null } as IModelMeta<IFakeModelData>;
-      const model = new FakeModel(modelData, modelMeta);
-
-      const items = Map()
-        .set(modelData.id, model);
-
-      const stateRecord = Record({ items })();
-
-      const action = {
-        type: `${serviceName}/SET_FIELD`,
-        payload: {
-          id: modelData.id,
-          fieldName: "fullText",
-          value: "Darth",
-        },
-        meta: {},
-      };
-
-      const sut = fakeService.setFieldReducer(stateRecord, action);
-
-      expect(setRecordSpy.calledWith("items",
-        match((updatedItems) => {
-          const updatedModel = updatedItems.get(modelData.id);
-          return updatedModel.meta.changes.fullText === action.payload.value;
-        }))).to.be.true;
-    });
-  });
-
   it("has an epic for performing a fetchAll request with the query params", () => {
     expect(fakeService.fetchAllEpic).to.be.a("function");
   });
@@ -444,79 +336,37 @@ describe("DataService", () => {
     });
   });
 
-  describe("pushAllReducer", () => {
-    it("updates the state's requestCache, after the pushAllReducer fires", () => {
-      const queryParams = { fakeField: "fakeVal" };
-
-      const updatedState: IDataServiceState<any> =
-        fakeService.pushAllReducer(state.fakeModel, fakeService.actions.pushAll({ items: fakeModels }, { queryParams }));
-
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as IRequestCacheKey);
-      expect(cachedRequest.toJS()).to.deep.equal(
-        { ids: fakeModels.map((x) => x.id), isLoading: false, errors: null },
-        "cached request value is properly initilized");
-    });
-  });
-
   describe("getItems selector", () => {
     it("should only select the items returned from a fetchall request, given the same obj to make the request", () => {
       const queryParams = { fakeField: "fakeVal" };
+      const queryBuilder = new QueryBuilder(serviceName, queryParams);
+
       const expectedValues = createMockFakeModels(2);
       const extraValues = [createMockFakeModel(), createMockFakeModel()];
+      const otherQueryBuilder = new QueryBuilder(serviceName, { fakeField2: "fakeVal" });
 
       state = createMockServiceState<IFakeModelData>(fakeService, [
-        fakeService.actions.pushAll({ items: expectedValues }, { queryParams }),
-        fakeService.actions.pushAll({ items: extraValues }, { queryParams: { fakeField2: "fakeVal" } }),
+        fakeService.actions.pushAll({ items: expectedValues }),
+        fakeService.actions.setQueryResponse({
+          query: queryBuilder,
+          response: createMockQueryResponse({
+            ids: expectedValues.map(item => item.id),
+          }),
+        }),
+        fakeService.actions.pushAll({ items: extraValues }),
+        fakeService.actions.setQueryResponse({
+          query: otherQueryBuilder,
+          response: createMockQueryResponse({
+            ids: extraValues.map(item => item.id),
+          }),
+        }),
       ]);
 
-      const items = fakeService.selectors.getItems(state, queryParams);
-      const itemsData = items.toJS();
-      expect(expectedValues).to.deep.equal(itemsData);
+      const items = fakeService.selectors.getItems(state, queryBuilder);
+      expect(expectedValues).to.deep.equal(items);
     });
   });
-
-  describe("setErrors reducer", () => {
-    it("updates the state adding errors that occurred during the fetchAllEpic", () => {
-      const queryParams = { fakeField: "fakeVal" };
-
-      state = createMockServiceState<IFakeModelData>(fakeService, [
-        fakeService.actions.pushAll({ items: [] }, { queryParams }),
-      ]);
-
-      const errors = ["test error"];
-      const updatedState: IDataServiceState<any> =
-        fakeService.setErrorsReducer(state.fakeModel, fakeService.actions.setErrors({ errors }, { queryParams }));
-
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as IRequestCacheKey);
-      expect(cachedRequest.toJS()).to.deep.include({
-        ids: [],
-        isLoading: false,
-        errors,
-      }, "cached request value is properly initilized");
-    });
-
-    it("preserves the ids", () => {
-      const expectedValues = createMockFakeModels(2);
-      const existingIds = expectedValues.map((val) => val.id);
-      const queryParams = { fakeField: "fakeVal" };
-
-      state = createMockServiceState<IFakeModelData>(fakeService, [
-        fakeService.actions.pushAll({ items: expectedValues }, { queryParams }),
-      ]);
-
-      const errors = ["test error"];
-      const updatedState: IDataServiceState<any> =
-        fakeService.setErrorsReducer(state.fakeModel, fakeService.actions.setErrors({ errors }, { queryParams }));
-
-      const cachedRequest = updatedState.requestCache.get(hash(queryParams || {}) as IRequestCacheKey);
-      expect(cachedRequest.toJS()).to.deep.include({
-        ids: existingIds,
-        isLoading: false,
-        errors,
-      }, "cached request value is properly initialized");
-    });
-  });
-
+  
   it("has an epic for performing a GET request", () => {
     expect(fakeService.fetchRecordEpic).to.be.a("function");
   });
@@ -1032,7 +882,7 @@ describe("DataService", () => {
           ...itemData,
           fullText: "asdfasdf",
         };
-        const newState = fakeService.pushRecordReducer(state[serviceName], fakeService.actions.pushRecord(newItemData));
+        const newState = pushRecordReducer(state[serviceName], fakeService.actions.pushRecord(newItemData));
         let previouslyUpdated = false;
 
         itemObservable.subscribe((itemModel) => {

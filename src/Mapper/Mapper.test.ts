@@ -5,10 +5,11 @@ import { spy, stub } from "sinon";
 
 import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
-import { omit, range } from "lodash";
+import { omit } from "lodash";
 
 import { BaseService, DataService, registerService } from "../Services";
 import {
+  ArrayField,
   attr,
   belongsTo,
   createMockFakeModel,
@@ -24,8 +25,7 @@ import {
   TimeField,
 } from "../Model";
 
-import { MockAdapter } from "../Adapters/MockAdapter";
-import { ArrayField } from "../Model/FieldType";
+import { MockAdapter } from "../Adapters";
 import { IRawQueryResponse } from "../Query";
 
 import { Mapper } from "./Mapper";

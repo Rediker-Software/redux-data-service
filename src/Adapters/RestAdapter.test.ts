@@ -33,14 +33,14 @@ describe("RestAdapter", () => {
   });
 
   it("performs a fetchAll request with the given query param", () => {
-    restAdapter.fetchAll({ filter: "all" }).subscribe(spy());
+    restAdapter.fetchAll("filter=all").subscribe(spy());
     expect(xhr.onCreate.callCount).to.equal(1, "it should send an xhr request");
     expect(xhr.onCreate.firstCall.args[0]).to.have.property("url").to.equal(`${restUrl}?filter=all`, "it should send a request to the correct url");
     expect(xhr.onCreate.firstCall.args[0]).to.have.property("method").to.equal("GET", "it should send a request with the correct HTTP method");
   });
 
   it("performs a fetchAll request with multiple query params", () => {
-    restAdapter.fetchAll({ filter: "all", hello: "world" }).subscribe(spy());
+    restAdapter.fetchAll("filter=all&hello=world").subscribe(spy());
     expect(xhr.onCreate.callCount).to.equal(1, "it should send an xhr request");
     expect(xhr.onCreate.firstCall.args[0]).to.have.property("url").to.equal(`${restUrl}?filter=all&hello=world`, "it should send a request to the correct url");
     expect(xhr.onCreate.firstCall.args[0]).to.have.property("method").to.equal("GET", "it should send a request with the correct HTTP method");
