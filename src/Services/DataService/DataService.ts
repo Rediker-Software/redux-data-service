@@ -27,9 +27,9 @@ import { ISerializer, ISerializerFactory } from "../../Serializers/ISerializer";
 import { IAdapter, IAdapterFactory } from "../../Adapters/IAdapter";
 import { IMapperFactory, IMapper } from "../../Mapper/IMapper";
 
-import { IQueryBuilder } from "../../Query/QueryBuilder";
+import {IQueryBuilder, QueryBuilder} from "../../Query/QueryBuilder";
 import { IQueryCache } from "../../Query/IQueryCache";
-import { IRawQueryResponse } from "../../Query";
+import {IQueryManager, IRawQueryResponse, QueryManager} from "../../Query";
 
 import { BaseService } from "../BaseService";
 import { IAction, IActionCreators, IActionTypes, IObservableAction, ISelectors, IActionEpic } from "../IService";
@@ -88,7 +88,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   protected shadowObject: IModel<T> = null;
   protected observablesByIdCache: { [id: string]: Observable<IModel<T>> } = {};
   protected observablesByIdsCache: { [id: string]: Observable<IModel<T>[]> } = {};
-  protected observablesByQueryCache: { [id: string]: Observable<IModel<T>[]> } = {};
+  protected observablesByQueryCache: { [id: string]: Observable<IQueryManager<T>> } = {};
 
   public get adapter() {
     if (!this._adapter) {
@@ -176,31 +176,43 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     const itemObservables = ids.map(id => this.getById(id));
 
     const observable = combineLatest$(...itemObservables)
-      .auditTime(25)
-      .startWith([]);
+      .auditTime(25);
 
     this.observablesByIdsCache[cacheKey] = observable;
     return observable;
   }
 
-  public getByQuery(queryParams): Observable<IModel<T>[]> {
-    const hashParams = hash(queryParams || {});
+  public getByQuery(queryBuilder: IQueryBuilder): Observable<IQueryManager<T>> {
+    const hashParams = queryBuilder.getHashCode();
+
     if (hashParams in this.observablesByQueryCache) {
       return this.observablesByQueryCache[hashParams];
     }
 
-    this.actions.fetchAll(queryParams).invoke();
-
     const observable = BaseService
       .getStateObservable()
-      .map((state) => this.selectors.getItems(state, queryParams))
+      .map((state) => state[this.name].requestCache.get(hashParams))
       .distinctUntilChanged()
-      .map(items => (items != null && "toJS" in items) ? items.toJS() : items)
       .shareReplay(1);
 
-    this.observablesByQueryCache[hashParams] = observable;
+    observable
+      .take(1)
+      .filter(queryCache => queryCache == null)
+      .subscribe(() => queryBuilder.invoke());
 
-    return observable;
+    const queryManagerObservable = observable
+      .filter(queryCache => queryCache != null && queryCache.response)
+      .switchMap(
+        ({ response }) => this.getByIds(response.ids),
+        ({ query, response, isLoading, errors }, items) => new QueryManager(query, items, response, {
+          isLoading,
+          errors,
+        }),
+      )
+      .shareReplay(1);
+
+    this.observablesByQueryCache[hashParams] = queryManagerObservable;
+    return queryManagerObservable;
   }
 
   public getAll(): Observable<IModel<T>[]> {

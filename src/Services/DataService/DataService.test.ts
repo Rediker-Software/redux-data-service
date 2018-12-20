@@ -35,12 +35,14 @@ describe("DataService", () => {
   const serviceName = "fakeModel";
   let mockMapper;
   let mockSerializer;
+  let query;
 
   beforeEach(() => {
     configure({ modules: null });
     mockAdapter = new MockAdapter();
     mockMapper = new MockMapper();
     mockSerializer = new MockSerializer();
+    query = new QueryBuilder(serviceName, { page: 1, total: 1, organizationId: 2 });
 
     class FakeService extends DataService<IFakeModelData> {
       public name = serviceName;
@@ -57,6 +59,12 @@ describe("DataService", () => {
 
     state = createMockServiceState<IFakeModelData>(fakeService, [
       fakeService.actions.pushAll({ items: fakeModels }),
+      fakeService.actions.setQueryResponse({
+        query,
+        response: createMockQueryResponse({
+            ids: fakeModels.map(fakeModel => fakeModel.id),
+        }),
+      }),
     ]);
     store = createMockStore(state);
   });
@@ -1045,8 +1053,6 @@ describe("DataService", () => {
       let state$;
       let stubGetStateObservable;
       let stubFetchAll;
-      let stubGetItemsSelector;
-      const query = { page: 1, total: 1, organizationId: 2 };
 
       beforeEach(() => {
         state$ = Observable.of(state);
@@ -1062,38 +1068,33 @@ describe("DataService", () => {
           stubFetchAll.restore();
         }
 
-        if (stubGetItemsSelector) {
-          stubGetItemsSelector.restore();
-        }
       });
 
-      it("should get the correct items by query", () => {
-        stubGetItemsSelector = stub(fakeService.selectors, "getItems")
-          .returns([fakeModels[0], fakeModels[1]]);
+      it("should return a QueryManager with the correct items by query", () => {
+        const observable = fakeService.getByQuery(query);
 
-        const itemsObservable = fakeService.getByQuery(query);
-
-        itemsObservable.subscribe((items) => {
-          expect(items[0]).to.deep.equal(fakeModels[0]);
-          expect(items[1]).to.deep.equal(fakeModels[1]);
+        observable.take(1).subscribe((queryManager) => {
+          expect(queryManager.items[0]).to.deep.equal(fakeModels[0]);
+          expect(queryManager.items[1]).to.deep.equal(fakeModels[1]);
         });
       });
 
-      it("should get the correct items by their Ids and cache them for future requests by those Ids", () => {
+      it("should store the observable and return the same observable when given the same QueryBuilder", () => {
         const itemObservable = fakeService.getByQuery(query);
         const itemObservable2 = fakeService.getByQuery(query);
 
         expect(itemObservable).to.equal(itemObservable2);
       });
 
-      it("should not call BaseService.getStateObservable when using cached Observable by Ids", () => {
+      it("should not call BaseService.getStateObservable when using a cached Observable", () => {
         stubGetStateObservable = stub(BaseService, "getStateObservable").returns(state$);
-        const itemData = fakeModels;
 
         fakeService.getByQuery(query);
         fakeService.getByQuery(query);
 
-        expect(stubGetStateObservable).to.have.property("callCount").to.equal(1);
+        expect(stubGetStateObservable)
+          .to.have.property("callCount")
+          .to.equal(1);
       });
 
       it("should create a fetchAll action with the proper payload", () => {
