@@ -1052,7 +1052,6 @@ describe("DataService", () => {
     describe("getByQuery", () => {
       let state$;
       let stubGetStateObservable;
-      let stubFetchAll;
 
       beforeEach(() => {
         state$ = Observable.of(state);
@@ -1062,10 +1061,6 @@ describe("DataService", () => {
       afterEach(() => {
         if (stubGetStateObservable) {
           stubGetStateObservable.restore();
-        }
-
-        if (stubFetchAll) {
-          stubFetchAll.restore();
         }
 
       });
@@ -1098,31 +1093,41 @@ describe("DataService", () => {
       });
 
       it("should create a fetchAll action with the proper payload", () => {
-        stubFetchAll = stub(fakeService.actions, "fetchAll").returns({ invoke: spy() });
-
+        const observable = fakeService.getByQuery(query);
         fakeService.getByQuery(query);
 
-        expect(stubFetchAll.firstCall.args[0]).to.deep.equal(query);
+        observable.take(1).subscribe((queryManager) => {
+          expect(queryManager).to.deep.equal(query);
+        });
       });
 
       it("should not invoke the fetchAll action with the proper parameters if the requested Ids are already in the cache", () => {
-        const invokeSpy = spy();
-        stubFetchAll = stub(fakeService.actions, "fetchAll").returns({ invoke: invokeSpy });
+        const observable = fakeService.getByQuery(query);
 
         fakeService.getByQuery(query);
         fakeService.getByQuery(query);
 
-        expect(invokeSpy).to.have.property("callCount").to.equal(1);
+        observable.take(1).subscribe((queryManager) => {
+          expect(queryManager)
+            .to.have.property("callCount")
+            .to.equal(1);
+        });
+
       });
 
       it("should invoke the fetchAll action with the proper parameters if the requested Ids are not already in the cache", () => {
-        const invokeSpy = spy();
-        stubFetchAll = stub(fakeService.actions, "fetchAll").returns({ invoke: invokeSpy });
+        const observable = fakeService.getByQuery(query);
         const query2 = { page: 2, total: 50, organizationId: 33 };
+
         fakeService.getByQuery(query);
         fakeService.getByQuery(query2);
 
-        expect(invokeSpy).to.have.property("callCount").to.equal(2);
+        observable.take(2).subscribe((queryManager) => {
+          expect(queryManager)
+            .to.have.property("callCount")
+            .to.equal(2);
+        });
+
       });
     });
 
