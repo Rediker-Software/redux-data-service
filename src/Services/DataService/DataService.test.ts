@@ -1105,7 +1105,6 @@ describe("DataService", () => {
         const observable = fakeService.getByQuery(query);
 
         fakeService.getByQuery(query);
-        fakeService.getByQuery(query);
 
         observable.take(1).subscribe((queryManager) => {
           expect(queryManager)
@@ -1116,16 +1115,15 @@ describe("DataService", () => {
       });
 
       it("should invoke the fetchAll action with the proper parameters if the requested Ids are not already in the cache", () => {
-        const observable = fakeService.getByQuery(query);
-        const query2 = { page: 2, total: 50, organizationId: 33 };
-
         fakeService.getByQuery(query);
-        fakeService.getByQuery(query2);
 
-        observable.take(2).subscribe((queryManager) => {
+        const query2 = new QueryBuilder(serviceName, { page: 2, total: 50, organizationId: 33 });
+        const observable = fakeService.getByQuery(query2);
+
+        observable.take(1).subscribe((queryManager) => {
           expect(queryManager)
             .to.have.property("callCount")
-            .to.equal(2);
+            .to.equal(1);
         });
 
       });
