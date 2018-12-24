@@ -2,6 +2,8 @@
 
 # Interface: ISetField
 
+Used in an action's payload to set the field on an IModel associated to the given id
+
 ## Type parameters
 #### T :  [IModelData](imodeldata.md)
 ## Hierarchy
@@ -26,7 +28,7 @@
 
 **● fieldName**: *`keyof T`*
 
-*Defined in [Services/DataService.ts:70](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Services/DataService.ts#L70)*
+*Defined in [Services/DataService/ISetField.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/2eee607/src/Services/DataService/ISetField.ts#L6)*
 
 ___
 <a id="id"></a>
@@ -35,7 +37,7 @@ ___
 
 **● id**: *`string`*
 
-*Defined in [Services/DataService.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Services/DataService.ts#L69)*
+*Defined in [Services/DataService/ISetField.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/2eee607/src/Services/DataService/ISetField.ts#L5)*
 
 ___
 <a id="value"></a>
@@ -44,7 +46,7 @@ ___
 
 **● value**: *`any`*
 
-*Defined in [Services/DataService.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Services/DataService.ts#L71)*
+*Defined in [Services/DataService/ISetField.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/2eee607/src/Services/DataService/ISetField.ts#L7)*
 
 ___
 

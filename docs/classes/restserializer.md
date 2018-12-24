@@ -33,7 +33,7 @@ An ISerializer implementation which will convert a given Model to or from JSON.
 
 ▸ **deserialize**(data: *`any`*): `Promise`<`R`>
 
-*Defined in [Serializers/RestSerializer.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/RestSerializer.ts#L28)*
+*Defined in [Serializers/RestSerializer.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/2eee607/src/Serializers/RestSerializer.ts#L29)*
 
 Converts the given JSON string into an IModel.
 
@@ -52,7 +52,7 @@ ___
 
 ▸ **serialize**(model: * [IModel](../interfaces/imodel.md)<`T`> &#124; `Partial`<`T`>*): `Promise`<`string`>
 
-*Defined in [Serializers/RestSerializer.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/RestSerializer.ts#L16)*
+*Defined in [Serializers/RestSerializer.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/2eee607/src/Serializers/RestSerializer.ts#L17)*
 
 Converts the given IModel into a JSON string.
 
@@ -71,7 +71,7 @@ ___
 
 ▸ **serializeQueryParams**(__namedParameters: *`object`*): `Promise`<`string`>
 
-*Defined in [Serializers/RestSerializer.ts:38](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/RestSerializer.ts#L38)*
+*Defined in [Serializers/RestSerializer.ts:39](https://github.com/Rediker-Software/redux-data-service/blob/2eee607/src/Serializers/RestSerializer.ts#L39)*
 
 Converts the given IQueryParams object into a url-encoded string.
 
