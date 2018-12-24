@@ -1,4 +1,3 @@
-import "rxjs/add/operator/auditTime";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/concat";
 import "rxjs/add/operator/distinctUntilChanged";
@@ -395,10 +394,21 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
         this.adapter.fetchAll(this.serializer.serializeQueryParams(action.payload.queryParams))
           .mergeMap(async (response: IRawQueryResponse<any>) => await this.mapper.normalizeQueryResponse(response))
           .do(action.meta.onSuccess, action.meta.onError)
-          .map(({ items }) => this.actions.pushAll({ items }))
-          .concat(({ items, ...response }) => of$(this.actions.setQueryResponse({ query: action.payload, response })))
+          .mergeMap(({ items, ...response }) => of$(
+            this.actions.pushAll({ items }),
+            this.actions.setQueryResponse({
+              response,
+              query: action.payload,
+              isLoading: false,
+              errors: undefined,
+            }),
+          ))
           .catch((e) => of$(
-            this.actions.setErrors({ errors: e.xhr.response }, { queryParams: action.payload }),
+            this.actions.setQueryResponse({
+              query: action.payload,
+              errors: e && "xhr" in e ? e.xhr.response : e,
+              isLoading: false,
+            }),
           )),
       );
   }

@@ -1,5 +1,6 @@
 // tslint:disable:no-empty max-classes-per-file no-unused-expression
 import "rxjs/add/observable/of";
+import "rxjs/add/observable/throw";
 import "rxjs/add/operator/publishReplay";
 
 import { Observable } from "rxjs/Observable";
@@ -317,35 +318,174 @@ describe("DataService", () => {
     expect(fakeService.fetchAllEpic).to.be.a("function");
   });
 
-  describe("fetchAll caching", () => {
-    it("should call fetchAll on adapter with payload", () => {
-      const expectedResult = { hello: "world" };
-      const payload = { filter: "all" };
-      const fetchAllAction = fakeService.actions.fetchAll(payload);
-      const pushAllAction = stub(fakeService.actions, "pushAll");
+  describe("fetchAllEpic", () => {
+    let queryParams;
+    let payload;
+    let fetchAllAction;
+    let items;
+    let fakeResponse;
 
-      mockAdapter.fetchAll.returns(Observable.of(expectedResult));
+    beforeEach(() => {
+      queryParams = {
+        page: 1,
+        pageSize: 1,
+      };
 
-      fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
-        .subscribe(noop, noop,
-          () => {
-            expect(mockAdapter.fetchAll.calledWithMatch(payload)).to.be.true;
-          });
+      payload = new QueryBuilder(
+        serviceName,
+        queryParams,
+      );
+
+      items = createMockFakeModels();
+      fakeResponse = createMockQueryResponse({
+        ids: items.map(item => item.id),
+      });
+
+      mockAdapter.fetchAll.returns(Observable.of({
+        ...fakeResponse,
+        items,
+      }));
+
+      fetchAllAction = fakeService.actions.fetchAll(payload);
     });
 
-    it("should call pushAll action with result from call to adapter", () => {
-      const expectedResult = { hello: "world" };
-      const payload = { filter: "all" };
-      const fetchAllAction = fakeService.actions.fetchAll(payload);
-      const pushAllAction = stub(fakeService.actions, "pushAll");
+    it("should call adapter.fetchAll with given serialized query params", () => {
+      const expectedResult = spy();
 
-      mockAdapter.fetchAll.returns(Observable.of(expectedResult));
+      stub(fakeService.serializer, "serializeQueryParams").returns(expectedResult);
 
-      fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
-        .subscribe(noop, noop,
-          () => {
-            expect(pushAllAction.calledWithMatch(expectedResult)).to.be.true;
+      return new Promise((resolve, reject) => {
+        fakeService
+          .fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+          .take(1)
+          .subscribe(() => {
+            try {
+              expect(
+                mockAdapter.fetchAll.firstCall.args[0],
+              ).to.equal(expectedResult);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
           });
+      });
+    });
+
+    it("should call serializeQueryParams with the queryParams from the IQueryBuilder payload", () => {
+      const serializeQueryParamsStub =
+        stub(fakeService.serializer, "serializeQueryParams");
+
+      return new Promise((resolve, reject) => {
+        fakeService
+          .fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+          .take(1)
+          .subscribe(() => {
+            try {
+              expect(
+                serializeQueryParamsStub.firstCall.args[0],
+              ).to.equal(queryParams);
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          });
+      });
+    });
+
+    it("should call normalizeQueryResponse with the fetchAll response", () => {
+      const normalizeQueryResponseStub = stub(fakeService.mapper, "normalizeQueryResponse").callThrough();
+
+      return new Promise((resolve, reject) => {
+        fakeService
+          .fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+          .take(1)
+          .subscribe(() => {
+            try {
+              expect(
+                normalizeQueryResponseStub.firstCall.args[0],
+              ).to.deep.equal({
+                ...fakeResponse,
+                items,
+              });
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          });
+      });
+    });
+
+    it("should emit a PUSH_ALL action with the expected items", () => {
+      return new Promise((resolve, reject) => {
+        fakeService
+          .fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+          .take(1)
+          .subscribe(action => {
+            try {
+              expect(action).to.deep.include({
+                type: "fakeModel/PUSH_ALL",
+                payload: {
+                  items,
+                },
+              });
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          });
+      });
+    });
+
+    it("should emit a SET_QUERY_RESPONSE action with expected IQueryCache containing the expected IQueryResponse", () => {
+      return new Promise((resolve, reject) => {
+        fakeService
+          .fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+          .skip(1)
+          .take(1)
+          .subscribe(action => {
+            try {
+              expect(action).to.deep.include({
+                type: "fakeModel/SET_QUERY_RESPONSE",
+                payload: {
+                  response: fakeResponse,
+                  query: payload,
+                  isLoading: false,
+                  errors: undefined,
+                },
+              });
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          });
+      });
+    });
+
+    it("should emit a SET_QUERY_RESPONSE action with given errors when the adapter Observable throws", () => {
+      const errors = random.words();
+
+      mockAdapter.fetchAll.returns(Observable.throw({ xhr: { response: errors } }));
+
+      return new Promise((resolve, reject) => {
+        fakeService
+          .fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+          .take(1)
+          .subscribe(action => {
+            try {
+              expect(action).to.deep.include({
+                type: "fakeModel/SET_QUERY_RESPONSE",
+                payload: {
+                  query: payload,
+                  isLoading: false,
+                  errors,
+                },
+              });
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          });
+      });
     });
   });
 
