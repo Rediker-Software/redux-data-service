@@ -185,7 +185,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
     const observable = BaseService
       .getStateObservable()
-      .map((state) => this.selectors.getItem(state, id) || this.getShadowObject())
+      .map((state) => this.selectors.getItem(state, id))
       .distinctUntilChanged()
       .shareReplay(1);
 
