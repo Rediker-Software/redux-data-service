@@ -16,7 +16,6 @@ import { of as of$ } from "rxjs/observable/of";
 import { combineLatest as combineLatest$ } from "rxjs/observable/combineLatest";
 
 import { uniqueId } from "lodash";
-import * as hash from "object-hash";
 import { Store } from "redux";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
@@ -27,21 +26,33 @@ import { ISerializer, ISerializerFactory } from "../../Serializers/ISerializer";
 import { IAdapter, IAdapterFactory } from "../../Adapters/IAdapter";
 import { IMapperFactory, IMapper } from "../../Mapper/IMapper";
 
-import { IQueryBuilder } from "../../Query/QueryBuilder";
-import { IQueryCache } from "../../Query/IQueryCache";
-import { IRawQueryResponse } from "../../Query";
+import {
+  IQueryBuilder,
+  IQueryCache,
+  IQueryManager,
+  IRawQueryResponse,
+  QueryManager,
+} from "../../Query";
 
 import { BaseService } from "../BaseService";
-import { IAction, IActionCreators, IActionTypes, IObservableAction, ISelectors, IActionEpic } from "../IService";
+
+import {
+  IAction,
+  IActionCreators,
+  IActionEpic,
+  IActionTypes,
+  IObservableAction,
+  ISelectors,
+} from "../IService";
 
 import {
   fetchAllReducer,
   ISetMetaField,
   pushAllReducer,
   pushRecordReducer,
-  setFieldReducer, 
-  setMetaFieldReducer, 
-  setQueryResponseReducer, 
+  setFieldReducer,
+  setMetaFieldReducer,
+  setQueryResponseReducer,
   setRelationshipReducer,
   unloadAllReducer,
   unloadRecordReducer,
@@ -88,7 +99,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   protected shadowObject: IModel<T> = null;
   protected observablesByIdCache: { [id: string]: Observable<IModel<T>> } = {};
   protected observablesByIdsCache: { [id: string]: Observable<IModel<T>[]> } = {};
-  protected observablesByQueryCache: { [id: string]: Observable<IModel<T>[]> } = {};
+  protected observablesByQueryCache: { [id: string]: Observable<IQueryManager<T>> } = {};
 
   public get adapter() {
     if (!this._adapter) {
@@ -176,31 +187,43 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     const itemObservables = ids.map(id => this.getById(id));
 
     const observable = combineLatest$(...itemObservables)
-      .auditTime(25)
-      .startWith([]);
+      .shareReplay(1);
 
     this.observablesByIdsCache[cacheKey] = observable;
     return observable;
   }
 
-  public getByQuery(queryParams): Observable<IModel<T>[]> {
-    const hashParams = hash(queryParams || {});
+  public getByQuery(queryBuilder: IQueryBuilder): Observable<IQueryManager<T>> {
+    const hashParams = queryBuilder.getHashCode();
+
     if (hashParams in this.observablesByQueryCache) {
       return this.observablesByQueryCache[hashParams];
     }
 
-    this.actions.fetchAll(queryParams).invoke();
-
     const observable = BaseService
       .getStateObservable()
-      .map((state) => this.selectors.getItems(state, queryParams))
+      .map((state) => state[this.name].requestCache.get(hashParams))
       .distinctUntilChanged()
-      .map(items => (items != null && "toJS" in items) ? items.toJS() : items)
       .shareReplay(1);
 
-    this.observablesByQueryCache[hashParams] = observable;
+    observable
+      .take(1)
+      .filter(queryCache => queryCache == null)
+      .subscribe(() => queryBuilder.invoke());
 
-    return observable;
+    const queryManagerObservable = observable
+      .filter(queryCache => queryCache != null)
+      .switchMap(
+        ({ response }) => this.getByIds(response.ids),
+        ({ query, response, isLoading, errors }, items) => new QueryManager(query, items, response, {
+          isLoading,
+          errors,
+        }),
+      )
+      .shareReplay(1);
+
+    this.observablesByQueryCache[hashParams] = queryManagerObservable;
+    return queryManagerObservable;
   }
 
   public getAll(): Observable<IModel<T>[]> {
@@ -370,10 +393,10 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       .filter((action) => shouldFetchAll(this.selectors.getServiceState(store.getState()), action))
       .mergeMap((action) =>
         this.adapter.fetchAll(this.serializer.serializeQueryParams(action.payload.queryParams))
-          .mergeMap(async (response: IRawQueryResponse<any> ) => await this.mapper.normalizeQueryResponse(response))
+          .mergeMap(async (response: IRawQueryResponse<any>) => await this.mapper.normalizeQueryResponse(response))
           .do(action.meta.onSuccess, action.meta.onError)
           .map(({ items }) => this.actions.pushAll({ items }))
-          .concat(({items, ...response}) => of$(this.actions.setQueryResponse({ query: action.payload, response })))
+          .concat(({ items, ...response }) => of$(this.actions.setQueryResponse({ query: action.payload, response })))
           .catch((e) => of$(
             this.actions.setErrors({ errors: e.xhr.response }, { queryParams: action.payload }),
           )),
