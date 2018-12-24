@@ -12,7 +12,7 @@ import { MockAdapter } from "../../Adapters";
 import { MockMapper } from "../../Mapper";
 import { MockSerializer } from "../../Serializers";
 import { configure } from "../../Configure";
-import { createMockQueryResponse, QueryBuilder } from "../../Query";
+import { createMockQueryResponse, IRawQueryResponse, QueryBuilder } from "../../Query";
 
 import { DataService } from "./DataService";
 import { BaseService } from "../BaseService";
@@ -304,12 +304,26 @@ describe("DataService", () => {
     expect(fakeService.fetchAllEpic).to.be.a("function");
   });
 
-  describe("fetchAll caching", () => {
+  describe("fetchAllEpic", () => {
+    let queryParams;
+    let payload;
+    let fetchAllAction;
+
+    beforeEach(() => {
+      queryParams = {
+        page: 1,
+        pageSize: 1,
+      };
+
+      payload = {
+        queryParams,
+      };
+
+      fetchAllAction = fakeService.actions.fetchAll(payload);
+    });
+
     it("should call fetchAll on adapter with payload", () => {
       const expectedResult = { hello: "world" };
-      const payload = { filter: "all" };
-      const fetchAllAction = fakeService.actions.fetchAll(payload);
-      const pushAllAction = stub(fakeService.actions, "pushAll");
 
       mockAdapter.fetchAll.returns(Observable.of(expectedResult));
 
@@ -322,8 +336,6 @@ describe("DataService", () => {
 
     it("should call pushAll action with result from call to adapter", () => {
       const expectedResult = { hello: "world" };
-      const payload = { filter: "all" };
-      const fetchAllAction = fakeService.actions.fetchAll(payload);
       const pushAllAction = stub(fakeService.actions, "pushAll");
 
       mockAdapter.fetchAll.returns(Observable.of(expectedResult));
@@ -333,6 +345,58 @@ describe("DataService", () => {
           () => {
             expect(pushAllAction.calledWithMatch(expectedResult)).to.be.true;
           });
+    });
+
+    it("should call serializeQueryParams with the queryParams from the payload", () => {
+      const serializeQueryParamsStub = 
+        stub(fakeService.serializer, "serializeQueryParams");
+
+      fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(serializeQueryParamsStub.firstCall.args[0]).to.equal(queryParams);
+          });      
+    });
+
+    it("should call normalizeQueryResponse with the fetchAll response", () => {
+      const items = [];
+      const response = {...createMockQueryResponse(), items} as IRawQueryResponse<any>;
+      mockAdapter.fetchAll.returns(response);
+      const normalizeQueryResponseStub = stub(fakeService.mapper, "normalizeQueryResponse");
+
+      fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(normalizeQueryResponseStub.firstCall.args[0]).to.equal(response);
+          }); 
+    });
+
+    it("should call setQueryResult after pushAll", () => {
+      const items = [];
+      const response = {...createMockQueryResponse(), items} as IRawQueryResponse<any>;
+      stub(fakeService.mapper, "normalizeQueryResponse").returns(response);
+      const pushAllStub = stub(fakeService.actions, "pushAll");
+      const setQueryResponseStub = stub(fakeService.actions, "setQueryResponse");
+      fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(setQueryResponseStub.calledImmediatelyAfter(pushAllStub)).to.be.true;
+          }); 
+    });
+
+    it("should call setQueryResult with the response from the pushAll action", () => {
+      const items = [];
+      const response = {...createMockQueryResponse(), items} as IRawQueryResponse<any>;
+      stub(fakeService.actions, "pushAll").returns(response);
+      const setQueryResponseStub = stub(fakeService.actions, "setQueryResponse");
+      fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(setQueryResponseStub.firstCall.args[0]).to.deep.equal({
+              query: fetchAllAction.payload,
+              response,
+            });
+          }); 
     });
   });
 
