@@ -372,8 +372,8 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
         this.adapter.fetchAll(this.serializer.serializeQueryParams(action.payload.queryParams))
           .mergeMap(async (response: IRawQueryResponse<any> ) => await this.mapper.normalizeQueryResponse(response))
           .do(action.meta.onSuccess, action.meta.onError)
-          .map(({ items }) => this.actions.pushAll({ items }))
-          .concat(({items, ...response}) => of$(this.actions.setQueryResponse({ query: action.payload, response })))
+          .map(({ items, ...response }) => this.actions.pushAll({ items }))
+          .concat(({ response }) => of$(this.actions.setQueryResponse({ query: action.payload, response })))
           .catch((e) => of$(
             this.actions.setErrors({ errors: e.xhr.response }, { queryParams: action.payload }),
           )),

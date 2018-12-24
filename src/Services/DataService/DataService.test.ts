@@ -384,10 +384,11 @@ describe("DataService", () => {
           }); 
     });
 
-    it("should call setQueryResult with the response from the pushAll action", () => {
+    it("should call setQueryResult with the payload and the response from normalizeQueryResponse", () => {
       const items = [];
-      const response = {...createMockQueryResponse(), items} as IRawQueryResponse<any>;
-      stub(fakeService.actions, "pushAll").returns(response);
+      const response = createMockQueryResponse();
+      const normalizedQueryResponse = {...response, items} as IRawQueryResponse<any>;
+      stub(mockMapper, "normalizeQueryResponse").returns(normalizedQueryResponse);
       const setQueryResponseStub = stub(fakeService.actions, "setQueryResponse");
       fakeService.fetchAllEpic(ActionsObservable.of(fetchAllAction), store)
         .subscribe(noop, noop,
