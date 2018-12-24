@@ -1,10 +1,14 @@
 // tslint:disable:no-empty max-classes-per-file no-unused-expression
-import { match, spy, stub } from "sinon";
-import { ActionsObservable } from "redux-observable";
-import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
+import "rxjs/add/operator/publishReplay";
+
+import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
+
 import { createMockStore } from "redux-test-utils";
+import { ActionsObservable } from "redux-observable";
+import { match, spy, stub } from "sinon";
+import { random } from "faker";
 
 import { createMockServiceState } from "../../TestUtils";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
@@ -12,13 +16,13 @@ import { MockAdapter } from "../../Adapters";
 import { MockMapper } from "../../Mapper";
 import { MockSerializer } from "../../Serializers";
 import { configure } from "../../Configure";
-import { createMockQueryResponse, QueryBuilder } from "../../Query";
+import { createMockQueryResponse, QueryBuilder, QueryManager } from "../../Query";
 
 import { DataService } from "./DataService";
 import { BaseService } from "../BaseService";
 import { registerService } from "../ServiceProvider";
 
-import { pushRecordReducer } from "./Reducers";
+import { pushRecordReducer, setQueryResponseReducer } from "./Reducers";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -49,7 +53,7 @@ describe("DataService", () => {
       public ModelClass = FakeModel;
       protected _adapter = mockAdapter;
       protected _mapper = mockMapper;
-      protected _serializer = mockSerializer; 
+      protected _serializer = mockSerializer;
     }
 
     fakeService = new FakeService();
@@ -61,8 +65,9 @@ describe("DataService", () => {
       fakeService.actions.pushAll({ items: fakeModels }),
       fakeService.actions.setQueryResponse({
         query,
+        isLoading: false,
         response: createMockQueryResponse({
-            ids: fakeModels.map(fakeModel => fakeModel.id),
+          ids: fakeModels.map(fakeModel => fakeModel.id),
         }),
       }),
     ]);
@@ -374,7 +379,7 @@ describe("DataService", () => {
       expect(expectedValues).to.deep.equal(items);
     });
   });
-  
+
   it("has an epic for performing a GET request", () => {
     expect(fakeService.fetchRecordEpic).to.be.a("function");
   });
@@ -389,7 +394,7 @@ describe("DataService", () => {
 
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
         .subscribe(noop, noop,
-          () => {          
+          () => {
             expect(onSuccess.firstCall.args[0]).to.deep.equal(expectedResult);
           },
         );
@@ -478,7 +483,7 @@ describe("DataService", () => {
       const deserializedObject = { name: "Zella puppy" };
       const fetchRecordAction = fakeService.actions.fetchRecord({ id: nonCachedItemId }, null);
       const normalizeStub = stub(fakeService.mapper, "normalize");
-      
+
       stub(fakeService.serializer, "deserialize").returns(deserializedObject);
 
       fakeService.fetchRecordEpic(ActionsObservable.of(fetchRecordAction), store)
@@ -592,9 +597,9 @@ describe("DataService", () => {
       const expectedResult = { id: "123", fullText: "puppy" };
       const expectedJSONResult = JSON.stringify(expectedResult.fullText);
       const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
-      
+
       stub(fakeService.serializer, "serialize").returns(expectedJSONResult);
-      
+
       fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
         .subscribe(noop, noop,
           () => {
@@ -621,7 +626,7 @@ describe("DataService", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "zella puppy transform" };
       const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
-      
+
       stub(fakeService.mapper, "transform").returns(expectedResult);
       const serialStub = stub(fakeService.serializer, "serialize");
 
@@ -649,7 +654,7 @@ describe("DataService", () => {
       const onSuccess = spy();
       const expectedResult = { id: 123, fullText: "puppy" };
       const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
-      
+
       stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
@@ -664,13 +669,13 @@ describe("DataService", () => {
       const expectedResult = { id: "123", fullText: "puppy" };
       const updateRecordAction = fakeService.actions.updateRecord(expectedResult, { onSuccess });
       const pushRecordAction = stub(fakeService.actions, "pushRecord");
-      
+
       stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
         .subscribe(noop, noop,
           () => {
-            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(expectedResult); 
+            expect(pushRecordAction.firstCall.args[0]).to.deep.equal(expectedResult);
 
           });
     });
@@ -701,7 +706,7 @@ describe("DataService", () => {
       const expectedResult = { id: "123", fullText: "puppy" };
       const expectedJSONResult = JSON.stringify(expectedResult.fullText);
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
-      
+
       stub(fakeService.serializer, "serialize").returns(expectedJSONResult);
 
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
@@ -718,7 +723,7 @@ describe("DataService", () => {
       const normalizedStub = stub(fakeService.mapper, "normalize");
 
       stub(fakeService.serializer, "deserialize").returns(expectedResult);
-      
+
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
         .subscribe(noop, noop,
           () => {
@@ -733,7 +738,7 @@ describe("DataService", () => {
       const transformStub = stub(fakeService.mapper, "transform");
 
       stub(fakeService.serializer, "serialize").returns(expectedResult);
-      
+
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
         .subscribe(noop, noop,
           () => {
@@ -745,10 +750,10 @@ describe("DataService", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "zella puppy serialize transform" };
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
-      
+
       stub(fakeService.mapper, "transform").returns(expectedResult);
       const serialStub = stub(fakeService.serializer, "serialize");
-      
+
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
         .subscribe(noop, noop,
           () => {
@@ -812,17 +817,17 @@ describe("DataService", () => {
       stub(fakeService.serializer, "deserialize").returns(expectedResult);
 
       fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
-      .subscribe(noop, noop,
-        () => {
-          expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
-        });
+        .subscribe(noop, noop,
+          () => {
+            expect(normalizedStub.firstCall.args[0]).to.equal(expectedResult);
+          });
     });
 
     it("should call onSuccess callback with result", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "puppy" };
       const deleteRecordAction = fakeService.actions.deleteRecord(expectedResult, { onSuccess });
-      
+
       stub(fakeService.mapper, "normalize").returns(expectedResult);
 
       fakeService.deleteRecordEpic(ActionsObservable.of(deleteRecordAction), store)
@@ -1062,7 +1067,6 @@ describe("DataService", () => {
         if (stubGetStateObservable) {
           stubGetStateObservable.restore();
         }
-
       });
 
       it("should return a QueryManager with the correct items by query", () => {
@@ -1092,40 +1096,101 @@ describe("DataService", () => {
           .to.equal(1);
       });
 
-      it("should create a fetchAll action with the proper payload", () => {
-        const observable = fakeService.getByQuery(query);
-        fakeService.getByQuery(query);
-
-        observable.take(1).subscribe((queryManager) => {
-          expect(queryManager).to.deep.equal(query);
+      it("should call queryBuilder.invoke() if the state does not already have an IQueryCache for the given IQueryBuilder", () => {
+        const fakeQuery = new QueryBuilder(serviceName, {
+          page: random.number(),
+          hello: random.word(),
         });
+
+        const invokeStub = stub(fakeQuery, "invoke");
+        fakeService.getByQuery(fakeQuery);
+
+        expect(invokeStub.callCount).to.equal(1);
       });
 
-      it("should not invoke the fetchAll action with the proper parameters if the requested Ids are already in the cache", () => {
-        const observable = fakeService.getByQuery(query);
-
+      it("should not call queryBuilder.invoke() if the state already has an IQueryCache for the given IQueryBuilder", () => {
+        const invokeStub = stub(query, "invoke");
         fakeService.getByQuery(query);
 
-        observable.take(1).subscribe((queryManager) => {
-          expect(queryManager)
-            .to.have.property("callCount")
-            .to.equal(1);
-        });
-
+        expect(invokeStub.callCount).to.equal(0);
       });
 
-      it("should invoke the fetchAll action with the proper parameters if the requested Ids are not already in the cache", () => {
-        fakeService.getByQuery(query);
+      it("should return an IQueryManager", () => {
+        const observable = fakeService.getByQuery(query);
 
-        const query2 = new QueryBuilder(serviceName, { page: 2, total: 50, organizationId: 33 });
-        const observable = fakeService.getByQuery(query2);
+        observable
+          .take(1)
+          .subscribe(queryManager => {
+            expect(queryManager).to.be.an.instanceof(QueryManager);
+          });
+      });
 
-        observable.take(1).subscribe((queryManager) => {
-          expect(queryManager)
-            .to.have.property("callCount")
-            .to.equal(1);
-        });
+      it("should return a new IQueryManager if the items change", () => {
+        state$ = new Subject();
 
+        BaseService.setStateObservable(
+          state$.publishReplay(1).refCount(),
+        );
+
+        const newState = {
+          [serviceName]: pushRecordReducer(state[serviceName], {
+              type: random.word(),
+              invoke: spy(),
+              payload: fakeModels[2].applyUpdates({
+                fullText: random.words(),
+              }),
+            },
+          ),
+        };
+
+        let previousQueryManager;
+
+        fakeService
+          .getByQuery(query)
+          .subscribe((queryManager) => {
+            if (!previousQueryManager) {
+              previousQueryManager = queryManager;
+              state$.next(newState);
+            } else {
+              expect(queryManager).to.not.equal(previousQueryManager);
+            }
+          });
+
+        state$.next(state);
+      });
+
+      it("should return a new IQueryManager if the IQueryCache changes", () => {
+        state$ = new Subject();
+
+        BaseService.setStateObservable(
+          state$.publishReplay(1).refCount(),
+        );
+
+        const newState = {
+          [serviceName]: setQueryResponseReducer(state[serviceName], {
+            type: random.word(),
+            invoke: spy(),
+            payload: {
+              query,
+              isLoading: true,
+            },
+          }),
+        };
+
+        let previousQueryManager;
+
+        fakeService
+          .getByQuery(query)
+          .subscribe((queryManager) => {
+            if (!previousQueryManager) {
+              previousQueryManager = queryManager;
+              state$.next(newState);
+            } else {
+              expect(queryManager).to.not.equal(previousQueryManager);
+            }
+          });
+
+        state$.next(state);
       });
     });
 
