@@ -213,8 +213,8 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     const queryManagerObservable = observable
       .filter(queryCache => queryCache != null)
       .switchMap(
-        ({ response }) => response && response.ids.length ? this.getByIds(response.ids) : undefined,
-        ({ query, response, isLoading, errors }, items) => new QueryManager(query, items, response, {
+        ({ response }) => response && response.ids.length ? this.getByIds(response.ids) : [],
+        ({ query, response, isLoading, errors }, items) => new QueryManager<T>(query, items, response, {
           isLoading,
           errors,
         }),

@@ -28,7 +28,7 @@
 
 **● dateDeleted**: *`Date`*
 
-*Defined in [Model/IModel.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/334b326/src/Model/IModel.ts#L10)*
+*Defined in [Model/IModel.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/IModel.ts#L10)*
 
 ___
 <a id="dateupdated"></a>
@@ -37,7 +37,7 @@ ___
 
 **● dateUpdated**: *`Date`*
 
-*Defined in [Model/IModel.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/334b326/src/Model/IModel.ts#L9)*
+*Defined in [Model/IModel.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/IModel.ts#L9)*
 
 ___
 <a id="id"></a>
@@ -46,7 +46,7 @@ ___
 
 **● id**: *`string`*
 
-*Defined in [Model/IModel.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/334b326/src/Model/IModel.ts#L8)*
+*Defined in [Model/IModel.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/IModel.ts#L8)*
 
 ___
 
