@@ -25,7 +25,7 @@
 
 **● items**: *`Map`<`string`, [IModel](imodel.md)<`T`>>*
 
-*Defined in [Services/DataService/IDataServiceState.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/2eee607/src/Services/DataService/IDataServiceState.ts#L7)*
+*Defined in [Services/DataService/IDataServiceState.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/334b326/src/Services/DataService/IDataServiceState.ts#L7)*
 
 ___
 <a id="requestcache"></a>
@@ -34,7 +34,7 @@ ___
 
 **● requestCache**: *`Map`<`string`, [IQueryCacheRecord](../#iquerycacherecord)>*
 
-*Defined in [Services/DataService/IDataServiceState.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/2eee607/src/Services/DataService/IDataServiceState.ts#L8)*
+*Defined in [Services/DataService/IDataServiceState.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/334b326/src/Services/DataService/IDataServiceState.ts#L8)*
 
 ___
 
