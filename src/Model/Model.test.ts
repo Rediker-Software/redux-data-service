@@ -26,6 +26,8 @@ import {
   registerService,
 } from "../Services";
 
+import { configure } from "../Configure";
+
 import {
   attr,
   belongsTo,
@@ -254,10 +256,13 @@ describe("Model", () => {
 
       describe("saving an existing record", () => {
         let updateRecordStub;
+        let patchRecordStub;
         let model;
 
         beforeEach(() => {
           updateRecordStub = stub(service.actions, "updateRecord");
+          patchRecordStub = stub(service.actions, "patchRecord");
+
           model = new service.ModelClass(service, { id: random.number().toString(), name: lorem.word() });
         });
 
@@ -282,6 +287,18 @@ describe("Model", () => {
             .saveModel();
 
           expect(invokeSpy.calledOnce).to.be.true;
+        });
+
+        it("calls patchRecord when preferPatchOverPut is true in configuration", () => {
+          configure({ preferPatchOverPut: true, modules: null });
+          registerService(service);
+          const expectedName = "hello, world!";
+
+          model = model.applyUpdates({ name: expectedName });
+          model.saveModel();
+
+          expect(updateRecordStub.called).to.be.false;
+          expect(patchRecordStub.firstCall.args[0]).to.deep.equal({ id: model.id });
         });
       });
     });
