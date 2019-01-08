@@ -877,11 +877,11 @@ describe("DataService", () => {
       const transformStub = stub(fakeService.mapper, "transform");
 
       return new Promise(resolve =>
-      fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
-        .subscribe(noop, noop, () => {
-          expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
-          resolve();
-        }),
+        fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+          .subscribe(noop, noop, () => {
+            expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
+            resolve();
+          }),
       );
     });
 
