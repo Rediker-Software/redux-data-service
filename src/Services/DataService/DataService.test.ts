@@ -873,11 +873,11 @@ describe("DataService", () => {
 
     it("patchRecordEpic should call transform before serialize", () => {
       const expectedResult = fakeModels[0];
-      const updateRecordAction = fakeService.actions.updateRecord(expectedResult);
+      const patchRecordAction = fakeService.actions.updateRecord(expectedResult);
       const transformStub = stub(fakeService.mapper, "transform");
 
       return new Promise(resolve =>
-        fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+        fakeService.updateRecordEpic(ActionsObservable.of(patchRecordAction), store)
           .subscribe(noop, noop, () => {
             expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
             resolve();
