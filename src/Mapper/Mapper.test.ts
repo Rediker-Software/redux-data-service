@@ -486,7 +486,5 @@ describe("Mapper", () => {
         paginationInfo,
       );
     });
-
   });
-
 });
