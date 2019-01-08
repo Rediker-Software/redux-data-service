@@ -1,3 +1,4 @@
+// tslint:disable:no-unused-expression
 import { MockAdapter } from "./Adapters/MockAdapter";
 import { RestAdapter } from "./Adapters/RestAdapter";
 import { configure, getConfiguration } from "./Configure";

@@ -9,7 +9,7 @@ import { Subject } from "rxjs/Subject";
 import { createMockStore } from "redux-test-utils";
 import { ActionsObservable } from "redux-observable";
 import { match, spy, stub } from "sinon";
-import { random } from "faker";
+import { random, lorem } from "faker";
 
 import { createMockServiceState } from "../../TestUtils";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
@@ -872,32 +872,33 @@ describe("DataService", () => {
     });
 
     it("patchRecordEpic should call transform before serialize", () => {
-      const onSuccess = spy();
-      const expectedResult = { id: "123", fullText: "zella puppy transform" };
-      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+      const expectedResult = fakeModels[0];
+      const updateRecordAction = fakeService.actions.updateRecord(expectedResult);
       const transformStub = stub(fakeService.mapper, "transform");
 
-      stub(fakeService.serializer, "serialize").returns(expectedResult);
-
-      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
-        .subscribe(noop, noop,
-          () => {
-            expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
-          });
+      return new Promise(resolve =>
+      fakeService.updateRecordEpic(ActionsObservable.of(updateRecordAction), store)
+        .subscribe(noop, noop, () => {
+          expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
+          resolve();
+        }),
+      );
     });
 
     it("should call getItem to get the updated model from the store", () => {
-      const expectedResult = { id: "123", fullText: "zella puppy transform" };
+      const expectedResult = { id: "123", fullText: lorem.slug() };
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
       const getItemStub = stub(fakeService.selectors, "getItem");
 
       stub(fakeService.serializer, "serialize").returns(expectedResult);
 
-      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
-        .subscribe(noop, noop,
-          () => {
+      return new Promise(resolve =>
+        fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+          .subscribe(noop, noop, () => {
             expect(getItemStub.firstCall.args[1]).to.equal(expectedResult.id);
-          });
+            resolve();
+          }),
+      );
     });
 
     it("patchRecordEpic should serialize the result from transform", () => {
