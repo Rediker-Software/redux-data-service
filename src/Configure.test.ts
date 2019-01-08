@@ -48,4 +48,9 @@ describe("Configure", () => {
     expect(config.mapper).to.equal(MockMapper);
   });
 
+  it("defaults preferPatchOverPut to false", () => {
+    configure({ modules: null });
+    const config = getConfiguration();
+    expect(config.preferPatchOverPut).to.be.false;
+  });
 });
