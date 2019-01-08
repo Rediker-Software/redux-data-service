@@ -1,3 +1,4 @@
+import "rxjs/add/operator/bufferTime";
 import "rxjs/add/operator/catch";
 import "rxjs/add/operator/concat";
 import "rxjs/add/operator/distinctUntilChanged";
@@ -31,6 +32,7 @@ import {
   IQueryManager,
   IRawQueryResponse,
   QueryManager,
+  QueryBuilder,
 } from "../../Query";
 
 import { BaseService } from "../BaseService";
@@ -414,18 +416,35 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   }
 
   public fetchRecordEpic(action$: IObservableAction, store: Store<IDataServiceStateRecord<T>>): Observable<IAction<T>> {
-    return action$.ofType(this.types.FETCH_RECORD)
+    const coalesceFindRequests = getConfiguration().coalesceFindRequests;
+
+    let actions = [];
+    if (getConfiguration().coalesceFindRequests) {
+      action$.ofType(this.types.FETCH_RECORD)
+        .bufferTime(50)
+        .subscribe((bufferActions) => actions = bufferActions);
+    } else {
+      actions = [action$.ofType(this.types.FETCH_RECORD)];
+    }
+
+    if (!coalesceFindRequests && actions && actions.length === 1) {
+      return of$(actions[0])
       .filter(action => this.shouldFetchItem(action, store.getState()))
-      .mergeMap(action =>
-        this.adapter.fetchItem(action.payload.id)
-          .mergeMap(async response => await this.serializer.deserialize(response))
-          .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
-          .do(action.meta.onSuccess, action.meta.onError)
-          .map(this.actions.pushRecord)
-          .catch((e) => of$(
-            this.actions.setMetaField({ id: action.payload.id, errors: e.xhr.response }),
-          )),
-      );
+        .mergeMap(action =>
+          this.adapter.fetchItem(action.payload.id)
+            .mergeMap(async response => await this.serializer.deserialize(response))
+            .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
+            .do(action.meta.onSuccess, action.meta.onError)
+            .map(this.actions.pushRecord)
+            .catch((e) => of$(
+              this.actions.setMetaField({ id: action.payload.id, errors: e.xhr.response }),
+            )),
+        );
+    } else if (actions && actions.length > 1) {
+        const queryBuilder = new QueryBuilder(this.name, { ids: actions.map((a) => a.payload.id)});
+        return of$(queryBuilder)
+          .map(this.actions.fetchAll);
+    }
   }
 
   public createRecordEpic(action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {

@@ -21,12 +21,14 @@ export interface IConfiguration {
   adapter?: IAdapterFactory<any>;
   serializer?: ISerializerFactory<any, any>;
   mapper?: IMapperFactory<any>;
+  coalesceFindRequests?: boolean;
 }
 
 const defaultConfiguration: Partial<IConfiguration> = {
   adapter: RestAdapter,
   serializer: RestSerializer,
   mapper: Mapper,
+  coalesceFindRequests: false,
 };
 
 let configuration: IConfiguration = {} as IConfiguration;
