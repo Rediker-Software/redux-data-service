@@ -871,7 +871,7 @@ describe("DataService", () => {
           });
     });
 
-    it("patchRecordEpic should call transform before serialize", () => {
+    it("calls transform before serialize", () => {
       const expectedResult = fakeModels[0];
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
       const transformStub = stub(fakeService.mapper, "transform");
@@ -885,7 +885,7 @@ describe("DataService", () => {
       );
     });
 
-    it("should call getItem to get the updated model from the store", () => {
+    it("calls getItem to get the updated model from the store", () => {
       const expectedResult = { id: "123", fullText: lorem.slug() };
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
       const getItemStub = stub(fakeService.selectors, "getItem");
