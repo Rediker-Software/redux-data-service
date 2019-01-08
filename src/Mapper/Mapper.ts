@@ -61,26 +61,6 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   }
 
   /**
-   * Returns a function, which when called, converts a single field on the provided raw data
-   * into its object equivalent if the given IFieldType implements the optional "normalize" method.
-   *
-   * That function then returns a Promise which resolves with a tuple of the field name and the normalized value.
-   *
-   * For example, an ISO date string will be converted into a Date object when given a DateField.
-   */
-  public normalizeField(data: Partial<R>) {
-    return async (fieldType: IFieldType, fieldName: string): Promise<[string, any]> => {
-      let value = data[fieldName];
-
-      if (fieldType.normalize) {
-        value = await fieldType.normalize(value);
-      }
-
-      return [fieldName, value];
-    };
-  }
-
-  /**
    * Transforms the given Model into a plain javascript object based on the Model's fieldTypes.
    * Each fieldType with `serialize = false` will be excluded.
    *
@@ -107,6 +87,26 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   public async transformList(models: IModel<T>[]): Promise<R[]> {
     const transformedModels = models.map(async model => await this.transform(model) as R);
     return await Promise.all(transformedModels);
+  }
+
+  /**
+   * Returns a function, which when called, converts a single field on the provided raw data
+   * into its object equivalent if the given IFieldType implements the optional "normalize" method.
+   *
+   * That function then returns a Promise which resolves with a tuple of the field name and the normalized value.
+   *
+   * For example, an ISO date string will be converted into a Date object when given a DateField.
+   */
+  public normalizeField(data: Partial<R>) {
+    return async (fieldType: IFieldType, fieldName: string): Promise<[string, any]> => {
+      let value = data[fieldName];
+
+      if (fieldType.normalize) {
+        value = await fieldType.normalize(value);
+      }
+
+      return [fieldName, value];
+    };
   }
 
   /**
