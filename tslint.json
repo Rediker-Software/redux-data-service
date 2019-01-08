@@ -21,7 +21,8 @@
       "object-literal-key-quotes": false,
       "object-literal-sort-keys": false,
       "ordered-imports": false,
-      "typedef": true
+      "typedef": true,
+      "no-unused-expression": false
     },
     "rulesDirectory": []
 }
