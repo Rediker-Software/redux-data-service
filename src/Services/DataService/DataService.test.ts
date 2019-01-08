@@ -886,6 +886,20 @@ describe("DataService", () => {
           });
     });
 
+    it("should call getItem to get the updated model from the store", () => {
+      const expectedResult = { id: "123", fullText: "zella puppy transform" };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
+      const getItemStub = stub(fakeService.selectors, "getItem");
+
+      stub(fakeService.serializer, "serialize").returns(expectedResult);
+
+      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+        .subscribe(noop, noop,
+          () => {
+            expect(getItemStub.firstCall.args[1]).to.equal(expectedResult.id);
+          });
+    });
+
     it("patchRecordEpic should serialize the result from transform", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "zella puppy serialize transform" };
