@@ -52,6 +52,7 @@
     "circular-dependency-plugin": "^5.0.2"
   },
   "dependencies": {
+    "jiff": "^0.7.3",
     "date-fns": "2.0.0-alpha.7",
     "immutable": "^4.0.0-rc.9",
     "lodash": "^4.17.5",

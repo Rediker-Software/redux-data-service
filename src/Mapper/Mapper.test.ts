@@ -1,4 +1,4 @@
-// tslint:disable: max-classes-per-file no-unused-expression
+// tslint:disable:no-unused-expression max-classes-per-file
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import { spy, stub } from "sinon";
@@ -6,6 +6,7 @@ import { spy, stub } from "sinon";
 import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
 import { omit } from "lodash";
+import * as jiff from "jiff";
 
 import { BaseService, DataService, registerService } from "../Services";
 import {
@@ -147,6 +148,17 @@ describe("Mapper", () => {
       fakeModel.fields.age.serialize = true;
       fakeModel.fields.organization.serialize = false;
       fakeModel.fields.fakeItems.serialize = false;
+    });
+
+    describe("transformPatch", () => {
+      it("calls jiff diff on the model", async () => {
+        const transformMapper = stub(mapper, "transform");
+        const jiffStub = stub(jiff, "diff");
+
+        await mapper.transform(fakeModel);
+
+        expect(transformMapper.calledBefore(jiffStub)).to.be.true;
+      });
     });
 
     it("transforms the model into a plain javascript object based on each field's FieldType", async () => {
