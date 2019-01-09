@@ -1,5 +1,6 @@
 import { flow, keys, partition, pick, pickBy, property } from "lodash/fp";
 import { fromPairs } from "lodash";
+import { diff } from "jiff";
 
 import { IFieldRelationship, IFieldType, IModel, IModelData, IModelFactory, RelationshipType } from "../Model";
 import { IQueryResponse, IRawQueryResponse } from "../Query";
@@ -80,8 +81,11 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   }
 
   /** Calls transform on the model and the model.original then creates a JSON patch to update the original to the updated */
-  public async transformPatch(model: IModel<T> | Partial<T>) {
-    return null;
+  public async transformPatch(model: IModel<T> | Partial<T> | any) {
+    const original = await this.transform(model.original);
+    const updated = await this.transform(model);
+
+    return diff(original, updated);
   }
 
   /**
