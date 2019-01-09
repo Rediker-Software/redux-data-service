@@ -151,6 +151,24 @@ describe("Mapper", () => {
     });
 
     describe("transformPatch", () => {
+      let originalModel;
+      let originalModelStub;
+
+      beforeEach(() => {
+        originalModel = new MockModel({ ...mockModelData, fullText: "somethingOld" });
+        originalModelStub = stub(fakeModel, "original").returns(originalModel);
+      });
+
+      it("calls transform on the model and the model.original", async () => {
+        const transformStub = stub(mapper, "transform");
+
+        await mapper.transformPatch(fakeModel);
+
+        expect(transformStub.callCount).to.eq(2);
+        expect(transformStub.calledWithExactly(fakeModel)).to.be.true;
+        expect(transformStub.calledWithExactly(originalModel)).to.be.true;
+      });
+
       it("calls transform after jiff diff", async () => {
         const transformStub = stub(mapper, "transform");
         const jiffStub = stub(jiff, "diff");
@@ -160,16 +178,10 @@ describe("Mapper", () => {
         expect(transformStub.calledBefore(jiffStub)).to.be.true;
       });
 
-      it("calls transform on the model and the model.original", async () => {
-        const transformStub = stub(mapper, "transform");
-        const originalModel = new MockModel({ ...mockModelData, fullText: "somethingOld" });
-        stub(fakeModel, "original").returns(originalModel);
-
+      it("calls model.original to retrieve the original model", async () => {
         await mapper.transformPatch(fakeModel);
 
-        expect(transformStub.callCount).to.eq(2);
-        expect(transformStub.calledWithExactly(fakeModel)).to.be.true;
-        expect(transformStub.calledWithExactly(originalModel)).to.be.true;
+        expect(originalModelStub.called).to.be.true;
       });
 
       it("computes the expected diff", async () => {
