@@ -879,11 +879,13 @@ describe("DataService", () => {
 
       stub(fakeService.serializer, "serialize").returns(expectedResult);
 
-      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
-        .subscribe(noop, noop,
-          () => {
+      return new Promise(resolve => {
+        fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+          .subscribe(noop, noop, () => {
             expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
+            resolve();
           });
+      });
     });
 
     it("patchRecordEpic should serialize the result from transformPatch", () => {
@@ -894,11 +896,13 @@ describe("DataService", () => {
       stub(fakeService.mapper, "transformPatch").returns(expectedResult);
       const serialStub = stub(fakeService.serializer, "serialize");
 
-      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
-        .subscribe(noop, noop,
-          () => {
+      return new Promise(resolve => {
+        fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+          .subscribe(noop, noop, () => {
             expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
+            resolve();
           });
+      });
     });
 
     it("should call onSuccess with expected result", () => {
