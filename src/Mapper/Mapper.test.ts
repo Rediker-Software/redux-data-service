@@ -181,13 +181,25 @@ describe("Mapper", () => {
         expect(transformStub.calledWithExactly(originalModel)).to.be.true;
       });
 
-      it("calls transform after jiff diff", async () => {
-        const transformStub = stub(mapper, "transform");
-        const jiffStub = stub(jiff, "diff");
+      describe("jiff diff stubs", () => {
+        let jiffStub;
 
-        await mapper.transformPatch(fakeModel);
+        beforeEach(() => {
+         jiffStub = stub(jiff, "diff").callThrough();
+        });
 
-        expect(transformStub.calledBefore(jiffStub)).to.be.true;
+        afterEach(() => {
+          jiffStub.reset();
+          jiffStub.restore();
+        });
+
+        it("calls transform after jiff diff", async () => {
+          const transformStub = stub(mapper, "transform");
+
+          await mapper.transformPatch(fakeModel);
+
+          expect(transformStub.calledBefore(jiffStub)).to.be.true;
+        });
       });
 
       it("calls model.original to retrieve the original model", async () => {
@@ -199,7 +211,6 @@ describe("Mapper", () => {
       it("computes the expected diff", async () => {
         const patch = await mapper.transformPatch(fakeModel);
 
-        debugger;
         expect(patch).to.deep.eq([
           { op: "test", path: "/fullText", value: originalFullText },
           { op: "replace", path: "/fullText", value: fullText },
