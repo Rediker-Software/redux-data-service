@@ -9,7 +9,7 @@ import { Subject } from "rxjs/Subject";
 import { createMockStore } from "redux-test-utils";
 import { ActionsObservable } from "redux-observable";
 import { match, spy, stub } from "sinon";
-import { random } from "faker";
+import { random, lorem } from "faker";
 
 import { createMockServiceState } from "../../TestUtils";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
@@ -871,11 +871,11 @@ describe("DataService", () => {
           });
     });
 
-    it("patchRecordEpic should call transform before serialize", () => {
+    it("patchRecordEpic should call transformPatch before serialize", () => {
       const onSuccess = spy();
-      const expectedResult = { id: "123", fullText: "zella puppy transform" };
+      const expectedResult = JSON.stringify([{ op: "replace", field: "/fullText", value: lorem.slug() }]);
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
-      const transformStub = stub(fakeService.mapper, "transform");
+      const transformStub = stub(fakeService.mapper, "transformPatch");
 
       stub(fakeService.serializer, "serialize").returns(expectedResult);
 
@@ -886,12 +886,12 @@ describe("DataService", () => {
           });
     });
 
-    it("patchRecordEpic should serialize the result from transform", () => {
+    it("patchRecordEpic should serialize the result from transformPatch", () => {
       const onSuccess = spy();
-      const expectedResult = { id: "123", fullText: "zella puppy serialize transform" };
+      const expectedResult = [{ op: "replace", field: "/fullText", value: lorem.slug() }];
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
 
-      stub(fakeService.mapper, "transform").returns(expectedResult);
+      stub(fakeService.mapper, "transformPatch").returns(expectedResult);
       const serialStub = stub(fakeService.serializer, "serialize");
 
       fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
