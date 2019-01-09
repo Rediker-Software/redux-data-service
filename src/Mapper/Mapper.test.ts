@@ -159,7 +159,6 @@ describe("Mapper", () => {
         originalFullText = lorem.slug();
         originalModel = new MockModel({ ...mockModelData, fullText: originalFullText });
 
-        // can't directly use stub because property doesn't exist yet and defining it and then stubbing it doesn't work either.
         originalModelSpy = spy();
         Object.defineProperty(fakeModel, "original", {
           get() {
