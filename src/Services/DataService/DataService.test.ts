@@ -888,7 +888,7 @@ describe("DataService", () => {
 
     it("patchRecordEpic should serialize the result from transformPatch", () => {
       const onSuccess = spy();
-      const expectedResult = [{ op: "replace", field: "/fullText", value: lorem.slug() }];
+      const expectedResult = [{ op: "replace", path: "/fullText", value: lorem.slug() }];
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
 
       stub(fakeService.mapper, "transformPatch").returns(expectedResult);
