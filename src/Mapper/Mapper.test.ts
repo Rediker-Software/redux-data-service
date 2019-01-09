@@ -152,13 +152,22 @@ describe("Mapper", () => {
 
     describe("transformPatch", () => {
       let originalModel;
-      let originalModelStub;
+      let originalModelSpy;
+      let originalFullText;
 
       beforeEach(() => {
-        originalModel = new MockModel({ ...mockModelData, fullText: "somethingOld" });
+        originalFullText = lorem.slug();
+        originalModel = new MockModel({ ...mockModelData, fullText: originalFullText });
 
-        Object.defineProperty(fakeModel, "original", { value: {}, writable: false });
-        originalModelStub = stub(fakeModel, "original").returns(originalModel);
+        // can't directly use stub because property doesn't exist yet and defining it and then stubbing it doesn't work either.
+        originalModelSpy = spy();
+        Object.defineProperty(fakeModel, "original", {
+          get() {
+            originalModelSpy();
+            return originalModel;
+          },
+          configurable: true,
+        });
       });
 
       it("calls transform on the model and the model.original", async () => {
@@ -167,6 +176,7 @@ describe("Mapper", () => {
         await mapper.transformPatch(fakeModel);
 
         expect(transformStub.callCount).to.eq(2);
+
         expect(transformStub.calledWithExactly(fakeModel)).to.be.true;
         expect(transformStub.calledWithExactly(originalModel)).to.be.true;
       });
@@ -183,18 +193,16 @@ describe("Mapper", () => {
       it("calls model.original to retrieve the original model", async () => {
         await mapper.transformPatch(fakeModel);
 
-        expect(originalModelStub.called).to.be.true;
+        expect(originalModelSpy.called).to.be.true;
       });
 
       it("computes the expected diff", async () => {
-        const newFullText = lorem.slug();
-        fakeModel = fakeModel.applyUpdates({ fullText: newFullText });
-
         const patch = await mapper.transformPatch(fakeModel);
 
+        debugger;
         expect(patch).to.deep.eq([
-          { op: "test", path: "/fullText", value: fullText },
-          { op: "replace", path: "/fullText", value: newFullText },
+          { op: "test", path: "/fullText", value: originalFullText },
+          { op: "replace", path: "/fullText", value: fullText },
         ]);
       });
     });
