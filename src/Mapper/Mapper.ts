@@ -79,6 +79,7 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
     return fromPairs(pairs) as any;
   }
 
+  /** Calls transform on the model and the model.original then creates a JSON patch to update the original to the updated */
   public async transformPatch(model: IModel<T> | Partial<T>) {
     return null;
   }
