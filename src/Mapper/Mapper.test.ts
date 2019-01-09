@@ -152,12 +152,24 @@ describe("Mapper", () => {
 
     describe("transformPatch", () => {
       it("calls transform after jiff diff", async () => {
-        const transformStub= stub(mapper, "transform");
+        const transformStub = stub(mapper, "transform");
         const jiffStub = stub(jiff, "diff");
 
         await mapper.transformPatch(fakeModel);
 
         expect(transformStub.calledBefore(jiffStub)).to.be.true;
+      });
+
+      it("computes the expected diff", async () => {
+        const newFullText = lorem.slug();
+        fakeModel = fakeModel.applyUpdates({ fullText: newFullText });
+
+        const patch = await mapper.transformPatch(fakeModel);
+
+        expect(patch).to.deep.eq([
+          { op: "test", path: "/fullText", value: fullText },
+          { op: "replace", path: "/fullText", value: newFullText },
+        ]);
       });
     });
 
