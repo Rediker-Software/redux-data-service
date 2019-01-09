@@ -156,6 +156,8 @@ describe("Mapper", () => {
 
       beforeEach(() => {
         originalModel = new MockModel({ ...mockModelData, fullText: "somethingOld" });
+
+        Object.defineProperty(fakeModel, "original", { value: {}, writable: false });
         originalModelStub = stub(fakeModel, "original").returns(originalModel);
       });
 
