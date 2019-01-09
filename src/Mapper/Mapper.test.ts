@@ -151,13 +151,13 @@ describe("Mapper", () => {
     });
 
     describe("transformPatch", () => {
-      it("calls jiff diff on the model", async () => {
-        const transformMapper = stub(mapper, "transform");
+      it("calls transform after jiff diff", async () => {
+        const transformStub= stub(mapper, "transform");
         const jiffStub = stub(jiff, "diff");
 
-        await mapper.transform(fakeModel);
+        await mapper.transformPatch(fakeModel);
 
-        expect(transformMapper.calledBefore(jiffStub)).to.be.true;
+        expect(transformStub.calledBefore(jiffStub)).to.be.true;
       });
     });
 

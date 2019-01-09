@@ -79,6 +79,10 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
     return fromPairs(pairs) as any;
   }
 
+  public async transformPatch(model: IModel<T> | Partial<T>) {
+    return null;
+  }
+
   /**
    * Transforms a given list of Models into an array of items of R
    * @param {IModel[]} models
