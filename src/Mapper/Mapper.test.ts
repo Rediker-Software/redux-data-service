@@ -160,6 +160,18 @@ describe("Mapper", () => {
         expect(transformStub.calledBefore(jiffStub)).to.be.true;
       });
 
+      it("calls transform on the model and the model.original", async () => {
+        const transformStub = stub(mapper, "transform");
+        const originalModel = new MockModel({ ...mockModelData, fullText: "somethingOld" });
+        stub(fakeModel, "original").returns(originalModel);
+
+        await mapper.transformPatch(fakeModel);
+
+        expect(transformStub.callCount).to.eq(2);
+        expect(transformStub.calledWithExactly(fakeModel)).to.be.true;
+        expect(transformStub.calledWithExactly(originalModel)).to.be.true;
+      });
+
       it("computes the expected diff", async () => {
         const newFullText = lorem.slug();
         fakeModel = fakeModel.applyUpdates({ fullText: newFullText });
