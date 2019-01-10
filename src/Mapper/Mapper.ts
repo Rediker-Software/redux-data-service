@@ -222,18 +222,37 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   /**
    * Given the relatedModelData of a single item, normalize the data using the relationship's own mapper,
    * converting it into a Model instance, then dispatch that related Model to its data service and return the Model.
+   *
+   * Information about the parent model will be stored on the child model so we can look up the parent later.
    */
   protected async loadRelatedModel(model: IModel<T>, relatedModelData: any, relationship: IFieldRelationship) {
+    const { field } = relationship;
+
+    // Determine the name of the parent model's id field
     const modelRelatedFieldName: string = relationship.modelRelatedFieldName != null
       ? relationship.modelRelatedFieldName
       : model.serviceName + "Id";
 
+    // Set the parent id onto the expected field
     if (!relatedModelData.hasOwnProperty(modelRelatedFieldName)) {
       relatedModelData[modelRelatedFieldName] = model.id;
     }
 
+    // If the parent id field is not the expected default value, we set it here
+    if (relationship.modelRelatedFieldName) {
+      relatedModelData.parentIdFieldName = relationship.modelRelatedFieldName;
+    }
+
+    // Only mark the field to serialize through the parent if the parent was configured as such
+    if (field in model.fields && model.fields[field].serialize) {
+      relatedModelData.serializeThroughParent = true;
+    }
+
+    relatedModelData.parentServiceName = model.serviceName;
+
     const service = model.getServiceForRelationship(relationship.field);
     const relatedModel = await service.mapper.normalize(relatedModelData);
+
     service.actions.pushRecord(relatedModel).invoke();
 
     return relatedModel;

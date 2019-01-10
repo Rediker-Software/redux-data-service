@@ -4,7 +4,7 @@ import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 
 import { validate } from "validate.js";
-import { forEach, get, isEmpty, omit, find } from "lodash";
+import { find, forEach, get, isEmpty, omit, set } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
 import { DataService } from "../Services/DataService";
@@ -12,8 +12,8 @@ import { getDataService } from "../Services/ServiceProvider";
 import { addPenultimateFieldToPath, flattenObjectKeys } from "../Utils";
 
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
-import { DateTimeField, IFieldType, StringField } from "./FieldType";
-import { attr, IFieldRelationship, RelationshipType } from "./Decorators";
+import { BooleanField, DateTimeField, IFieldType, StringField } from "./FieldType";
+import { attr, belongsTo, IFieldRelationship, RelationshipType } from "./Decorators";
 import { getConfiguration } from "../Configure";
 
 /**
@@ -82,6 +82,26 @@ export class Model<T extends IModelData> implements IModel<T> {
   @attr(DateTimeField, { serialize: false, readOnly: true })
   public readonly dateDeleted: Date;
 
+  @attr(BooleanField, { serialize: false, defaultValue: false })
+  public serializeThroughParent: boolean;
+
+  @attr(StringField, { serialize: false })
+  public parentServiceName;
+
+  @attr(StringField, { serialize: false, defaultValue: (m) => `${m.parentServiceName}Id` })
+  public parentIdFieldName: string;
+
+  @belongsTo({ serviceNameField: "parentServiceName" })
+  public parentModel: IModel<any>;
+
+  public get parentModelId() {
+    return get(this, this.parentIdFieldName);
+  }
+
+  public set parentModelId(value) {
+    set(this, this.parentIdFieldName, value);
+  }
+
   protected readonly modelData: Partial<T>;
   protected readonly meta: IModelMeta<T>;
   protected readonly relatedModels: IModelsMap;
@@ -131,20 +151,27 @@ export class Model<T extends IModelData> implements IModel<T> {
    *
    * Returns a promise which resolves with the new Model on success, or the error response on failure.
    *
+   * If this model was loaded initially as a nested model, and the parent is marked to serialize this model,
+   * then saving this model will instead save the parent model.
+   *
    * Note that this method does not validate the model or check if it has pending changes. You probably want to
    * use the `save()` method instead.
    *
    * @returns {Promise<IModel<T extends IModelData>>}
    */
-  public saveModel(): Promise<IModel<T>> {
-    const service = getDataService(this.serviceName);
-    const action = (this.isNew)
-      ? service.actions.createRecord
-      : getConfiguration().preferPatchOverPut
-        ? service.actions.patchRecord
-        : service.actions.updateRecord;
+  public saveModel(): Promise<IModel<any>> {
+    if (this.serializeThroughParent) {
+      return this.parentModel.save();
+    }
 
     return new Promise((resolve, reject) => {
+      const service = getDataService(this.serviceName);
+      const action = (this.isNew)
+        ? service.actions.createRecord
+        : getConfiguration().preferPatchOverPut
+          ? service.actions.patchRecord
+          : service.actions.updateRecord;
+
       action({ id: this.id }, {
         onSuccess: (model) => resolve(model),
         onError: (error) => reject("xhr" in error ? error.xhr.response : error),
@@ -155,7 +182,7 @@ export class Model<T extends IModelData> implements IModel<T> {
   /**
    * Dispatch an action to Redux to commit the pending changes to the API for any of the related models
    * which have already been loaded and would not be serialized when this model is saved. After each model is saved,
-   * its new copy is set onto this model.
+   * its new copy is set onto a new copy this model.
    *
    * Returns a promise which resolves with each of the new models.
    *
@@ -346,7 +373,9 @@ export class Model<T extends IModelData> implements IModel<T> {
       ? this.meta.changes[fieldName]
       : fieldName in this.modelData
         ? this.modelData[fieldName]
-        : defaultValue;
+        : typeof defaultValue === "function"
+          ? defaultValue(this)
+          : defaultValue;
   }
 
   /**
@@ -410,8 +439,13 @@ export class Model<T extends IModelData> implements IModel<T> {
     }
 
     const relationship = this.relationships[fieldName];
+
     const relatedService = this.getServiceForRelationship(fieldName);
-    const relatedIDorIDs = this.getField(relationship.relatedFieldName);
+    if (!relatedService) {
+      return undefined;
+    }
+
+    const relatedIDorIDs = get(this, relationship.relatedFieldName);
 
     // Initialize the cache to an empty value
     if (this.isShadow && relationship.type === RelationshipType.BelongsTo) {
@@ -492,11 +526,12 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public getServiceForRelationship(relationshipKey: string): DataService<any> {
     const relationship = this.relationships[relationshipKey];
+
     const serviceName = relationship.serviceNameField
-      ? this.getField(relationship.serviceNameField)
+      ? get(this, relationship.serviceNameField)
       : relationship.serviceName;
 
-    return getDataService(serviceName);
+    return serviceName && getDataService(serviceName);
   }
 
   /**
