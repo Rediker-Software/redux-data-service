@@ -381,13 +381,6 @@ describe("Mapper", () => {
         });
       });
 
-      it("creates a pushRecord action with the related data and info about the parent model", async () => {
-        await mapper.normalize(rawModelData);
-        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel({
-          ...relatedModelData,
-        }));
-      });
-
       it("creates a pushRecord action with the related data and serializeThroughParent set to true when the parent will serialize the child", async () => {
         MockModel.prototype.fields.organization.serialize = true;
         await mapper.normalize(rawModelData);
