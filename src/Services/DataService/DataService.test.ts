@@ -856,7 +856,7 @@ describe("DataService", () => {
           });
     });
 
-    it("patchRecordEpic should call normalize after deserialize", () => {
+    it("calls normalize after deserialize", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "zella puppy normalize" };
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
@@ -871,10 +871,10 @@ describe("DataService", () => {
           });
     });
 
-    it("calls transform before serialize", () => {
+    it("calls transformPatch before serialize", () => {
       const expectedResult = fakeModels[0];
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
-      const transformStub = stub(fakeService.mapper, "transform");
+      const transformStub = stub(fakeService.mapper, "transformPatch");
 
       return new Promise(resolve =>
         fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
@@ -901,19 +901,20 @@ describe("DataService", () => {
       );
     });
 
-    it("patchRecordEpic should serialize the result from transform", () => {
-      const onSuccess = spy();
-      const expectedResult = { id: "123", fullText: "zella puppy serialize transform" };
-      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+    it("serializes the result from transformPatch", () => {
+      const expectedResult = [{ op: "replace", path: "/fullText", value: lorem.slug() }];
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
 
-      stub(fakeService.mapper, "transform").returns(expectedResult);
+      stub(fakeService.mapper, "transformPatch").returns(expectedResult);
       const serialStub = stub(fakeService.serializer, "serialize");
 
-      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
-        .subscribe(noop, noop,
-          () => {
+      return new Promise(resolve => {
+        fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+          .subscribe(noop, noop, () => {
             expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
+            resolve();
           });
+      });
     });
 
     it("should call onSuccess with expected result", () => {
