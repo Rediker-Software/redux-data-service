@@ -29,6 +29,7 @@ import { MockAdapter } from "../Adapters";
 import { IRawQueryResponse } from "../Query";
 
 import { Mapper } from "./Mapper";
+import { initializeTestServices } from "../TestUtils";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -295,6 +296,19 @@ describe("Mapper", () => {
       mapper = new Mapper(MockModel);
 
       stub(fakeRelatedService, "getById").returns(Observable.of(fakeRelatedModel));
+
+      initializeTestServices({
+        fakeModel: {
+          FakeModelService: FakeService,
+          FakeModel: MockModel,
+          createMockFakeModel: (overrideValues) => new MockModel({ id: random.number().toString(), ...overrideValues }),
+        },
+        fakeRelatedModel: {
+          FakeRelatedModel,
+          FakeRelatedModelService: FakeRelatedService,
+          createMockFakeRelatedModel: (overrideValues) => new FakeRelatedModel({ id: random.number().toString(), ...overrideValues }),
+        },
+      });
 
       registerService(fakeService);
       registerService(fakeRelatedService);
