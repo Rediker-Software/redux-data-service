@@ -9,6 +9,10 @@ export class MockMapper implements IMapper<any> {
     return models;
   }
 
+  public async transformPatch(model) {
+    return [{ op: "replace", path: "/fullText", value: "Use sinon to stub me if you want MockMapper.transformPatch to be different" }];
+  }
+
   public async normalize(data) {
     return data;
   }  

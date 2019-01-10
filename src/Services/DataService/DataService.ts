@@ -467,7 +467,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     return action$.ofType(this.types.PATCH_RECORD)
       .mergeMap(action =>
         of$(this.selectors.getItem(store.getState(), action.payload.id))
-          .mergeMap(async model => await this.mapper.transform(model))
+          .mergeMap(async model => await this.mapper.transformPatch(model))
           .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as R))
           .mergeMap(serializedModel => this.adapter.patchItem(action.payload.id, serializedModel))
           .mergeMap(async (response) => await this.serializer.deserialize(response))
