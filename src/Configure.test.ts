@@ -1,3 +1,5 @@
+import { random } from "faker";
+
 import { MockAdapter } from "./Adapters/MockAdapter";
 import { RestAdapter } from "./Adapters/RestAdapter";
 import { configure, getConfiguration } from "./Configure";
@@ -46,6 +48,31 @@ describe("Configure", () => {
     configure({ modules: null, mapper: MockMapper });
     const config = getConfiguration();
     expect(config.mapper).to.equal(MockMapper);
+  });
+
+  it("uses the default value for coalesceFindRequests", () => {
+    configure({ modules: null });
+    const config = getConfiguration();
+    expect(config.coalesceFindRequests).to.be.false;
+  });
+
+  it("uses the provided value for coalesceFindRequest", () => {
+    configure({ modules: null, coalesceFindRequests: true});
+    const config = getConfiguration();
+    expect(config.coalesceFindRequests).to.be.true;
+  });
+
+  it("uses the default value for bufferTime", () => {
+    configure({ modules: null });
+    const config = getConfiguration();
+    expect(config.bufferTime).to.equal(100);
+  });
+
+  it("uses the provided value for bufferTime", () => {
+    const bufferTime = random.number();
+    configure({ modules: null, bufferTime});
+    const config = getConfiguration();
+    expect(config.bufferTime).to.equal(bufferTime);
   });
 
 });

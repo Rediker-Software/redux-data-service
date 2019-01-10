@@ -3,6 +3,7 @@ import "rxjs/add/operator/catch";
 import "rxjs/add/operator/do";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/mergeMap";
+import "rxjs/add/operator/shareReplay";
 import "rxjs/add/operator/take";
 
 import { of as of$ } from "rxjs/observable/of";
@@ -18,8 +19,6 @@ import { QueryBuilder } from "../../../Query";
 import { IContext } from "../Interfaces/IContext";
 import { shouldFetchItem } from "../ShouldFetchItem";
 
-export const BUFFER_TIME = 100;
-
 export const loadRecord = ({ actions, serializer, mapper, adapter }) => (id: string): Observable<IAction<any>> =>
   adapter.fetchItem(id)
     .mergeMap(async response => await serializer.deserialize(response))
@@ -29,8 +28,8 @@ export const loadRecord = ({ actions, serializer, mapper, adapter }) => (id: str
       actions.setMetaField({ id, errors: e.xhr.response }),
     ));
 
-export const createBufferObservable = (context: IContext) => new Subject()
-  .bufferTime(BUFFER_TIME)
+export const createBufferObservable = (context: IContext): any => new Subject()
+  .bufferTime(getConfiguration().bufferTime)
   .mergeMap((ids: string[]) => ids.length > 1
     ? of$(
       context.actions.fetchAll(
@@ -51,6 +50,7 @@ export const performBufferedRequest = (context: IContext) => (id: string) => {
 
     bufferedObservable
       .take(1)
+      .shareReplay(1)
       .do(() => delete bufferedObservableCache[context.name]);
 
     bufferedObservable.next(id);

@@ -22,6 +22,7 @@ export interface IConfiguration {
   serializer?: ISerializerFactory<any, any>;
   mapper?: IMapperFactory<any>;
   coalesceFindRequests?: boolean;
+  bufferTime?: number;
 }
 
 const defaultConfiguration: Partial<IConfiguration> = {
@@ -29,6 +30,7 @@ const defaultConfiguration: Partial<IConfiguration> = {
   serializer: RestSerializer,
   mapper: Mapper,
   coalesceFindRequests: false,
+  bufferTime: 100,
 };
 
 let configuration: IConfiguration = {} as IConfiguration;
