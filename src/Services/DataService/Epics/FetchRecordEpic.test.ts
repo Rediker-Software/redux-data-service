@@ -252,7 +252,7 @@ describe("FetchRecordEpic", () => {
         expect(false).to.be.true;
       });
 
-      it("should emit a PUSH_ALL action for the requested item", () => {
+      it("should emit a PUSH_RECORD action for the requested item", () => {
         expect(false).to.be.true;
       });
 
