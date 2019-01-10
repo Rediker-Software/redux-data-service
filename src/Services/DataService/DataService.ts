@@ -58,6 +58,8 @@ import {
   unloadRecordReducer,
 } from "./Reducers";
 
+import { fetchRecordEpic } from "./Epics";
+
 import { DataServiceStateRecord, IDataServiceStateRecord } from "./DataServiceStateRecord";
 import { shouldFetchAll } from "./ShouldFetchAll";
 
@@ -380,7 +382,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
     epics.push(
       this.fetchAllEpic.bind(this),
-      this.fetchRecordEpic.bind(this),
+      fetchRecordEpic(this),
       this.createRecordEpic.bind(this),
       this.updateRecordEpic.bind(this),
       this.patchRecordEpic.bind(this),
@@ -414,43 +416,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
             }),
           )),
       );
-  }
-
-  public fetchRecordEpic(action$: IObservableAction, store: Store<IDataServiceStateRecord<T>>): Observable<IAction<T>> {
-    const observable = action$.ofType(this.types.FETCH_RECORD)
-      .filter(action => this.shouldFetchItem(action, store.getState()));
-    const coalesceFindRequests = getConfiguration().coalesceFindRequests;
-
-    const loadRecord = action =>
-      this.adapter.fetchItem(action.payload.id)
-        .mergeMap(async response => await this.serializer.deserialize(response))
-        .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
-        .do(action.meta.onSuccess, action.meta.onError)
-        .map(this.actions.pushRecord)
-        .catch((e) => of$(
-          this.actions.setMetaField({ id: action.payload.id, errors: e.xhr.response }),
-        ));
-
-    if (coalesceFindRequests) {
-      if (!this.bufferObservable) {
-        this.bufferObservable = observable
-        .bufferTime(50)
-        .mergeMap(actions => {
-          if (actions && actions.length > 1) {
-            const queryBuilder = new QueryBuilder(this.name, { ids: actions.map((a) => a.payload.id)});
-            return of$(this.actions.fetchAll(queryBuilder));
-          } else {
-            return of$(actions[0]).mergeMap(loadRecord);
-          }
-        });
-      }
-
-      observable.mergeMap(this.bufferObservable);
-    } else {
-      observable.mergeMap(loadRecord);
-    }
-
-    return observable;
   }
 
   public createRecordEpic(action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {
@@ -518,8 +483,4 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
           ))
       ));
   }
-
-  private shouldFetchItem = (action, state) =>
-    this.selectors.getItem(state, action.payload.id) == null
-    || (action.meta && action.meta.forceReload)
 }

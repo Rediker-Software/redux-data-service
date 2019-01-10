@@ -21,7 +21,7 @@ export type IReducer<S> = (state: S, action: IAction) => S;
 export type IReducers<S> = { [index: string]: IReducer<S> } | {};
 
 export type IObservableAction<T extends object = any, M = any> = ActionsObservable<IAction<T, M>> & IAction<T, M>;
-export type IActionEpic<T extends object = any, M = any> = Epic<IObservableAction<T, M>, {}, any>;
+export type IActionEpic<T extends object = any, M = any> = Epic<IObservableAction<T, M>, any, any>;
 
 export interface ISelectors {
   [index: string]: (rootState: any, props?: any) => any;
