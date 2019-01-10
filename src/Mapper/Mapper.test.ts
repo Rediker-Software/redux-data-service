@@ -5,7 +5,7 @@ import { spy, stub } from "sinon";
 
 import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
-import { omit } from "lodash";
+import { flatten, omit } from "lodash";
 import * as jiff from "jiff";
 
 import { BaseService, DataService, registerService } from "../Services";
@@ -169,14 +169,28 @@ describe("Mapper", () => {
         });
       });
 
-      it("calls transform on the model and the model.original", async () => {
+      it("calls transform twice", async () => {
         const transformStub = stub(mapper, "transform");
 
         await mapper.transformPatch(fakeModel);
 
-        expect(transformStub.args)
-          .to.have.lengthOf(2)
-          .and.deep.equal([fakeModel, originalModel]);
+        expect(transformStub.callCount).to.eq(2);
+      });
+
+      it("calls transform on the model", async () => {
+        const transformStub = stub(mapper, "transform");
+
+        await mapper.transformPatch(fakeModel);
+
+        expect(transformStub.calledWithExactly(fakeModel)).to.be.true;
+      });
+
+      it("calls transform on the model.original", async () => {
+        const transformStub = stub(mapper, "transform");
+
+        await mapper.transformPatch(fakeModel);
+
+        expect(transformStub.calledWithExactly(originalModel)).to.be.true;
       });
 
       describe("jiff diff stubs", () => {
