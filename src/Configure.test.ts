@@ -1,3 +1,4 @@
+// tslint:disable:no-unused-expression
 import { MockAdapter } from "./Adapters/MockAdapter";
 import { RestAdapter } from "./Adapters/RestAdapter";
 import { configure, getConfiguration } from "./Configure";
@@ -48,4 +49,9 @@ describe("Configure", () => {
     expect(config.mapper).to.equal(MockMapper);
   });
 
+  it("defaults preferPatchOverPut to false", () => {
+    configure({ modules: null });
+    const config = getConfiguration();
+    expect(config.preferPatchOverPut).to.be.false;
+  });
 });

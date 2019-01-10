@@ -14,6 +14,7 @@ import { addPenultimateFieldToPath, flattenObjectKeys } from "../Utils";
 import { IModel, IModelData, IModelKeys, IModelMeta, IModelsMap } from "./IModel";
 import { DateTimeField, IFieldType, StringField } from "./FieldType";
 import { attr, IFieldRelationship, RelationshipType } from "./Decorators";
+import { getConfiguration } from "../Configure";
 
 /**
  * # Model
@@ -137,7 +138,11 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public saveModel(): Promise<IModel<T>> {
     const service = getDataService(this.serviceName);
-    const action = (this.isNew) ? service.actions.createRecord : service.actions.updateRecord;
+    const action = (this.isNew)
+      ? service.actions.createRecord
+      : getConfiguration().preferPatchOverPut
+        ? service.actions.patchRecord
+        : service.actions.updateRecord;
 
     return new Promise((resolve, reject) => {
       action({ id: this.id }, {

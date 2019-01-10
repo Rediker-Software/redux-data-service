@@ -2,11 +2,12 @@ import { flow, keys, partition, pick, pickBy, property } from "lodash/fp";
 import { fromPairs } from "lodash";
 import { diff } from "jiff";
 
-import { IFieldRelationship, IFieldType, IModel, IModelData, IModelFactory, RelationshipType } from "../Model";
+import { IModel, IModelData, IModelFactory } from "../Model/IModel";
+import { IFieldRelationship, RelationshipType } from "../Model/Decorators";
+import { IFieldType } from "../Model/FieldType";
 import { IQueryResponse, IRawQueryResponse } from "../Query";
 import { getDataService } from "../Services/ServiceProvider";
 import { mapWithKeys } from "../Utils";
-
 import { IMapper } from "./IMapper";
 
 /**

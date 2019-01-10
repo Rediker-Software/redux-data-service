@@ -877,15 +877,29 @@ describe("DataService", () => {
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
       const transformStub = stub(fakeService.mapper, "transformPatch");
 
-      stub(fakeService.serializer, "serialize").returns(expectedResult);
-
-      return new Promise(resolve => {
+      return new Promise(resolve =>
         fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
           .subscribe(noop, noop, () => {
             expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
             resolve();
-          });
-      });
+          }),
+      );
+    });
+
+    it("calls getItem to get the updated model from the store", () => {
+      const expectedResult = { id: "123", fullText: lorem.slug() };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
+      const getItemStub = stub(fakeService.selectors, "getItem");
+
+      stub(fakeService.serializer, "serialize").returns(expectedResult);
+
+      return new Promise(resolve =>
+        fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+          .subscribe(noop, noop, () => {
+            expect(getItemStub.firstCall.args[1]).to.equal(expectedResult.id);
+            resolve();
+          }),
+      );
     });
 
     it("patchRecordEpic should serialize the result from transformPatch", () => {
