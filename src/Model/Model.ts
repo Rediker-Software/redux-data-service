@@ -4,7 +4,7 @@ import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
 
 import { validate } from "validate.js";
-import { forEach, get, set, isEmpty, omit, find } from "lodash";
+import { find, forEach, get, isEmpty, omit, set } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
 import { DataService } from "../Services/DataService";
