@@ -174,10 +174,9 @@ describe("Mapper", () => {
 
         await mapper.transformPatch(fakeModel);
 
-        expect(transformStub.callCount).to.eq(2);
-
-        expect(transformStub.calledWithExactly(fakeModel)).to.be.true;
-        expect(transformStub.calledWithExactly(originalModel)).to.be.true;
+        expect(transformStub.args)
+          .to.have.lengthOf(2)
+          .and.deep.equal([fakeModel, originalModel]);
       });
 
       describe("jiff diff stubs", () => {
