@@ -856,7 +856,7 @@ describe("DataService", () => {
           });
     });
 
-    it("patchRecordEpic should call normalize after deserialize", () => {
+    it("calls normalize after deserialize", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "zella puppy normalize" };
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
@@ -871,10 +871,9 @@ describe("DataService", () => {
           });
     });
 
-    it("patchRecordEpic should call transformPatch before serialize", () => {
-      const onSuccess = spy();
-      const expectedResult = JSON.stringify([{ op: "replace", field: "/fullText", value: lorem.slug() }]);
-      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+    it("calls transformPatch before serialize", () => {
+      const expectedResult = fakeModels[0];
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
       const transformStub = stub(fakeService.mapper, "transformPatch");
 
       return new Promise(resolve =>
@@ -902,10 +901,9 @@ describe("DataService", () => {
       );
     });
 
-    it("patchRecordEpic should serialize the result from transformPatch", () => {
-      const onSuccess = spy();
+    it("serializes the result from transformPatch", () => {
       const expectedResult = [{ op: "replace", path: "/fullText", value: lorem.slug() }];
-      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
 
       stub(fakeService.mapper, "transformPatch").returns(expectedResult);
       const serialStub = stub(fakeService.serializer, "serialize");
