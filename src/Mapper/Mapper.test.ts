@@ -354,17 +354,48 @@ describe("Mapper", () => {
 
       afterEach(() => {
         pushRecordStub.restore();
+        MockModel.prototype.fields.organization.serialize = false;
+        MockModel.prototype.relationships.organization.modelRelatedFieldName = undefined;
       });
 
-      it("normalizes nested related data", async () => {
+      it("normalizes nested related data with information about the parent model", async () => {
         const normalizeStub = stub(fakeRelatedService.mapper, "normalize").callThrough();
         await mapper.normalize(rawModelData);
-        expect(normalizeStub.firstCall.args[0]).to.equal(relatedModelData);
+        expect(normalizeStub.firstCall.args[0]).to.deep.equal({
+          ...relatedModelData,
+          parentServiceName: "fakeModel",
+        });
       });
 
-      it("creates a pushRecord action with related data", async () => {
+      it("creates a pushRecord action with the related data and info about the parent model", async () => {
         await mapper.normalize(rawModelData);
-        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel(relatedModelData));
+        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel({
+          ...relatedModelData,
+        }));
+      });
+
+      it("creates a pushRecord action with the related data and serializeThroughParent set to true when the parent will serialize the child", async () => {
+        MockModel.prototype.fields.organization.serialize = true;
+        await mapper.normalize(rawModelData);
+        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel({
+          ...relatedModelData,
+          parentServiceName: "fakeModel",
+          serializeThroughParent: true,
+        }));
+      });
+
+      it("specifies the name of the field containing the parent's id if it was specified by the parent's relationship", async () => {
+        delete relatedModelData.fullText;
+        MockModel.prototype.relationships.organization.modelRelatedFieldName = "fullText";
+
+        await mapper.normalize(rawModelData);
+
+        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel({
+          ...relatedModelData,
+          parentServiceName: "fakeModel",
+          parentIdFieldName: "fullText",
+          fullText: rawModelData.id,
+        }));
       });
 
       it("invokes a pushRecord action with related data", async () => {
