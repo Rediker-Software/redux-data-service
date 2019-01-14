@@ -9,7 +9,7 @@ import { Subject } from "rxjs/Subject";
 import { createMockStore } from "redux-test-utils";
 import { ActionsObservable } from "redux-observable";
 import { match, spy, stub } from "sinon";
-import { random } from "faker";
+import { random, lorem } from "faker";
 
 import { createMockServiceState } from "../../TestUtils";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
@@ -746,7 +746,7 @@ describe("DataService", () => {
           });
     });
 
-    it("patchRecordEpic should call normalize after deserialize", () => {
+    it("calls normalize after deserialize", () => {
       const onSuccess = spy();
       const expectedResult = { id: "123", fullText: "zella puppy normalize" };
       const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
@@ -761,34 +761,50 @@ describe("DataService", () => {
           });
     });
 
-    it("patchRecordEpic should call transform before serialize", () => {
-      const onSuccess = spy();
-      const expectedResult = { id: "123", fullText: "zella puppy transform" };
-      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
-      const transformStub = stub(fakeService.mapper, "transform");
+    it("calls transformPatch before serialize", () => {
+      const expectedResult = fakeModels[0];
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
+      const transformStub = stub(fakeService.mapper, "transformPatch");
+
+      return new Promise(resolve =>
+        fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+          .subscribe(noop, noop, () => {
+            expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
+            resolve();
+          }),
+      );
+    });
+
+    it("calls getItem to get the updated model from the store", () => {
+      const expectedResult = { id: "123", fullText: lorem.slug() };
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
+      const getItemStub = stub(fakeService.selectors, "getItem");
 
       stub(fakeService.serializer, "serialize").returns(expectedResult);
 
-      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
-        .subscribe(noop, noop,
-          () => {
-            expect(transformStub.firstCall.args[0]).to.equal(expectedResult);
-          });
+      return new Promise(resolve =>
+        fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+          .subscribe(noop, noop, () => {
+            expect(getItemStub.firstCall.args[1]).to.equal(expectedResult.id);
+            resolve();
+          }),
+      );
     });
 
-    it("patchRecordEpic should serialize the result from transform", () => {
-      const onSuccess = spy();
-      const expectedResult = { id: "123", fullText: "zella puppy serialize transform" };
-      const patchRecordAction = fakeService.actions.patchRecord(expectedResult, { onSuccess });
+    it("serializes the result from transformPatch", () => {
+      const expectedResult = [{ op: "replace", path: "/fullText", value: lorem.slug() }];
+      const patchRecordAction = fakeService.actions.patchRecord(expectedResult);
 
-      stub(fakeService.mapper, "transform").returns(expectedResult);
+      stub(fakeService.mapper, "transformPatch").returns(expectedResult);
       const serialStub = stub(fakeService.serializer, "serialize");
 
-      fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
-        .subscribe(noop, noop,
-          () => {
+      return new Promise(resolve => {
+        fakeService.patchRecordEpic(ActionsObservable.of(patchRecordAction), store)
+          .subscribe(noop, noop, () => {
             expect(serialStub.firstCall.args[0]).to.equal(expectedResult);
+            resolve();
           });
+      });
     });
 
     it("should call onSuccess with expected result", () => {

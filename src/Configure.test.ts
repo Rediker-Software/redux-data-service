@@ -1,3 +1,4 @@
+// tslint:disable:no-unused-expression
 import { random } from "faker";
 
 import { MockAdapter } from "./Adapters/MockAdapter";
@@ -48,6 +49,12 @@ describe("Configure", () => {
     configure({ modules: null, mapper: MockMapper });
     const config = getConfiguration();
     expect(config.mapper).to.equal(MockMapper);
+  });
+
+  it("defaults preferPatchOverPut to false", () => {
+    configure({ modules: null });
+    const config = getConfiguration();
+    expect(config.preferPatchOverPut).to.be.false;
   });
 
   it("uses the default value for coalesceFindRequests", () => {

@@ -1,11 +1,13 @@
 import { flow, keys, partition, pick, pickBy, property } from "lodash/fp";
 import { fromPairs } from "lodash";
+import { diff } from "jiff";
 
-import { IFieldRelationship, IFieldType, IModel, IModelData, IModelFactory, RelationshipType } from "../Model";
+import { IModel, IModelData, IModelFactory } from "../Model/IModel";
+import { IFieldRelationship, RelationshipType } from "../Model/Decorators";
+import { IFieldType } from "../Model/FieldType";
 import { IQueryResponse, IRawQueryResponse } from "../Query";
 import { getDataService } from "../Services/ServiceProvider";
 import { mapWithKeys } from "../Utils";
-
 import { IMapper } from "./IMapper";
 
 /**
@@ -61,26 +63,6 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   }
 
   /**
-   * Returns a function, which when called, converts a single field on the provided raw data
-   * into its object equivalent if the given IFieldType implements the optional "normalize" method.
-   *
-   * That function then returns a Promise which resolves with a tuple of the field name and the normalized value.
-   *
-   * For example, an ISO date string will be converted into a Date object when given a DateField.
-   */
-  public normalizeField(data: Partial<R>) {
-    return async (fieldType: IFieldType, fieldName: string): Promise<[string, any]> => {
-      let value = data[fieldName];
-
-      if (fieldType.normalize) {
-        value = await fieldType.normalize(value);
-      }
-
-      return [fieldName, value];
-    };
-  }
-
-  /**
    * Transforms the given Model into a plain javascript object based on the Model's fieldTypes.
    * Each fieldType with `serialize = false` will be excluded.
    *
@@ -99,6 +81,14 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
     return fromPairs(pairs) as any;
   }
 
+  /** Calls transform on the model and the model.original then creates a JSON patch to update the original to the updated */
+  public async transformPatch(model: IModel<T> | Partial<T> | any) {
+    const original = await this.transform(model.original);
+    const updated = await this.transform(model);
+
+    return diff(original, updated);
+  }
+
   /**
    * Transforms a given list of Models into an array of items of R
    * @param {IModel[]} models
@@ -107,6 +97,26 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   public async transformList(models: IModel<T>[]): Promise<R[]> {
     const transformedModels = models.map(async model => await this.transform(model) as R);
     return await Promise.all(transformedModels);
+  }
+
+  /**
+   * Returns a function, which when called, converts a single field on the provided raw data
+   * into its object equivalent if the given IFieldType implements the optional "normalize" method.
+   *
+   * That function then returns a Promise which resolves with a tuple of the field name and the normalized value.
+   *
+   * For example, an ISO date string will be converted into a Date object when given a DateField.
+   */
+  public normalizeField(data: Partial<R>) {
+    return async (fieldType: IFieldType, fieldName: string): Promise<[string, any]> => {
+      let value = data[fieldName];
+
+      if (fieldType.normalize) {
+        value = await fieldType.normalize(value);
+      }
+
+      return [fieldName, value];
+    };
   }
 
   /**
@@ -212,18 +222,37 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
   /**
    * Given the relatedModelData of a single item, normalize the data using the relationship's own mapper,
    * converting it into a Model instance, then dispatch that related Model to its data service and return the Model.
+   *
+   * Information about the parent model will be stored on the child model so we can look up the parent later.
    */
   protected async loadRelatedModel(model: IModel<T>, relatedModelData: any, relationship: IFieldRelationship) {
+    const { field } = relationship;
+
+    // Determine the name of the parent model's id field
     const modelRelatedFieldName: string = relationship.modelRelatedFieldName != null
       ? relationship.modelRelatedFieldName
       : model.serviceName + "Id";
 
+    // Set the parent id onto the expected field
     if (!relatedModelData.hasOwnProperty(modelRelatedFieldName)) {
       relatedModelData[modelRelatedFieldName] = model.id;
     }
 
+    // If the parent id field is not the expected default value, we set it here
+    if (relationship.modelRelatedFieldName) {
+      relatedModelData.parentIdFieldName = relationship.modelRelatedFieldName;
+    }
+
+    // Only mark the field to serialize through the parent if the parent was configured as such
+    if (field in model.fields && model.fields[field].serialize) {
+      relatedModelData.serializeThroughParent = true;
+    }
+
+    relatedModelData.parentServiceName = model.serviceName;
+
     const service = model.getServiceForRelationship(relationship.field);
     const relatedModel = await service.mapper.normalize(relatedModelData);
+
     service.actions.pushRecord(relatedModel).invoke();
 
     return relatedModel;

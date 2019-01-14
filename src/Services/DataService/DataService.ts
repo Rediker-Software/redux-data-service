@@ -453,11 +453,11 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       );
   }
 
-  public patchRecordEpic(action$: IObservableAction<Partial<T>>) {
+  public patchRecordEpic(action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {
     return action$.ofType(this.types.PATCH_RECORD)
       .mergeMap(action =>
-        of$(action.payload)
-          .mergeMap(async model => await this.mapper.transform(model))
+        of$(this.selectors.getItem(store.getState(), action.payload.id))
+          .mergeMap(async model => await this.mapper.transformPatch(model))
           .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as R))
           .mergeMap(serializedModel => this.adapter.patchItem(action.payload.id, serializedModel))
           .mergeMap(async (response) => await this.serializer.deserialize(response))
