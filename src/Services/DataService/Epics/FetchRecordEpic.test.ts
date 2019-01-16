@@ -3,12 +3,24 @@ import { of as of$ } from "rxjs/observable/of";
 import { _throw as throw$ } from "rxjs/observable/throw";
 
 import { stub, spy } from "sinon";
-import { lorem, random } from "faker";
+import { random } from "faker";
+import { createMockStore } from "redux-test-utils";
 
-import { loadRecord, createBufferObservable, fetchRecordEpic } from "./FetchRecordEpic";
+import { Map } from "immutable";
 import { ActionsObservable } from "redux-observable";
-import { noop } from "babel-types";
+
 import { QueryBuilder } from "../../../Query";
+import { createMockFakeModel } from "../../../Model";
+import { DataServiceStateRecord } from "../DataServiceStateRecord";
+import { initializeTestServices } from "../../../TestUtils";
+import { DEFAULT_COALESCE_BUFFER_TIME } from "../../../Configure";
+
+import { 
+  loadRecord, 
+  createBufferObservable, 
+  fetchRecordEpic, 
+  performBufferedRequest, 
+} from "./FetchRecordEpic";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
@@ -41,6 +53,10 @@ describe("FetchRecordEpic", () => {
         })),
         fetchAll: stub().callsFake(payload => ({
           type: "FETCH_ALL",
+          payload,
+        })),
+        pushAll: stub().callsFake(payload => ({
+          type: "PUSH_ALL",
           payload,
         })),
       },
@@ -193,24 +209,29 @@ describe("FetchRecordEpic", () => {
   });
 
   describe("createBufferObservable", () => {
+    const firstTimeOutPeriod = DEFAULT_COALESCE_BUFFER_TIME + 1;
 
     it("should emit a FETCH_ALL action if multiple items are requested within the given period", () => {
-
-      const bufferObservable = createBufferObservable(context);
+      const firstId = random.number().toString();
+      const secondId = random.number().toString();
+      const thirdId = random.number().toString();
+      
+      const secondTimeOutPeriod = firstTimeOutPeriod + 1;
+      
+      const bufferObservable = createBufferObservable(context)(firstId);
 
       let action;
       bufferObservable
         .take(1)
         .subscribe(a => action = a);
 
-      bufferObservable.next("2");
-      bufferObservable.next("3");
+      bufferObservable.next(secondId);
 
       setTimeout(() => {
-        bufferObservable.next("4");
-      }, 101);
+        bufferObservable.next(thirdId);
+      }, firstTimeOutPeriod);
 
-      const queryBuilder = new QueryBuilder(context.name, { ids: ["2", "3"] });
+      const queryBuilder = new QueryBuilder(context.name, { ids: [firstId, secondId] });
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           try {
@@ -222,23 +243,25 @@ describe("FetchRecordEpic", () => {
           } catch (e) {
             reject(e);
           }
-        }, 102);
+        }, secondTimeOutPeriod);
       });
     });
 
     it("should emit a PUSH_RECORD action after loading the requested item if only one is requested within the given period", () => {
-      const bufferObservable = createBufferObservable(context);
+      const firstId = random.number().toString();
+      const secondId = random.number().toString();
+      const secondTimeOutPeriod = firstTimeOutPeriod + 1;
+      
+      const bufferObservable = createBufferObservable(context)(firstId);
 
       let action;
       bufferObservable
         .take(1)
         .subscribe(a => action = a);
 
-      bufferObservable.next("2");
-
       setTimeout(() => {
-        bufferObservable.next("4");
-      }, 101);
+        bufferObservable.next(secondId);
+      }, firstTimeOutPeriod);
 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -246,7 +269,7 @@ describe("FetchRecordEpic", () => {
             expect(action).to.deep.equal({
               type: "PUSH_RECORD",
               payload: {
-                id: "2",
+                id: firstId,
                 fullText: expectedResult.fullText,
               },
             });
@@ -254,21 +277,24 @@ describe("FetchRecordEpic", () => {
           } catch (e) {
             reject(e);
           }
-        }, 102);
+        }, secondTimeOutPeriod);
       });
     });
 
     it("should emit separate actions if called again after the given timeout period", () => {
-      const bufferObservable = createBufferObservable(context);
-      bufferObservable.next("2");
-      let action;
+      const firstId = random.number().toString();
+      const secondId = random.number().toString();      
+      const secondTimeOutPeriod = firstTimeOutPeriod * 2;
 
+      const bufferObservable = createBufferObservable(context)(firstId);
+      
+      let action;
       setTimeout(() => {
+        bufferObservable.next(secondId);
         bufferObservable
           .take(1)
           .subscribe(a => action = a);
-        bufferObservable.next("4");
-      }, 101);
+      }, firstTimeOutPeriod);
 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -276,7 +302,7 @@ describe("FetchRecordEpic", () => {
             expect(action).to.deep.equal({
               type: "PUSH_RECORD",
               payload: {
-                id: "4",
+                id: secondId,
                 fullText: expectedResult.fullText,
               },
             });
@@ -284,121 +310,452 @@ describe("FetchRecordEpic", () => {
           } catch (e) {
             reject(e);
           }
-        }, 203);
+        }, secondTimeOutPeriod);
+      });
+    });
+
+    it("should emit a single action if not called with another buffer", () => {
+      const id = random.number().toString();
+
+      const bufferObservable = createBufferObservable(context)(id);
+
+      let action;
+      bufferObservable
+        .take(1)
+        .subscribe(a => action = a);
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          try {
+            expect(action).to.deep.equal({
+              type: "PUSH_RECORD",
+              payload: {
+                id,
+                fullText: expectedResult.fullText,
+              },
+            });
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        }, DEFAULT_COALESCE_BUFFER_TIME + 1);
       });
     });
 
   });
 
-  it("should emit a single action if not called with another buffer", () => {
-    const bufferObservable = createBufferObservable(context);
+  describe("performBufferedRequest", () => {
 
-    let action;
+    it("should emit a FETCH_ALL action if multiple items are requested within the given period", () => {
+      const firstId = random.number().toString();
+      const secondId = random.number().toString();
+      const thirdId = random.number().toString();
+      const fourthId = random.number().toString();
+      const firstTimeOutPeriod = DEFAULT_COALESCE_BUFFER_TIME + 1;
+      const secondTimeOutPeriod = DEFAULT_COALESCE_BUFFER_TIME + 2;
 
-    bufferObservable
-      .take(1)
-      .subscribe(a => action = a);
+      const performRequest = performBufferedRequest(context);
+      
+      const sut = performRequest(firstId);
 
-    bufferObservable.next("2");
+      let action;
+      sut
+        .take(1)
+        .subscribe(a => action = a);
 
-    return new Promise((resolve, reject) => {
+      performRequest(secondId);
+      performRequest(thirdId);
+
       setTimeout(() => {
-        try {
-          expect(action).to.deep.equal({
-            type: "PUSH_RECORD",
-            payload: {
-              id: "2",
-              fullText: expectedResult.fullText,
-            },
-          });
-          resolve();
-        } catch (e) {
-          reject(e);
-        }
-      }, 101);
-    });
-  });
+        performRequest(fourthId);
+      }, firstTimeOutPeriod);
 
-});
-
-describe("performBufferedRequest", () => {
-
-  it("should return a buffered observable the first time it is called", () => {
-    expect(false).to.be.true;
-  });
-
-  it("should return an empty observable subsequent times it is called with the same context name within the timeout period", () => {
-    expect(false).to.be.true;
-  });
-
-  it("should return separate buffered observables for contexts of different names", () => {
-    expect(false).to.be.true;
-  });
-
-  it("should subscribe to the same buffered observable for contexts of the same name when requested within the timeout period", () => {
-    expect(false).to.be.true;
-  });
-
-  it("should subscribe to a new buffered observable for contexts of the same name when requested after the timeout period", () => {
-    expect(false).to.be.true;
-  });
-
-  it("should complete the buffered observable after it emits once to prevent memory leaks", () => {
-    expect(false).to.be.true;
-  });
-
-});
-
-describe("fetchRecordEpic", () => {
-
-  describe("when coalesceFindRequests is true", () => {
-
-    it("should buffer the request", () => {
-      expect(false).to.be.true;
+      const queryBuilder = new QueryBuilder(context.name, { ids: [firstId, secondId, thirdId] });
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          try {
+            expect(action).to.deep.equal({
+              type: "FETCH_ALL",
+              payload: queryBuilder,
+            });
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        }, secondTimeOutPeriod);
+      });
     });
 
-    it("should emit a FETCH_ALL action from the first observable when called multiple times within the timeout period", () => {
-      expect(false).to.be.true;
+    it("should return an empty observable when it's called subsequent times with the same context name within the timeout period", () => {
+      const id = random.number().toString();
+      const secondId = random.number().toString();
+
+      const performRequest = performBufferedRequest(context);
+      performRequest(id);
+
+      const spies = {
+        next: spy(),
+        complete: spy(),
+      };
+
+      performRequest(secondId)
+        .subscribe(spies);
+
+      expect(spies.next.callCount).to.equal(0, "it should not call next method when subscribing");
+      expect(spies.complete.callCount).to.equal(1, "it should complete immediately");
     });
 
-    it("should emit a PUSH_RECORD action from the observable when called once", () => {
-      expect(false).to.be.true;
+    it("should return separate buffered observables for contexts of different names", () => {
+      const firstId = random.number().toString();
+      const secondId = random.number().toString();      
+      const timeoutPeriod = DEFAULT_COALESCE_BUFFER_TIME + 2;
+
+      const firstPerformRequest = performBufferedRequest(context);
+      const newContext = {
+        ...context,
+        name: random.word(),
+      };
+      const secondPerformRequest = performBufferedRequest(newContext);
+      
+      firstPerformRequest(firstId);
+      const sut = secondPerformRequest(secondId);
+      let action;
+      sut
+        .take(1)
+        .subscribe(a => action = a);
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          try {
+            expect(action).to.deep.equal({
+              type: "PUSH_RECORD",
+              payload: {
+                fullText: expectedResult.fullText,
+                id: secondId,
+              },
+            });
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        }, timeoutPeriod);
+      });
+    });
+
+    it("should subscribe to a new buffered observable for contexts of the same name when requested after the timeout period", () => {
+      const id = random.number().toString();
+      const secondId = random.number().toString();
+      const firstTimeOutPeriod = DEFAULT_COALESCE_BUFFER_TIME + 1;
+      const secondTimeOutPeriod = firstTimeOutPeriod * 2;
+
+      const performRequest = performBufferedRequest(context);
+
+      performRequest(id)
+        .take(1)
+        .subscribe();
+
+      let action;
+      setTimeout(() => {
+        performRequest(secondId)
+          .take(1)
+          .subscribe(a => action = a);
+      }, firstTimeOutPeriod);
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          try {
+            expect(action).to.deep.equal({
+              type: "PUSH_RECORD",
+              payload: {
+                fullText: expectedResult.fullText,
+                id: secondId,
+              },
+            });
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        }, secondTimeOutPeriod);
+      });
+    });
+
+    it("should complete the buffered observable after it emits once to prevent memory leaks", () => {
+      const id = random.number().toString();
+
+      const spies = {
+        next: spy(),
+        complete: spy(),
+      };
+
+      const performRequest = performBufferedRequest(context);      
+
+      performRequest(id)
+        .subscribe(spies);
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          try {
+            expect(spies.complete.callCount).to.equal(1, "it should complete immediately");
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        }, DEFAULT_COALESCE_BUFFER_TIME + 1);
+      });
     });
 
   });
 
-  describe("when coalesceFindRequests is false", () => {
+  describe("fetchRecordEpic", () => {
+    let item;
+    let state;
+    let store;
 
-    it("should not buffer the request", () => {
-      expect(false).to.be.true;
+    beforeEach(() => {
+      item = createMockFakeModel();
+
+      state = DataServiceStateRecord({
+        items: Map({
+          [item.id]: item,
+        }),
+      });
+      store = createMockStore(state);
+
+      initializeTestServices({}, { coalesceFindRequests: false });
     });
 
-    it("should emit a PUSH_RECORD action for the requested item", () => {
-      expect(false).to.be.true;
+    describe("when coalesceFindRequests is true", () => {
+
+      const timeOutPeriod = DEFAULT_COALESCE_BUFFER_TIME + 1;
+
+      beforeEach(() => {
+        initializeTestServices({}, { coalesceFindRequests: true });
+      });
+
+      it("should emit a FETCH_ALL action from the first observable when called multiple times within the timeout period", () => {
+        const id = random.number().toString();
+        const secondId = random.number().toString();        
+
+        const epic = fetchRecordEpic(context);
+        const observableAction = ActionsObservable.of({
+          type: context.types.FETCH_RECORD,
+          payload: { id },
+        });
+        const sut = epic(observableAction, store);
+
+        let action;
+        sut
+          .take(1)
+          .subscribe(a => action = a);
+
+        const secondObservableAction = ActionsObservable.of({
+          type: context.types.FETCH_RECORD,
+          payload: { id: secondId },
+        });
+
+        epic(secondObservableAction, store)
+          .subscribe();
+
+        const queryBuilder = new QueryBuilder(context.name, { ids: [id, secondId] });
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            try {
+              expect(action).to.deep.equal({
+                type: "FETCH_ALL",
+                payload: queryBuilder,
+              });
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }, timeOutPeriod);
+        });
+      });
+
+      it("should emit a PUSH_RECORD action from the observable when called once", () => {
+        const id = random.number().toString();
+
+        const observableAction = ActionsObservable.of({
+          type: context.types.FETCH_RECORD,
+          payload: { id },
+        });
+
+        const epic = fetchRecordEpic(context);
+        const sut = epic(observableAction, store);
+
+        let action;
+        sut
+          .take(1)
+          .subscribe(a => action = a);
+
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            try {
+              expect(action).to.deep.equal({
+                type: "PUSH_RECORD",
+                payload: { 
+                  fullText: expectedResult.fullText,
+                  id, 
+                },
+              });
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }, timeOutPeriod);
+        });
+      });
+
+    });
+
+    describe("when coalesceFindRequests is false", () => {
+      const shortTimeout = DEFAULT_COALESCE_BUFFER_TIME / 2.0;
+      const promiseTimeout = DEFAULT_COALESCE_BUFFER_TIME + 2;
+
+      it("should not buffer the request", () => {
+        const id = random.number().toString();
+        const secondId = random.number().toString();
+        const sut = createBufferObservable(context);
+
+        let action;
+        sut(id)
+          .subscribe(a => action = a);
+
+        setTimeout(() => {
+          sut(secondId);
+        }, shortTimeout);
+
+        const queryBuilder = new QueryBuilder(context.name, { ids: [id, secondId] });
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            try {
+              expect(action).to.not.equal({
+                type: "FETCH_ALL",
+                payload: queryBuilder,
+              });
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }, promiseTimeout);
+        });
+      });
+
+      it("should emit a PUSH_RECORD action for the requested item", () => {
+        const id = random.number().toString();
+        const secondId = random.number().toString();
+        
+        const sut = createBufferObservable(context);
+
+        let action;
+        sut(id)
+          .subscribe(a => action = a);
+
+        setTimeout(() => {
+          sut(secondId);
+        }, shortTimeout);
+
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            try {
+              expect(action).to.not.equal({
+                type: "PUSH_RECORD",
+                payload: {
+                  fullText: expectedResult.fullText,
+                  id: secondId,
+                },
+              });
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }, promiseTimeout);
+        });
+      });
+    });
+
+    describe("caching", () => {
+
+      it("should fire fetchItem if item does not exist in store", () => {
+
+        const id = random.number().toString();
+
+        const epic = fetchRecordEpic(context);
+        const action = {
+          type: context.types.FETCH_RECORD,
+          payload: { id },
+        };
+
+        const observableAction = ActionsObservable.of(action);
+
+        epic(observableAction, store)
+          .subscribe();
+
+        expect(context.adapter.fetchItem.firstCall.args[0]).to.equal(id);
+      });
+
+      it("should not fire fetchItem if item exists in store when forceReload omitted", () => {
+
+        initializeTestServices({}, { coalesceFindRequests: false });
+
+        const id = item.id;
+
+        const epic = fetchRecordEpic(context);
+        const action = {
+          type: context.types.FETCH_RECORD,
+          payload: { id },
+          meta: {},
+        };
+
+        const observableAction = ActionsObservable.of(action);
+
+        epic(observableAction, store)
+          .subscribe();
+
+        expect(context.adapter.fetchItem.callCount).to.equal(0);
+      });
+
+      it("should not fire fetchItem if item exists in store when forceReload false", () => {
+        initializeTestServices({}, { coalesceFindRequests: false });
+
+        const id = item.id;
+
+        const epic = fetchRecordEpic(context);
+        const action = {
+          type: context.types.FETCH_RECORD,
+          payload: { id },
+          meta: { forceReload: false },
+        };
+
+        const observableAction = ActionsObservable.of(action);
+
+        epic(observableAction, store)
+          .subscribe();
+
+        expect(context.adapter.fetchItem.callCount).to.equal(0);
+      });
+
+      it("should fire fetchItem if item exists in store when forceReload true", () => {
+        initializeTestServices({}, { coalesceFindRequests: false });
+
+        const id = item.id;
+
+        const epic = fetchRecordEpic(context);
+        const action = {
+          type: context.types.FETCH_RECORD,
+          payload: { id },
+          meta: { forceReload: true },
+        };
+
+        const observableAction = ActionsObservable.of(action);
+
+        epic(observableAction, store)
+          .subscribe();
+
+        expect(context.adapter.fetchItem.firstCall.args[0]).to.equal(id);
+      });
+
     });
 
   });
-
-  describe("caching", () => {
-
-    it("should fire fetchItem if item does not exist in store", () => {
-      expect(false).to.be.true;
-    });
-
-    it("should not fire fetchItem if item exists in store when forceReload omitted", () => {
-      expect(false).to.be.true;
-    });
-
-    it("should not fire fetchItem if item exists in store when forceReload false", () => {
-      expect(false).to.be.true;
-    });
-
-    it("should fire fetchItem if item exists in store when forceReload true", () => {
-      expect(false).to.be.true;
-    });
-
-  });
-
-});
-
 });

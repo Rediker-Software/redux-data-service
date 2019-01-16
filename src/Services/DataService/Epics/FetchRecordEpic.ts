@@ -9,16 +9,21 @@ import "rxjs/add/operator/take";
 import { of as of$ } from "rxjs/observable/of";
 import { empty as empty$ } from "rxjs/observable/empty";
 import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
-import { IAction, IActionEpic, IObservableAction } from "../../IService";
 import { Store } from "redux";
-import { IDataServiceStateRecord } from "../DataServiceStateRecord";
+
 import { getConfiguration } from "../../../Configure";
+import { IAction } from "../../IService";
 import { QueryBuilder } from "../../../Query";
+
+import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 import { IContext } from "../Interfaces/IContext";
 import { shouldFetchItem } from "../ShouldFetchItem";
 
+/**
+ * Helper method that fetches, deserializes, and normalizes the item from the API
+ */
 export const loadRecord = ({ actions, serializer, mapper, adapter }) => (id: string): Observable<IAction<any>> =>
   adapter.fetchItem(id)
     .mergeMap(async response => await serializer.deserialize(response))
@@ -28,8 +33,14 @@ export const loadRecord = ({ actions, serializer, mapper, adapter }) => (id: str
       actions.setMetaField({ id, errors: e.xhr.response }),
     ));
 
-export const createBufferObservable = (context: IContext): any => new Subject()
-  .bufferTime(getConfiguration().bufferTime)
+/**
+ * This method creates the buffer Observable for use in the `performBufferRequest` function.  There is an N 
+ * millisecond period over which results are coalesced if the `coalesceBufferTime` constant is specified
+ * in the configuration (its default is 100 ms).  If there is only one item, the standard `loadRecord` function
+ * is called. 
+ */
+export const createBufferObservable = (context: IContext): any => (id: string) => new BehaviorSubject(id)
+  .bufferTime(getConfiguration().coalesceBufferTime)
   .mergeMap((ids: string[]) => ids.length > 1
     ? of$(
       context.actions.fetchAll(
@@ -41,21 +52,20 @@ export const createBufferObservable = (context: IContext): any => new Subject()
 
 const bufferedObservableCache = {};
 
+/**
+ * Checks the cache for a buffered Observable that matches the context.  If the buffer doesn't exist,
+ * it is created, and prepared to be disposed of at the end of its lifetime.  Either the buffered Observable
+ * is returned or the current id is added to the given buffered Observable and the Observable is completed 
+ */
 export const performBufferedRequest = (context: IContext) => (id: string) => {
-  let bufferedObservable = bufferedObservableCache[context.name];
+  const bufferedObservable = bufferedObservableCache[context.name];
 
   if (!bufferedObservable) {
-    bufferedObservable = createBufferObservable(context);
-    bufferedObservableCache[context.name] = bufferedObservable;
-
-    bufferedObservable
+    bufferedObservableCache[context.name] = createBufferObservable(context)(id)
       .take(1)
-      .shareReplay(1)
-      .do(() => delete bufferedObservableCache[context.name]);
+      .do(() => delete bufferedObservableCache[context.name] );
 
-    bufferedObservable.next(id);
-
-    return bufferedObservable;
+    return bufferedObservableCache[context.name];
   } else {
     bufferedObservable.next(id);
     return empty$();
