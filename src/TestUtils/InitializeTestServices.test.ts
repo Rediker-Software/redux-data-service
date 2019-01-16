@@ -8,7 +8,7 @@ import { initializeTestServices } from "./InitializeTestServices";
 import { fakeModelModule } from "./FakeModelModule";
 import { getService } from "../Services";
 import { QueryBuilder } from "../Query";
-import { getFakedXHRHistory } from "./StubXhr";
+import { getFakedXHRHistory, getFakeXHR } from "./StubXhr";
 
 declare var intern;
 const { describe, it } = intern.getPlugin("interface.bdd");
@@ -60,8 +60,12 @@ describe("initializeTestServices", () => {
 
       service
         .actions
-        .fetchAll(new QueryBuilder("fakeModel"))
+        .fetchAll(new QueryBuilder("fakeModel", {hello: "world"}))
         .invoke();
+
+      const fakeXhr = getFakeXHR();
+      console.log(fakeXhr);
+      debugger;
 
       expect(
         getFakedXHRHistory().length,

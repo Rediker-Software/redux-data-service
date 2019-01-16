@@ -520,10 +520,6 @@ describe("DataService", () => {
     });
   });
 
-  it("has an epic for performing a GET request", () => {
-    expect(fakeService.fetchRecordEpic).to.be.a("function");
-  });
-
   it("has an epic for performing a CREATE request", () => {
     expect(fakeService.createRecordEpic).to.be.a("function");
   });

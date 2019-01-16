@@ -9,7 +9,7 @@ export type FetchItemAction = IAction<{ id: string }, IForceReload>;
  * the requested item based on its id, or if we should force reload it.
  */
 export function shouldFetchItem(state: IDataServiceStateRecord<any>, action: FetchItemAction) {
-  const item = state.items.get(action.payload.id);
+  const item = state.items && state.items.get(action.payload.id);
   const shouldForceReload = action.meta != null && action.meta.forceReload;
 
   return !item || shouldForceReload;

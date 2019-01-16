@@ -8,6 +8,7 @@ export function stubXHR() {
   _FakeXHR = useFakeXMLHttpRequest();
   _FakedXHRHistory = [];
   _FakeXHR.onCreate = (xhr) => {
+    console.log("xhr onCreate", xhr);
     _FakedXHRHistory.push(xhr);
   };
 }
