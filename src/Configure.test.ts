@@ -69,17 +69,17 @@ describe("Configure", () => {
     expect(config.coalesceFindRequests).to.be.true;
   });
 
-  it("uses the default value for bufferTime", () => {
+  it("uses the default value for coalesceBufferTime", () => {
     configure({ modules: null });
     const config = getConfiguration();
-    expect(config.bufferTime).to.equal(100);
+    expect(config.coalesceBufferTime).to.equal(100);
   });
 
-  it("uses the provided value for bufferTime", () => {
-    const bufferTime = random.number();
-    configure({ modules: null, bufferTime});
+  it("uses the provided value for coalesceBufferTime", () => {
+    const coalesceBufferTime = random.number();
+    configure({ modules: null, coalesceBufferTime });
     const config = getConfiguration();
-    expect(config.bufferTime).to.equal(bufferTime);
+    expect(config.coalesceBufferTime).to.equal(coalesceBufferTime);
   });
 
 });

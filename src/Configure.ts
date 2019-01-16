@@ -23,8 +23,10 @@ export interface IConfiguration {
   mapper?: IMapperFactory<any>;
   preferPatchOverPut?: boolean;
   coalesceFindRequests?: boolean;
-  bufferTime?: number;
+  coalesceBufferTime?: number;
 }
+
+export const DEFAULT_COALESCE_BUFFER_TIME = 100;
 
 const defaultConfiguration: Partial<IConfiguration> = {
   adapter: RestAdapter,
@@ -32,7 +34,7 @@ const defaultConfiguration: Partial<IConfiguration> = {
   mapper: Mapper,
   preferPatchOverPut: false,
   coalesceFindRequests: false,
-  bufferTime: 100,
+  coalesceBufferTime: DEFAULT_COALESCE_BUFFER_TIME,
 };
 
 let configuration: IConfiguration = {} as IConfiguration;
