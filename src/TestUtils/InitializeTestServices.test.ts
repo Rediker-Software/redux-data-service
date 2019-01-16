@@ -66,7 +66,7 @@ describe("initializeTestServices", () => {
 
       initializeTestServices(restFakeModelModule);
 
-      const service = getService("fakeModel") as any;
+      const service = getService("fakeModel") as RestFakeModelService;
 
       service
         .actions
