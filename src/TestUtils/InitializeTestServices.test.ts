@@ -3,6 +3,7 @@
 import { getConfiguration } from "../Configure";
 import { MemoryAdapter, RestAdapter } from "../Adapters";
 import { MemorySerializer, RestSerializer } from "../Serializers";
+import { FakeModelService } from "../Services/DataService/DataService.mock";
 
 import { initializeTestServices } from "./InitializeTestServices";
 import { fakeModelModule } from "./FakeModelModule";
@@ -51,25 +52,30 @@ describe("initializeTestServices", () => {
   describe("stubbed xhr", () => {
 
     it("uses fake xhr when stubs are not in use", () => {
-      initializeTestServices(fakeModelModule, { adapter: RestAdapter, serializer: RestSerializer });
+      class RestFakeModelService extends FakeModelService {
+        protected readonly AdapterClass = RestAdapter;
+        protected readonly SerializerClass = RestSerializer;
+      }
+
+      const restFakeModelModule = {
+        fakeModel: {
+          ...fakeModelModule.fakeModel,
+          FakeModelService: RestFakeModelService,
+        },
+      };
+
+      initializeTestServices(restFakeModelModule);
 
       const service = getService("fakeModel") as any;
-      service.AdapterClass = RestAdapter;
-
-      const initHistorySize = getFakedXHRHistory().length;
 
       service
         .actions
-        .fetchAll(new QueryBuilder("fakeModel", {hello: "world"}))
+        .fetchAll(new QueryBuilder("fakeModel", { hello: "world" }))
         .invoke();
 
-      const fakeXhr = getFakeXHR();
-      console.log(fakeXhr);
-      debugger;
-
-      expect(
-        getFakedXHRHistory().length,
-      ).to.be.above(initHistorySize, "calling an action changes faked xhr history stack");
+      expect(getFakedXHRHistory())
+        .to.be.an("array")
+        .to.have.lengthOf(1);
     });
 
   });
