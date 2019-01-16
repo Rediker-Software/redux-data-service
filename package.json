@@ -36,7 +36,7 @@
     "fs": "^0.0.1-security",
     "intern": "^4.2.0",
     "redux-devtools-extension": "^2.13.2",
-    "redux-test-utils": "^0.2.2",
+    "redux-test-utils": "^0.3.0",
     "sinon": "6.0.0",
     "ts-node": "^4.1.0",
     "tslint": "^5.9.1",
