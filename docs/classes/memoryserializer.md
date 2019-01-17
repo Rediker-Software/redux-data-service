@@ -33,7 +33,7 @@ An in-memory ISerializer implementation for testing and local development purpos
 
 ▸ **deserialize**(data: *`S`*): `Promise`<`R`>
 
-*Defined in [Serializers/MemorySerializer.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/MemorySerializer.ts#L13)*
+*Defined in [Serializers/MemorySerializer.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/MemorySerializer.ts#L13)*
 
 **Parameters:**
 
@@ -50,7 +50,7 @@ ___
 
 ▸ **serialize**(model: *`R`*): `Promise`<`S`>
 
-*Defined in [Serializers/MemorySerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/MemorySerializer.ts#L9)*
+*Defined in [Serializers/MemorySerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/MemorySerializer.ts#L9)*
 
 **Parameters:**
 
@@ -67,7 +67,7 @@ ___
 
 ▸ **serializeQueryParams**(queryParams: *[IQueryParams](../interfaces/iqueryparams.md)*): `Promise`<[IQueryParams](../interfaces/iqueryparams.md)>
 
-*Defined in [Serializers/MemorySerializer.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/MemorySerializer.ts#L17)*
+*Defined in [Serializers/MemorySerializer.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/MemorySerializer.ts#L17)*
 
 **Parameters:**
 

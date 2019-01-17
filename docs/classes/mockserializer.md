@@ -28,7 +28,7 @@
 
 ▸ **deserialize**(): `Promise`<[FakeModel](fakemodel.md)>
 
-*Defined in [Serializers/MockSerializer.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/MockSerializer.ts#L10)*
+*Defined in [Serializers/MockSerializer.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/MockSerializer.ts#L10)*
 
 **Returns:** `Promise`<[FakeModel](fakemodel.md)>
 
@@ -39,7 +39,7 @@ ___
 
 ▸ **serialize**(): `Promise`<`string`>
 
-*Defined in [Serializers/MockSerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/MockSerializer.ts#L6)*
+*Defined in [Serializers/MockSerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/MockSerializer.ts#L6)*
 
 **Returns:** `Promise`<`string`>
 
@@ -50,7 +50,7 @@ ___
 
 ▸ **serializeQueryParams**(queryParams: *[IQueryParams](../interfaces/iqueryparams.md)*): `Promise`<[IQueryParams](../interfaces/iqueryparams.md)>
 
-*Defined in [Serializers/MockSerializer.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Serializers/MockSerializer.ts#L14)*
+*Defined in [Serializers/MockSerializer.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/MockSerializer.ts#L14)*
 
 **Parameters:**
 

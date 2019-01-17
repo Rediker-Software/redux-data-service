@@ -1,7 +1,7 @@
 import * as hash from "object-hash";
-import { isEmpty, merge } from "lodash";
+import { isEmpty } from "lodash";
 
-import { getDataService } from "../Services";
+import { getDataService } from "../Services/ServiceProvider";
 
 export type SortDirection = "asc" | "desc";
 
@@ -49,7 +49,7 @@ export interface IQueryParams {
   page?: number;
   pageSize?: number;
 
-  [key: string]: FilterValue | FilterValue[] | ISort [];
+  [key: string]: FilterValue | FilterValue[] | ISort[];
 }
 
 /**

@@ -25,7 +25,7 @@
 
 ⊕ **new IMapperFactory**(ModelClass: *[IModelFactory](imodelfactory.md)<`T`>*): [IMapper](imapper.md)<`T`, `R`>
 
-*Defined in [Mapper/IMapper.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Mapper/IMapper.ts#L11)*
+*Defined in [Mapper/IMapper.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Mapper/IMapper.ts#L12)*
 
 **Parameters:**
 

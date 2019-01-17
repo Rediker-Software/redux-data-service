@@ -2,6 +2,8 @@
 
 # Interface: IPostActionHandlers
 
+Used in an action's meta, such that an epic will call the given callbacks when an API request resolves
+
 ## Hierarchy
 
 **IPostActionHandlers**
@@ -23,7 +25,7 @@
 
 **● onError**: *`function`*
 
-*Defined in [Services/DataService.ts:51](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Services/DataService.ts#L51)*
+*Defined in [Services/DataService/IPostActionHandlers.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Services/DataService/IPostActionHandlers.ts#L4)*
 
 #### Type declaration
 ▸(errors: *`any`*): `void`
@@ -43,7 +45,7 @@ ___
 
 **● onSuccess**: *`function`*
 
-*Defined in [Services/DataService.ts:50](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Services/DataService.ts#L50)*
+*Defined in [Services/DataService/IPostActionHandlers.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Services/DataService/IPostActionHandlers.ts#L3)*
 
 #### Type declaration
 ▸(data: *`any`*): `void`

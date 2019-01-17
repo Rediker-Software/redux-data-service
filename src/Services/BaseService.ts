@@ -198,7 +198,7 @@ export abstract class BaseService<S> implements IService<S> {
 
   /**
    * Returns a map of IActionCreators, which when dispatched to Redux,
-   * one or many reducers or epics may act on that IAction.
+   * one or many Reducers or epics may act on that IAction.
    *
    * @returns {IActionCreators}
    */

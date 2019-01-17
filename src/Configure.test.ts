@@ -1,7 +1,11 @@
-import { MockAdapter, RestAdapter } from "./Adapters";
-import { Mapper, MockMapper } from "./Mapper";
-import { MockSerializer, RestSerializer } from "./Serializers";
-import { configure, getConfiguration } from ".";
+// tslint:disable:no-unused-expression
+import { MockAdapter } from "./Adapters/MockAdapter";
+import { RestAdapter } from "./Adapters/RestAdapter";
+import { configure, getConfiguration } from "./Configure";
+import { RestSerializer } from "./Serializers/RestSerializer";
+import { MockSerializer } from "./Serializers/MockSerializer";
+import { Mapper } from "./Mapper/Mapper";
+import { MockMapper } from "./Mapper/MockMapper";
 
 declare var intern;
 const { describe, it } = intern.getPlugin("interface.bdd");
@@ -45,4 +49,9 @@ describe("Configure", () => {
     expect(config.mapper).to.equal(MockMapper);
   });
 
+  it("defaults preferPatchOverPut to false", () => {
+    configure({ modules: null });
+    const config = getConfiguration();
+    expect(config.preferPatchOverPut).to.be.false;
+  });
 });

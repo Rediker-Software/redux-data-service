@@ -1,6 +1,7 @@
 import { IModel, IModelData } from "../Model";
-import { IQueryParams } from "../Query/QueryBuilder";
-import { ISerializer } from "../Serializers";
+import { IQueryParams } from "../Query";
+
+import { ISerializer } from "./ISerializer";
 
 /**
  * An ISerializer implementation which will convert a given Model to or from JSON.

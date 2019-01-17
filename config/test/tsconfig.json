@@ -12,8 +12,7 @@
     "noImplicitReturns": false,
     "removeComments": true,
     "strictNullChecks": false,
-    "outDir": "build",
-    "baseUrl": "src",
+    "outDir": "../../test-dist",
     "skipLibCheck": true,
     "lib": [
       "es6",
@@ -22,11 +21,6 @@
       "dom"
     ]
   },
-  "exclude": [
-    "dist",
-    "build",
-    "node_modules"
-  ],
   "types": [
     "intern"
   ]

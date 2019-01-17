@@ -1,10 +1,11 @@
 // tslint:disable:no-unused-expression
-import { RestSerializer } from "./RestSerializer";
-import { FakeModel, IModelData } from "../Model";
-import { MockMapper } from "../Mapper";
-
 import { lorem, random, name } from "faker";
-import { SortDirection } from "../Query/QueryBuilder";
+
+import { MockMapper } from "../Mapper";
+import { FakeModel, IModelData } from "../Model";
+import { SortDirection } from "../Query";
+
+import { RestSerializer } from "./RestSerializer";
 
 declare var intern;
 const { describe, it } = intern.getPlugin("interface.bdd");

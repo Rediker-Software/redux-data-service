@@ -6,16 +6,34 @@ import { of as of$ } from "rxjs/observable/of";
 import { Subject } from "rxjs/Subject";
 import { lorem, random } from "faker";
 
-import { BaseService, DataService, registerService } from "../Services";
 import { initializeValidateJS } from "../Initializers";
 
 import { Model } from "./Model";
+import { IFakeModelData } from "./Model.mock";
 import { IModelData } from "./IModel";
-import { attr, belongsTo, hasMany, required } from "./Decorators";
 
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
-import { initializeTestServices, seedService, fakeModelModule } from "../TestUtils";
-import { IFakeModelData } from "./Model.mock";
+
+import {
+  fakeModelModule,
+  initializeTestServices,
+  seedService,
+} from "../TestUtils";
+
+import {
+  BaseService,
+  DataService,
+  registerService,
+} from "../Services";
+
+import { configure } from "../Configure";
+
+import {
+  attr,
+  belongsTo,
+  hasMany,
+  required,
+} from "./Decorators";
 
 declare var intern;
 const { describe, it, beforeEach, before } = intern.getPlugin("interface.bdd");
@@ -44,16 +62,12 @@ describe("Model", () => {
 
   describe("Saving the model", () => {
     let service;
-    let modelId;
     let relatedModelId;
     let favoriteColor;
-    let name;
 
     beforeEach(() => {
-      modelId = random.number().toString();
       relatedModelId = random.number().toString();
       favoriteColor = lorem.word();
-      name = lorem.word();
 
       BaseService.registerDispatch(spy());
 
@@ -242,10 +256,13 @@ describe("Model", () => {
 
       describe("saving an existing record", () => {
         let updateRecordStub;
+        let patchRecordStub;
         let model;
 
         beforeEach(() => {
           updateRecordStub = stub(service.actions, "updateRecord");
+          patchRecordStub = stub(service.actions, "patchRecord");
+
           model = new service.ModelClass(service, { id: random.number().toString(), name: lorem.word() });
         });
 
@@ -270,6 +287,18 @@ describe("Model", () => {
             .saveModel();
 
           expect(invokeSpy.calledOnce).to.be.true;
+        });
+
+        it("calls patchRecord when preferPatchOverPut is true in configuration", () => {
+          configure({ preferPatchOverPut: true, modules: null });
+          registerService(service);
+          const expectedName = "hello, world!";
+
+          model = model.applyUpdates({ name: expectedName });
+          model.saveModel();
+
+          expect(updateRecordStub.called).to.be.false;
+          expect(patchRecordStub.firstCall.args[0]).to.deep.equal({ id: model.id });
         });
       });
     });
@@ -1225,11 +1254,66 @@ describe("Model", () => {
 
       const model = new Model({ id: random.number().toString() });
 
-      expect(model.fields).to.deep.equal({
-        id: { ...StringField, serialize: false, readOnly: true },
-        dateDeleted: { ...DateTimeField, serialize: false, readOnly: true },
-        dateUpdated: { ...DateTimeField, serialize: false, readOnly: true },
+      expect(model.fields).to.not.have.any.keys(
+        "asdfasdfasdf", "startTime", "endDateTime", "age", "organizationId",
+      );
+    });
+  });
+
+  describe("when the model has a parent model", () => {
+    it("uses the parent's serviceName by default to determine the parent model's id if no parentIdFieldName was specified in the modelData", () => {
+      const expectedValue = random.word();
+
+      const model = new Model({
+        id: random.number().toString(),
+        parentServiceName: expectedValue,
       });
+
+      expect(model.parentIdFieldName).to.equal(`${expectedValue}Id`);
+    });
+
+    it("uses the parentIdFieldName to determine the parentId when it was specified in the modelData", () => {
+      const expectedValue = random.word();
+
+      const model = new Model({
+        id: random.number().toString(),
+        parentIdFieldName: expectedValue,
+      });
+
+      expect(model.parentIdFieldName).to.equal(expectedValue);
+    });
+
+    it("returns the expected parent model", () => {
+      initializeTestServices(fakeModelModule);
+      const relatedModel = seedService("fakeModel");
+
+      const model = seedService<IFakeModelData>("fakeModel", {
+        id: random.number().toString(),
+        parentIdFieldName: "fullText",
+        parentServiceName: "fakeModel",
+        fullText: relatedModel.id,
+      });
+
+      expect(model.parentModel).to.equal(relatedModel);
+    });
+
+    it("attempting to save the nested model will save the parent model when serializeThroughParent = true", () => {
+      initializeTestServices(fakeModelModule);
+      const relatedModel = seedService("fakeModel");
+
+      const saveModelStub = stub(relatedModel, "save");
+
+      const model = seedService<IFakeModelData>("fakeModel", {
+        id: random.number().toString(),
+        parentIdFieldName: "fullText",
+        parentServiceName: "fakeModel",
+        fullText: relatedModel.id,
+        serializeThroughParent: true,
+      });
+
+      model.saveModel();
+
+      expect(saveModelStub.calledOnce).to.be.true;
     });
   });
 });

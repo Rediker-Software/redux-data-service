@@ -1,14 +1,16 @@
-// tslint:disable: max-classes-per-file no-unused-expression
+// tslint:disable:no-unused-expression max-classes-per-file
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
 import { spy, stub } from "sinon";
 
 import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
-import { omit, range } from "lodash";
+import { flatten, omit } from "lodash";
+import * as jiff from "jiff";
 
 import { BaseService, DataService, registerService } from "../Services";
 import {
+  ArrayField,
   attr,
   belongsTo,
   createMockFakeModel,
@@ -24,11 +26,11 @@ import {
   TimeField,
 } from "../Model";
 
-import { MockAdapter } from "../Adapters/MockAdapter";
-import { ArrayField } from "../Model/FieldType";
+import { MockAdapter } from "../Adapters";
 import { IRawQueryResponse } from "../Query";
 
 import { Mapper } from "./Mapper";
+import { initializeTestServices } from "../TestUtils";
 
 declare var intern;
 const { describe, it, beforeEach, afterEach } = intern.getPlugin("interface.bdd");
@@ -147,6 +149,86 @@ describe("Mapper", () => {
       fakeModel.fields.age.serialize = true;
       fakeModel.fields.organization.serialize = false;
       fakeModel.fields.fakeItems.serialize = false;
+    });
+
+    describe("transformPatch", () => {
+      let originalModel;
+      let originalModelSpy;
+      let originalFullText;
+
+      beforeEach(() => {
+        originalFullText = lorem.slug();
+        originalModel = new MockModel({ ...mockModelData, fullText: originalFullText });
+
+        originalModelSpy = spy();
+        Object.defineProperty(fakeModel, "original", {
+          get() {
+            originalModelSpy();
+            return originalModel;
+          },
+          configurable: true,
+        });
+      });
+
+      it("calls transform twice", async () => {
+        const transformStub = stub(mapper, "transform");
+
+        await mapper.transformPatch(fakeModel);
+
+        expect(transformStub.callCount).to.eq(2);
+      });
+
+      it("calls transform on the model", async () => {
+        const transformStub = stub(mapper, "transform");
+
+        await mapper.transformPatch(fakeModel);
+
+        expect(transformStub.calledWithExactly(fakeModel)).to.be.true;
+      });
+
+      it("calls transform on the model.original", async () => {
+        const transformStub = stub(mapper, "transform");
+
+        await mapper.transformPatch(fakeModel);
+
+        expect(transformStub.calledWithExactly(originalModel)).to.be.true;
+      });
+
+      describe("jiff diff stubs", () => {
+        let jiffStub;
+
+        beforeEach(() => {
+         jiffStub = stub(jiff, "diff").callThrough();
+        });
+
+        afterEach(() => {
+          jiffStub.reset();
+          jiffStub.restore();
+        });
+
+        it("calls transform after jiff diff", async () => {
+          const transformStub = stub(mapper, "transform");
+
+          await mapper.transformPatch(fakeModel);
+
+          expect(transformStub.calledBefore(jiffStub)).to.be.true;
+        });
+      });
+
+      it("calls model.original to retrieve the original model", async () => {
+        await mapper.transformPatch(fakeModel);
+
+        expect(originalModelSpy.called).to.be.true;
+      });
+
+      it("computes the expected diff", async () => {
+        const patch = await mapper.transformPatch(fakeModel);
+
+        expect(patch).to.deep.eq([
+          { op: "test", path: "/fullText", value: originalFullText },
+          { op: "replace", path: "/fullText", value: fullText },
+        ]);
+      });
     });
 
     it("transforms the model into a plain javascript object based on each field's FieldType", async () => {
@@ -296,6 +378,19 @@ describe("Mapper", () => {
 
       stub(fakeRelatedService, "getById").returns(Observable.of(fakeRelatedModel));
 
+      initializeTestServices({
+        fakeModel: {
+          FakeModelService: FakeService,
+          FakeModel: MockModel,
+          createMockFakeModel: (overrideValues) => new MockModel({ id: random.number().toString(), ...overrideValues }),
+        },
+        fakeRelatedModel: {
+          FakeRelatedModel,
+          FakeRelatedModelService: FakeRelatedService,
+          createMockFakeRelatedModel: (overrideValues) => new FakeRelatedModel({ id: random.number().toString(), ...overrideValues }),
+        },
+      });
+
       registerService(fakeService);
       registerService(fakeRelatedService);
     });
@@ -354,17 +449,41 @@ describe("Mapper", () => {
 
       afterEach(() => {
         pushRecordStub.restore();
+        MockModel.prototype.fields.organization.serialize = false;
+        MockModel.prototype.relationships.organization.modelRelatedFieldName = undefined;
       });
 
-      it("normalizes nested related data", async () => {
+      it("normalizes nested related data with information about the parent model", async () => {
         const normalizeStub = stub(fakeRelatedService.mapper, "normalize").callThrough();
         await mapper.normalize(rawModelData);
-        expect(normalizeStub.firstCall.args[0]).to.equal(relatedModelData);
+        expect(normalizeStub.firstCall.args[0]).to.deep.equal({
+          ...relatedModelData,
+          parentServiceName: "fakeModel",
+        });
       });
 
-      it("creates a pushRecord action with related data", async () => {
+      it("creates a pushRecord action with the related data and serializeThroughParent set to true when the parent will serialize the child", async () => {
+        MockModel.prototype.fields.organization.serialize = true;
         await mapper.normalize(rawModelData);
-        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel(relatedModelData));
+        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel({
+          ...relatedModelData,
+          parentServiceName: "fakeModel",
+          serializeThroughParent: true,
+        }));
+      });
+
+      it("specifies the name of the field containing the parent's id if it was specified by the parent's relationship", async () => {
+        delete relatedModelData.fullText;
+        MockModel.prototype.relationships.organization.modelRelatedFieldName = "fullText";
+
+        await mapper.normalize(rawModelData);
+
+        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel({
+          ...relatedModelData,
+          parentServiceName: "fakeModel",
+          parentIdFieldName: "fullText",
+          fullText: rawModelData.id,
+        }));
       });
 
       it("invokes a pushRecord action with related data", async () => {
@@ -486,7 +605,5 @@ describe("Mapper", () => {
         paginationInfo,
       );
     });
-
   });
-
 });

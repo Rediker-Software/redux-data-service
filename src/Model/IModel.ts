@@ -1,5 +1,6 @@
-import { DataService } from "../Services";
-import { IAttrs, IRelationship } from "./Decorators";
+import { DataService } from "../Services/DataService/DataService";
+import { IRelationship } from "./Decorators/Relationship";
+import { IAttrs } from "./Decorators/Attr";
 
 export type IModelKeys<T, U = any> = {[P in keyof T]?: U} | null;
 
@@ -7,6 +8,9 @@ export interface IModelData {
   readonly id: string;
   readonly dateUpdated: Date;
   readonly dateDeleted: Date;
+  parentServiceName?: string;
+  parentIdFieldName?: string;
+  serializeThroughParent?: boolean;
 }
 
 export interface IModelAPIData {
@@ -25,6 +29,8 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   readonly hasUnsavedChanges: boolean;
   readonly isNew: boolean;
   readonly serviceName: string;
+  parentModel: IModel<any>;
+  parentModelId?: string;
   save(): Promise<IModel<T>>;
   saveModel(): Promise<IModel<T>>;
   saveRelatedModels(): Promise<IModel<T>[]>;

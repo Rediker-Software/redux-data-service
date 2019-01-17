@@ -2,6 +2,8 @@
 
 # Interface: IForceReload
 
+Used in an action to indicate that a fetchAll or fetchRecord should force it to reload the request
+
 ## Hierarchy
 
 **IForceReload**
@@ -18,11 +20,11 @@
 
 <a id="forcereload"></a>
 
-###  forceReload
+### `<Optional>` forceReload
 
 **● forceReload**: *`boolean`*
 
-*Defined in [Services/DataService.ts:85](https://github.com/Rediker-Software/redux-data-service/blob/ac48abe/src/Services/DataService.ts#L85)*
+*Defined in [Services/DataService/IForceReload.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Services/DataService/IForceReload.ts#L3)*
 
 ___
 

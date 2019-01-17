@@ -1,9 +1,9 @@
 import { Observable } from "rxjs/Observable";
 import { of as of$ } from "rxjs/observable/of";
 
-import { seedService, seedServiceList } from "../TestUtils";
+import { IModelData } from "../Model/IModel";
+import { seedService, seedServiceList } from "../TestUtils/Seed";
 
-import { IModelData } from "../Model";
 import { IAdapter } from "./IAdapter";
 
 /**

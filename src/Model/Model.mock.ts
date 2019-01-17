@@ -41,7 +41,7 @@ export function createMockFakeModelData(id?: string): IFakeModelData {
   };
 }
 
-export function createMockFakeModel(overrideValues?: IFakeModelData): FakeModel {
+export function createMockFakeModel(overrideValues?: Partial<IFakeModelData>): FakeModel {
   const modelData = merge({},
     createMockFakeModelData(),
     overrideValues,
