@@ -26,7 +26,7 @@ export interface IConfiguration {
   coalesceBufferTime?: number;
 }
 
-export const DEFAULT_COALESCE_BUFFER_TIME = 100;
+export const DEFAULT_COALESCE_BUFFER_TIME = 50;
 
 const defaultConfiguration: Partial<IConfiguration> = {
   adapter: RestAdapter,

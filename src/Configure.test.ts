@@ -3,7 +3,7 @@ import { random } from "faker";
 
 import { MockAdapter } from "./Adapters/MockAdapter";
 import { RestAdapter } from "./Adapters/RestAdapter";
-import { configure, getConfiguration } from "./Configure";
+import { configure, getConfiguration, DEFAULT_COALESCE_BUFFER_TIME } from "./Configure";
 import { RestSerializer } from "./Serializers/RestSerializer";
 import { MockSerializer } from "./Serializers/MockSerializer";
 import { Mapper } from "./Mapper/Mapper";
@@ -72,7 +72,7 @@ describe("Configure", () => {
   it("uses the default value for coalesceBufferTime", () => {
     configure({ modules: null });
     const config = getConfiguration();
-    expect(config.coalesceBufferTime).to.equal(100);
+    expect(config.coalesceBufferTime).to.equal(DEFAULT_COALESCE_BUFFER_TIME);
   });
 
   it("uses the provided value for coalesceBufferTime", () => {
