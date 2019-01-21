@@ -9,10 +9,12 @@ import { createMockStore } from "redux-test-utils";
 import { Map } from "immutable";
 import { ActionsObservable } from "redux-observable";
 
+import { setTimeoutPromise } from "../../../Utils";
+import { initializeTestServices } from "../../../TestUtils";
+
 import { QueryBuilder } from "../../../Query";
 import { createMockFakeModel, FakeModel } from "../../../Model";
 import { DataServiceStateRecord } from "../DataServiceStateRecord";
-import { initializeTestServices } from "../../../TestUtils";
 import { DEFAULT_COALESCE_BUFFER_TIME } from "../../../Configure";
 
 import { FetchRecordEpic } from "./FetchRecordEpic";
@@ -222,18 +224,11 @@ describe("FetchRecordEpic", () => {
       bufferedObservable.next(secondId);
 
       const queryBuilder = new QueryBuilder(context.name, { ids: [firstId, secondId] });
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            expect(
-              context.actions.fetchAll.firstCall.args[0],
-            ).to.deep.equal(queryBuilder);
-            resolve();
-          } catch (e) {
-            reject(e);
-          }
-        }, firstTimeOutPeriod);
-      });
+      return setTimeoutPromise(() => {
+        expect(
+          context.actions.fetchAll.firstCall.args[0],
+        ).to.deep.equal(queryBuilder);
+      }, firstTimeOutPeriod);
     });
 
     it("should load the requested record if only one is requested within the given period", () => {
@@ -243,7 +238,7 @@ describe("FetchRecordEpic", () => {
 
       const loadRecordStub = stub(fetchRecordEpic, "loadRecord").returns(observable);
       const bufferObservable = fetchRecordEpic.createBufferObservable(firstId);
-      
+
       bufferObservable
         .subscribe();
 
@@ -251,18 +246,11 @@ describe("FetchRecordEpic", () => {
         bufferObservable.next(secondId);
       }, firstTimeOutPeriod);
 
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            expect(
-              loadRecordStub.firstCall.args[0],
-            ).to.equal(firstId);
-            resolve();
-          } catch (e) {
-            reject(e);
-          }
-        }, secondTimeOutPeriod);
-      });
+      return setTimeoutPromise(() => {
+        expect(
+          loadRecordStub.firstCall.args[0],
+        ).to.equal(firstId);
+      }, secondTimeOutPeriod);
     });
 
     it("should emit separate actions if called again after the given timeout period", () => {
@@ -282,22 +270,15 @@ describe("FetchRecordEpic", () => {
           .subscribe(a => action = a);
       }, firstTimeOutPeriod);
 
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            expect(action).to.deep.equal({
-              type: "PUSH_RECORD",
-              payload: new FakeModel({
-                id: thirdId,
-                fullText: expectedResult.fullText,
-              }),
-            });
-            resolve();
-          } catch (e) {
-            reject(e);
-          }
-        }, secondTimeOutPeriod);
-      });
+      return setTimeoutPromise(() => {
+        expect(action).to.deep.equal({
+          type: "PUSH_RECORD",
+          payload: new FakeModel({
+            id: thirdId,
+            fullText: expectedResult.fullText,
+          }),
+        });
+      }, secondTimeOutPeriod);
     });
 
     it("should emit a single action if not called with another id", () => {
@@ -310,22 +291,15 @@ describe("FetchRecordEpic", () => {
         .take(1)
         .subscribe(a => action = a);
 
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            expect(action).to.deep.equal({
-              type: "PUSH_RECORD",
-              payload: new FakeModel({
-                id,
-                fullText: expectedResult.fullText,
-              }),
-            });
-            resolve();
-          } catch (e) {
-            reject(e);
-          }
-        }, DEFAULT_COALESCE_BUFFER_TIME + 1);
-      });
+      return setTimeoutPromise(() => {
+        expect(action).to.deep.equal({
+          type: "PUSH_RECORD",
+          payload: new FakeModel({
+            id,
+            fullText: expectedResult.fullText,
+          }),
+        });
+      }, DEFAULT_COALESCE_BUFFER_TIME + 1);
     });
 
   });
@@ -353,18 +327,11 @@ describe("FetchRecordEpic", () => {
       secondPerformRequest
         .subscribe(a => secondAction = a);
 
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            expect(
-              firstAction,
-            ).to.not.deep.equal(secondAction);
-            resolve();
-          } catch (e) {
-            reject(e);
-          }
-        }, timeoutPeriod);
-      });
+      return setTimeoutPromise(() => {
+        expect(
+          firstAction,
+        ).to.not.deep.equal(secondAction);
+      }, timeoutPeriod);
     });
 
     it("should subscribe to a new buffered observable when requested after the timeout period", () => {
@@ -383,18 +350,11 @@ describe("FetchRecordEpic", () => {
           .subscribe();
       }, firstTimeOutPeriod);
 
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            expect(
-              createBufferObservableStub.secondCall.args[0],
-            ).to.equal(secondId);
-            resolve();
-          } catch (e) {
-            reject(e);
-          }
-        }, secondTimeOutPeriod);
-      });
+      return setTimeoutPromise(() => {
+        expect(
+          createBufferObservableStub.secondCall.args[0],
+        ).to.equal(secondId);
+      }, secondTimeOutPeriod);
     });
 
     it("should complete the buffered observable to prevent memory leaks after it emits once and the timeout passes", () => {
@@ -409,18 +369,11 @@ describe("FetchRecordEpic", () => {
       fetchRecordEpic.performBufferedRequest(id)
         .subscribe(spies);
 
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            expect(
-              spies.complete.callCount,
-            ).to.equal(1, "it should complete immediately");
-            resolve();
-          } catch (e) {
-            reject(e);
-          }
-        }, DEFAULT_COALESCE_BUFFER_TIME + 1);
-      });
+      return setTimeoutPromise(() => {
+        expect(
+          spies.complete.callCount,
+        ).to.equal(1, "it should complete immediately");
+      }, DEFAULT_COALESCE_BUFFER_TIME + 1);
     });
 
   });
@@ -480,29 +433,20 @@ describe("FetchRecordEpic", () => {
           .execute(secondObservableAction, store)
           .subscribe();
 
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            try {
-              const ids = [id, secondId];
+        return setTimeoutPromise(() => {
+          const ids = [id, secondId];
+          expect(
+            performBufferedRequestStub,
+          )
+            .to.have.property("callCount")
+            .to.equal(ids.length);
 
-              expect(
-                performBufferedRequestStub,
-              )
-                .to.have.property("callCount")
-                .to.equal(ids.length);
-
-              ids.forEach((itemId, index) => {
-                expect(
-                  performBufferedRequestStub.getCall(index).args[0],
-                ).to.equal(itemId);
-              });
-
-              resolve();
-            } catch (e) {
-              reject(e);
-            }
-          }, timeOutPeriod);
-        });
+          ids.forEach((itemId, index) => {
+            expect(
+              performBufferedRequestStub.getCall(index).args[0],
+            ).to.equal(itemId);
+          });
+        }, timeOutPeriod);
       });
 
       it("should emit a FETCH_ALL action from the first observable when called multiple times within the timeout period", () => {
@@ -518,21 +462,14 @@ describe("FetchRecordEpic", () => {
           .subscribe();
 
         const queryBuilder = new QueryBuilder(context.name, { ids: [id, secondId] });
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            try {
-              expect(
-                action,
-              ).to.deep.equal({
-                type: "FETCH_ALL",
-                payload: queryBuilder,
-              });
-              resolve();
-            } catch (e) {
-              reject(e);
-            }
-          }, timeOutPeriod);
-        });
+        return setTimeoutPromise(() => {
+          expect(
+            action,
+          ).to.deep.equal({
+            type: "FETCH_ALL",
+            payload: queryBuilder,
+          });
+        }, timeOutPeriod);
       });
 
       it("should emit a PUSH_RECORD action from the observable when called once", () => {
@@ -543,24 +480,17 @@ describe("FetchRecordEpic", () => {
           .take(1)
           .subscribe(a => action = a);
 
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            try {
-              expect(
-                action,
-              ).to.deep.equal({
-                type: "PUSH_RECORD",
-                payload: new FakeModel({
-                  fullText: expectedResult.fullText,
-                  id,
-                }),
-              });
-              resolve();
-            } catch (e) {
-              reject(e);
-            }
-          }, timeOutPeriod);
-        });
+        return setTimeoutPromise(() => {
+          expect(
+            action,
+          ).to.deep.equal({
+            type: "PUSH_RECORD",
+            payload: new FakeModel({
+              fullText: expectedResult.fullText,
+              id,
+            }),
+          });
+        }, timeOutPeriod);
       });
 
     });
@@ -575,18 +505,11 @@ describe("FetchRecordEpic", () => {
           .execute(observableAction, store)
           .subscribe();
 
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            try {
-              expect(
-                loadRecordStub.firstCall.args[0],
-              ).to.equal(id);
-              resolve();
-            } catch (e) {
-              reject(e);
-            }
-          }, promiseTimeout);
-        });
+        return setTimeoutPromise(() => {
+          expect(
+            loadRecordStub.firstCall.args[0],
+          ).to.equal(id);
+        }, promiseTimeout);
       });
 
       it("should emit a PUSH_RECORD action for the requested item", () => {
@@ -595,25 +518,19 @@ describe("FetchRecordEpic", () => {
           .execute(observableAction, store)
           .subscribe(a => action = a);
 
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            try {
-              expect(
-                action,
-              ).to.deep.equal({
-                type: "PUSH_RECORD",
-                payload: new FakeModel({
-                  fullText: expectedResult.fullText,
-                  id,
-                }),
-              });
-              resolve();
-            } catch (e) {
-              reject(e);
-            }
-          }, promiseTimeout);
-        });
+        return setTimeoutPromise(() => {
+          expect(
+            action,
+          ).to.deep.equal({
+            type: "PUSH_RECORD",
+            payload: new FakeModel({
+              fullText: expectedResult.fullText,
+              id,
+            }),
+          });
+        }, promiseTimeout);
       });
+
     });
 
     describe("fetchItem caching", () => {
