@@ -189,7 +189,9 @@ describe("FetchRecordEpic", () => {
         fetchRecordEpic.loadRecord(expectedResult.id)
           .subscribe((action) => {
             try {
-              expect(action).to.deep.equal({
+              expect(
+                action,
+              ).to.deep.equal({
                 type: "SET_META_FIELD",
                 payload: {
                   id: expectedResult.id,
@@ -213,40 +215,35 @@ describe("FetchRecordEpic", () => {
     it("should call a FETCH_ALL action with the item ids if multiple items are requested within the given period", () => {
       const firstId = random.number().toString();
       const secondId = random.number().toString();
-      const thirdId = random.number().toString();
 
-      const secondTimeOutPeriod = firstTimeOutPeriod + 1;
+      const bufferedObservable = fetchRecordEpic.createBufferObservable(firstId);
 
-      fetchRecordEpic.createBufferObservable(firstId);
+      bufferedObservable.subscribe();
+      bufferedObservable.next(secondId);
 
-      fetchRecordEpic.createBufferObservable(secondId);
-
-      setTimeout(() => {
-        fetchRecordEpic.createBufferObservable(thirdId);
-      }, firstTimeOutPeriod);
-
-      const queryBuilder = new QueryBuilder(context.name, {ids: [firstId, secondId]});
+      const queryBuilder = new QueryBuilder(context.name, { ids: [firstId, secondId] });
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           try {
-            expect(context.actions.fetchAll.firstCall.args[0]).to.deep.equal({
-               queryBuilder, 
-            });
+            expect(
+              context.actions.fetchAll.firstCall.args[0],
+            ).to.deep.equal(queryBuilder);
             resolve();
           } catch (e) {
             reject(e);
           }
-        }, secondTimeOutPeriod);
+        }, firstTimeOutPeriod);
       });
     });
 
-    it("should emit a PUSH_RECORD action after loading the requested item if only one is requested within the given period", () => {
+    it("should load the requested record if only one is requested within the given period", () => {
       const firstId = random.number().toString();
       const secondId = random.number().toString();
       const secondTimeOutPeriod = firstTimeOutPeriod + 1;
 
+      const loadRecordStub = stub(fetchRecordEpic, "loadRecord").returns(observable);
       const bufferObservable = fetchRecordEpic.createBufferObservable(firstId);
-      const loadRecordStub = stub(fetchRecordEpic, "loadRecord");
+      
       bufferObservable
         .subscribe();
 
@@ -257,7 +254,9 @@ describe("FetchRecordEpic", () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           try {
-            expect(loadRecordStub.firstCall.args[0]).to.equal(firstId);
+            expect(
+              loadRecordStub.firstCall.args[0],
+            ).to.equal(firstId);
             resolve();
           } catch (e) {
             reject(e);
@@ -269,13 +268,15 @@ describe("FetchRecordEpic", () => {
     it("should emit separate actions if called again after the given timeout period", () => {
       const firstId = random.number().toString();
       const secondId = random.number().toString();
+      const thirdId = random.number().toString();
       const secondTimeOutPeriod = firstTimeOutPeriod * 2;
 
       const bufferObservable = fetchRecordEpic.createBufferObservable(firstId);
+      bufferObservable.next(secondId);
 
       let action;
       setTimeout(() => {
-        bufferObservable.next(secondId);
+        bufferObservable.next(thirdId);
         bufferObservable
           .take(1)
           .subscribe(a => action = a);
@@ -287,7 +288,7 @@ describe("FetchRecordEpic", () => {
             expect(action).to.deep.equal({
               type: "PUSH_RECORD",
               payload: new FakeModel({
-                id: secondId,
+                id: thirdId,
                 fullText: expectedResult.fullText,
               }),
             });
@@ -299,7 +300,7 @@ describe("FetchRecordEpic", () => {
       });
     });
 
-    it("should emit a single action if not called with another buffer", () => {
+    it("should emit a single action if not called with another id", () => {
       const id = random.number().toString();
 
       const bufferObservable = fetchRecordEpic.createBufferObservable(id);
@@ -331,25 +332,7 @@ describe("FetchRecordEpic", () => {
 
   describe("performBufferedRequest", () => {
 
-    it("should return an empty observable when it's called subsequent times with the same context name within the timeout period", () => {
-      const id = random.number().toString();
-      const secondId = random.number().toString();
-
-      fetchRecordEpic.performBufferedRequest(id);
-
-      const spies = {
-        next: spy(),
-        complete: spy(),
-      };
-
-      fetchRecordEpic.performBufferedRequest(secondId)
-        .subscribe(spies);
-
-      expect(spies.next.callCount).to.equal(0, "it should not call next method when subscribing");
-      expect(spies.complete.callCount).to.equal(1, "it should complete immediately");
-    });
-
-    it("should return separate buffered observables for contexts of different names", () => {
+    it("should return separate buffered observables for different fetchRecordEpic instances", () => {
       const firstId = random.number().toString();
       const secondId = random.number().toString();
       const timeoutPeriod = DEFAULT_COALESCE_BUFFER_TIME + 2;
@@ -373,7 +356,9 @@ describe("FetchRecordEpic", () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           try {
-            expect(firstAction).to.not.deep.equal(secondAction);
+            expect(
+              firstAction,
+            ).to.not.deep.equal(secondAction);
             resolve();
           } catch (e) {
             reject(e);
@@ -382,35 +367,28 @@ describe("FetchRecordEpic", () => {
       });
     });
 
-    it("should subscribe to a new buffered observable for contexts of the same name when requested after the timeout period", () => {
+    it("should subscribe to a new buffered observable when requested after the timeout period", () => {
       const id = random.number().toString();
       const secondId = random.number().toString();
       const firstTimeOutPeriod = DEFAULT_COALESCE_BUFFER_TIME + 1;
       const secondTimeOutPeriod = firstTimeOutPeriod * 2;
 
-      stub(fetchRecordEpic, "createBufferObservable").returns(observable);
-      const performRequest = fetchRecordEpic.performBufferedRequest.bind(context);
+      const createBufferObservableStub = stub(fetchRecordEpic, "createBufferObservable").returns(observable);
 
-      debugger;
-      performRequest(id)
+      fetchRecordEpic.performBufferedRequest(id)
         .subscribe();
 
-      let action;
       setTimeout(() => {
-        performRequest(secondId)
-          .subscribe(a => action = a);
+        fetchRecordEpic.performBufferedRequest(secondId)
+          .subscribe();
       }, firstTimeOutPeriod);
 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           try {
-            expect(action).to.deep.equal({
-              type: "PUSH_RECORD",
-              payload: new FakeModel({
-                fullText: expectedResult.fullText,
-                id: secondId,
-              }),
-            });
+            expect(
+              createBufferObservableStub.secondCall.args[0],
+            ).to.equal(secondId);
             resolve();
           } catch (e) {
             reject(e);
@@ -427,15 +405,16 @@ describe("FetchRecordEpic", () => {
         complete: spy(),
       };
 
-      const performRequest = fetchRecordEpic.performBufferedRequest.bind(context);
-
-      performRequest(id)
+      stub(fetchRecordEpic, "createBufferObservable").returns(observable);
+      fetchRecordEpic.performBufferedRequest(id)
         .subscribe(spies);
 
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           try {
-            expect(spies.complete.callCount).to.equal(1, "it should complete immediately");
+            expect(
+              spies.complete.callCount,
+            ).to.equal(1, "it should complete immediately");
             resolve();
           } catch (e) {
             reject(e);
@@ -446,10 +425,14 @@ describe("FetchRecordEpic", () => {
 
   });
 
-  describe("fetchRecordEpic", () => {
+  describe("execute", () => {
     let item;
     let state;
     let store;
+    let observableAction;
+    let secondObservableAction;
+    let id;
+    let secondId;
 
     beforeEach(() => {
       item = createMockFakeModel();
@@ -460,6 +443,19 @@ describe("FetchRecordEpic", () => {
         }),
       });
       store = createMockStore(state);
+
+      id = random.number().toString();
+      secondId = random.number().toString();
+
+      observableAction = ActionsObservable.of({
+        type: context.types.FETCH_RECORD,
+        payload: { id },
+      });
+
+      secondObservableAction = ActionsObservable.of({
+        type: context.types.FETCH_RECORD,
+        payload: { id: secondId },
+      });
 
       initializeTestServices({}, { coalesceFindRequests: false });
     });
@@ -472,14 +468,44 @@ describe("FetchRecordEpic", () => {
         initializeTestServices({}, { coalesceFindRequests: true });
       });
 
-      it("should emit a FETCH_ALL action from the first observable when called multiple times within the timeout period", () => {
-        const id = random.number().toString();
-        const secondId = random.number().toString();
-;
-        const observableAction = ActionsObservable.of({
-          type: context.types.FETCH_RECORD,
-          payload: { id },
+      it("should call performBufferedRequest when coalesceFindRequests is true", () => {
+        const performBufferedRequestStub = stub(fetchRecordEpic, "performBufferedRequest").returns(observable);
+        const sut = fetchRecordEpic.execute(observableAction, store);
+
+        sut
+          .take(1)
+          .subscribe();
+
+        fetchRecordEpic
+          .execute(secondObservableAction, store)
+          .subscribe();
+
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            try {
+              const ids = [id, secondId];
+
+              expect(
+                performBufferedRequestStub,
+              )
+                .to.have.property("callCount")
+                .to.equal(ids.length);
+
+              ids.forEach((itemId, index) => {
+                expect(
+                  performBufferedRequestStub.getCall(index).args[0],
+                ).to.equal(itemId);
+              });
+
+              resolve();
+            } catch (e) {
+              reject(e);
+            }
+          }, timeOutPeriod);
         });
+      });
+
+      it("should emit a FETCH_ALL action from the first observable when called multiple times within the timeout period", () => {
         const sut = fetchRecordEpic.execute(observableAction, store);
 
         let action;
@@ -487,19 +513,17 @@ describe("FetchRecordEpic", () => {
           .take(1)
           .subscribe(a => action = a);
 
-        const secondObservableAction = ActionsObservable.of({
-          type: context.types.FETCH_RECORD,
-          payload: { id: secondId },
-        });
-
-        fetchRecordEpic.execute(secondObservableAction, store)
+        fetchRecordEpic
+          .execute(secondObservableAction, store)
           .subscribe();
 
         const queryBuilder = new QueryBuilder(context.name, { ids: [id, secondId] });
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             try {
-              expect(action).to.deep.equal({
+              expect(
+                action,
+              ).to.deep.equal({
                 type: "FETCH_ALL",
                 payload: queryBuilder,
               });
@@ -512,13 +536,6 @@ describe("FetchRecordEpic", () => {
       });
 
       it("should emit a PUSH_RECORD action from the observable when called once", () => {
-        const id = random.number().toString();
-
-        const observableAction = ActionsObservable.of({
-          type: context.types.FETCH_RECORD,
-          payload: { id },
-        });
-
         const sut = fetchRecordEpic.execute(observableAction, store);
 
         let action;
@@ -529,7 +546,9 @@ describe("FetchRecordEpic", () => {
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             try {
-              expect(action).to.deep.equal({
+              expect(
+                action,
+              ).to.deep.equal({
                 type: "PUSH_RECORD",
                 payload: new FakeModel({
                   fullText: expectedResult.fullText,
@@ -547,30 +566,21 @@ describe("FetchRecordEpic", () => {
     });
 
     describe("when coalesceFindRequests is false", () => {
-      const shortTimeout = DEFAULT_COALESCE_BUFFER_TIME / 2.0;
       const promiseTimeout = DEFAULT_COALESCE_BUFFER_TIME + 2;
 
       it("should not buffer the request", () => {
-        const id = random.number().toString();
-        const secondId = random.number().toString();
-        const sut = fetchRecordEpic.createBufferObservable(context);
+        const loadRecordStub = stub(fetchRecordEpic, "loadRecord").returns(observable);
 
-        let action;
-        sut(id)
-          .subscribe(a => action = a);
+        fetchRecordEpic
+          .execute(observableAction, store)
+          .subscribe();
 
-        setTimeout(() => {
-          sut(secondId);
-        }, shortTimeout);
-
-        const queryBuilder = new QueryBuilder(context.name, { ids: [id, secondId] });
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             try {
-              expect(action).to.not.equal({
-                type: "FETCH_ALL",
-                payload: queryBuilder,
-              });
+              expect(
+                loadRecordStub.firstCall.args[0],
+              ).to.equal(id);
               resolve();
             } catch (e) {
               reject(e);
@@ -580,23 +590,17 @@ describe("FetchRecordEpic", () => {
       });
 
       it("should emit a PUSH_RECORD action for the requested item", () => {
-        const id = random.number().toString();
-        const secondId = random.number().toString();
-
-        const sut = fetchRecordEpic.createBufferObservable(context);
-
         let action;
-        sut(id)
+        fetchRecordEpic
+          .execute(observableAction, store)
           .subscribe(a => action = a);
-
-        setTimeout(() => {
-          sut(secondId);
-        }, shortTimeout);
 
         return new Promise((resolve, reject) => {
           setTimeout(() => {
             try {
-              expect(action).to.equal({
+              expect(
+                action,
+              ).to.deep.equal({
                 type: "PUSH_RECORD",
                 payload: new FakeModel({
                   fullText: expectedResult.fullText,
@@ -612,72 +616,61 @@ describe("FetchRecordEpic", () => {
       });
     });
 
-    describe("caching", () => {
+    describe("fetchItem caching", () => {
 
       it("should fire fetchItem if item does not exist in store", () => {
-        const id = random.number().toString();
-
         const action = {
           type: context.types.FETCH_RECORD,
           payload: { id },
         };
 
-        const observableAction = ActionsObservable.of(action);
-
-        fetchRecordEpic.execute(observableAction, store)
+        fetchRecordEpic
+          .execute(ActionsObservable.of(action), store)
           .subscribe();
 
         expect(context.adapter.fetchItem.firstCall.args[0]).to.equal(id);
       });
 
       it("should not fire fetchItem if item exists in store when forceReload omitted", () => {
-        const id = item.id;
-
         const action = {
           type: context.types.FETCH_RECORD,
-          payload: { id },
+          payload: { id: item.id },
           meta: {},
         };
 
-        const observableAction = ActionsObservable.of(action);
-
-        fetchRecordEpic.execute(observableAction, store)
+        fetchRecordEpic
+          .execute(ActionsObservable.of(action), store)
           .subscribe();
 
         expect(context.adapter.fetchItem.callCount).to.equal(0);
       });
 
       it("should not fire fetchItem if item exists in store when forceReload false", () => {
-        const id = item.id;
-
         const action = {
           type: context.types.FETCH_RECORD,
-          payload: { id },
+          payload: { id: item.id },
           meta: { forceReload: false },
         };
 
-        const observableAction = ActionsObservable.of(action);
-
-        fetchRecordEpic.execute(observableAction, store)
+        fetchRecordEpic
+          .execute(ActionsObservable.of(action), store)
           .subscribe();
 
         expect(context.adapter.fetchItem.callCount).to.equal(0);
       });
 
       it("should fire fetchItem if item exists in store when forceReload true", () => {
-        const id = item.id;
         const action = {
           type: context.types.FETCH_RECORD,
-          payload: { id },
+          payload: { id: item.id },
           meta: { forceReload: true },
         };
 
-        const observableAction = ActionsObservable.of(action);
-
-        fetchRecordEpic.execute(observableAction, store)
+        fetchRecordEpic
+          .execute(ActionsObservable.of(action), store)
           .subscribe();
 
-        expect(context.adapter.fetchItem.firstCall.args[0]).to.equal(id);
+        expect(context.adapter.fetchItem.firstCall.args[0]).to.equal(item.id);
       });
 
     });
