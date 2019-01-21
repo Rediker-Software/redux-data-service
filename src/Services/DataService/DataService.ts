@@ -58,14 +58,13 @@ import {
   unloadRecordReducer,
 } from "./Reducers";
 
-import { fetchRecordEpic } from "./Epics";
-
 import { DataServiceStateRecord, IDataServiceStateRecord } from "./DataServiceStateRecord";
 import { shouldFetchAll } from "./ShouldFetchAll";
 
 import { IForceReload } from "./IForceReload";
 import { IPostActionHandlers } from "./IPostActionHandlers";
 import { ISetField } from "./ISetField";
+import { FetchRecordEpic } from "./Epics/FetchRecordEpic";
 
 export interface IModelId {
   id: string;
@@ -380,9 +379,11 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   public createEpics(): IActionEpic[] {
     const epics = super.createEpics();
 
+    const fetchRecordEpic = new FetchRecordEpic(this);
+
     epics.push(
       this.fetchAllEpic.bind(this),
-      fetchRecordEpic(this),
+      fetchRecordEpic.execute.bind(fetchRecordEpic),
       this.createRecordEpic.bind(this),
       this.updateRecordEpic.bind(this),
       this.patchRecordEpic.bind(this),

@@ -20,57 +20,11 @@ import { QueryBuilder } from "../../../Query";
 import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 import { IContext } from "../Interfaces/IContext";
 import { shouldFetchItem } from "../ShouldFetchItem";
+import { ActionsObservable } from "redux-observable";
 
-/**
- * Helper method that fetches, deserializes, and normalizes the item from the API
- */
-export const loadRecord = ({ actions, serializer, mapper, adapter }) => (id: string): Observable<IAction<any>> =>
-  adapter.fetchItem(id)
-    .mergeMap(async response => await serializer.deserialize(response))
-    .mergeMap(async normalizedResponse => await mapper.normalize(normalizedResponse))
-    .map(actions.pushRecord)
-    .catch((e) => of$(
-      actions.setMetaField({ id, errors: e.xhr.response }),
-    ));
-
-/**
- * This method creates the buffer Observable for use in the `performBufferRequest` function.  There is an N 
- * millisecond period over which results are coalesced if the `coalesceBufferTime` constant is specified
- * in the configuration (its default is 100 ms).  If there is only one item, the standard `loadRecord` function
- * is called. 
- */
-export const createBufferObservable = (context: IContext): any => (id: string) => new BehaviorSubject(id)
-  .bufferTime(getConfiguration().coalesceBufferTime)
-  .mergeMap((ids: string[]) => ids.length > 1
-    ? of$(
-      context.actions.fetchAll(
-        new QueryBuilder(context.name, { ids }),
-      ),
-    )
-    : loadRecord(context)(ids[0]),
-  );
-
-const bufferedObservableCache = {};
-
-/**
- * Checks the cache for a buffered Observable that matches the context.  If the buffer doesn't exist,
- * it is created, and prepared to be disposed of at the end of its lifetime.  Either the buffered Observable
- * is returned or the current id is added to the given buffered Observable and the Observable is completed 
- */
-export const performBufferedRequest = (context: IContext) => (id: string) => {
-  const bufferedObservable = bufferedObservableCache[context.name];
-
-  if (!bufferedObservable) {
-    bufferedObservableCache[context.name] = createBufferObservable(context)(id)
-      .take(1)
-      .do(() => delete bufferedObservableCache[context.name] );
-
-    return bufferedObservableCache[context.name];
-  } else {
-    bufferedObservable.next(id);
-    return empty$();
-  }
-};
+export interface IEpic {
+  execute(action$: ActionsObservable<any>, store: Store<IDataServiceStateRecord<any>>): Observable<IAction<any>>;
+}
 
 /**
  * Requests an individual item using the given api adapter.
@@ -83,17 +37,77 @@ export const performBufferedRequest = (context: IContext) => (id: string) => {
  * unless `action.meta.forceReload` is `true`.
  *
  * If the library configuration setting `coalesceFindRequests` is `true`,
- * it will accumulate these requests for 100ms before dispatching a `FETCH_ALL` action
+ * it will accumulate these requests for `coalesceBufferTime` (default 50ms) before dispatching a `FETCH_ALL` action
  * with the requested `ids` as query params if more than one item is requested during that period.
  */
-export const fetchRecordEpic = (context: IContext): any =>
-  (action$: any, store: Store<IDataServiceStateRecord<any>>): Observable<IAction<any>> => {
-    return action$.ofType(context.types.FETCH_RECORD)
+export class FetchRecordEpic implements IEpic {
+  protected context: IContext;
+  protected bufferedObservable: any;
+
+  public constructor(context: IContext) {
+    this.context = context;
+  }
+
+  /**
+   * Helper method that fetches, deserializes, and normalizes the item from the API
+   */
+  public loadRecord(id: string): Observable<IAction<any>> {
+    const { actions, serializer, mapper, adapter } = this.context;
+    return adapter.fetchItem(id)
+      .mergeMap(async response => await serializer.deserialize(response))
+      .mergeMap(async normalizedResponse => await mapper.normalize(normalizedResponse))
+      .map(actions.pushRecord)
+      .catch((e) => of$(
+        actions.setMetaField({ id, errors: e.xhr.response }),
+      ));
+  }
+
+  /**
+   * This method creates the buffer Observable for use in the `performBufferRequest` function.  There is an N 
+   * millisecond period over which results are coalesced if the `coalesceBufferTime` constant is specified
+   * in the configuration (its default is 100 ms).  If there is only one item, the standard `loadRecord` function
+   * is called. 
+   */
+  public createBufferObservable(id: string): Observable<any> {
+    return new BehaviorSubject(id)
+      .bufferTime(getConfiguration().coalesceBufferTime)
+      .mergeMap((ids: string[]) => ids.length > 1
+        ? of$(
+          this.context.actions.fetchAll(
+            new QueryBuilder(this.context.name, { ids }),
+          ),
+        )
+        : this.loadRecord(ids[0]),
+      );
+  }
+
+  /**
+   * Checks the cache for a buffered Observable that matches the context.  If the buffer doesn't exist,
+   * it is created, and prepared to be disposed of at the end of its lifetime.  Either the buffered Observable
+   * is returned or the current id is added to the given buffered Observable and the Observable is completed 
+   */
+  public performBufferedRequest(id: string): Observable<any> {
+    if (!this.bufferedObservable) {
+      this.bufferedObservable = this.createBufferObservable(id)
+        .take(1)
+        .do(() => this.bufferedObservable = null);
+
+      return this.bufferedObservable;
+    } else {
+      this.bufferedObservable.next(id);
+      return empty$();
+    }
+  }
+
+  public execute(action$: ActionsObservable<any>, store: Store<IDataServiceStateRecord<any>>): Observable<IAction<any>> {
+    return action$.ofType(this.context.types.FETCH_RECORD)
       .filter(action => shouldFetchItem(store.getState(), action))
       .map(action => action.payload.id as string)
       .mergeMap(
         getConfiguration().coalesceFindRequests
-          ? performBufferedRequest(context)
-          : loadRecord(context),
+          ? this.performBufferedRequest.bind(this)
+          : this.loadRecord.bind(this),
       );
-  };
+  }
+
+}

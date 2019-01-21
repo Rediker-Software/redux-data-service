@@ -1,1 +1,1 @@
-export { fetchRecordEpic } from "./FetchRecordEpic";
+export { FetchRecordEpic } from "./FetchRecordEpic";
