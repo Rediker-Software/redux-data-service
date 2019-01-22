@@ -372,7 +372,7 @@ describe("FetchRecordEpic", () => {
       return setTimeoutPromise(() => {
         expect(
           spies.complete.callCount,
-        ).to.equal(1, "it should complete immediately");
+        ).to.equal(1, "it should complete after the timeout passes");
       }, DEFAULT_COALESCE_BUFFER_TIME + 1);
     });
 

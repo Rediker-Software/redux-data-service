@@ -65,7 +65,7 @@ export class FetchRecordEpic implements IEpic {
   /**
    * This method creates the buffer Observable for use in the `performBufferRequest` function.  There is an N 
    * millisecond period over which results are coalesced if the `coalesceBufferTime` constant is specified
-   * in the configuration (its default is 100 ms).  If there is only one item, the standard `loadRecord` function
+   * in the configuration (its default is 50 ms).  If there is only one item, the standard `loadRecord` function
    * is called. 
    */
   public createBufferObservable(id: string): Observable<any> {
