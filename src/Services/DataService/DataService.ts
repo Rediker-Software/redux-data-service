@@ -31,6 +31,7 @@ import {
   IQueryManager,
   IRawQueryResponse,
   QueryManager,
+  QueryBuilder,
 } from "../../Query";
 
 import { BaseService } from "../BaseService";
@@ -63,6 +64,7 @@ import { shouldFetchAll } from "./ShouldFetchAll";
 import { IForceReload } from "./IForceReload";
 import { IPostActionHandlers } from "./IPostActionHandlers";
 import { ISetField } from "./ISetField";
+import { FetchRecordEpic } from "./Epics/FetchRecordEpic";
 
 export interface IModelId {
   id: string;
@@ -99,6 +101,8 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   protected observablesByIdCache: { [id: string]: Observable<IModel<T>> } = {};
   protected observablesByIdsCache: { [id: string]: Observable<IModel<T>[]> } = {};
   protected observablesByQueryCache: { [id: string]: Observable<IQueryManager<T>> } = {};
+
+  protected bufferObservable: any = null;
 
   public get adapter() {
     if (!this._adapter) {
@@ -375,9 +379,11 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   public createEpics(): IActionEpic[] {
     const epics = super.createEpics();
 
+    const fetchRecordEpic = new FetchRecordEpic(this);
+
     epics.push(
       this.fetchAllEpic.bind(this),
-      this.fetchRecordEpic.bind(this),
+      fetchRecordEpic.execute.bind(fetchRecordEpic),
       this.createRecordEpic.bind(this),
       this.updateRecordEpic.bind(this),
       this.patchRecordEpic.bind(this),
@@ -409,21 +415,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
               errors: e && "xhr" in e ? e.xhr.response : e,
               isLoading: false,
             }),
-          )),
-      );
-  }
-
-  public fetchRecordEpic(action$: IObservableAction, store: Store<IDataServiceStateRecord<T>>): Observable<IAction<T>> {
-    return action$.ofType(this.types.FETCH_RECORD)
-      .filter(action => this.shouldFetchItem(action, store.getState()))
-      .mergeMap(action =>
-        this.adapter.fetchItem(action.payload.id)
-          .mergeMap(async response => await this.serializer.deserialize(response))
-          .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
-          .do(action.meta.onSuccess, action.meta.onError)
-          .map(this.actions.pushRecord)
-          .catch((e) => of$(
-            this.actions.setMetaField({ id: action.payload.id, errors: e.xhr.response }),
           )),
       );
   }
@@ -493,8 +484,4 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
           ))
       ));
   }
-
-  private shouldFetchItem = (action, state) =>
-    this.selectors.getItem(state, action.payload.id) == null
-    || (action.meta && action.meta.forceReload)
 }

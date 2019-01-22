@@ -465,11 +465,14 @@ describe("Mapper", () => {
       it("creates a pushRecord action with the related data and serializeThroughParent set to true when the parent will serialize the child", async () => {
         MockModel.prototype.fields.organization.serialize = true;
         await mapper.normalize(rawModelData);
-        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(new FakeRelatedModel({
+
+        const expectedValue = new FakeRelatedModel({
           ...relatedModelData,
           parentServiceName: "fakeModel",
           serializeThroughParent: true,
-        }));
+        });
+        
+        expect(pushRecordStub.firstCall.args[0]).to.deep.equal(expectedValue);
       });
 
       it("specifies the name of the field containing the parent's id if it was specified by the parent's relationship", async () => {

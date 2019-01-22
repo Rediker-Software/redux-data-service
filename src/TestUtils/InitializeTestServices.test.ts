@@ -3,12 +3,13 @@
 import { getConfiguration } from "../Configure";
 import { MemoryAdapter, RestAdapter } from "../Adapters";
 import { MemorySerializer, RestSerializer } from "../Serializers";
+import { FakeModelService } from "../Services/DataService/DataService.mock";
 
 import { initializeTestServices } from "./InitializeTestServices";
 import { fakeModelModule } from "./FakeModelModule";
 import { getService } from "../Services";
 import { QueryBuilder } from "../Query";
-import { getFakedXHRHistory } from "./StubXhr";
+import { getFakedXHRHistory, getFakeXHR } from "./StubXhr";
 
 declare var intern;
 const { describe, it } = intern.getPlugin("interface.bdd");
@@ -51,21 +52,30 @@ describe("initializeTestServices", () => {
   describe("stubbed xhr", () => {
 
     it("uses fake xhr when stubs are not in use", () => {
-      initializeTestServices(fakeModelModule, { adapter: RestAdapter, serializer: RestSerializer });
+      class RestFakeModelService extends FakeModelService {
+        protected readonly AdapterClass = RestAdapter;
+        protected readonly SerializerClass = RestSerializer;
+      }
 
-      const service = getService("fakeModel") as any;
-      service.AdapterClass = RestAdapter;
+      const restFakeModelModule = {
+        fakeModel: {
+          ...fakeModelModule.fakeModel,
+          FakeModelService: RestFakeModelService,
+        },
+      };
 
-      const initHistorySize = getFakedXHRHistory().length;
+      initializeTestServices(restFakeModelModule);
+
+      const service = getService("fakeModel") as RestFakeModelService;
 
       service
         .actions
-        .fetchAll(new QueryBuilder("fakeModel"))
+        .fetchAll(new QueryBuilder("fakeModel", { hello: "world" }))
         .invoke();
 
-      expect(
-        getFakedXHRHistory().length,
-      ).to.be.above(initHistorySize, "calling an action changes faked xhr history stack");
+      expect(getFakedXHRHistory())
+        .to.be.an("array")
+        .to.have.lengthOf(1);
     });
 
   });

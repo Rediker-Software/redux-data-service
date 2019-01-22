@@ -14,7 +14,7 @@ export class MockAdapter implements IAdapter<any> {
     dateDeleted: new Date().toISOString(),
   }));
 
-  public fetchAll = stub().callsFake(() => of$([]));
+  public fetchAll = stub().callsFake(() => of$({ items: [] }));
   public fetchItem = stub().callsFake((id: string) => of$({ id }));
   public patchItem = stub().callsFake((id: string, item) => of$({ ...item, id }));
   public updateItem = stub().callsFake((id: string, item) => of$({ ...item, id }));

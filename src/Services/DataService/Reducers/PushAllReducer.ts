@@ -11,9 +11,13 @@ export function pushAllReducer<T extends IModelData>(
   state: IDataServiceStateRecord<T>,
   action: IAction<IPushAll<T>>,
 ): IDataServiceStateRecord<T> {
-  return state.update("items", (items) => items.withMutations((itemsMap) => {
-    action.payload.items.forEach((item) => {
-      itemsMap.update(item.id, () => item);
-    });
-  }));
+  return (action.payload && action.payload.items)
+    ? (
+      state.update("items", (items) => items.withMutations((itemsMap) => {
+        action.payload.items.forEach((item) => {
+          itemsMap.update(item.id, () => item);
+        });
+      }))
+    )
+    : state;
 }

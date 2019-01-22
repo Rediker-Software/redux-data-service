@@ -22,13 +22,19 @@ export interface IConfiguration {
   serializer?: ISerializerFactory<any, any>;
   mapper?: IMapperFactory<any>;
   preferPatchOverPut?: boolean;
+  coalesceFindRequests?: boolean;
+  coalesceBufferTime?: number;
 }
+
+export const DEFAULT_COALESCE_BUFFER_TIME = 50;
 
 const defaultConfiguration: Partial<IConfiguration> = {
   adapter: RestAdapter,
   serializer: RestSerializer,
   mapper: Mapper,
   preferPatchOverPut: false,
+  coalesceFindRequests: false,
+  coalesceBufferTime: DEFAULT_COALESCE_BUFFER_TIME,
 };
 
 let configuration: IConfiguration = {} as IConfiguration;

@@ -1,7 +1,9 @@
 // tslint:disable:no-unused-expression
+import { random } from "faker";
+
 import { MockAdapter } from "./Adapters/MockAdapter";
 import { RestAdapter } from "./Adapters/RestAdapter";
-import { configure, getConfiguration } from "./Configure";
+import { configure, getConfiguration, DEFAULT_COALESCE_BUFFER_TIME } from "./Configure";
 import { RestSerializer } from "./Serializers/RestSerializer";
 import { MockSerializer } from "./Serializers/MockSerializer";
 import { Mapper } from "./Mapper/Mapper";
@@ -54,4 +56,30 @@ describe("Configure", () => {
     const config = getConfiguration();
     expect(config.preferPatchOverPut).to.be.false;
   });
+
+  it("uses the default value for coalesceFindRequests", () => {
+    configure({ modules: null });
+    const config = getConfiguration();
+    expect(config.coalesceFindRequests).to.be.false;
+  });
+
+  it("uses the provided value for coalesceFindRequest", () => {
+    configure({ modules: null, coalesceFindRequests: true});
+    const config = getConfiguration();
+    expect(config.coalesceFindRequests).to.be.true;
+  });
+
+  it("uses the default value for coalesceBufferTime", () => {
+    configure({ modules: null });
+    const config = getConfiguration();
+    expect(config.coalesceBufferTime).to.equal(DEFAULT_COALESCE_BUFFER_TIME);
+  });
+
+  it("uses the provided value for coalesceBufferTime", () => {
+    const coalesceBufferTime = random.number();
+    configure({ modules: null, coalesceBufferTime });
+    const config = getConfiguration();
+    expect(config.coalesceBufferTime).to.equal(coalesceBufferTime);
+  });
+
 });
