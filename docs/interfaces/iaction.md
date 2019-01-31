@@ -28,7 +28,7 @@
 
 **● invoke**: *`function`*
 
-*Defined in [Services/IService.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Services/IService.ts#L7)*
+*Defined in [Services/IService.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Services/IService.ts#L7)*
 
 #### Type declaration
 ▸(): `void`
@@ -42,7 +42,7 @@ ___
 
 **● meta**: *`M`*
 
-*Defined in [Services/IService.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Services/IService.ts#L6)*
+*Defined in [Services/IService.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Services/IService.ts#L6)*
 
 ___
 <a id="payload"></a>
@@ -51,7 +51,7 @@ ___
 
 **● payload**: *`T`*
 
-*Defined in [Services/IService.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Services/IService.ts#L5)*
+*Defined in [Services/IService.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Services/IService.ts#L5)*
 
 ___
 <a id="type"></a>
@@ -60,7 +60,7 @@ ___
 
 **● type**: *`string`*
 
-*Defined in [Services/IService.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Services/IService.ts#L4)*
+*Defined in [Services/IService.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Services/IService.ts#L4)*
 
 ___
 

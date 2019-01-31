@@ -24,7 +24,7 @@
 
 ⊕ **new IAdapterFactory**(pathName: *`string`*, options?: *`any`*): [IAdapter](iadapter.md)<`T`>
 
-*Defined in [Adapters/IAdapter.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Adapters/IAdapter.ts#L12)*
+*Defined in [Adapters/IAdapter.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Adapters/IAdapter.ts#L12)*
 
 **Parameters:**
 
