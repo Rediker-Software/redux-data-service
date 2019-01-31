@@ -1,8 +1,8 @@
 import { IQueryParams } from "../Query/QueryBuilder";
 
-export interface ISerializer<S, R = any> {
-  serialize: (modelData: R) => Promise<S>;
-  deserialize: (data: S) => Promise<R>;
+export interface ISerializer<T, S = any> {
+  serialize: (modelData: T) => Promise<S>;
+  deserialize: (data: S | T) => Promise<T>;
   serializeQueryParams: (params: IQueryParams) => Promise<any>;
 }
 

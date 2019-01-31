@@ -90,8 +90,8 @@ export interface IModelId {
 export abstract class DataService<T extends IModelData, R = T> extends BaseService<IDataServiceStateRecord<T>> {
   public abstract readonly ModelClass: IModelFactory<T>;
   protected readonly AdapterClass: IAdapterFactory<any>;
-  protected readonly MapperClass: IMapperFactory<any>;
-  protected readonly SerializerClass: ISerializerFactory<any, R>;
+  protected readonly MapperClass: IMapperFactory<T, R>;
+  protected readonly SerializerClass: ISerializerFactory<T, any>;
 
   protected _adapter: IAdapter<any>;
   protected _mapper: IMapper<any>;

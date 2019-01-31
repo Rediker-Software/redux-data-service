@@ -1,7 +1,7 @@
 // tslint:disable:no-unused-expression
 import { lorem, random, name } from "faker";
 
-import { MockMapper } from "../Mapper";
+import { Mapper } from "../Mapper";
 import { FakeModel, IModelData } from "../Model";
 import { SortDirection } from "../Query";
 
@@ -12,10 +12,10 @@ const { describe, it } = intern.getPlugin("interface.bdd");
 const { expect } = intern.getPlugin("chai");
 
 describe("RestSerializer", () => {
-  const mapper = new MockMapper();
+  const mapper = new Mapper(FakeModel);
   describe("serialize", () => {
 
-    it("converts the model into a JSON string", async () => {
+    it("converts the transformed model into a JSON string", async () => {
       const fullText = lorem.word().toString();
       const id = random.number().toString();
 
@@ -28,7 +28,7 @@ describe("RestSerializer", () => {
       const restSerializer = new RestSerializer();
       const serializedModel = await restSerializer.serialize(mapped as Partial<IModelData>);
 
-      expect(serializedModel).to.equal(JSON.stringify({ id, fullText }));
+      expect(serializedModel).to.equal(JSON.stringify({ fullText }));
     });
 
   });
