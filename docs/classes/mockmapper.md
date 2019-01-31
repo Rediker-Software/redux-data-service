@@ -18,6 +18,7 @@
 * [normalizeQueryResponse](mockmapper.md#normalizequeryresponse)
 * [transform](mockmapper.md#transform)
 * [transformList](mockmapper.md#transformlist)
+* [transformPatch](mockmapper.md#transformpatch)
 
 ---
 
@@ -29,7 +30,7 @@
 
 ▸ **normalize**(data: *`any`*): `Promise`<`any`>
 
-*Defined in [Mapper/MockMapper.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Mapper/MockMapper.ts#L12)*
+*Defined in [Mapper/MockMapper.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Mapper/MockMapper.ts#L16)*
 
 **Parameters:**
 
@@ -46,7 +47,7 @@ ___
 
 ▸ **normalizeQueryResponse**(data: *`any`*): `Promise`<`any`>
 
-*Defined in [Mapper/MockMapper.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Mapper/MockMapper.ts#L16)*
+*Defined in [Mapper/MockMapper.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Mapper/MockMapper.ts#L20)*
 
 **Parameters:**
 
@@ -63,7 +64,7 @@ ___
 
 ▸ **transform**(model: *`any`*): `Promise`<`any`>
 
-*Defined in [Mapper/MockMapper.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Mapper/MockMapper.ts#L4)*
+*Defined in [Mapper/MockMapper.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Mapper/MockMapper.ts#L4)*
 
 **Parameters:**
 
@@ -80,7 +81,7 @@ ___
 
 ▸ **transformList**(models: *`any`*): `Promise`<`any`>
 
-*Defined in [Mapper/MockMapper.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Mapper/MockMapper.ts#L8)*
+*Defined in [Mapper/MockMapper.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Mapper/MockMapper.ts#L8)*
 
 **Parameters:**
 
@@ -89,6 +90,23 @@ ___
 | models | `any` |
 
 **Returns:** `Promise`<`any`>
+
+___
+<a id="transformpatch"></a>
+
+###  transformPatch
+
+▸ **transformPatch**(model: *`any`*): `Promise`<`object`[]>
+
+*Defined in [Mapper/MockMapper.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Mapper/MockMapper.ts#L12)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| model | `any` |
+
+**Returns:** `Promise`<`object`[]>
 
 ___
 

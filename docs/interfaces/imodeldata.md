@@ -17,6 +17,9 @@
 * [dateDeleted](imodeldata.md#datedeleted)
 * [dateUpdated](imodeldata.md#dateupdated)
 * [id](imodeldata.md#id)
+* [parentIdFieldName](imodeldata.md#parentidfieldname)
+* [parentServiceName](imodeldata.md#parentservicename)
+* [serializeThroughParent](imodeldata.md#serializethroughparent)
 
 ---
 
@@ -28,7 +31,7 @@
 
 **● dateDeleted**: *`Date`*
 
-*Defined in [Model/IModel.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/IModel.ts#L10)*
+*Defined in [Model/IModel.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L10)*
 
 ___
 <a id="dateupdated"></a>
@@ -37,7 +40,7 @@ ___
 
 **● dateUpdated**: *`Date`*
 
-*Defined in [Model/IModel.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/IModel.ts#L9)*
+*Defined in [Model/IModel.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L9)*
 
 ___
 <a id="id"></a>
@@ -46,7 +49,34 @@ ___
 
 **● id**: *`string`*
 
-*Defined in [Model/IModel.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/IModel.ts#L8)*
+*Defined in [Model/IModel.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L8)*
+
+___
+<a id="parentidfieldname"></a>
+
+### `<Optional>` parentIdFieldName
+
+**● parentIdFieldName**: *`string`*
+
+*Defined in [Model/IModel.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L12)*
+
+___
+<a id="parentservicename"></a>
+
+### `<Optional>` parentServiceName
+
+**● parentServiceName**: *`string`*
+
+*Defined in [Model/IModel.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L11)*
+
+___
+<a id="serializethroughparent"></a>
+
+### `<Optional>` serializeThroughParent
+
+**● serializeThroughParent**: *`boolean`*
+
+*Defined in [Model/IModel.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L13)*
 
 ___
 

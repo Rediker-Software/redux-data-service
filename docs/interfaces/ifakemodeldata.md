@@ -18,6 +18,9 @@
 * [dateUpdated](ifakemodeldata.md#dateupdated)
 * [fullText](ifakemodeldata.md#fulltext)
 * [id](ifakemodeldata.md#id)
+* [parentIdFieldName](ifakemodeldata.md#parentidfieldname)
+* [parentServiceName](ifakemodeldata.md#parentservicename)
+* [serializeThroughParent](ifakemodeldata.md#serializethroughparent)
 
 ---
 
@@ -31,7 +34,7 @@
 
 *Inherited from [IModelData](imodeldata.md).[dateDeleted](imodeldata.md#datedeleted)*
 
-*Defined in [Model/IModel.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/IModel.ts#L10)*
+*Defined in [Model/IModel.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L10)*
 
 ___
 <a id="dateupdated"></a>
@@ -42,7 +45,7 @@ ___
 
 *Inherited from [IModelData](imodeldata.md).[dateUpdated](imodeldata.md#dateupdated)*
 
-*Defined in [Model/IModel.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/IModel.ts#L9)*
+*Defined in [Model/IModel.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L9)*
 
 ___
 <a id="fulltext"></a>
@@ -51,7 +54,7 @@ ___
 
 **● fullText**: *`string`*
 
-*Defined in [Model/Model.mock.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/Model.mock.ts#L26)*
+*Defined in [Model/Model.mock.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/Model.mock.ts#L26)*
 
 ___
 <a id="id"></a>
@@ -62,7 +65,40 @@ ___
 
 *Inherited from [IModelData](imodeldata.md).[id](imodeldata.md#id)*
 
-*Defined in [Model/IModel.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Model/IModel.ts#L8)*
+*Defined in [Model/IModel.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L8)*
+
+___
+<a id="parentidfieldname"></a>
+
+### `<Optional>` parentIdFieldName
+
+**● parentIdFieldName**: *`string`*
+
+*Inherited from [IModelData](imodeldata.md).[parentIdFieldName](imodeldata.md#parentidfieldname)*
+
+*Defined in [Model/IModel.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L12)*
+
+___
+<a id="parentservicename"></a>
+
+### `<Optional>` parentServiceName
+
+**● parentServiceName**: *`string`*
+
+*Inherited from [IModelData](imodeldata.md).[parentServiceName](imodeldata.md#parentservicename)*
+
+*Defined in [Model/IModel.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L11)*
+
+___
+<a id="serializethroughparent"></a>
+
+### `<Optional>` serializeThroughParent
+
+**● serializeThroughParent**: *`boolean`*
+
+*Inherited from [IModelData](imodeldata.md).[serializeThroughParent](imodeldata.md#serializethroughparent)*
+
+*Defined in [Model/IModel.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Model/IModel.ts#L13)*
 
 ___
 

@@ -3,8 +3,8 @@
 # Interface: ISerializer
 
 ## Type parameters
+#### T 
 #### S 
-#### R 
 ## Hierarchy
 
 **ISerializer**
@@ -33,18 +33,18 @@
 
 **● deserialize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/ISerializer.ts#L5)*
+*Defined in [Serializers/ISerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Serializers/ISerializer.ts#L5)*
 
 #### Type declaration
-▸(data: *`S`*): `Promise`<`R`>
+▸(data: * `S` &#124; `T`*): `Promise`<`T`>
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| data | `S` |
+| data |  `S` &#124; `T`|
 
-**Returns:** `Promise`<`R`>
+**Returns:** `Promise`<`T`>
 
 ___
 <a id="serialize"></a>
@@ -53,16 +53,16 @@ ___
 
 **● serialize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/ISerializer.ts#L4)*
+*Defined in [Serializers/ISerializer.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Serializers/ISerializer.ts#L4)*
 
 #### Type declaration
-▸(modelData: *`R`*): `Promise`<`S`>
+▸(modelData: *`T`*): `Promise`<`S`>
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| modelData | `R` |
+| modelData | `T` |
 
 **Returns:** `Promise`<`S`>
 
@@ -73,7 +73,7 @@ ___
 
 **● serializeQueryParams**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/ISerializer.ts#L6)*
+*Defined in [Serializers/ISerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Serializers/ISerializer.ts#L6)*
 
 #### Type declaration
 ▸(params: *[IQueryParams](iqueryparams.md)*): `Promise`<`any`>

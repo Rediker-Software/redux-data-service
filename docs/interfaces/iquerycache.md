@@ -27,7 +27,7 @@ Holds information about a query, including the query's response and metadata.
 
 **● errors**: *`any`*
 
-*Defined in [Query/IQueryCache.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Query/IQueryCache.ts#L11)*
+*Defined in [Query/IQueryCache.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Query/IQueryCache.ts#L11)*
 
 ___
 <a id="isloading"></a>
@@ -36,7 +36,7 @@ ___
 
 **● isLoading**: *`boolean`*
 
-*Defined in [Query/IQueryCache.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Query/IQueryCache.ts#L10)*
+*Defined in [Query/IQueryCache.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Query/IQueryCache.ts#L10)*
 
 ___
 <a id="query"></a>
@@ -45,7 +45,7 @@ ___
 
 **● query**: *[IQueryBuilder](iquerybuilder.md)*
 
-*Defined in [Query/IQueryCache.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Query/IQueryCache.ts#L8)*
+*Defined in [Query/IQueryCache.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Query/IQueryCache.ts#L8)*
 
 ___
 <a id="response"></a>
@@ -54,7 +54,7 @@ ___
 
 **● response**: *[IQueryResponse](iqueryresponse.md)*
 
-*Defined in [Query/IQueryCache.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Query/IQueryCache.ts#L9)*
+*Defined in [Query/IQueryCache.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Query/IQueryCache.ts#L9)*
 
 ___
 

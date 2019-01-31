@@ -5,15 +5,15 @@
 An in-memory ISerializer implementation for testing and local development purposes.
 
 ## Type parameters
+#### T 
 #### S 
-#### R 
 ## Hierarchy
 
 **MemorySerializer**
 
 ## Implements
 
-* [ISerializer](../interfaces/iserializer.md)<`S`, `R`>
+* [ISerializer](../interfaces/iserializer.md)<`T`, `S`>
 
 ## Index
 
@@ -31,32 +31,32 @@ An in-memory ISerializer implementation for testing and local development purpos
 
 ###  deserialize
 
-▸ **deserialize**(data: *`S`*): `Promise`<`R`>
+▸ **deserialize**(data: * `S` &#124; `T`*): `Promise`<`T`>
 
-*Defined in [Serializers/MemorySerializer.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/MemorySerializer.ts#L13)*
+*Defined in [Serializers/MemorySerializer.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Serializers/MemorySerializer.ts#L13)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| data | `S` |
+| data |  `S` &#124; `T`|
 
-**Returns:** `Promise`<`R`>
+**Returns:** `Promise`<`T`>
 
 ___
 <a id="serialize"></a>
 
 ###  serialize
 
-▸ **serialize**(model: *`R`*): `Promise`<`S`>
+▸ **serialize**(model: *`T`*): `Promise`<`S`>
 
-*Defined in [Serializers/MemorySerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/MemorySerializer.ts#L9)*
+*Defined in [Serializers/MemorySerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Serializers/MemorySerializer.ts#L9)*
 
 **Parameters:**
 
 | Name | Type |
 | ------ | ------ |
-| model | `R` |
+| model | `T` |
 
 **Returns:** `Promise`<`S`>
 
@@ -67,7 +67,7 @@ ___
 
 ▸ **serializeQueryParams**(queryParams: *[IQueryParams](../interfaces/iqueryparams.md)*): `Promise`<[IQueryParams](../interfaces/iqueryparams.md)>
 
-*Defined in [Serializers/MemorySerializer.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/5da4ef5/src/Serializers/MemorySerializer.ts#L17)*
+*Defined in [Serializers/MemorySerializer.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/da69ba1/src/Serializers/MemorySerializer.ts#L17)*
 
 **Parameters:**
 
