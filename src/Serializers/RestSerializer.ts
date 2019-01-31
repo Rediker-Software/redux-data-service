@@ -17,10 +17,6 @@ export class RestSerializer<T extends IModelData> implements ISerializer<T, stri
 
   /**
    * Converts the given JSON string into an object.
-   *
-   * @param {any} data
-   * @param data
-   * @returns {Promise<R>>}
    */
   public async deserialize(data: T | string): Promise<T> {
     return (typeof data === "string")
@@ -30,9 +26,6 @@ export class RestSerializer<T extends IModelData> implements ISerializer<T, stri
 
   /**
    * Converts the given IQueryParams object into a url-encoded string.
-   *
-   * @param {IQueryParams} params
-   * @returns {Promise<string>}
    */
   public async serializeQueryParams({ sort, ...params }: IQueryParams): Promise<string> {
     if (sort && sort.length > 0) {
