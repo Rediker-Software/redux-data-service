@@ -14,7 +14,7 @@ export class MemorySerializer<T = any, S = any> implements ISerializer<T, S> {
     return data as any;
   }
 
-  public async serializeQueryParams(queryParams: IQueryParams): Promise<IQueryParams> {
+  public serializeQueryParams(queryParams: IQueryParams): IQueryParams {
     return queryParams;
   }
 }

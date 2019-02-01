@@ -27,7 +27,7 @@ export class RestSerializer<T extends IModelData> implements ISerializer<T, stri
   /**
    * Converts the given IQueryParams object into a url-encoded string.
    */
-  public async serializeQueryParams({ sort, ...params }: IQueryParams): Promise<string> {
+  public serializeQueryParams({ sort, ...params }: IQueryParams): string {
     if (sort && sort.length > 0) {
       params.sort = sort.map(s => (s.direction === "desc" ? `${s.key}:${s.direction}` : s.key));
     }

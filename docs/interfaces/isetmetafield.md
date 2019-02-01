@@ -26,7 +26,7 @@
 
 **● fieldName**: *`keyof IModelMeta&lt;T&gt;`*
 
-*Defined in [Services/DataService/Reducers/SetMetaFieldReducer.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Services/DataService/Reducers/SetMetaFieldReducer.ts#L8)*
+*Defined in [Services/DataService/Reducers/SetMetaFieldReducer.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Services/DataService/Reducers/SetMetaFieldReducer.ts#L8)*
 
 ___
 <a id="id"></a>
@@ -35,7 +35,7 @@ ___
 
 **● id**: *`string`*
 
-*Defined in [Services/DataService/Reducers/SetMetaFieldReducer.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Services/DataService/Reducers/SetMetaFieldReducer.ts#L7)*
+*Defined in [Services/DataService/Reducers/SetMetaFieldReducer.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Services/DataService/Reducers/SetMetaFieldReducer.ts#L7)*
 
 ___
 <a id="value"></a>
@@ -44,7 +44,7 @@ ___
 
 **● value**: *`any`*
 
-*Defined in [Services/DataService/Reducers/SetMetaFieldReducer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Services/DataService/Reducers/SetMetaFieldReducer.ts#L9)*
+*Defined in [Services/DataService/Reducers/SetMetaFieldReducer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Services/DataService/Reducers/SetMetaFieldReducer.ts#L9)*
 
 ___
 

@@ -33,7 +33,7 @@ An in-memory ISerializer implementation for testing and local development purpos
 
 ▸ **deserialize**(data: * `S` &#124; `T`*): `Promise`<`T`>
 
-*Defined in [Serializers/MemorySerializer.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Serializers/MemorySerializer.ts#L13)*
+*Defined in [Serializers/MemorySerializer.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Serializers/MemorySerializer.ts#L13)*
 
 **Parameters:**
 
@@ -50,7 +50,7 @@ ___
 
 ▸ **serialize**(model: *`T`*): `Promise`<`S`>
 
-*Defined in [Serializers/MemorySerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Serializers/MemorySerializer.ts#L9)*
+*Defined in [Serializers/MemorySerializer.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Serializers/MemorySerializer.ts#L9)*
 
 **Parameters:**
 
@@ -65,9 +65,9 @@ ___
 
 ###  serializeQueryParams
 
-▸ **serializeQueryParams**(queryParams: *[IQueryParams](../interfaces/iqueryparams.md)*): `Promise`<[IQueryParams](../interfaces/iqueryparams.md)>
+▸ **serializeQueryParams**(queryParams: *[IQueryParams](../interfaces/iqueryparams.md)*): [IQueryParams](../interfaces/iqueryparams.md)
 
-*Defined in [Serializers/MemorySerializer.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Serializers/MemorySerializer.ts#L17)*
+*Defined in [Serializers/MemorySerializer.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Serializers/MemorySerializer.ts#L17)*
 
 **Parameters:**
 
@@ -75,7 +75,7 @@ ___
 | ------ | ------ |
 | queryParams | [IQueryParams](../interfaces/iqueryparams.md) |
 
-**Returns:** `Promise`<[IQueryParams](../interfaces/iqueryparams.md)>
+**Returns:** [IQueryParams](../interfaces/iqueryparams.md)
 
 ___
 

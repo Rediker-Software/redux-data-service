@@ -33,7 +33,7 @@
 
 **● deserialize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Serializers/ISerializer.ts#L5)*
+*Defined in [Serializers/ISerializer.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Serializers/ISerializer.ts#L5)*
 
 #### Type declaration
 ▸(data: * `S` &#124; `T`*): `Promise`<`T`>
@@ -53,7 +53,7 @@ ___
 
 **● serialize**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Serializers/ISerializer.ts#L4)*
+*Defined in [Serializers/ISerializer.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Serializers/ISerializer.ts#L4)*
 
 #### Type declaration
 ▸(modelData: *`T`*): `Promise`<`S`>
@@ -73,10 +73,10 @@ ___
 
 **● serializeQueryParams**: *`function`*
 
-*Defined in [Serializers/ISerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Serializers/ISerializer.ts#L6)*
+*Defined in [Serializers/ISerializer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Serializers/ISerializer.ts#L6)*
 
 #### Type declaration
-▸(params: *[IQueryParams](iqueryparams.md)*): `Promise`<`any`>
+▸(params: *[IQueryParams](iqueryparams.md)*): `any`
 
 **Parameters:**
 
@@ -84,7 +84,7 @@ ___
 | ------ | ------ |
 | params | [IQueryParams](iqueryparams.md) |
 
-**Returns:** `Promise`<`any`>
+**Returns:** `any`
 
 ___
 

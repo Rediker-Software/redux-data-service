@@ -11,7 +11,7 @@ export class MockSerializer implements ISerializer<any, any> {
     return new FakeModel({ id: "123" });
   }
 
-  public async serializeQueryParams(queryParams: IQueryParams): Promise<IQueryParams> {
+  public serializeQueryParams(queryParams: IQueryParams): IQueryParams {
     return queryParams;
   }
 }

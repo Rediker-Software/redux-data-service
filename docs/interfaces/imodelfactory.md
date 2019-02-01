@@ -24,7 +24,7 @@
 
 ⊕ **new IModelFactory**(modelData?: *`Partial`<`T`>*, meta?: *`Partial`<[IModelMeta](imodelmeta.md)<`T`>>*, relatedModels?: *[IModelsMap](imodelsmap.md)*): [IModel](imodel.md)<`T`>
 
-*Defined in [Model/IModel.ts:49](https://github.com/Rediker-Software/redux-data-service/blob/cb1aa86/src/Model/IModel.ts#L49)*
+*Defined in [Model/IModel.ts:49](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/IModel.ts#L49)*
 
 **Parameters:**
 
