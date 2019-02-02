@@ -90,7 +90,7 @@
 
 *Inherited from [Model](model.md).[constructor](model.md#constructor)*
 
-*Defined in [Model/Model.ts:109](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L109)*
+*Defined in [Model/Model.ts:109](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L109)*
 
 **Parameters:**
 
@@ -114,7 +114,7 @@ ___
 
 *Inherited from [Model](model.md).[_isDestroying](model.md#_isdestroying)*
 
-*Defined in [Model/Model.ts:108](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L108)*
+*Defined in [Model/Model.ts:108](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L108)*
 
 ___
 <a id="_willdestroyobservable_"></a>
@@ -125,7 +125,7 @@ ___
 
 *Inherited from [Model](model.md).[_willDestroyObservable$](model.md#_willdestroyobservable_)*
 
-*Defined in [Model/Model.ts:109](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L109)*
+*Defined in [Model/Model.ts:109](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L109)*
 
 ___
 <a id="datedeleted"></a>
@@ -138,7 +138,7 @@ ___
 
 *Inherited from [Model](model.md).[dateDeleted](model.md#datedeleted)*
 
-*Defined in [Model/Model.ts:83](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L83)*
+*Defined in [Model/Model.ts:83](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L83)*
 
 ___
 <a id="dateupdated"></a>
@@ -151,7 +151,7 @@ ___
 
 *Inherited from [Model](model.md).[dateUpdated](model.md#dateupdated)*
 
-*Defined in [Model/Model.ts:80](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L80)*
+*Defined in [Model/Model.ts:80](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L80)*
 
 ___
 <a id="fields"></a>
@@ -164,7 +164,7 @@ ___
 
 *Inherited from [Model](model.md).[fields](model.md#fields)*
 
-*Defined in [Model/Model.ts:72](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L72)*
+*Defined in [Model/Model.ts:72](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L72)*
 
 ___
 <a id="fulltext"></a>
@@ -175,7 +175,7 @@ ___
 
 *Implementation of [IFakeModel](../interfaces/ifakemodel.md).[fullText](../interfaces/ifakemodel.md#fulltext)*
 
-*Defined in [Model/Model.mock.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.mock.ts#L14)*
+*Defined in [Model/Model.mock.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.mock.ts#L14)*
 
 ___
 <a id="id"></a>
@@ -188,7 +188,7 @@ ___
 
 *Inherited from [Model](model.md).[id](model.md#id)*
 
-*Defined in [Model/Model.ts:77](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L77)*
+*Defined in [Model/Model.ts:77](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L77)*
 
 ___
 <a id="meta"></a>
@@ -199,7 +199,7 @@ ___
 
 *Inherited from [Model](model.md).[meta](model.md#meta)*
 
-*Defined in [Model/Model.ts:106](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L106)*
+*Defined in [Model/Model.ts:106](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L106)*
 
 ___
 <a id="modeldata"></a>
@@ -210,7 +210,7 @@ ___
 
 *Inherited from [Model](model.md).[modelData](model.md#modeldata)*
 
-*Defined in [Model/Model.ts:105](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L105)*
+*Defined in [Model/Model.ts:105](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L105)*
 
 ___
 <a id="parentidfieldname"></a>
@@ -223,7 +223,7 @@ ___
 
 *Inherited from [Model](model.md).[parentIdFieldName](model.md#parentidfieldname)*
 
-*Defined in [Model/Model.ts:92](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L92)*
+*Defined in [Model/Model.ts:92](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L92)*
 
 ___
 <a id="parentmodel"></a>
@@ -236,7 +236,7 @@ ___
 
 *Inherited from [Model](model.md).[parentModel](model.md#parentmodel)*
 
-*Defined in [Model/Model.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L95)*
+*Defined in [Model/Model.ts:95](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L95)*
 
 ___
 <a id="parentservicename"></a>
@@ -249,7 +249,7 @@ ___
 
 *Inherited from [Model](model.md).[parentServiceName](model.md#parentservicename)*
 
-*Defined in [Model/Model.ts:89](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L89)*
+*Defined in [Model/Model.ts:89](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L89)*
 
 ___
 <a id="relatedmodels"></a>
@@ -260,7 +260,7 @@ ___
 
 *Inherited from [Model](model.md).[relatedModels](model.md#relatedmodels)*
 
-*Defined in [Model/Model.ts:107](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L107)*
+*Defined in [Model/Model.ts:107](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L107)*
 
 ___
 <a id="relationships"></a>
@@ -273,7 +273,7 @@ ___
 
 *Inherited from [Model](model.md).[relationships](model.md#relationships)*
 
-*Defined in [Model/Model.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L74)*
+*Defined in [Model/Model.ts:74](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L74)*
 
 #### Type declaration
 
@@ -290,7 +290,7 @@ ___
 
 *Inherited from [Model](model.md).[serializeThroughParent](model.md#serializethroughparent)*
 
-*Defined in [Model/Model.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L86)*
+*Defined in [Model/Model.ts:86](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L86)*
 
 ___
 <a id="servicename"></a>
@@ -303,7 +303,7 @@ ___
 
 *Overrides [Model](model.md).[serviceName](model.md#servicename)*
 
-*Defined in [Model/Model.mock.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.mock.ts#L11)*
+*Defined in [Model/Model.mock.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.mock.ts#L11)*
 
 ___
 <a id="validationrules"></a>
@@ -316,7 +316,7 @@ ___
 
 *Inherited from [Model](model.md).[validationRules](model.md#validationrules)*
 
-*Defined in [Model/Model.ts:73](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L73)*
+*Defined in [Model/Model.ts:73](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L73)*
 
 ___
 
@@ -330,7 +330,7 @@ geterrors(): `object`seterrors(value: *`object`*): `void`
 
 *Inherited from [Model](model.md).[errors](model.md#errors)*
 
-*Defined in [Model/Model.ts:640](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L640)*
+*Defined in [Model/Model.ts:640](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L640)*
 
 Get the list of errors, which may have been created from calling `this.validate()` or as a response from the API.
 
@@ -338,7 +338,7 @@ Get the list of errors, which may have been created from calling `this.validate(
 
 *Inherited from [Model](model.md).[errors](model.md#errors)*
 
-*Defined in [Model/Model.ts:649](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L649)*
+*Defined in [Model/Model.ts:649](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L649)*
 
 Dispatch an action to Redux to set the error state of the Model.
 
@@ -359,7 +359,7 @@ gethasUnsavedChanges(): `boolean`
 
 *Inherited from [Model](model.md).[hasUnsavedChanges](model.md#hasunsavedchanges)*
 
-*Defined in [Model/Model.ts:680](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L680)*
+*Defined in [Model/Model.ts:680](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L680)*
 
 Determine if the model or its previously loaded relationships have unsaved changes.
 
@@ -374,7 +374,7 @@ getisDestroying(): `boolean`
 
 *Inherited from [Model](model.md).[isDestroying](model.md#isdestroying)*
 
-*Defined in [Model/Model.ts:567](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L567)*
+*Defined in [Model/Model.ts:567](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L567)*
 
 Determine if the current instance of the Model has been marked for destruction. That is, this instance is being removed from the Redux store and its subscriptions are being torn down.
 
@@ -389,7 +389,7 @@ getisDirty(): `boolean`
 
 *Inherited from [Model](model.md).[isDirty](model.md#isdirty)*
 
-*Defined in [Model/Model.ts:658](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L658)*
+*Defined in [Model/Model.ts:658](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L658)*
 
 Determine if the Model's data has changed without being saved.
 
@@ -404,7 +404,7 @@ getisLoading(): `boolean`setisLoading(value: *`boolean`*): `void`
 
 *Inherited from [Model](model.md).[isLoading](model.md#isloading)*
 
-*Defined in [Model/Model.ts:611](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L611)*
+*Defined in [Model/Model.ts:611](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L611)*
 
 Determine if the Model is currently loading.
 
@@ -412,7 +412,7 @@ Determine if the Model is currently loading.
 
 *Inherited from [Model](model.md).[isLoading](model.md#isloading)*
 
-*Defined in [Model/Model.ts:620](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L620)*
+*Defined in [Model/Model.ts:620](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L620)*
 
 Dispatch an action to Redux to set the isLoading state of the Model
 
@@ -433,7 +433,7 @@ getisNew(): `boolean`
 
 *Inherited from [Model](model.md).[isNew](model.md#isnew)*
 
-*Defined in [Model/Model.ts:691](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L691)*
+*Defined in [Model/Model.ts:691](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L691)*
 
 Determine if the Model is a new object which has not been committed to the API yet.
 
@@ -448,7 +448,7 @@ getisShadow(): `boolean`
 
 *Inherited from [Model](model.md).[isShadow](model.md#isshadow)*
 
-*Defined in [Model/Model.ts:630](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L630)*
+*Defined in [Model/Model.ts:630](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L630)*
 
 Determine if the Model is a "shadow" object: its data is currently being loaded and this instance of the Model is used as a temporary placeholder until we get a response from the API.
 
@@ -463,13 +463,13 @@ getparentModelId(): `any`setparentModelId(value: *`any`*): `void`
 
 *Inherited from [Model](model.md).[parentModelId](model.md#parentmodelid)*
 
-*Defined in [Model/Model.ts:97](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L97)*
+*Defined in [Model/Model.ts:97](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L97)*
 
 **Returns:** `any`
 
 *Inherited from [Model](model.md).[parentModelId](model.md#parentmodelid)*
 
-*Defined in [Model/Model.ts:101](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L101)*
+*Defined in [Model/Model.ts:101](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L101)*
 
 **Parameters:**
 
@@ -493,7 +493,7 @@ ___
 
 *Inherited from [Model](model.md).[applyUpdates](model.md#applyupdates)*
 
-*Defined in [Model/Model.ts:331](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L331)*
+*Defined in [Model/Model.ts:331](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L331)*
 
 Since this class is meant to be immutable, you can apply new updates here. The changes will be deep merged with the existing modelData and/or meta, and a new instance of the class will be returned with those values without mutating the current instance of the class.
 
@@ -518,7 +518,7 @@ ___
 
 *Inherited from [Model](model.md).[checkFieldUpdateIsAllowed](model.md#checkfieldupdateisallowed)*
 
-*Defined in [Model/Model.ts:388](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L388)*
+*Defined in [Model/Model.ts:388](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L388)*
 
 Throw a TypeError if the provided key is an invalid fieldType, or the value is an invalid type for that fieldType.
 
@@ -542,7 +542,7 @@ ___
 
 *Inherited from [Model](model.md).[forceReload](model.md#forcereload)*
 
-*Defined in [Model/Model.ts:314](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L314)*
+*Defined in [Model/Model.ts:314](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L314)*
 
 Dispatch an action to the DataService to force it to reload the model from the API.
 
@@ -555,7 +555,7 @@ ___
 
 ▸ **getData**(): `object`
 
-*Defined in [Model/Model.mock.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.mock.ts#L16)*
+*Defined in [Model/Model.mock.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.mock.ts#L16)*
 
 **Returns:** `object`
 
@@ -568,7 +568,7 @@ ___
 
 *Inherited from [Model](model.md).[getField](model.md#getfield)*
 
-*Defined in [Model/Model.ts:371](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L371)*
+*Defined in [Model/Model.ts:371](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L371)*
 
 This method is called by the magic getters for the properties decorated by the @attr decorator. The actual data for the decorated properties is stored in modelData.
 
@@ -590,7 +590,7 @@ ___
 
 *Inherited from [Model](model.md).[getFieldError](model.md#getfielderror)*
 
-*Defined in [Model/Model.ts:695](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L695)*
+*Defined in [Model/Model.ts:695](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L695)*
 
 **Parameters:**
 
@@ -609,7 +609,7 @@ ___
 
 *Inherited from [Model](model.md).[getRelated](model.md#getrelated)*
 
-*Defined in [Model/Model.ts:430](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L430)*
+*Defined in [Model/Model.ts:430](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L430)*
 
 This method is called by the magic getters for the properties decorated by the @belongsTo and @hasMany decorators.
 
@@ -636,7 +636,7 @@ ___
 
 *Inherited from [Model](model.md).[getServiceForRelationship](model.md#getserviceforrelationship)*
 
-*Defined in [Model/Model.ts:527](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L527)*
+*Defined in [Model/Model.ts:527](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L527)*
 
 Get the DataService associated to the relationship specified at the given name of the related field
 
@@ -657,7 +657,7 @@ ___
 
 *Inherited from [Model](model.md).[getValidationRulesForField](model.md#getvalidationrulesforfield)*
 
-*Defined in [Model/Model.ts:273](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L273)*
+*Defined in [Model/Model.ts:273](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L273)*
 
 Get the validationRules for the given fieldName. Works with local or nested fields.
 
@@ -678,7 +678,7 @@ ___
 
 *Inherited from [Model](model.md).[getWillDestroyObservable$](model.md#getwilldestroyobservable_)*
 
-*Defined in [Model/Model.ts:577](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L577)*
+*Defined in [Model/Model.ts:577](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L577)*
 
 Subscribe to this Observable to be notified when the current instance of the Model has been marked for destruction. That is, this instance is being removed from the Redux store and its subscriptions are being torn down.
 
@@ -695,7 +695,7 @@ ___
 
 *Inherited from [Model](model.md).[initializeNewModel](model.md#initializenewmodel)*
 
-*Defined in [Model/Model.ts:359](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L359)*
+*Defined in [Model/Model.ts:359](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L359)*
 
 This is a useful hook for doing model-specific initialization when creating a new, unsaved model, such as creating related Models and setting default session values.
 
@@ -710,7 +710,7 @@ ___
 
 *Inherited from [Model](model.md).[isFieldDirty](model.md#isfielddirty)*
 
-*Defined in [Model/Model.ts:667](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L667)*
+*Defined in [Model/Model.ts:667](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L667)*
 
 Determine if a specific model field of the Model's data has changed without being saved.
 
@@ -733,7 +733,7 @@ ___
 
 *Inherited from [Model](model.md).[markForDestruction](model.md#markfordestruction)*
 
-*Defined in [Model/Model.ts:551](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L551)*
+*Defined in [Model/Model.ts:551](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L551)*
 
 Call this method just before this Model instance will be removed from the Redux store. This allows us to cleanly unsubscribe to any relationship Observables that were previously subscribed to, in order to avoid a possible memory leak.
 
@@ -750,7 +750,7 @@ ___
 
 *Inherited from [Model](model.md).[parseFieldValue](model.md#parsefieldvalue)*
 
-*Defined in [Model/Model.ts:708](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L708)*
+*Defined in [Model/Model.ts:708](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L708)*
 
 Given a fieldName as a deep path (such as "firstName" or "person.firstName"), this will use that field's own IFieldType.normalize function to parse the given value.
 
@@ -774,7 +774,7 @@ ___
 
 *Inherited from [Model](model.md).[reset](model.md#reset)*
 
-*Defined in [Model/Model.ts:286](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L286)*
+*Defined in [Model/Model.ts:286](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L286)*
 
 Dispatch an action to Redux to reset the Model to its original state. Note: new items will be removed from the Redux store.
 
@@ -791,7 +791,7 @@ ___
 
 *Inherited from [Model](model.md).[save](model.md#save)*
 
-*Defined in [Model/Model.ts:133](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L133)*
+*Defined in [Model/Model.ts:133](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L133)*
 
 Dispatch an action to Redux to commit the pending changes to the API.
 
@@ -812,7 +812,7 @@ ___
 
 *Inherited from [Model](model.md).[saveModel](model.md#savemodel)*
 
-*Defined in [Model/Model.ts:162](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L162)*
+*Defined in [Model/Model.ts:162](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L162)*
 
 Dispatch an action to Redux to commit the pending changes to the API for just this model, without first saving any related models with pending changes (unless they're serialized with this model).
 
@@ -835,7 +835,7 @@ ___
 
 *Inherited from [Model](model.md).[saveRelatedModels](model.md#saverelatedmodels)*
 
-*Defined in [Model/Model.ts:193](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L193)*
+*Defined in [Model/Model.ts:193](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L193)*
 
 Dispatch an action to Redux to commit the pending changes to the API for any of the related models which have already been loaded and would not be serialized when this model is saved. After each model is saved, its new copy is set onto a new copy this model.
 
@@ -854,7 +854,7 @@ ___
 
 *Inherited from [Model](model.md).[setField](model.md#setfield)*
 
-*Defined in [Model/Model.ts:410](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L410)*
+*Defined in [Model/Model.ts:410](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L410)*
 
 This method is called by the magic setters for the properties decorated by the @attr decorator.
 
@@ -880,7 +880,7 @@ ___
 
 *Inherited from [Model](model.md).[setMetaField](model.md#setmetafield)*
 
-*Defined in [Model/Model.ts:597](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L597)*
+*Defined in [Model/Model.ts:597](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L597)*
 
 This method is called by the magic setters for some of the meta properties.
 
@@ -904,7 +904,7 @@ ___
 
 *Inherited from [Model](model.md).[setRelated](model.md#setrelated)*
 
-*Defined in [Model/Model.ts:497](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L497)*
+*Defined in [Model/Model.ts:497](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L497)*
 
 This method is called by the magic setters for the properties decorated by the @belongsTo and @hasMany decorators.
 
@@ -928,7 +928,7 @@ ___
 
 *Inherited from [Model](model.md).[triggerWillDestroyObservable](model.md#triggerwilldestroyobservable)*
 
-*Defined in [Model/Model.ts:540](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L540)*
+*Defined in [Model/Model.ts:540](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L540)*
 
 This is an internal method which will tell the WillDestroyObservable to emit a value
 
@@ -945,7 +945,7 @@ ___
 
 *Inherited from [Model](model.md).[unload](model.md#unload)*
 
-*Defined in [Model/Model.ts:303](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L303)*
+*Defined in [Model/Model.ts:303](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L303)*
 
 Dispatch an action to Redux to remove this Model from its data store.
 
@@ -960,7 +960,7 @@ ___
 
 *Inherited from [Model](model.md).[validate](model.md#validate)*
 
-*Defined in [Model/Model.ts:219](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L219)*
+*Defined in [Model/Model.ts:219](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L219)*
 
 Perform client-side validation on the Model based on the validationRules as defined by property decorators. The validation results will be returned immediately and dispatched to Redux.
 
@@ -985,7 +985,7 @@ ___
 
 *Inherited from [Model](model.md).[validateField](model.md#validatefield)*
 
-*Defined in [Model/Model.ts:249](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Model/Model.ts#L249)*
+*Defined in [Model/Model.ts:249](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Model/Model.ts#L249)*
 
 Perform client-side validation on the Model based on the validationRules as defined for the given `fieldName`. The field's validation results will be returned immediately and dispatched to Redux.
 

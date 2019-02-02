@@ -15,6 +15,7 @@ import { of as of$ } from "rxjs/observable/of";
 import { combineLatest as combineLatest$ } from "rxjs/observable/combineLatest";
 
 import { uniqueId } from "lodash";
+import * as hash from "object-hash";
 import { Store } from "redux";
 import createCachedSelector from "re-reselect";
 import { createSelector } from "reselect";
@@ -31,13 +32,11 @@ import {
   IQueryManager,
   IRawQueryResponse,
   QueryManager,
-  QueryBuilder,
 } from "../../Query";
 
 import { BaseService } from "../BaseService";
 
 import {
-  IAction,
   IActionCreators,
   IActionEpic,
   IActionTypes,
@@ -101,8 +100,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   protected observablesByIdCache: { [id: string]: Observable<IModel<T>> } = {};
   protected observablesByIdsCache: { [id: string]: Observable<IModel<T>[]> } = {};
   protected observablesByQueryCache: { [id: string]: Observable<IQueryManager<T>> } = {};
-
-  protected bufferObservable: any = null;
 
   public get adapter() {
     if (!this._adapter) {
@@ -181,7 +178,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   }
 
   public getByIds(ids: string[]): Observable<IModel<T>[]> {
-    const cacheKey = JSON.stringify(ids.sort());
+    const cacheKey = hash(ids);
 
     if (cacheKey in this.observablesByIdsCache) {
       return this.observablesByIdsCache[cacheKey];
@@ -217,7 +214,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     const queryManagerObservable = observable
       .filter(queryCache => queryCache != null)
       .switchMap(
-        ({ response }) => response && response.ids.length ? this.getByIds(response.ids) : [],
+        ({ response }) => response && response.ids.length ? this.getByIds(response.ids) : of$([]),
         ({ query, response, isLoading, errors }, items) => new QueryManager<T>(query, items, response, {
           isLoading,
           errors,
@@ -333,7 +330,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
           .map((id) => items.get(id))
           .filter((item) => item != null)
       ,
-    )((state, ids) => JSON.stringify(ids.sort()));
+    )((state, ids) => hash(ids));
 
     const getItem = createCachedSelector(
       getAllItems,

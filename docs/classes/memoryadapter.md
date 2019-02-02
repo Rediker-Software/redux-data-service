@@ -41,7 +41,7 @@ An in-memory IAdapter implementation which returns fake data when it is requeste
 
 ⊕ **new MemoryAdapter**(serviceName: *`string`*): [MemoryAdapter](memoryadapter.md)
 
-*Defined in [Adapters/MemoryAdapter.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Adapters/MemoryAdapter.ts#L14)*
+*Defined in [Adapters/MemoryAdapter.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Adapters/MemoryAdapter.ts#L14)*
 
 **Parameters:**
 
@@ -61,7 +61,7 @@ ___
 
 **● serviceName**: *`string`*
 
-*Defined in [Adapters/MemoryAdapter.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Adapters/MemoryAdapter.ts#L14)*
+*Defined in [Adapters/MemoryAdapter.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Adapters/MemoryAdapter.ts#L14)*
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 ▸ **createItem**(item: *[IModelData](../interfaces/imodeldata.md)*): `Observable`<[IModelData](../interfaces/imodeldata.md)>
 
-*Defined in [Adapters/MemoryAdapter.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Adapters/MemoryAdapter.ts#L30)*
+*Defined in [Adapters/MemoryAdapter.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Adapters/MemoryAdapter.ts#L30)*
 
 **Parameters:**
 
@@ -90,7 +90,7 @@ ___
 
 ▸ **deleteItem**(id: *`any`*): `Observable`<`Partial`<[IModelData](../interfaces/imodeldata.md)>>
 
-*Defined in [Adapters/MemoryAdapter.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Adapters/MemoryAdapter.ts#L43)*
+*Defined in [Adapters/MemoryAdapter.ts:43](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Adapters/MemoryAdapter.ts#L43)*
 
 **Parameters:**
 
@@ -107,7 +107,7 @@ ___
 
 ▸ **fetchAll**(requestParams?: *`any`*): `Observable`<`object`>
 
-*Defined in [Adapters/MemoryAdapter.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Adapters/MemoryAdapter.ts#L20)*
+*Defined in [Adapters/MemoryAdapter.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Adapters/MemoryAdapter.ts#L20)*
 
 **Parameters:**
 
@@ -124,7 +124,7 @@ ___
 
 ▸ **fetchItem**(id: *`string`*): `Observable`<[IModelData](../interfaces/imodeldata.md)>
 
-*Defined in [Adapters/MemoryAdapter.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Adapters/MemoryAdapter.ts#L25)*
+*Defined in [Adapters/MemoryAdapter.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Adapters/MemoryAdapter.ts#L25)*
 
 **Parameters:**
 
@@ -141,7 +141,7 @@ ___
 
 ▸ **patchItem**(id: *`any`*, item: *[IModelData](../interfaces/imodeldata.md)*): `Observable`<[IModelData](../interfaces/imodeldata.md)>
 
-*Defined in [Adapters/MemoryAdapter.ts:39](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Adapters/MemoryAdapter.ts#L39)*
+*Defined in [Adapters/MemoryAdapter.ts:39](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Adapters/MemoryAdapter.ts#L39)*
 
 **Parameters:**
 
@@ -159,7 +159,7 @@ ___
 
 ▸ **updateItem**(id: *`any`*, item: *[IModelData](../interfaces/imodeldata.md)*): `Observable`<[IModelData](../interfaces/imodeldata.md)>
 
-*Defined in [Adapters/MemoryAdapter.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/ebcded6/src/Adapters/MemoryAdapter.ts#L35)*
+*Defined in [Adapters/MemoryAdapter.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Adapters/MemoryAdapter.ts#L35)*
 
 **Parameters:**
 

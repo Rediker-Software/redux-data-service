@@ -9,7 +9,7 @@ import { Subject } from "rxjs/Subject";
 import { createMockStore } from "redux-test-utils";
 import { ActionsObservable } from "redux-observable";
 import { match, spy, stub } from "sinon";
-import { random, lorem } from "faker";
+import { lorem, random } from "faker";
 
 import { createMockServiceState } from "../../TestUtils";
 import { createMockFakeModel, createMockFakeModels, FakeModel, IFakeModelData } from "../../Model/Model.mock";
@@ -1037,32 +1037,52 @@ describe("DataService", () => {
         }
       });
 
-      it("should get the correct items by their Ids", () => {
-        const itemData = fakeModels;
+      it("should get the correct items by their ids", () => {
+        const itemsObservable = fakeService.getByIds(fakeModels.map(item => item.id));
 
-        const itemsObservable = fakeService.getByIds(itemData.map((item) => item.id));
+        return new Promise((resolve, reject) => {
+          try {
+            itemsObservable.subscribe((items) => {
+              expect(items).to.deep.equal(fakeModels);
+              resolve();
+            });
+          } catch (e) {
+            reject(e);
+          }
+        });
+      });
 
-        itemsObservable.subscribe((items) =>
-          items.forEach((itemModel, i) => expect(itemModel).to.equal(itemData[i])));
+      it("should get the correct items by their ids in the correct order", () => {
+        const ids = fakeModels.map(item => item.id).reverse();
+        const itemsObservable = fakeService.getByIds([...ids]);
+
+        return new Promise((resolve, reject) => {
+          try {
+            itemsObservable.subscribe((items) => {
+              expect(items.map(item => item.id)).to.deep.equal(ids);
+              resolve();
+            });
+          } catch (e) {
+            reject(e);
+          }
+        });
       });
 
       it("should get the correct items by their Ids and cache them for future requests by those Ids", () => {
-        const itemData = fakeModels;
-        const indexes = itemData.map((item) => item.id);
+        const ids = fakeModels.map((item) => item.id);
 
-        const itemObservable = fakeService.getByIds(indexes);
-        const itemObservable2 = fakeService.getByIds(indexes);
+        const itemObservable = fakeService.getByIds(ids);
+        const itemObservable2 = fakeService.getByIds(ids);
 
         expect(itemObservable).to.equal(itemObservable2);
       });
 
       it("should not call BaseService.getStateObservable when using cached Observable by Ids", () => {
         stubGetStateObservable = stub(BaseService, "getStateObservable").returns(state$);
-        const itemData = fakeModels;
-        const indexes = itemData.map((item) => item.id);
+        const ids = fakeModels.map((item) => item.id);
 
-        fakeService.getByIds(indexes);
-        fakeService.getByIds(indexes);
+        fakeService.getByIds(ids);
+        fakeService.getByIds(ids);
 
         expect(stubGetStateObservable).to.have.property("callCount").to.equal(fakeModels.length);
       });
