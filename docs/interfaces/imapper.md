@@ -34,7 +34,7 @@
 
 **● normalize**: *`function`*
 
-*Defined in [Mapper/IMapper.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Mapper/IMapper.ts#L9)*
+*Defined in [Mapper/IMapper.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Mapper/IMapper.ts#L9)*
 
 #### Type declaration
 ▸(data: *`Partial`<`R`>*): `Promise`<[IModel](imodel.md)<`T`>>
@@ -54,7 +54,7 @@ ___
 
 **● normalizeQueryResponse**: *`function`*
 
-*Defined in [Mapper/IMapper.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Mapper/IMapper.ts#L10)*
+*Defined in [Mapper/IMapper.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Mapper/IMapper.ts#L10)*
 
 #### Type declaration
 ▸(data: *[IRawQueryResponse](irawqueryresponse.md)<`R`>*): `Promise`< [IQueryResponse](iqueryresponse.md) & `object`>
@@ -74,7 +74,7 @@ ___
 
 **● transform**: *`function`*
 
-*Defined in [Mapper/IMapper.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Mapper/IMapper.ts#L6)*
+*Defined in [Mapper/IMapper.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Mapper/IMapper.ts#L6)*
 
 #### Type declaration
 ▸(model: * [IModel](imodel.md)<`T`> &#124; `Partial`<`T`>*): `Promise`<`Partial`<`R`>>
@@ -94,7 +94,7 @@ ___
 
 **● transformList**: *`function`*
 
-*Defined in [Mapper/IMapper.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Mapper/IMapper.ts#L8)*
+*Defined in [Mapper/IMapper.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Mapper/IMapper.ts#L8)*
 
 #### Type declaration
 ▸(models: *[IModel](imodel.md)<`T`>[]*): `Promise`<`R`[]>
@@ -114,7 +114,7 @@ ___
 
 **● transformPatch**: *`function`*
 
-*Defined in [Mapper/IMapper.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/d832b55/src/Mapper/IMapper.ts#L7)*
+*Defined in [Mapper/IMapper.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Mapper/IMapper.ts#L7)*
 
 #### Type declaration
 ▸(model: * [IModel](imodel.md)<`T`> &#124; `Partial`<`T`>*): `any`
