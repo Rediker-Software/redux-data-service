@@ -1,4 +1,5 @@
 import { singular } from "pluralize";
+import { merge } from "lodash";
 
 import { Omit } from "../../Omit";
 import { BelongsToField, HasManyField, IFieldType } from "../FieldType";
@@ -104,30 +105,39 @@ export function relationship(relationshipType: RelationshipType, options: IRelat
   return (target: any, key: string) => {
     const singularKey = singular(key); // eg. organizations => organization, countries => country
 
+    let relatedFieldName = options.relatedFieldName;
+
+    if (!relatedFieldName) {
+      relatedFieldName = getRelatedFieldNameForRelationship(relationshipType, singularKey);
+    }
+
     if (!options.serviceName && !options.serviceNameField) {
       options.serviceName = singularKey;
     }
 
-    if (!options.relatedFieldName) {
-      options.relatedFieldName = getRelatedFieldNameForRelationship(relationshipType, singularKey);
-    }
-
-    if (process.env.NODE_ENV !== "production" && !options.serialize && !(options.relatedFieldName in target)) {
-      throw new ReferenceError(`Related field name "${options.relatedFieldName}" missing for relationship "${key}". Did you forget to add an @attr decorator?`);
+    if (process.env.NODE_ENV !== "production" && !options.serialize && !(relatedFieldName in target)) {
+      throw new ReferenceError(`Related field name "${relatedFieldName}" missing for relationship "${key}". Did you forget to add an @attr decorator?`);
     }
 
     // Keep track of the relationship
     target.relationships = {
       ...target.relationships,
       [key]: {
+        relatedFieldName,
         serviceName: options.serviceName,
         serviceNameField: options.serviceNameField,
-        relatedFieldName: options.relatedFieldName,
         modelRelatedFieldName: options.modelRelatedFieldName,
         field: key,
         type: relationshipType,
       },
     };
+
+    // Update the id field to point to the field with the relationship
+    target.fields = merge({}, target.fields, {
+      [relatedFieldName]: {
+        navigationFieldName: key,
+      },
+    });
 
     // Replace TypeScript's property definition with our own.
     if (delete target[key]) {
