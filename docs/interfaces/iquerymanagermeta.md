@@ -23,7 +23,7 @@
 
 **● errors**: *`any`*
 
-*Defined in [Query/QueryManager.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Query/QueryManager.ts#L19)*
+*Defined in [Query/QueryManager.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryManager.ts#L19)*
 
 ___
 <a id="isloading"></a>
@@ -32,7 +32,7 @@ ___
 
 **● isLoading**: *`boolean`*
 
-*Defined in [Query/QueryManager.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Query/QueryManager.ts#L18)*
+*Defined in [Query/QueryManager.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryManager.ts#L18)*
 
 ___
 

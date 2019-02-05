@@ -7,4 +7,5 @@ export interface IFieldType<T = any> {
   type: string;
   transform?(value: T): Promise<any>;
   normalize(serializedValue: any): Promise<T>;
+  navigationFieldName?: string;
 }

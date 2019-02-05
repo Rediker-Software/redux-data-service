@@ -1,8 +1,11 @@
-import { IDecorator } from "./IDecorator";
+import { defaultsDeep, merge } from "lodash";
+
+import { Omit } from "../../Omit";
 import { IModelKeys } from "../IModel";
 import { IFieldType } from "../FieldType";
+
+import { IDecorator } from "./IDecorator";
 import { IValidate, validation } from "./Validation";
-import { defaultsDeep, merge } from "lodash";
 
 /**
  * Classes which wish to use the `@field` decorator (or any of the decorators which call it) will need to implement this interface.
@@ -11,7 +14,7 @@ export interface IFieldTypes<T = any> extends IValidate {
   readonly fields: IModelKeys<T, IFieldType>;
 }
 
-export interface IFieldOptions extends Partial<IFieldType> {
+export interface IFieldOptions extends Partial<Omit<IFieldType, "navigationFieldName">> {
 }
 
 /**

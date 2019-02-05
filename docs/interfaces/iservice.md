@@ -37,7 +37,7 @@
 **● actions**: * [IActionCreators](iactioncreators.md) &#124; `__type`
 *
 
-*Defined in [Services/IService.ts:33](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Services/IService.ts#L33)*
+*Defined in [Services/IService.ts:33](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Services/IService.ts#L33)*
 
 ___
 <a id="epics"></a>
@@ -46,7 +46,7 @@ ___
 
 **● epics**: *[IActionEpic](../#iactionepic)[]*
 
-*Defined in [Services/IService.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Services/IService.ts#L35)*
+*Defined in [Services/IService.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Services/IService.ts#L35)*
 
 ___
 <a id="getdefaultstate"></a>
@@ -55,7 +55,7 @@ ___
 
 **● getDefaultState**: *`function`*
 
-*Defined in [Services/IService.ts:37](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Services/IService.ts#L37)*
+*Defined in [Services/IService.ts:37](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Services/IService.ts#L37)*
 
 #### Type declaration
 ▸(): `S`
@@ -69,7 +69,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [Services/IService.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Services/IService.ts#L31)*
+*Defined in [Services/IService.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Services/IService.ts#L31)*
 
 ___
 <a id="reducer"></a>
@@ -78,7 +78,7 @@ ___
 
 **● reducer**: *[IReducer](../#ireducer)<`S`>*
 
-*Defined in [Services/IService.ts:34](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Services/IService.ts#L34)*
+*Defined in [Services/IService.ts:34](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Services/IService.ts#L34)*
 
 ___
 <a id="selectors"></a>
@@ -87,7 +87,7 @@ ___
 
 **● selectors**: *[ISelectors](iselectors.md)*
 
-*Defined in [Services/IService.ts:36](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Services/IService.ts#L36)*
+*Defined in [Services/IService.ts:36](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Services/IService.ts#L36)*
 
 ___
 <a id="types"></a>
@@ -97,7 +97,7 @@ ___
 **● types**: * [IActionTypes](iactiontypes.md) &#124; `__type`
 *
 
-*Defined in [Services/IService.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/10d4d79/src/Services/IService.ts#L32)*
+*Defined in [Services/IService.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Services/IService.ts#L32)*
 
 ___
 
