@@ -125,6 +125,12 @@ describe("@relationship", () => {
       myClass = new MyClass();
     });
 
+    it("sets the navigationFieldName on the id field", () => {
+      expect(myClass.fields)
+        .to.have.property("studentId")
+        .that.has.property("navigationFieldName", "student");
+    });
+
     it("creates a field decorator which tracks the FieldType of the relationship", () => {
       expect(myClass.fields).to.have.property("student").to.deep.contain(BelongsToField, "it keeps track of the field's FieldType correctly");
     });
