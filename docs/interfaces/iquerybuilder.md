@@ -35,7 +35,7 @@
 
 **● filter**: *`function`*
 
-*Defined in [Query/QueryBuilder.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L29)*
+*Defined in [Query/QueryBuilder.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L29)*
 
 Add the given filtering criteria to the query.
 
@@ -58,7 +58,7 @@ ___
 
 **● getHashCode**: *`function`*
 
-*Defined in [Query/QueryBuilder.ts:41](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L41)*
+*Defined in [Query/QueryBuilder.ts:41](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L41)*
 
 Get a unique hashcode specific to the current queryParams
 
@@ -74,7 +74,7 @@ ___
 
 **● invoke**: *`function`*
 
-*Defined in [Query/QueryBuilder.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L44)*
+*Defined in [Query/QueryBuilder.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L44)*
 
 Trigger the query by dispatching an action to the Redux data service.
 
@@ -90,7 +90,7 @@ ___
 
 **● page**: *`function`*
 
-*Defined in [Query/QueryBuilder.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L35)*
+*Defined in [Query/QueryBuilder.ts:35](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L35)*
 
 Set which page number to use in the query.
 
@@ -112,7 +112,7 @@ ___
 
 **● pageSize**: *`function`*
 
-*Defined in [Query/QueryBuilder.ts:38](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L38)*
+*Defined in [Query/QueryBuilder.ts:38](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L38)*
 
 Set the query's page size.
 
@@ -134,7 +134,7 @@ ___
 
 **● queryParams**: *[IQueryParams](iqueryparams.md)*
 
-*Defined in [Query/QueryBuilder.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L20)*
+*Defined in [Query/QueryBuilder.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L20)*
 
 The current set of query params. DO NOT MUTATE THIS OBJECT DIRECTLY!
 
@@ -145,7 +145,7 @@ ___
 
 **● removeFilter**: *`function`*
 
-*Defined in [Query/QueryBuilder.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L32)*
+*Defined in [Query/QueryBuilder.ts:32](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L32)*
 
 Remove the given filtering criteria from the query.
 
@@ -167,7 +167,7 @@ ___
 
 **● removeSort**: *`function`*
 
-*Defined in [Query/QueryBuilder.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L26)*
+*Defined in [Query/QueryBuilder.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L26)*
 
 Remove the given sorting param from the query.
 
@@ -189,7 +189,7 @@ ___
 
 **● serviceName**: *`string`*
 
-*Defined in [Query/QueryBuilder.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L17)*
+*Defined in [Query/QueryBuilder.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L17)*
 
 The name of the Redux data service being queried
 
@@ -200,7 +200,7 @@ ___
 
 **● sort**: *`function`*
 
-*Defined in [Query/QueryBuilder.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/e3b878c/src/Query/QueryBuilder.ts#L23)*
+*Defined in [Query/QueryBuilder.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Query/QueryBuilder.ts#L23)*
 
 Add the given sorting param to the query. Default SortDirection is "asc". Position is a zero-based index
 
