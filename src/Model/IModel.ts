@@ -44,6 +44,7 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   markForDestruction(): void;
   parseFieldValue(fieldName: string, value: any): Promise<any>;
   getServiceForRelationship(relationshipKey: string): DataService<any>;
+  getFieldError(fieldName: string): string | undefined;
 }
 
 export interface IModelFactory<T extends IModelData> {

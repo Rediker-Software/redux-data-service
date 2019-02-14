@@ -694,7 +694,7 @@ export class Model<T extends IModelData> implements IModel<T> {
 
   public getFieldError(fieldName) {
     if (isEmpty(this.errors)) {
-      return {};
+      return undefined;
     } else {
       const error = this.errors[fieldName];
       return (error instanceof Array) ? error[0] : error;
