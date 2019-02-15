@@ -22,7 +22,7 @@
 
 **● id**: *`string`*
 
-*Defined in [Services/DataService/DataService.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/2b2774d/src/Services/DataService/DataService.ts#L69)*
+*Defined in [Services/DataService/DataService.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/ca68f8d/src/Services/DataService/DataService.ts#L69)*
 
 ___
 
