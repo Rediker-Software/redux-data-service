@@ -450,6 +450,89 @@ describe("Model", () => {
     });
   });
 
+  describe("Model#delete", () => {
+    let service;
+
+    beforeEach(() => {
+      BaseService.registerDispatch(spy());
+
+      interface IExampleData extends IModelData {
+        name: string;
+      }
+
+      class Example extends Model<IExampleData> {
+        public serviceName = "example";
+
+        @required()
+        @attr(StringField)
+        public name: string;
+      }
+
+      class ExampleService extends DataService<IModelData> {
+        public readonly name = "example";
+        public readonly ModelClass = Example;
+      }
+
+      service = new ExampleService();
+      registerService(service);
+
+    });
+
+    describe("deleting a new model", () => {
+      let expectedName;
+      let model;
+
+      it("calls this.unload()", () => {
+        expectedName = "hello, world!";
+        model = service.createNew().applyUpdates({ name: expectedName });
+        const unloadSpy = spy(model, "unload");
+
+        model.delete();
+
+        expect(unloadSpy.calledOnceWith(model));
+      });
+
+      it("returns the delete model", () => {
+        expectedName = "hello, world!";
+        model = service.createNew().applyUpdates({ name: expectedName });
+
+        model.delete().then(deletedModel => {
+          expect(deletedModel).to.equal(model);
+        });
+      });
+
+    });
+
+    describe("deleting an existing model", () => {
+      let deleteRecordStub;
+      let model;
+
+      beforeEach(() => {
+        deleteRecordStub = stub(service.actions, "deleteRecord");
+
+        model = new service.ModelClass(service, { id: random.number().toString(), name: lorem.word() });
+      });
+
+      it("calls deleteRecord action on the service", () => {
+        model.delete();
+        expect(deleteRecordStub.firstCall.args[0]).to.deep.equal({ id: model.id });
+      });
+
+      it("dispatches deleteRecord action to the service", () => {
+        const invokeSpy = spy();
+
+        deleteRecordStub.returns({
+          invoke: invokeSpy,
+        });
+
+        model.delete();
+
+        expect(invokeSpy.calledOnce).to.be.true;
+      });
+    });
+
+  });
+
   describe("Model#reset", () => {
     let service;
     let model;
