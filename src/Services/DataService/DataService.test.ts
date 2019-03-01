@@ -1284,6 +1284,13 @@ describe("DataService", () => {
           items.forEach((itemModel, i) => expect(itemModel).to.deep.equal(itemData[i])));
       });
 
+      it("should returns an observable containing an array", () => {
+        const itemsObservable = fakeService.getAll();
+        itemsObservable.subscribe((items) => {
+          expect(items).to.be.an("array");
+        });
+      });
+
       it("should call BaseService.getStateObservable", () => {
         stubGetStateObservable = stub(BaseService, "getStateObservable").returns(state$);
 

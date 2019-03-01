@@ -229,7 +229,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   public getAll(): Observable<IModel<T>[]> {
     const observable = BaseService
       .getStateObservable()
-      .map((state) => this.selectors.getAllItems(state).valueSeq())
+      .map((state) => this.selectors.getAllItems(state).valueSeq().toArray())
       .distinctUntilChanged()
       .shareReplay(1);
 
