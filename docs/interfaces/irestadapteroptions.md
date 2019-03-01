@@ -22,7 +22,7 @@
 
 **● apiUrl**: *`string`*
 
-*Defined in [Adapters/RestAdapter.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/ca68f8d/src/Adapters/RestAdapter.ts#L10)*
+*Defined in [Adapters/RestAdapter.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Adapters/RestAdapter.ts#L10)*
 
 ___
 

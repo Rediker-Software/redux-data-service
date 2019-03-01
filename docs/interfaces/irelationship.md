@@ -41,7 +41,7 @@ Classes which wish to use the `@relationship` decorator (or `@belongsTo` or `@ha
 
 *Inherited from [IFieldTypes](ifieldtypes.md).[fields](ifieldtypes.md#fields)*
 
-*Defined in [Model/Decorators/Field.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/ca68f8d/src/Model/Decorators/Field.ts#L14)*
+*Defined in [Model/Decorators/Field.ts:14](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Model/Decorators/Field.ts#L14)*
 
 ___
 <a id="relationships"></a>
@@ -50,7 +50,7 @@ ___
 
 **● relationships**: *`object`*
 
-*Defined in [Model/Decorators/Relationship.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/ca68f8d/src/Model/Decorators/Relationship.ts#L44)*
+*Defined in [Model/Decorators/Relationship.ts:44](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Model/Decorators/Relationship.ts#L44)*
 
 #### Type declaration
 
@@ -65,7 +65,7 @@ ___
 
 *Inherited from [IValidate](ivalidate.md).[validationRules](ivalidate.md#validationrules)*
 
-*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/ca68f8d/src/Model/Decorators/Validation.ts#L6)*
+*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Model/Decorators/Validation.ts#L6)*
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 ▸ **getRelated**(key: *`any`*): `any`
 
-*Defined in [Model/Decorators/Relationship.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/ca68f8d/src/Model/Decorators/Relationship.ts#L46)*
+*Defined in [Model/Decorators/Relationship.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Model/Decorators/Relationship.ts#L46)*
 
 **Parameters:**
 
@@ -94,7 +94,7 @@ ___
 
 ▸ **setRelated**(key: *`any`*, value: *`any`*): `void`
 
-*Defined in [Model/Decorators/Relationship.ts:48](https://github.com/Rediker-Software/redux-data-service/blob/ca68f8d/src/Model/Decorators/Relationship.ts#L48)*
+*Defined in [Model/Decorators/Relationship.ts:48](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Model/Decorators/Relationship.ts#L48)*
 
 **Parameters:**
 
@@ -114,7 +114,7 @@ ___
 
 *Inherited from [IValidate](ivalidate.md).[validate](ivalidate.md#validate)*
 
-*Defined in [Model/Decorators/Validation.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/ca68f8d/src/Model/Decorators/Validation.ts#L7)*
+*Defined in [Model/Decorators/Validation.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Model/Decorators/Validation.ts#L7)*
 
 **Returns:** [IModelKeys](../#imodelkeys)<`T`>
 
