@@ -27,7 +27,7 @@
 
 **● actions**: *[IActionCreators](iactioncreators.md)*
 
-*Defined in [Services/DataService/Interfaces/IContext.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Services/DataService/Interfaces/IContext.ts#L9)*
+*Defined in [Services/DataService/Interfaces/IContext.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Services/DataService/Interfaces/IContext.ts#L9)*
 
 ___
 <a id="adapter"></a>
@@ -36,7 +36,7 @@ ___
 
 **● adapter**: *[IAdapter](iadapter.md)<`any`>*
 
-*Defined in [Services/DataService/Interfaces/IContext.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Services/DataService/Interfaces/IContext.ts#L12)*
+*Defined in [Services/DataService/Interfaces/IContext.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Services/DataService/Interfaces/IContext.ts#L12)*
 
 ___
 <a id="mapper"></a>
@@ -45,7 +45,7 @@ ___
 
 **● mapper**: *[IMapper](imapper.md)<`any`>*
 
-*Defined in [Services/DataService/Interfaces/IContext.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Services/DataService/Interfaces/IContext.ts#L11)*
+*Defined in [Services/DataService/Interfaces/IContext.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Services/DataService/Interfaces/IContext.ts#L11)*
 
 ___
 <a id="name"></a>
@@ -54,7 +54,7 @@ ___
 
 **● name**: *`string`*
 
-*Defined in [Services/DataService/Interfaces/IContext.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Services/DataService/Interfaces/IContext.ts#L7)*
+*Defined in [Services/DataService/Interfaces/IContext.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Services/DataService/Interfaces/IContext.ts#L7)*
 
 ___
 <a id="serializer"></a>
@@ -63,7 +63,7 @@ ___
 
 **● serializer**: *[ISerializer](iserializer.md)<`any`>*
 
-*Defined in [Services/DataService/Interfaces/IContext.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Services/DataService/Interfaces/IContext.ts#L10)*
+*Defined in [Services/DataService/Interfaces/IContext.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Services/DataService/Interfaces/IContext.ts#L10)*
 
 ___
 <a id="types"></a>
@@ -72,7 +72,7 @@ ___
 
 **● types**: *[IActionTypes](iactiontypes.md)*
 
-*Defined in [Services/DataService/Interfaces/IContext.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Services/DataService/Interfaces/IContext.ts#L8)*
+*Defined in [Services/DataService/Interfaces/IContext.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Services/DataService/Interfaces/IContext.ts#L8)*
 
 ___
 

@@ -26,7 +26,7 @@
 
 ▸ **execute**(action$: *`ActionsObservable`<`any`>*, store: *`Store`<[IDataServiceStateRecord](../#idataservicestaterecord)<`any`>>*): `Observable`<[IAction](iaction.md)<`any`>>
 
-*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Services/DataService/Epics/FetchRecordEpic.ts#L26)*
+*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Services/DataService/Epics/FetchRecordEpic.ts#L26)*
 
 **Parameters:**
 

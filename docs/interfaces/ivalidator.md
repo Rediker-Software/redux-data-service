@@ -9,7 +9,7 @@
 ## Callable
 ▸ **__call**(validate: *`validateJS.ValidateJS`*): `void`
 
-*Defined in [Initializers/InitializeValidateJS.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Initializers/InitializeValidateJS.ts#L6)*
+*Defined in [Initializers/InitializeValidateJS.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Initializers/InitializeValidateJS.ts#L6)*
 
 **Parameters:**
 

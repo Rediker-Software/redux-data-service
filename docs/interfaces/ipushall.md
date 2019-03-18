@@ -24,7 +24,7 @@
 
 **● items**: *[IModel](imodel.md)<`T`>[]*
 
-*Defined in [Services/DataService/Reducers/PushAllReducer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/d4786b8/src/Services/DataService/Reducers/PushAllReducer.ts#L6)*
+*Defined in [Services/DataService/Reducers/PushAllReducer.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Services/DataService/Reducers/PushAllReducer.ts#L6)*
 
 ___
 
