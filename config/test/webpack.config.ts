@@ -59,10 +59,9 @@ export default new Config().extend({
       },
     ],
   },
-  watch: true,
   watchOptions: {
-    aggregateTimeout: 300,
-    poll: 1000,
+    aggregateTimeout: 0,
+    poll: 10,
     ignored: /node_modules/,
   },
   plugins: [
