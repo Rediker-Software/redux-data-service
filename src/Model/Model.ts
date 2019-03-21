@@ -710,6 +710,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     return !this.isShadow && this.modelData.id && this.modelData.id.startsWith("new");
   }
 
+  /** Create a clone of the model without any of the unsaved changes */
   public original() {
     const service = getDataService(this.serviceName);
     return new service.ModelClass(this.modelData);
