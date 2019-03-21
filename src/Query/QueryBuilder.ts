@@ -144,7 +144,7 @@ export class QueryBuilder implements IQueryBuilder {
     const sortObject = { key, direction };
 
     if (position >= 0) {
-      sortArray.splice(position, 0, sortObject);
+      sortArray.splice(position, existingObject ? 1 : 0, sortObject);
     } else {
       sortArray.push(sortObject);
     }
