@@ -389,8 +389,8 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     const fetchRecordEpic = new FetchRecordEpic(this);
 
     epics.push(
-      cancelRequestEpic.bind(this),
-      createRecordEpic(this),
+      cancelRequestEpic(this).bind(this),
+      createRecordEpic(this).bind(this),
       fetchRecordEpic.execute.bind(fetchRecordEpic),
       this.fetchAllEpic.bind(this),
       this.updateRecordEpic.bind(this),
