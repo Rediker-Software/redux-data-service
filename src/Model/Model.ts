@@ -711,9 +711,9 @@ export class Model<T extends IModelData> implements IModel<T> {
   }
 
   /** Create a clone of the model without any of the unsaved changes */
-  public original() {
+  public original(): this {
     const service = getDataService(this.serviceName);
-    return new service.ModelClass(this.modelData);
+    return new service.ModelClass(this.modelData) as this;
   }
 
   public getFieldError(fieldName) {
