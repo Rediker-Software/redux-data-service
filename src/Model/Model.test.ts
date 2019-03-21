@@ -1170,6 +1170,25 @@ describe("Model", () => {
     });
   });
 
+  describe("Model#isFieldDirty", () => {
+    it("does not consider the model to be dirty when no changes are made", () => {
+      initializeTestServices(fakeModelModule);
+
+      const model = seedService<IFakeModelData>("fakeModel");
+
+      expect(model.isFieldDirty("fullText")).to.be.false;
+    });
+
+    it("considers the model to be dirty when a field has changed", () => {
+      initializeTestServices(fakeModelModule);
+
+      let model = seedService<IFakeModelData>("fakeModel");
+      model = model.applyUpdates({ fullText: lorem.word() });
+
+      expect(model.isFieldDirty("fullText")).to.be.true;
+    });
+  });
+
   describe("Model#isDirty", () => {
 
     it("considers the model to be dirty when a field has changed", () => {

@@ -41,6 +41,7 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   forceReload(): void;
   applyUpdates(changes?: Partial<T>, meta?: Partial<IModelMeta<T>>, relationships?: any): IModel<T>;
   initializeNewModel(): void;
+  isFieldDirty(fieldName: keyof T): boolean;
   markForDestruction(): void;
   parseFieldValue(fieldName: string, value: any): Promise<any>;
   getServiceForRelationship(relationshipKey: string): DataService<any>;
