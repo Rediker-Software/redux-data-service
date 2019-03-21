@@ -59,6 +59,12 @@ export default new Config().extend({
       },
     ],
   },
+  watch: true,
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000,
+    ignored: /node_modules/,
+  },
   plugins: [
     new TsConfigPathsPlugin({configFileName: "config/test/tsconfig.json"}),
     new TSLintPlugin({ config: "tslint.json", files: "src/**/*.{ts,tsx}" }),

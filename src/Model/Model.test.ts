@@ -9,7 +9,7 @@ import { lorem, random } from "faker";
 import { initializeValidateJS } from "../Initializers";
 
 import { Model } from "./Model";
-import { IFakeModel, IFakeModelData } from "./Model.mock";
+import { FakeModel, IFakeModel, IFakeModelData } from "./Model.mock";
 import { IModelData } from "./IModel";
 
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
@@ -1424,8 +1424,7 @@ describe("Model", () => {
       initializeTestServices(fakeModelModule);
       const model = seedService<IFakeModelData>("fakeModel") as IFakeModel;
 
-      const service = getDataService(model.serviceName);
-      expect(model).to.be.an.instanceOf(service);
+      expect(model.original()).to.be.an.instanceOf(FakeModel);
     });
 
     it("return the model without any updates", () => {
@@ -1433,14 +1432,14 @@ describe("Model", () => {
       const originalModel = seedService<IFakeModelData>("fakeModel") as IFakeModel;
       const updatedModel = originalModel.applyUpdates({ fullText: "newText" });
 
-      expect(updatedModel.original).to.have.property("fullText").eq(originalModel.fullText);
+      expect(updatedModel.original()).to.have.property("fullText").eq(originalModel.fullText);
     });
 
     it("returns the model which matches the model data", () => {
       initializeTestServices(fakeModelModule);
       const model = seedService<IFakeModelData>("fakeModel") as IFakeModel;
 
-      expect(model.original).to.have.property("modelData").eq((model as any).modelData);
+      expect(model.original()).to.have.property("modelData").eq((model as any).modelData);
     });
   });
 });
