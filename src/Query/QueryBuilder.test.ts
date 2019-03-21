@@ -474,6 +474,28 @@ describe("QueryBuilder", () => {
       );
     });
 
+    it("splices the sort into the list if the key exists", () => {
+      const key1 = lorem.word();
+      const key2 = lorem.word();
+      const key3 = lorem.word();
+
+      const currentQueryParams = {
+        sort: [
+          { key: key1, direction: "asc" as SortDirection },
+          { key: key2, direction: "desc" as SortDirection },
+          { key: key3, direction: "desc" as SortDirection },
+        ],
+      };
+
+      const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
+
+      const sortedQuery = query.sort(key2, "asc");
+
+      expect(sortedQuery.queryParams.sort[1]).to.deep.equal(
+        { key: key2, direction: "asc" },
+      );
+    });
+
   });
 
   describe("removing sort criteria", () => {

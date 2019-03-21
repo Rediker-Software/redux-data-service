@@ -131,20 +131,28 @@ export class QueryBuilder implements IQueryBuilder {
   }
 
   public sort(key: string, direction: SortDirection = "asc", position?: number): IQueryBuilder {
-    const queryParams = {
-      ...this.queryParams,
-    };
+    const sortArray = this.queryParams.sort != null 
+      ? [...this.queryParams.sort]
+      : [];
 
-    if (position >= 0 && queryParams.sort && queryParams.sort.length >= 0) {
-      queryParams.sort = [...queryParams.sort];
-      queryParams.sort.splice(position, 0, { key, direction });
-    } else if (queryParams.sort) {
-      queryParams.sort = [...queryParams.sort, { key, direction }];
+    const existingObject = sortArray.find(s => s.key === key);
+    
+    if (existingObject) {
+      position = sortArray.indexOf(existingObject);
+    }
+    
+    const sortObject = { key, direction };
+
+    if (position >= 0) {
+      sortArray.splice(position, 0, sortObject);
     } else {
-      queryParams.sort = [{ key, direction }];
+      sortArray.push(sortObject);
     }
 
-    return new QueryBuilder(this.serviceName, queryParams);
+    return new QueryBuilder(this.serviceName, { 
+      ...this.queryParams,
+      sort: sortArray,
+    });
   }
 
   public removeSort(key: string): IQueryBuilder {
