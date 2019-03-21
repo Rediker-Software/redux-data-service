@@ -8,7 +8,7 @@ import { Subject } from "rxjs/Subject";
 
 import { createMockStore } from "redux-test-utils";
 import { ActionsObservable } from "redux-observable";
-import { match, spy, stub } from "sinon";
+import { spy, stub } from "sinon";
 import { lorem, random } from "faker";
 
 import { createMockServiceState } from "../../TestUtils";

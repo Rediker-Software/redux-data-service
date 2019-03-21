@@ -7,7 +7,7 @@ import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 import { IModelId } from "../DataService";
 import { IContext } from "../Interfaces/IContext";
 
-export const createRecordEpic = ({ actions, adapter, mapper, serializer, types }: IContext): any => {
+export const createRecordEpic = ({ actions, adapter, mapper, name, serializer, types }: IContext): any => {
   return (action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<any>>)  => {
     return action$.ofType(types.CREATE_RECORD)
       .mergeMap(action =>
@@ -15,7 +15,8 @@ export const createRecordEpic = ({ actions, adapter, mapper, serializer, types }
           .mergeMap(async model => await mapper.transform(model))
           .mergeMap(async mappedModel => await serializer.serialize(mappedModel))
           .do(() =>  actions.addCancelableRequest(action.payload).invoke())
-          .mergeMap(serializedModel => adapter.createItem(serializedModel))
+          .mergeMap(serializedModel => adapter.createItem(serializedModel)
+            .takeUntil(store.getState()[name].get("cancelableRequests").get(action.payload.id)))
           .do(
             () => actions.removeCancelableRequest(action.payload).invoke(),
             () => actions.removeCancelableRequest(action.payload).invoke(),
