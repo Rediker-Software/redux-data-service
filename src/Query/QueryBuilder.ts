@@ -25,6 +25,9 @@ export interface IQueryBuilder {
   /** Remove the given sorting param from the query. */
   removeSort: (key: string) => IQueryBuilder;
 
+  /** Get the sort direction for a given key */
+  getSortDirection: (key: string) => SortDirection | undefined;
+
   /** Add the given filtering criteria to the query. */
   filter: (key: string, value: FilterValue | FilterValue[]) => IQueryBuilder;
 
@@ -185,4 +188,12 @@ export class QueryBuilder implements IQueryBuilder {
     return this.hashCode;
   }
 
+  public getSortDirection(key: string) {
+    const sort = this.queryParams.sort;
+    const sortObject = sort 
+      ? sort.find(s => s.key === key)
+      : null;
+
+    return sortObject ? sortObject.direction || "asc" : undefined;
+  }
 }
