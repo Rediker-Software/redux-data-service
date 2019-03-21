@@ -29,6 +29,7 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   readonly hasUnsavedChanges: boolean;
   readonly isNew: boolean;
   readonly serviceName: string;
+  readonly original: IModel<this>;
   parentModel: IModel<any>;
   parentModelId?: string;
   save(): Promise<IModel<T>>;
@@ -46,7 +47,6 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   parseFieldValue(fieldName: string, value: any): Promise<any>;
   getServiceForRelationship(relationshipKey: string): DataService<any>;
   getFieldError(fieldName: string): string | undefined;
-  original(): IModel<this>;
 }
 
 export interface IModelFactory<T extends IModelData> {

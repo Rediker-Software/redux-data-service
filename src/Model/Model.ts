@@ -710,7 +710,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     return !this.isShadow && this.modelData.id && this.modelData.id.startsWith("new");
   }
 
-  public original() {
+  public get original() {
     const service = getDataService(this.serviceName);
     return new service.ModelClass(this.modelData);
   }
