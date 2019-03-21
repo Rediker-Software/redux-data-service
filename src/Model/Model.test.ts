@@ -1282,8 +1282,6 @@ describe("Model", () => {
     });
 
     it("does not consider the model to be dirty when the model has not been changed", () => {
-      initializeTestServices(fakeModelModule);
-
       const model = seedService<IFakeModelData>("fakeModel");
 
       expect(model.isDirty).to.be.false;
@@ -1294,8 +1292,6 @@ describe("Model", () => {
   describe("Model#hasUnsavedChanges", () => {
 
     it("considers the model to have unsaved changes when one of its own fields has changed", () => {
-      initializeTestServices(fakeModelModule);
-
       let model = seedService<IFakeModelData>("fakeModel");
       model = model.applyUpdates({ fullText: lorem.word() });
 
@@ -1303,8 +1299,6 @@ describe("Model", () => {
     });
 
     it("considers the model to have unsaved changes when one of its previously loaded related models has changed", () => {
-      initializeTestServices(fakeModelModule);
-
       const model = seedService<IFakeModelData>("fakeModel") as any;
       model.relatedModels = { someRelatedModel: { isDirty: true } };
 
@@ -1312,8 +1306,6 @@ describe("Model", () => {
     });
 
     it("does not consider the model to have unsaved changes when the model and its relationships have not been changed", () => {
-      initializeTestServices(fakeModelModule);
-
       const model = seedService<IFakeModelData>("fakeModel") as any;
       model.relatedModels = { someRelatedModel: { isDirty: false } };
 
@@ -1324,8 +1316,6 @@ describe("Model", () => {
 
   describe("Model#parseFieldValue", () => {
     it("parses the given value using the specified fieldName", async () => {
-      initializeTestServices(fakeModelModule);
-
       const model = seedService<IFakeModelData>("fakeModel");
       const value = await model.parseFieldValue("fullText", 4);
 
@@ -1384,7 +1374,6 @@ describe("Model", () => {
     });
 
     it("returns the expected parent model", () => {
-      initializeTestServices(fakeModelModule);
       const relatedModel = seedService("fakeModel");
 
       const model = seedService<IFakeModelData>("fakeModel", {
@@ -1398,7 +1387,6 @@ describe("Model", () => {
     });
 
     it("attempting to save the nested model will save the parent model when serializeThroughParent = true", () => {
-      initializeTestServices(fakeModelModule);
       const relatedModel = seedService("fakeModel");
 
       const saveModelStub = stub(relatedModel, "save");
