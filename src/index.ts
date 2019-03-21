@@ -1,6 +1,7 @@
 export * from "./Adapters";
 export * from "./Configure";
 export * from "./Initializers";
+export * from "./Omit";
 export * from "./Mapper";
 export * from "./Model";
 export * from "./Serializers";

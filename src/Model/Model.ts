@@ -279,6 +279,24 @@ export class Model<T extends IModelData> implements IModel<T> {
   }
 
   /**
+   * Dispatch an action to Redux to delete the Model
+   */
+  public delete(): Promise<IModel<T>> {
+    if (this.isNew) {
+      this.unload();
+      return Promise.resolve(this);
+    }
+    return new Promise((resolve, reject) => {
+      const service = getDataService(this.serviceName);
+      const action = service.actions.deleteRecord;
+      action({ id: this.id }, {
+        onSuccess: (model) => resolve(model),
+        onError: (error) => reject("xhr" in error ? error.xhr.response : error),
+      }).invoke();
+    });
+  }
+
+  /**
    * Dispatch an action to Redux to reset the Model to its original state.
    * Note: new items will be removed from the Redux store.
    *
