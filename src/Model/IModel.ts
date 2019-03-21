@@ -28,6 +28,7 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   readonly isDirty: boolean;
   readonly hasUnsavedChanges: boolean;
   readonly isNew: boolean;
+  readonly original: IModel<this>;
   readonly serviceName: string;
   parentModel: IModel<any>;
   parentModelId?: string;

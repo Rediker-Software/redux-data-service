@@ -9,7 +9,7 @@ import { lorem, random } from "faker";
 import { initializeValidateJS } from "../Initializers";
 
 import { Model } from "./Model";
-import { IFakeModelData } from "./Model.mock";
+import { IFakeModel, IFakeModelData } from "./Model.mock";
 import { IModelData } from "./IModel";
 
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
@@ -22,7 +22,7 @@ import {
 
 import {
   BaseService,
-  DataService,
+  DataService, getDataService,
   registerService,
 } from "../Services";
 
@@ -1416,6 +1416,27 @@ describe("Model", () => {
       model.saveModel();
 
       expect(saveModelStub.calledOnce).to.be.true;
+    });
+  });
+
+  describe("Model#original", () => {
+    it("returns a model", () => {
+      initializeTestServices(fakeModelModule);
+      const originalModel = seedService<IFakeModelData>("fakeModel") as IFakeModel;
+      const updatedModel = originalModel.applyUpdates({ fullText: "newText" });
+
+      const service = getDataService(originalModel.serviceName);
+      expect(updatedModel).to.be.an.instanceOf(service);
+    });
+
+    it("return the model without any updates", () => {
+      initializeTestServices(fakeModelModule);
+      const originalModel = seedService<IFakeModelData>("fakeModel") as IFakeModel;
+      const updatedModel = originalModel.applyUpdates({ fullText: "newText" });
+
+      expect(updatedModel.original).to.have.property("fullText").eq(originalModel.fullText);
+
+      debugger;
     });
   });
 });
