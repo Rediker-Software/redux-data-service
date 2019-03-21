@@ -1,7 +1,7 @@
 // tslint:disable no-unused-expression
 
 import { spy, stub } from "sinon";
-import { lorem, random } from "faker";
+import { random } from "faker";
 
 import { IQueryBuilder, QueryBuilder, SortDirection } from "./QueryBuilder";
 import { initializeTestServices } from "../TestUtils";
@@ -410,11 +410,11 @@ describe("QueryBuilder", () => {
 
     it("places the sort in a position specified by the parameter", () => {
       const position = random.number({ max: 4 });
-      const key1 = lorem.word();
-      const key2 = lorem.word();
-      const key3 = lorem.word();
-      const key4 = lorem.word();
-      const key5 = lorem.word();
+      const key1 = random.number().toString();
+      const key2 = random.number().toString();
+      const key3 = random.number().toString();
+      const key4 = random.number().toString();
+      const key5 = random.number().toString();
 
       const currentQueryParams = {
         sort: [
@@ -438,7 +438,7 @@ describe("QueryBuilder", () => {
       const currentQueryParams = {};
 
       const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
-      const sortedQuery = query.sort(lorem.word());
+      const sortedQuery = query.sort(random.number().toString());
 
       expect(sortedQuery.queryParams.sort).to.exist;
     });
@@ -448,15 +448,15 @@ describe("QueryBuilder", () => {
 
       const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
 
-      const sortedQuery = query.sort(lorem.word());
+      const sortedQuery = query.sort(random.number().toString());
 
       expect(sortedQuery.queryParams.sort.length).to.equal(1);
     });
 
     it("pushes the sort onto the end of the list if no position is specified", () => {
-      const key1 = lorem.word();
-      const key2 = lorem.word();
-      const key3 = lorem.word();
+      const key1 = random.number().toString();
+      const key2 = random.number().toString();
+      const key3 = random.number().toString();
 
       const currentQueryParams = {
         sort: [
@@ -472,6 +472,48 @@ describe("QueryBuilder", () => {
       expect(sortedQuery.queryParams.sort[2]).to.deep.equal(
         { key: key3, direction: "asc" },
       );
+    });
+
+    it("splices the sort into the list if the key exists", () => {
+      const key1 = random.number().toString();
+      const key2 = random.number().toString();
+      const key3 = random.number().toString();
+
+      const currentQueryParams = {
+        sort: [
+          { key: key1, direction: "asc" as SortDirection },
+          { key: key2, direction: "desc" as SortDirection },
+          { key: key3, direction: "desc" as SortDirection },
+        ],
+      };
+
+      const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
+
+      const sortedQuery = query.sort(key2, "asc");
+
+      expect(sortedQuery.queryParams.sort[1]).to.deep.equal(
+        { key: key2, direction: "asc" },
+      );
+    });
+
+    it("maintains the same list length", () => {
+      const key1 = random.number().toString();
+      const key2 = random.number().toString();
+      const key3 = random.number().toString();
+
+      const currentQueryParams = {
+        sort: [
+          { key: key1, direction: "asc" as SortDirection },
+          { key: key2, direction: "desc" as SortDirection },
+          { key: key3, direction: "desc" as SortDirection },
+        ],
+      };
+
+      const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
+
+      const sortedQuery = query.sort(key2, "asc");
+
+      expect(sortedQuery.queryParams.sort.length).to.equal(3);
     });
 
   });
@@ -666,6 +708,39 @@ describe("QueryBuilder", () => {
 
       expect(newQuery.getHashCode())
         .to.not.equal(query.getHashCode());
+    });
+
+  });
+
+  describe("getSortDirection", () => {
+
+    it("gets the sortDirection for a given key", () => {
+      const sortColumnName = random.number().toString();
+      const query = new QueryBuilder(serviceName, { sort: [{ key: sortColumnName, direction: "desc" }] });
+
+      const direction = query.getSortDirection(sortColumnName);
+
+      expect(direction).to.equal("desc");
+    });
+
+    it("falls back to ascending if the direction is undefined", () => {
+      const sortColumnName = random.number().toString();
+      const query = new QueryBuilder(serviceName, { sort: [{ key: sortColumnName }] });
+
+      const direction = query.getSortDirection(sortColumnName);
+
+      expect(direction).to.equal("asc");
+    });
+
+    it("returns undefined for a non-existent sort object", () => {
+      const sortColumnName = random.number().toString();
+      const nameAddition = random.number().toString();
+      const query = new QueryBuilder(serviceName, { sort: [{ key: sortColumnName }] });
+
+      const notFoundName = `${sortColumnName}${nameAddition}`;
+      const direction = query.getSortDirection(notFoundName);
+
+      expect(direction).to.be.undefined;
     });
 
   });
