@@ -46,7 +46,6 @@ import {
 
 import {
   addCancelableRequestReducer,
-  cancelRequestReducer,
   fetchAllReducer,
   ISetMetaField,
   pushAllReducer,
@@ -66,7 +65,7 @@ import { shouldFetchAll } from "./ShouldFetchAll";
 import { IForceReload } from "./IForceReload";
 import { IPostActionHandlers } from "./IPostActionHandlers";
 import { ISetField } from "./ISetField";
-import { FetchRecordEpic } from "./Epics/FetchRecordEpic";
+import { cancelRequestEpic, createRecordEpic, FetchRecordEpic } from "./Epics";
 
 export interface IModelId {
   id: string;
@@ -367,7 +366,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     return {
       ...reducers,
       [this.types.ADD_CANCELABLE_REQUEST]: addCancelableRequestReducer,
-      [this.types.CANCEL_REQUEST]: cancelRequestReducer,
       [this.types.FETCH_ALL]: fetchAllReducer,
       [this.types.PUSH_ALL]: pushAllReducer,
       [this.types.PUSH_RECORD]: pushRecordReducer,
@@ -391,9 +389,10 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     const fetchRecordEpic = new FetchRecordEpic(this);
 
     epics.push(
-      this.fetchAllEpic.bind(this),
+      cancelRequestEpic.bind(this),
+      createRecordEpic(this),
       fetchRecordEpic.execute.bind(fetchRecordEpic),
-      this.createRecordEpic.bind(this),
+      this.fetchAllEpic.bind(this),
       this.updateRecordEpic.bind(this),
       this.patchRecordEpic.bind(this),
       this.deleteRecordEpic.bind(this),
@@ -424,32 +423,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
               errors: e && "xhr" in e ? e.xhr.response : e,
               isLoading: false,
             }),
-          )),
-      );
-  }
-
-  public createRecordEpic(action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<T>>) {
-    return action$.ofType(this.types.CREATE_RECORD)
-      .mergeMap(action =>
-        of$(this.selectors.getItem(store.getState(), action.payload.id))
-          .mergeMap(async model => await this.mapper.transform(model))
-          .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel))
-          .do(() => {
-            this.actions.addCancelableRequest(action.payload).invoke();
-          })
-          .mergeMap(serializedModel => this.adapter.createItem(serializedModel)
-              .takeUntil(store.getState()[this.name].get("cancelableRequests").get(action.payload.id)))
-          .do(
-            () => this.actions.removeCancelableRequest(action.payload).invoke(),
-            () => this.actions.removeCancelableRequest(action.payload).invoke(),
-          )
-          .mergeMap(async response => await this.serializer.deserialize(response))
-          .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
-          .do(action.meta.onSuccess, action.meta.onError)
-          .map(this.actions.pushRecord)
-          .concat(of$(this.actions.unloadRecord(action.payload)))
-          .catch((e) => of$(
-            this.actions.setMetaField({ id: action.payload.id, errors: e.xhr.response || e }),
           )),
       );
   }
