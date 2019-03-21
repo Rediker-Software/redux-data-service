@@ -22,7 +22,7 @@ import {
 
 import {
   BaseService,
-  DataService, getDataService,
+  DataService,
   registerService,
 } from "../Services";
 
@@ -42,6 +42,10 @@ const { expect } = intern.getPlugin("chai");
 describe("Model", () => {
   before(() => {
     initializeValidateJS();
+  });
+
+  beforeEach(() => {
+    initializeTestServices(fakeModelModule);
   });
 
   describe("Fields", () => {
@@ -1255,16 +1259,12 @@ describe("Model", () => {
 
   describe("Model#isFieldDirty", () => {
     it("does not consider the model to be dirty when no changes are made", () => {
-      initializeTestServices(fakeModelModule);
-
       const model = seedService<IFakeModelData>("fakeModel");
 
       expect(model.isFieldDirty("fullText")).to.be.false;
     });
 
     it("considers the model to be dirty when a field has changed", () => {
-      initializeTestServices(fakeModelModule);
-
       let model = seedService<IFakeModelData>("fakeModel");
       model = model.applyUpdates({ fullText: lorem.word() });
 
@@ -1275,8 +1275,6 @@ describe("Model", () => {
   describe("Model#isDirty", () => {
 
     it("considers the model to be dirty when a field has changed", () => {
-      initializeTestServices(fakeModelModule);
-
       let model = seedService<IFakeModelData>("fakeModel");
       model = model.applyUpdates({ fullText: lorem.word() });
 
@@ -1421,14 +1419,12 @@ describe("Model", () => {
 
   describe("Model#original", () => {
     it("returns a model", () => {
-      initializeTestServices(fakeModelModule);
       const model = seedService<IFakeModelData>("fakeModel") as IFakeModel;
 
       expect(model.original()).to.be.an.instanceOf(FakeModel);
     });
 
     it("return the model without any updates", () => {
-      initializeTestServices(fakeModelModule);
       const originalModel = seedService<IFakeModelData>("fakeModel") as IFakeModel;
       const updatedModel = originalModel.applyUpdates({ fullText: "newText" });
 
@@ -1436,7 +1432,6 @@ describe("Model", () => {
     });
 
     it("returns the model which matches the model data", () => {
-      initializeTestServices(fakeModelModule);
       const model = seedService<IFakeModelData>("fakeModel") as IFakeModel;
 
       expect(model.original()).to.have.property("modelData").eq((model as any).modelData);
