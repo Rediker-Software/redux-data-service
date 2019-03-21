@@ -1422,11 +1422,10 @@ describe("Model", () => {
   describe("Model#original", () => {
     it("returns a model", () => {
       initializeTestServices(fakeModelModule);
-      const originalModel = seedService<IFakeModelData>("fakeModel") as IFakeModel;
-      const updatedModel = originalModel.applyUpdates({ fullText: "newText" });
+      const model = seedService<IFakeModelData>("fakeModel") as IFakeModel;
 
-      const service = getDataService(originalModel.serviceName);
-      expect(updatedModel).to.be.an.instanceOf(service);
+      const service = getDataService(model.serviceName);
+      expect(model).to.be.an.instanceOf(service);
     });
 
     it("return the model without any updates", () => {
@@ -1435,8 +1434,13 @@ describe("Model", () => {
       const updatedModel = originalModel.applyUpdates({ fullText: "newText" });
 
       expect(updatedModel.original).to.have.property("fullText").eq(originalModel.fullText);
+    });
 
-      debugger;
+    it("returns the model which matches the model data", () => {
+      initializeTestServices(fakeModelModule);
+      const model = seedService<IFakeModelData>("fakeModel") as IFakeModel;
+
+      expect(model.original).to.have.property("modelData").eq((model as any).modelData);
     });
   });
 });
