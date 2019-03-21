@@ -18,7 +18,7 @@ describe("addCancelableRequestReducer", () => {
   });
 
   it("adds a Subject to the state with the given id as a key", () => {
-    const idToAdd = random.number();
+    const idToAdd = random.number().toString();
     const newState = addCancelableRequestReducer(state, {
       type: random.word(),
       invoke: spy(),
@@ -29,7 +29,7 @@ describe("addCancelableRequestReducer", () => {
   });
 
   it("replaces the existing item in the state if one exists with its id", () => {
-    const idToAdd = random.number();
+    const idToAdd = random.number().toString();
     let newState = addCancelableRequestReducer(state, {
       type: random.word(),
       invoke: spy(),
