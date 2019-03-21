@@ -682,7 +682,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    *
    * @returns {boolean}
    */
-  public isFieldDirty(fieldName: keyof T) {
+  public isFieldDirty(fieldName: keyof T | string) {
     if (isEmpty(this.meta.changes)) {
       return false;
     } else {
