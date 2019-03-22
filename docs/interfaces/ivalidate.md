@@ -30,7 +30,7 @@
 
 **● validationRules**: *[IModelKeys](../#imodelkeys)<`T`>*
 
-*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Model/Decorators/Validation.ts#L6)*
+*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/c6db69b/src/Model/Decorators/Validation.ts#L6)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 ▸ **validate**(): [IModelKeys](../#imodelkeys)<`T`>
 
-*Defined in [Model/Decorators/Validation.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/5fcb9dc/src/Model/Decorators/Validation.ts#L7)*
+*Defined in [Model/Decorators/Validation.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/c6db69b/src/Model/Decorators/Validation.ts#L7)*
 
 **Returns:** [IModelKeys](../#imodelkeys)<`T`>
 
