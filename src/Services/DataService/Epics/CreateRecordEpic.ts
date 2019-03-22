@@ -15,11 +15,11 @@ import { IDataServiceStateRecord } from "../DataServiceStateRecord";
 import { IModelId } from "../DataService";
 import { IContext } from "../Interfaces/IContext";
 
-export const createRecordEpic = ({ actions, adapter, mapper, serializer, types }: IContext): any => {
+export const createRecordEpic = ({ actions, adapter, mapper, name, serializer, types }: IContext): any => {
   return (action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<any>>) =>
     action$.ofType(types.CREATE_RECORD)
       .mergeMap(action =>
-        of$(store.getState().items.get(action.payload.id))
+        of$(store.getState()[name].items.get(action.payload.id))
           .mergeMap(async model => await mapper.transform(model))
           .mergeMap(async mappedModel => await serializer.serialize(mappedModel))
           .mergeMap(serializedModel => (

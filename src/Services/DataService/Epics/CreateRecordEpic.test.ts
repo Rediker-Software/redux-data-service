@@ -37,13 +37,16 @@ describe("CreateRecordEpic", () => {
       fullText: newModel.fullText,
     };
 
-    store = createMockStore(DataServiceStateRecord({
-      items: Map({
-        [newModel.id]: newModel,
+    store = createMockStore({
+      testModel: DataServiceStateRecord({
+        items: Map({
+          [newModel.id]: newModel,
+        }),
       }),
-    }));
+    });
 
     context = {
+      name: "testModel",
       types: {
         CREATE_RECORD: "CREATE_RECORD",
         CANCEL_REQUEST: "CANCEL_REQUEST",
