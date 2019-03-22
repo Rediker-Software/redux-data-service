@@ -25,7 +25,7 @@ Used in an action's meta, such that an epic will call the given callbacks when a
 
 **● onError**: *`function`*
 
-*Defined in [Services/DataService/IPostActionHandlers.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/c6db69b/src/Services/DataService/IPostActionHandlers.ts#L4)*
+*Defined in [Services/DataService/IPostActionHandlers.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/22c168c/src/Services/DataService/IPostActionHandlers.ts#L4)*
 
 #### Type declaration
 ▸(errors: *`any`*): `void`
@@ -45,7 +45,7 @@ ___
 
 **● onSuccess**: *`function`*
 
-*Defined in [Services/DataService/IPostActionHandlers.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/c6db69b/src/Services/DataService/IPostActionHandlers.ts#L3)*
+*Defined in [Services/DataService/IPostActionHandlers.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/22c168c/src/Services/DataService/IPostActionHandlers.ts#L3)*
 
 #### Type declaration
 ▸(data: *`any`*): `void`
