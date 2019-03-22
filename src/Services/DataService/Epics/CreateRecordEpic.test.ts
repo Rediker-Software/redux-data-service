@@ -8,7 +8,7 @@ import { of as of$ } from "rxjs/observable/of";
 import { interval as interval$, interval } from "rxjs/observable/interval";
 
 import { random } from "faker";
-import { stub } from "sinon";
+import { spy, stub } from "sinon";
 
 import { FakeModel } from "../../../Model";
 import { createRecordEpic as CreateRecordEpic } from "./CreateRecordEpic";
@@ -18,10 +18,9 @@ declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
 const { expect } = intern.getPlugin("chai");
 
-const noop = () => null;
-
 describe("CreateRecordEpic", () => {
   let context;
+  let createRecordAction;
   let createRecordEpic;
   let newModel;
   let savedModel;
@@ -42,7 +41,6 @@ describe("CreateRecordEpic", () => {
       items: Map({
         [newModel.id]: newModel,
       }),
-      cancelableRequests: Map(),
     }));
 
     context = {
@@ -65,9 +63,7 @@ describe("CreateRecordEpic", () => {
         })),
       },
       adapter: {
-        createItem: stub().callsFake(serializedModel => {
-          return of$(JSON.stringify(newModel));
-        }),
+        createItem: stub().returns(of$(JSON.stringify(savedModel))),
       },
       mapper: {
         normalize: stub().callsFake(modelData => new FakeModel(modelData)),
@@ -80,111 +76,92 @@ describe("CreateRecordEpic", () => {
     };
 
     createRecordEpic = CreateRecordEpic(context);
-  });
 
-  // it("should call normalize after deserialize", () => {
-  //   const createRecordAction = ActionsObservable.of({
-  //     type: context.types.CREATE_RECORD,
-  //     payload: { id: newModel.id },
-  //     meta: { onSuccess: stub(), onError: stub() },
-  //   });
-  //   return new Promise((resolve, reject) => {
-  //     createRecordEpic(createRecordAction, store)
-  //       .subscribe(() => {
-  //         try {
-  //           expect(context.mapper.normalize.firstCall.args[0]).to.equal(savedModel);
-  //           resolve();
-  //         } catch (e) {
-  //           reject(e);
-  //         }
-  //       });
-  //   });
-  // });
-
-  // it("should prevent adapter.createItem from emitting when a cancel request is received", () => {
-  //   const createRecordAction = of$({
-  //     type: context.types.CREATE_RECORD,
-  //     payload: { id: newModel.id },
-  //     meta: { onSuccess: stub(), onError: stub() },
-  //   });
-
-  //   const fakeAction = {
-  //     ofType: (actionType) => {
-  //       if (actionType === context.types.CREATE_RECORD) {
-  //         return createRecordAction;
-  //       } else if (actionType === context.types.CANCEL_REQUEST) {
-  //         return of$({
-  //           type: context.types.CANCEL_REQUEST,
-  //           payload: { id: newModel.id },
-  //         });
-  //       } else {
-  //         return of$({});
-  //       }
-  //     },
-  //   };
-
-  //   context.adapter.createItem = interval$(500);
-
-  //   return new Promise((resolve, reject) => {
-  //     createRecordEpic(fakeAction, store)
-  //     .subscribe(noop, noop,
-  //       () => {
-  //         try {
-  //           expect(context.serializer.deserialize.callCount).to.equal(0, "it should not call deserialize");
-  //           resolve();
-  //         } catch (e) {
-  //           reject(e);
-  //         }
-  //       });
-  //   });
-  // });
-
-  // it("should not prevent adapter.createItem from emitting when a cancel request is not received", () => {
-  //   const createRecordAction = of$({
-  //     type: context.types.CREATE_RECORD,
-  //     payload: { id: newModel.id },
-  //     meta: { onSuccess: stub(), onError: stub() },
-  //   });
-
-  //   const fakeAction = {
-  //     ofType: (actionType) => {
-  //       if (actionType === context.types.CREATE_RECORD) {
-  //         return createRecordAction;
-  //       } else if (actionType === context.types.CANCEL_REQUEST) {
-  //         return interval(500).mapTo({
-  //           type: context.types.CANCEL_REQUEST,
-  //           payload: { id: newModel.id },
-  //         });
-  //       } else {
-  //         return of$({});
-  //       }
-  //     },
-  //   };
-
-  //   return new Promise((resolve, reject) => {
-  //     createRecordEpic(fakeAction, store)
-  //     .subscribe(noop, noop,
-  //       () => {
-  //         try {
-  //           expect(context.serializer.deserialize.callCount).to.equal(1, "it should call deserialize");
-  //           resolve();
-  //         } catch (e) {
-  //           reject(e);
-  //         }
-  //       });
-  //   });
-  // });
-
-  it("should serialize the result from transform", () => {
-    const createRecordAction = ActionsObservable.of({
+    createRecordAction = ActionsObservable.of({
       type: context.types.CREATE_RECORD,
       payload: { id: newModel.id },
       meta: { onSuccess: stub(), onError: stub() },
     });
+  });
+
+  it("should call normalize after deserialize", () => {
     return new Promise((resolve, reject) => {
       createRecordEpic(createRecordAction, store)
-      .subscribe(noop, noop,
-        () => {
+        .subscribe(() => {
+          try {
+            expect(context.mapper.normalize.firstCall.args[0]).to.deep.equal(savedModel);
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        });
+    });
+  });
+
+  it("should prevent adapter.createItem from emitting when a cancel request is received", () => {
+    const fakeAction = {
+      ofType: (actionType) => {
+        if (actionType === context.types.CREATE_RECORD) {
+          return createRecordAction;
+        } else if (actionType === context.types.CANCEL_REQUEST) {
+          return of$({
+            type: context.types.CANCEL_REQUEST,
+            payload: { id: newModel.id },
+          });
+        } else {
+          return of$({});
+        }
+      },
+    };
+
+    context.adapter.createItem = interval$(500);
+
+    return new Promise((resolve, reject) => {
+      createRecordEpic(fakeAction, store)
+      .subscribe(() => {
+          try {
+            expect(context.serializer.deserialize.callCount).to.equal(0, "it should not call deserialize");
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        });
+    });
+  });
+
+  it("should not prevent adapter.createItem from emitting when a cancel request is not received", () => {
+    const fakeAction = {
+      ofType: (actionType) => {
+        if (actionType === context.types.CREATE_RECORD) {
+          return createRecordAction;
+        } else if (actionType === context.types.CANCEL_REQUEST) {
+          return interval(500).mapTo({
+            type: context.types.CANCEL_REQUEST,
+            payload: { id: newModel.id },
+          });
+        } else {
+          return of$({});
+        }
+      },
+    };
+
+    return new Promise((resolve, reject) => {
+      createRecordEpic(fakeAction, store)
+      .subscribe(() => {
+          try {
+            expect(context.serializer.deserialize.callCount).to.equal(1, "it should call deserialize");
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        });
+    });
+  });
+
+  it("should serialize the result from transform", () => {
+    return new Promise((resolve, reject) => {
+      createRecordEpic(createRecordAction, store)
+      .subscribe(() => {
           try {
             expect(context.serializer.serialize.firstCall.args[0]).to.equal(newModel);
             resolve();
@@ -196,15 +173,9 @@ describe("CreateRecordEpic", () => {
   });
 
   it("should call transform before serialize", () => {
-    const createRecordAction = ActionsObservable.of({
-      type: context.types.CREATE_RECORD,
-      payload: { id: newModel.id },
-      meta: { onSuccess: stub(), onError: stub() },
-    });
     return new Promise((resolve, reject) => {
       createRecordEpic(createRecordAction, store)
-      .subscribe(noop, noop,
-        () => {
+      .subscribe(() => {
           try {
             expect(context.mapper.transform.firstCall.args[0]).to.equal(newModel);
             resolve();
@@ -215,50 +186,55 @@ describe("CreateRecordEpic", () => {
     });
   });
 
-  // it("should fire the onSuccess callback with response", () => {
-  //   const onSuccess = spy();
+  it("should fire the onSuccess callback with response", () => {
+    const onSuccess = spy();
 
-  //   const createRecordAction = ActionsObservable.of({
-  //     type: context.types.CREATE_RECORD,
-  //     payload: { id: expectedResult.id },
-  //     meta: { onSuccess },
-  //   });
+    createRecordAction = ActionsObservable.of({
+      type: context.types.CREATE_RECORD,
+      payload: { id: newModel.id },
+      meta: { onSuccess, onError: stub() },
+    });
 
-  //   createRecordEpic(createRecordAction, store)
-  //     .subscribe(noop, noop,
-  //       () => {
-  //         expect(onSuccess.calledWithMatch(expectedResult)).to.be.true;
-  //       });
-  // });
+    return new Promise((resolve, reject) => {
+      createRecordEpic(createRecordAction, store)
+      .subscribe(() => {
+          try {
+            expect(onSuccess.calledWithMatch(savedModel)).to.be.true;
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        });
+    });
+  });
 
-  // it("should fire pushRecord with response", () => {
-  //   const createRecordAction = ActionsObservable.of({
-  //     type: context.types.CREATE_RECORD,
-  //     payload: { id: expectedResult.id },
-  //   });
+  it("should fire pushRecord with response", () => {
+    return new Promise((resolve, reject) => {
+      createRecordEpic(createRecordAction, store)
+      .subscribe(() => {
+          try {
+            expect(context.actions.pushRecord.calledWithMatch(savedModel)).to.be.true;
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        });
+    });
+  });
 
-  //   const pushRecordStub = context.actions.pushRecord;
+  it("should use the store's getState method", () => {
+    const getStateSpy = spy(store, "getState");
 
-  //   createRecordEpic(createRecordAction, store)
-  //     .subscribe(noop, noop,
-  //       () => {
-  //         expect(pushRecordStub.calledWithMatch(expectedResult)).to.be.true;
-  //       });
-  // });
-
-  // it("should use the store's getState method", () => {
-  //   const createRecordAction = ActionsObservable.of({
-  //     type: context.types.CREATE_RECORD,
-  //     payload: { id: expectedResult.id },
-  //   });
-
-  //   const getStateStub = stub(store, "getState");
-
-  //   createRecordEpic(createRecordAction, store)
-  //     .subscribe(noop, noop,
-  //       () => {
-  //         expect(getStateStub.callCount).to.equal(1);
-  //       });
-  // });
-
+    return new Promise((resolve, reject) => {
+      createRecordEpic(createRecordAction, store)
+      .subscribe(() => {
+          try {
+            expect(getStateSpy.callCount).to.equal(1);
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        });
+    });
+  });
 });

@@ -63,7 +63,7 @@ import { shouldFetchAll } from "./ShouldFetchAll";
 import { IForceReload } from "./IForceReload";
 import { IPostActionHandlers } from "./IPostActionHandlers";
 import { ISetField } from "./ISetField";
-import { cancelRequestEpic, createRecordEpic, FetchRecordEpic } from "./Epics";
+import { createRecordEpic, FetchRecordEpic } from "./Epics";
 
 export interface IModelId {
   id: string;
