@@ -45,12 +45,10 @@ import {
 } from "../IService";
 
 import {
-  addCancelableRequestReducer,
   fetchAllReducer,
   ISetMetaField,
   pushAllReducer,
   pushRecordReducer,
-  removeCancelableRequestReducer,
   setFieldReducer,
   setMetaFieldReducer,
   setQueryResponseReducer,
@@ -259,7 +257,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     const types = super.createTypes();
     return {
       ...types,
-      ADD_CANCELABLE_REQUEST: this.makeActionType("ADD_CANCELABLE_REQUEST"),
       CANCEL_REQUEST: this.makeActionType("CANCEL_REQUEST"),
       CREATE_RECORD: this.makeActionType("CREATE_RECORD"),
       DELETE_RECORD: this.makeActionType("DELETE_RECORD"),
@@ -268,7 +265,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       PATCH_RECORD: this.makeActionType("PATCH_RECORD"),
       PUSH_ALL: this.makeActionType("PUSH_ALL"),
       PUSH_RECORD: this.makeActionType("PUSH_RECORD"),
-      REMOVE_CANCELABLE_REQUEST: this.makeActionType("REMOVE_CANCELABLE_REQUEST"),
       UNLOAD_ALL: this.makeActionType("UNLOAD_ALL"),
       UNLOAD_RECORD: this.makeActionType("UNLOAD_RECORD"),
       UPDATE_RECORD: this.makeActionType("UPDATE_RECORD"),
@@ -288,7 +284,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
     return {
       ...actions,
-      addCancelableRequest: this.makeActionCreator<IModelId>(this.types.ADD_CANCELABLE_REQUEST),
       cancelRequest: this.makeActionCreator<IModelId>(this.types.CANCEL_REQUEST),
       createRecord: this.makeActionCreator<IModelId, IPostActionHandlers>(this.types.CREATE_RECORD),
       deleteRecord: this.makeActionCreator<IModelId, IPostActionHandlers>(this.types.DELETE_RECORD),
@@ -297,7 +292,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
       patchRecord: this.makeActionCreator<Partial<T>, IPostActionHandlers>(this.types.PATCH_RECORD),
       pushAll: this.makeActionCreator(this.types.PUSH_ALL),
       pushRecord: this.makeActionCreator<IModel<T>>(this.types.PUSH_RECORD),
-      removeCancelableRequest: this.makeActionCreator<IModelId>(this.types.REMOVE_CANCELABLE_REQUEST),
       unloadAll: this.makeActionCreator<undefined>(this.types.UNLOAD_ALL),
       unloadRecord: this.makeActionCreator<IModelId>(this.types.UNLOAD_RECORD),
       updateRecord: this.makeActionCreator<IModelId, IPostActionHandlers>(this.types.UPDATE_RECORD),
@@ -365,11 +359,9 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
 
     return {
       ...reducers,
-      [this.types.ADD_CANCELABLE_REQUEST]: addCancelableRequestReducer,
       [this.types.FETCH_ALL]: fetchAllReducer,
       [this.types.PUSH_ALL]: pushAllReducer,
       [this.types.PUSH_RECORD]: pushRecordReducer,
-      [this.types.REMOVE_CANCELABLE_REQUEST]: removeCancelableRequestReducer,
       [this.types.UNLOAD_ALL]: unloadAllReducer,
       [this.types.UNLOAD_RECORD]: unloadRecordReducer,
       [this.types.SET_FIELD]: setFieldReducer,
@@ -389,7 +381,6 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
     const fetchRecordEpic = new FetchRecordEpic(this);
 
     epics.push(
-      cancelRequestEpic(this).bind(this),
       createRecordEpic(this).bind(this),
       fetchRecordEpic.execute.bind(fetchRecordEpic),
       this.fetchAllEpic.bind(this),

@@ -1,5 +1,6 @@
 import { Store } from "redux";
 import { of as of$ } from "rxjs/observable/of";
+import { race as race$ } from "rxjs/observable/race";
 
 import { IObservableAction } from "../../IService";
 
@@ -8,20 +9,20 @@ import { IModelId } from "../DataService";
 import { IContext } from "../Interfaces/IContext";
 
 export const createRecordEpic = ({ actions, adapter, mapper, serializer, types }: IContext): any => {
-  return (action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<any>>)  => {
-    return action$.ofType(types.CREATE_RECORD)
+  return (action$: IObservableAction<IModelId>, store: Store<IDataServiceStateRecord<any>>) =>
+    action$.ofType(types.CREATE_RECORD)
       .mergeMap(action =>
-        of$(store.getState().get("items", null).get(action.payload.id))
+        of$(store.getState().items.get(action.payload.id))
           .mergeMap(async model => await mapper.transform(model))
           .mergeMap(async mappedModel => await serializer.serialize(mappedModel))
-          .do(() =>  actions.addCancelableRequest(action.payload).invoke())
-          .mergeMap(serializedModel => (adapter.createItem(serializedModel)
-              .takeUntil(store.getState().get("cancelableRequests", null).get(action.payload.id))
-          ))
-          .do(
-            () => actions.removeCancelableRequest(action.payload).invoke(),
-            () => actions.removeCancelableRequest(action.payload).invoke(),
-          )
+          // .mergeMap(serializedModel => (
+          //   race$(
+          //     adapter.createItem(serializedModel),
+          //     action$.ofType(types.CANCEL_REQUEST)
+          //       .filter(cancelAction => cancelAction.payload.id === action.payload.id)
+          //       .mapTo(null),
+          //   ).take(1).filter(response => response != null)
+          // ))
           .mergeMap(async response => await serializer.deserialize(response))
           .mergeMap(async normalizedResponse => await mapper.normalize(normalizedResponse))
           .do(action.meta.onSuccess, action.meta.onError)
@@ -31,5 +32,4 @@ export const createRecordEpic = ({ actions, adapter, mapper, serializer, types }
             actions.setMetaField({ id: action.payload.id, errors: e }), // e.xhr.response || e }),
           )),
       );
-  };
 };
