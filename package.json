@@ -1,6 +1,6 @@
 {
   "name": "redux-data-service",
-  "version": "0.2.7",
+  "version": "0.2.10",
   "private": false,
   "description": "",
   "main": "dist/index.js",

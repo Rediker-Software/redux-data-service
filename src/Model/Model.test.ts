@@ -9,7 +9,7 @@ import { lorem, random } from "faker";
 import { initializeValidateJS } from "../Initializers";
 
 import { Model } from "./Model";
-import { IFakeModelData } from "./Model.mock";
+import { FakeModel, IFakeModel, IFakeModelData } from "./Model.mock";
 import { IModelData } from "./IModel";
 
 import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
@@ -42,6 +42,10 @@ const { expect } = intern.getPlugin("chai");
 describe("Model", () => {
   before(() => {
     initializeValidateJS();
+  });
+
+  beforeEach(() => {
+    initializeTestServices(fakeModelModule);
   });
 
   describe("Fields", () => {
@@ -1253,11 +1257,24 @@ describe("Model", () => {
     });
   });
 
+  describe("Model#isFieldDirty", () => {
+    it("does not consider the model to be dirty when no changes are made", () => {
+      const model = seedService<IFakeModelData>("fakeModel");
+
+      expect(model.isFieldDirty("fullText")).to.be.false;
+    });
+
+    it("considers the model to be dirty when a field has changed", () => {
+      let model = seedService<IFakeModelData>("fakeModel");
+      model = model.applyUpdates({ fullText: lorem.word() });
+
+      expect(model.isFieldDirty("fullText")).to.be.true;
+    });
+  });
+
   describe("Model#isDirty", () => {
 
     it("considers the model to be dirty when a field has changed", () => {
-      initializeTestServices(fakeModelModule);
-
       let model = seedService<IFakeModelData>("fakeModel");
       model = model.applyUpdates({ fullText: lorem.word() });
 
@@ -1265,8 +1282,6 @@ describe("Model", () => {
     });
 
     it("does not consider the model to be dirty when the model has not been changed", () => {
-      initializeTestServices(fakeModelModule);
-
       const model = seedService<IFakeModelData>("fakeModel");
 
       expect(model.isDirty).to.be.false;
@@ -1277,8 +1292,6 @@ describe("Model", () => {
   describe("Model#hasUnsavedChanges", () => {
 
     it("considers the model to have unsaved changes when one of its own fields has changed", () => {
-      initializeTestServices(fakeModelModule);
-
       let model = seedService<IFakeModelData>("fakeModel");
       model = model.applyUpdates({ fullText: lorem.word() });
 
@@ -1286,8 +1299,6 @@ describe("Model", () => {
     });
 
     it("considers the model to have unsaved changes when one of its previously loaded related models has changed", () => {
-      initializeTestServices(fakeModelModule);
-
       const model = seedService<IFakeModelData>("fakeModel") as any;
       model.relatedModels = { someRelatedModel: { isDirty: true } };
 
@@ -1295,8 +1306,6 @@ describe("Model", () => {
     });
 
     it("does not consider the model to have unsaved changes when the model and its relationships have not been changed", () => {
-      initializeTestServices(fakeModelModule);
-
       const model = seedService<IFakeModelData>("fakeModel") as any;
       model.relatedModels = { someRelatedModel: { isDirty: false } };
 
@@ -1307,8 +1316,6 @@ describe("Model", () => {
 
   describe("Model#parseFieldValue", () => {
     it("parses the given value using the specified fieldName", async () => {
-      initializeTestServices(fakeModelModule);
-
       const model = seedService<IFakeModelData>("fakeModel");
       const value = await model.parseFieldValue("fullText", 4);
 
@@ -1367,7 +1374,6 @@ describe("Model", () => {
     });
 
     it("returns the expected parent model", () => {
-      initializeTestServices(fakeModelModule);
       const relatedModel = seedService("fakeModel");
 
       const model = seedService<IFakeModelData>("fakeModel", {
@@ -1381,7 +1387,6 @@ describe("Model", () => {
     });
 
     it("attempting to save the nested model will save the parent model when serializeThroughParent = true", () => {
-      initializeTestServices(fakeModelModule);
       const relatedModel = seedService("fakeModel");
 
       const saveModelStub = stub(relatedModel, "save");
@@ -1397,6 +1402,27 @@ describe("Model", () => {
       model.saveModel();
 
       expect(saveModelStub.calledOnce).to.be.true;
+    });
+  });
+
+  describe("Model#original", () => {
+    it("returns a model", () => {
+      const model = seedService<IFakeModelData>("fakeModel") as IFakeModel;
+
+      expect(model.original()).to.be.an.instanceOf(FakeModel);
+    });
+
+    it("return the model without any updates", () => {
+      const originalModel = seedService<IFakeModelData>("fakeModel") as IFakeModel;
+      const updatedModel = originalModel.applyUpdates({ fullText: "newText" });
+
+      expect(updatedModel.original()).to.have.property("fullText").eq(originalModel.fullText);
+    });
+
+    it("returns the model which matches the model data", () => {
+      const model = seedService<IFakeModelData>("fakeModel") as IFakeModel;
+
+      expect(model.original()).to.have.property("modelData").eq((model as any).modelData);
     });
   });
 });
