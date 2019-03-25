@@ -238,7 +238,7 @@ describe("Model", () => {
 
           model.saveModel();
 
-          expect(createRecordStub.firstCall.args[0]).to.deep.equal({ id: model.id });
+          expect(createRecordStub.firstCall.args[0]).to.deep.equal({ id: model.id, progressSubscriber: undefined });
         });
 
         it("dispatches createRecord action to the service when calling save() on a new record", () => {
@@ -276,7 +276,7 @@ describe("Model", () => {
           model = model.applyUpdates({ name: expectedName });
           model.saveModel();
 
-          expect(updateRecordStub.firstCall.args[0]).to.deep.equal({ id: model.id });
+          expect(updateRecordStub.firstCall.args[0]).to.deep.equal({ id: model.id, progressSubscriber: undefined });
         });
 
         it("dispatches updateRecord action to the service when calling save() on an existing record", () => {
@@ -302,7 +302,7 @@ describe("Model", () => {
           model.saveModel();
 
           expect(updateRecordStub.called).to.be.false;
-          expect(patchRecordStub.firstCall.args[0]).to.deep.equal({ id: model.id });
+          expect(patchRecordStub.firstCall.args[0]).to.deep.equal({ id: model.id, progressSubscriber: undefined });
         });
       });
     });
