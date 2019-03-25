@@ -1,3 +1,5 @@
+import { Subscriber } from "rxjs/Subscriber";
+
 import { DataService } from "../Services/DataService/DataService";
 import { IRelationship } from "./Decorators/Relationship";
 import { IAttrs } from "./Decorators/Attr";
@@ -31,8 +33,8 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   readonly serviceName: string;
   parentModel: IModel<any>;
   parentModelId?: string;
-  save(): Promise<IModel<T>>;
-  saveModel(): Promise<IModel<T>>;
+  save(progressObserver?: Subscriber<any>): Promise<IModel<T>>;
+  saveModel(progressObserver?: Subscriber<any>): Promise<IModel<T>>;
   saveRelatedModels(): Promise<IModel<T>[]>;
   validate(): IModelKeys<T>;
   validateField(fieldName: string): IModelKeys<T>;

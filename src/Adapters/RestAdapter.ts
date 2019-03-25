@@ -1,10 +1,12 @@
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
+import { Subscriber } from "rxjs/Subscriber";
 import { ajax } from "rxjs/observable/dom/ajax";
 
 import { isEmpty } from "lodash";
 
 import { IAdapter } from "./IAdapter";
+import { Subject } from "rxjs/Subject";
 
 export interface IRestAdapterOptions {
   apiUrl?: string;
@@ -46,8 +48,8 @@ export class RestAdapter implements IAdapter<string> {
    * @param requestParams
    * @returns {Observable<T[]>}
    */
-  public fetchAll(requestParams?: any): Observable<{items: string[]}> {
-    return this.makeAjaxRequest("GET", this.getRestURL(), requestParams);
+  public fetchAll(requestParams?: any, progressSubscriber?: Subscriber<any>): Observable<{items: string[]}> {
+    return this.makeAjaxRequest("GET", this.getRestURL(), requestParams, progressSubscriber);
   }
 
   /**
@@ -56,8 +58,8 @@ export class RestAdapter implements IAdapter<string> {
    * @param {string} id
    * @returns {Observable<T>}
    */
-  public fetchItem(id: string): Observable<string> {
-    return this.makeAjaxRequest("GET", this.getRestURL(id));
+  public fetchItem(id: string, progressSubscriber?: Subscriber<any>): Observable<string> {
+    return this.makeAjaxRequest("GET", this.getRestURL(id), undefined, progressSubscriber);
   }
 
   /**
@@ -66,8 +68,8 @@ export class RestAdapter implements IAdapter<string> {
    * @param {T} item
    * @returns {Observable<T>}
    */
-  public createItem(item: string): Observable<string> {
-    return this.makeAjaxRequest("POST", this.getRestURL(), item);
+  public createItem(item: string, progressSubscriber?: Subscriber<any>): Observable<string> {
+    return this.makeAjaxRequest("POST", this.getRestURL(), item, progressSubscriber);
   }
 
   /**
@@ -77,8 +79,8 @@ export class RestAdapter implements IAdapter<string> {
    * @param {T} item
    * @returns {Observable<T>}
    */
-  public updateItem(id, item: string): Observable<string> {
-    return this.makeAjaxRequest("PUT", this.getRestURL(id), item);
+  public updateItem(id, item: string, progressSubscriber?: Subscriber<any>): Observable<string> {
+    return this.makeAjaxRequest("PUT", this.getRestURL(id), item, progressSubscriber);
   }
 
   /**
@@ -88,8 +90,8 @@ export class RestAdapter implements IAdapter<string> {
    * @param {T} item
    * @returns {Observable<T>}
    */
-  public patchItem(id, item: string): Observable<string> {
-    return this.makeAjaxRequest("PATCH", `${this.getRestURL()}/${id}`, item);
+  public patchItem(id, item: string, progressSubscriber?: Subscriber<any>): Observable<string> {
+    return this.makeAjaxRequest("PATCH", `${this.getRestURL()}/${id}`, item, progressSubscriber);
   }
 
   /**
@@ -98,8 +100,8 @@ export class RestAdapter implements IAdapter<string> {
    * @param id
    * @returns {Observable<T>}
    */
-  public deleteItem(id): Observable<string> {
-    return this.makeAjaxRequest("DELETE", this.getRestURL(id));
+  public deleteItem(id, progressSubscriber?: Subscriber<any>): Observable<string> {
+    return this.makeAjaxRequest("DELETE", this.getRestURL(id), undefined, progressSubscriber);
   }
 
   /**
@@ -116,13 +118,14 @@ export class RestAdapter implements IAdapter<string> {
    * @param headers
    * @returns {any}
    */
-  protected makeAjaxRequest(method: string, url: string, payload?: string, headers: any = {}) {
+  protected makeAjaxRequest(method: string, url: string, payload?: string, progressSubscriber?: Subscriber<any>, headers: any = {}) {
     return ajax({
       body: method !== "GET" ? payload : undefined,
       headers: this.buildHeaders(headers),
       method,
       responseType: "json",
       url: (method !== "GET" || isEmpty(payload) ? url : `${url}?${payload}`),
+      progressSubscriber,
     }).map((x) => x.response);
   }
 
@@ -138,5 +141,5 @@ export class RestAdapter implements IAdapter<string> {
       "Content-Type": "application/json",
     };
   }
-  
+
 }
