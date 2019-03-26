@@ -15,11 +15,13 @@ import { fakeModelModule } from "./FakeModelModule";
  * Will use a MemoryAdapter and MemorySerializer by default.
  */
 export function initializeTestServices(modules: IModuleMap = {}, configOptions: Partial<IConfiguration> = {}): Store<any> {
+  modules = {
+    ...fakeModelModule,
+    ...modules,
+  };
+
   const store = configure(defaults({}, configOptions, {
-    modules: {
-      ...fakeModelModule,
-      ...modules,
-    },
+    modules,
     adapter: MemoryAdapter,
     serializer: MemorySerializer,
   }));
