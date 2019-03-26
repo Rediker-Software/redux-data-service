@@ -10,6 +10,7 @@ let _modelDataCreatorMap: IModelDataCreatorMap = {};
 /** Build a modelDataCreatorMap for later use in the seedService* functions */
 export function initializeMockDataCreators(modules) {
   _modelDataCreatorMap = {};
+  
   forEach(modules, (moduleItem, moduleName) => {
     const mockDataCreatorName = `createMock${upperFirst(moduleName)}`;
     if (mockDataCreatorName in moduleItem) {
