@@ -30,7 +30,7 @@
 
 ▸ **normalize**(data: *`any`*): `Promise`<`any`>
 
-*Defined in [Mapper/MockMapper.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/e03b428/src/Mapper/MockMapper.ts#L16)*
+*Defined in [Mapper/MockMapper.ts:16](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Mapper/MockMapper.ts#L16)*
 
 **Parameters:**
 
@@ -47,7 +47,7 @@ ___
 
 ▸ **normalizeQueryResponse**(data: *`any`*): `Promise`<`any`>
 
-*Defined in [Mapper/MockMapper.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/e03b428/src/Mapper/MockMapper.ts#L20)*
+*Defined in [Mapper/MockMapper.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Mapper/MockMapper.ts#L20)*
 
 **Parameters:**
 
@@ -64,7 +64,7 @@ ___
 
 ▸ **transform**(model: *`any`*): `Promise`<`any`>
 
-*Defined in [Mapper/MockMapper.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/e03b428/src/Mapper/MockMapper.ts#L4)*
+*Defined in [Mapper/MockMapper.ts:4](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Mapper/MockMapper.ts#L4)*
 
 **Parameters:**
 
@@ -81,7 +81,7 @@ ___
 
 ▸ **transformList**(models: *`any`*): `Promise`<`any`>
 
-*Defined in [Mapper/MockMapper.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/e03b428/src/Mapper/MockMapper.ts#L8)*
+*Defined in [Mapper/MockMapper.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Mapper/MockMapper.ts#L8)*
 
 **Parameters:**
 
@@ -98,7 +98,7 @@ ___
 
 ▸ **transformPatch**(model: *`any`*): `Promise`<`object`[]>
 
-*Defined in [Mapper/MockMapper.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/e03b428/src/Mapper/MockMapper.ts#L12)*
+*Defined in [Mapper/MockMapper.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Mapper/MockMapper.ts#L12)*
 
 **Parameters:**
 

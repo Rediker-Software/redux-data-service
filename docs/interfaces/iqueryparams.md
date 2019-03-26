@@ -28,7 +28,7 @@
 
 **● page**: *`number`*
 
-*Defined in [Query/QueryBuilder.ts:52](https://github.com/Rediker-Software/redux-data-service/blob/e03b428/src/Query/QueryBuilder.ts#L52)*
+*Defined in [Query/QueryBuilder.ts:52](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Query/QueryBuilder.ts#L52)*
 
 ___
 <a id="pagesize"></a>
@@ -37,7 +37,7 @@ ___
 
 **● pageSize**: *`number`*
 
-*Defined in [Query/QueryBuilder.ts:53](https://github.com/Rediker-Software/redux-data-service/blob/e03b428/src/Query/QueryBuilder.ts#L53)*
+*Defined in [Query/QueryBuilder.ts:53](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Query/QueryBuilder.ts#L53)*
 
 ___
 <a id="sort"></a>
@@ -46,7 +46,7 @@ ___
 
 **● sort**: *[ISort](isort.md)[]*
 
-*Defined in [Query/QueryBuilder.ts:51](https://github.com/Rediker-Software/redux-data-service/blob/e03b428/src/Query/QueryBuilder.ts#L51)*
+*Defined in [Query/QueryBuilder.ts:51](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Query/QueryBuilder.ts#L51)*
 
 ___
 
