@@ -2,11 +2,11 @@ import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Observable";
 import { Subscriber } from "rxjs/Subscriber";
 import { ajax } from "rxjs/observable/dom/ajax";
+import { AjaxRequest } from "rxjs/observable/dom/AjaxObservable";
 
 import { isEmpty } from "lodash";
 
 import { IAdapter } from "./IAdapter";
-import { Subject } from "rxjs/Subject";
 
 export interface IRestAdapterOptions {
   apiUrl?: string;
@@ -119,14 +119,17 @@ export class RestAdapter implements IAdapter<string> {
    * @returns {any}
    */
   protected makeAjaxRequest(method: string, url: string, payload?: string, progressSubscriber?: Subscriber<any>, headers: any = {}) {
-    return ajax({
+    const ajaxRequest: AjaxRequest = {
       body: method !== "GET" ? payload : undefined,
       headers: this.buildHeaders(headers),
       method,
       responseType: "json",
       url: (method !== "GET" || isEmpty(payload) ? url : `${url}?${payload}`),
-      progressSubscriber,
-    }).map((x) => x.response);
+    };
+    if (progressSubscriber) {
+      ajaxRequest.progressSubscriber = progressSubscriber;
+    }
+    return ajax(ajaxRequest).map((x) => x.response);
   }
 
   /**
