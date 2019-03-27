@@ -24,7 +24,7 @@ export const createRecordEpic = ({ actions, adapter, mapper, name, serializer, t
           .mergeMap(async mappedModel => await serializer.serialize(mappedModel))
           .mergeMap(serializedModel => (
             race$(
-              adapter.createItem(serializedModel),
+              adapter.createItem(serializedModel, action.meta.progressSubscriber),
               action$.ofType(types.CANCEL_REQUEST)
                 .filter(filteredAction => filteredAction.payload.id === action.payload.id)
                 .mapTo(null),

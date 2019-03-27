@@ -13,6 +13,7 @@ import "rxjs/add/operator/take";
 import { Observable } from "rxjs/Observable";
 import { of as of$ } from "rxjs/observable/of";
 import { combineLatest as combineLatest$ } from "rxjs/observable/combineLatest";
+import { Subscriber } from "rxjs/Subscriber";
 
 import { uniqueId } from "lodash";
 import * as hash from "object-hash";
@@ -67,6 +68,7 @@ import { createRecordEpic, FetchRecordEpic } from "./Epics";
 
 export interface IModelId {
   id: string;
+  progressSubscriber?: Subscriber<any>;
 }
 
 /**
@@ -424,7 +426,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
         of$(this.selectors.getItem(store.getState(), action.payload.id))
           .mergeMap(async model => await this.mapper.transform(model))
           .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as R))
-          .mergeMap(model => this.adapter.updateItem(action.payload.id, model))
+          .mergeMap(model => this.adapter.updateItem(action.payload.id, model, action.meta.progressSubscriber))
           .mergeMap(async response => await this.serializer.deserialize(response))
           .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
           .do(action.meta.onSuccess, action.meta.onError)
@@ -441,7 +443,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
         of$(this.selectors.getItem(store.getState(), action.payload.id))
           .mergeMap(async model => await this.mapper.transformPatch(model))
           .mergeMap(async mappedModel => await this.serializer.serialize(mappedModel as R))
-          .mergeMap(serializedModel => this.adapter.patchItem(action.payload.id, serializedModel))
+          .mergeMap(serializedModel => this.adapter.patchItem(action.payload.id, serializedModel, action.meta.progressSubscriber))
           .mergeMap(async (response) => await this.serializer.deserialize(response))
           .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
           .do(action.meta.onSuccess, action.meta.onError)
@@ -455,7 +457,7 @@ export abstract class DataService<T extends IModelData, R = T> extends BaseServi
   public deleteRecordEpic(action$: IObservableAction<IModelId>) {
     return action$.ofType(this.types.DELETE_RECORD)
       .mergeMap((action) => (
-        this.adapter.deleteItem(action.payload.id)
+        this.adapter.deleteItem(action.payload.id, action.meta.progressSubscriber)
           .mergeMap(async (response) => await this.serializer.deserialize(response))
           .mergeMap(async normalizedResponse => await this.mapper.normalize(normalizedResponse))
           .do(action.meta.onSuccess, action.meta.onError)
