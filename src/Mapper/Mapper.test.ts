@@ -5,7 +5,7 @@ import { spy, stub } from "sinon";
 
 import { date, lorem, random } from "faker";
 import { format, parse } from "date-fns";
-import { flatten, omit } from "lodash";
+import { omit } from "lodash";
 import * as jiff from "jiff";
 
 import { BaseService, DataService, registerService } from "../Services";
@@ -159,15 +159,7 @@ describe("Mapper", () => {
       beforeEach(() => {
         originalFullText = lorem.slug();
         originalModel = new MockModel({ ...mockModelData, fullText: originalFullText });
-
-        originalModelSpy = spy();
-        Object.defineProperty(fakeModel, "original", {
-          get() {
-            originalModelSpy();
-            return originalModel;
-          },
-          configurable: true,
-        });
+        originalModelSpy = stub(fakeModel, "original").returns(originalModel);
       });
 
       it("calls transform twice", async () => {
@@ -471,7 +463,7 @@ describe("Mapper", () => {
           parentServiceName: "fakeModel",
           serializeThroughParent: true,
         });
-        
+
         expect(pushRecordStub.firstCall.args[0]).to.deep.equal(expectedValue);
       });
 
