@@ -83,7 +83,7 @@ export class Mapper<T extends IModelData, R = T> implements IMapper<T, R> {
 
   /** Calls transform on the model and the model.original then creates a JSON patch to update the original to the updated */
   public async transformPatch(model: IModel<T> | Partial<T> | any) {
-    const original = await this.transform(model.original);
+    const original = await this.transform(model.original());
     const updated = await this.transform(model);
 
     return diff(original, updated);
