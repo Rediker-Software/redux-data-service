@@ -11,6 +11,7 @@
 ### Properties
 
 * [id](imodelid.md#id)
+* [progressSubscriber](imodelid.md#progresssubscriber)
 
 ---
 
@@ -22,7 +23,16 @@
 
 **● id**: *`string`*
 
-*Defined in [Services/DataService/DataService.ts:69](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Services/DataService/DataService.ts#L69)*
+*Defined in [Services/DataService/DataService.ts:70](https://github.com/Rediker-Software/redux-data-service/blob/b275c20/src/Services/DataService/DataService.ts#L70)*
+
+___
+<a id="progresssubscriber"></a>
+
+### `<Optional>` progressSubscriber
+
+**● progressSubscriber**: *`Subscriber`<`any`>*
+
+*Defined in [Services/DataService/DataService.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/b275c20/src/Services/DataService/DataService.ts#L71)*
 
 ___
 

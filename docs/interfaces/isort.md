@@ -23,7 +23,7 @@
 
 **● direction**: *[SortDirection](../#sortdirection)*
 
-*Defined in [Query/QueryBuilder.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Query/QueryBuilder.ts#L10)*
+*Defined in [Query/QueryBuilder.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/b275c20/src/Query/QueryBuilder.ts#L10)*
 
 ___
 <a id="key"></a>
@@ -32,7 +32,7 @@ ___
 
 **● key**: *`string`*
 
-*Defined in [Query/QueryBuilder.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/860210a/src/Query/QueryBuilder.ts#L9)*
+*Defined in [Query/QueryBuilder.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/b275c20/src/Query/QueryBuilder.ts#L9)*
 
 ___
 
