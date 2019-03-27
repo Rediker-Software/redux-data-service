@@ -10,11 +10,13 @@ import { getModelDataCreatorMap } from "../Mock";
  */
 export function seedService<T extends IModelData>(serviceName: string, overrideValues: Partial<T> = {}): IModel<T> {
   const modelDataCreatorMap = getModelDataCreatorMap();
+
   if (serviceName in modelDataCreatorMap) {
     const model = modelDataCreatorMap[serviceName](overrideValues);
     const service = getDataService(serviceName);
 
     service.actions.pushRecord(model).invoke();
+    
     return model;
   } else {
     throw new ReferenceError(`ModelDataCreator for "${serviceName}" not registered!`);
