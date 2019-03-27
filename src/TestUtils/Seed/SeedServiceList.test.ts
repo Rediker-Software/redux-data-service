@@ -31,7 +31,6 @@ describe("seedServiceList", () => {
   it("takes an optional count param", () => {
     seedServiceList("fakeModel", 25);
     const state = store.getState();
-    console.log(state.fakeModel.items.valueSeq());
     expect(state.fakeModel.items.valueSeq().size).to.equal(25, "seeds as many as requested");
   });
 
