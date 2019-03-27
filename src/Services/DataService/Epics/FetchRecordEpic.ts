@@ -10,6 +10,7 @@ import { of as of$ } from "rxjs/observable/of";
 import { empty as empty$ } from "rxjs/observable/empty";
 import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Subscriber } from "rxjs/Subscriber";
 
 import { Store } from "redux";
 
@@ -51,9 +52,9 @@ export class FetchRecordEpic implements IEpic {
   /**
    * Helper method that fetches, deserializes, and normalizes the item from the API
    */
-  public loadRecord(id: string): Observable<IAction<any>> {
+  public loadRecord(id: string, progressSubscriber?: Subscriber<any>): Observable<IAction<any>> {
     const { actions, serializer, mapper, adapter } = this.context;
-    return adapter.fetchItem(id)
+    return adapter.fetchItem(id, progressSubscriber)
       .mergeMap(async response => await serializer.deserialize(response))
       .mergeMap(async normalizedResponse => await mapper.normalize(normalizedResponse))
       .map(actions.pushRecord)
@@ -63,10 +64,10 @@ export class FetchRecordEpic implements IEpic {
   }
 
   /**
-   * This method creates the buffer Observable for use in the `performBufferRequest` function.  There is an N 
+   * This method creates the buffer Observable for use in the `performBufferRequest` function.  There is an N
    * millisecond period over which results are coalesced if the `coalesceBufferTime` constant is specified
    * in the configuration (its default is 50 ms).  If there is only one item, the standard `loadRecord` function
-   * is called. 
+   * is called.
    */
   public createBufferObservable(id: string): Observable<any> {
     return new BehaviorSubject(id)
@@ -84,7 +85,7 @@ export class FetchRecordEpic implements IEpic {
   /**
    * Checks the cache for a buffered Observable that matches the context.  If the buffer doesn't exist,
    * it is created, and prepared to be disposed of at the end of its lifetime.  Either the buffered Observable
-   * is returned or the current id is added to the given buffered Observable and the Observable is completed 
+   * is returned or the current id is added to the given buffered Observable and the Observable is completed
    */
   public performBufferedRequest(id: string): Observable<any> {
     if (!this.bufferedObservable) {

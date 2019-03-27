@@ -2,6 +2,7 @@ import "rxjs/add/operator/takeUntil";
 import "rxjs/add/operator/skip";
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
+import { Subscriber } from "rxjs/Subscriber";
 
 import { validate } from "validate.js";
 import { find, forEach, get, isEmpty, omit, set } from "lodash";
@@ -130,7 +131,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    *
    * @returns {Promise<IModel<T extends IModelData>>}
    */
-  public async save(): Promise<IModel<T>> {
+  public async save(progressSubscriber?: Subscriber<any>): Promise<IModel<T>> {
     const validationErrors = this.validate(true);
 
     if (!isEmpty(validationErrors)) {
@@ -139,7 +140,7 @@ export class Model<T extends IModelData> implements IModel<T> {
 
     if (this.hasUnsavedChanges) {
       await this.saveRelatedModels();
-      return await this.saveModel();
+      return await this.saveModel(progressSubscriber);
     }
 
     return this;
@@ -159,7 +160,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    *
    * @returns {Promise<IModel<T extends IModelData>>}
    */
-  public saveModel(): Promise<IModel<any>> {
+  public saveModel(progressSubscriber?: Subscriber<any>): Promise<IModel<any>> {
     if (this.serializeThroughParent) {
       return this.parentModel.save();
     }
@@ -172,7 +173,7 @@ export class Model<T extends IModelData> implements IModel<T> {
           ? service.actions.patchRecord
           : service.actions.updateRecord;
 
-      action({ id: this.id }, {
+      action({ id: this.id, progressSubscriber }, {
         onSuccess: (model) => resolve(model),
         onError: (error) => reject("xhr" in error ? error.xhr.response : error),
       }).invoke();
