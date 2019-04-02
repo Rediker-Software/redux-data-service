@@ -489,7 +489,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     const service = getDataService(this.serviceName);
     observable
       .takeUntil(this.getWillDestroyObservable$())
-      .subscribe(((updatedValue) => {
+      .subscribe((updatedValue => {
         if (!this.relatedModels.hasOwnProperty(fieldName)) {
           this.relatedModels[fieldName] = updatedValue;
         } else if (this.relatedModels[fieldName] !== updatedValue) {
@@ -497,19 +497,19 @@ export class Model<T extends IModelData> implements IModel<T> {
 
           if (currentValue instanceof Array && currentValue.some(related => !related.isDestroying)) {
             currentValue.forEach(related =>
-              related.markForDestruction && related.markForDestruction(),
+              // destroy model, so that the subscription above is canceled
+              related.markForDestruction()
             );
             service
               .actions
-              .setRelationship({ id: this.id, fieldName, updatedValue })
+              .setRelationship({ id: this.id, fieldName, value: updatedValue })
               .invoke();
           } else if (!currentValue.isDestroying) {
-            if (currentValue.markForDestruction) {
-              currentValue.markForDestruction();
-            }
+            // destroy model, so that the subscription above is canceled
+            currentValue.markForDestruction();
             service
               .actions
-              .setRelationship({ id: this.id, fieldName, updatedValue })
+              .setRelationship({ id: this.id, fieldName, value: updatedValue })
               .invoke();
           }
         }
