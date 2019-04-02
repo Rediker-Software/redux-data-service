@@ -6,34 +6,34 @@ import { of as of$ } from "rxjs/observable/of";
 import { Subject } from "rxjs/Subject";
 import { lorem, random } from "faker";
 
-import { initializeValidateJS } from "../Initializers";
+import { initializeValidateJS } from "../../Initializers";
 
-import { Model } from "./Model";
-import { FakeModel, IFakeModel, IFakeModelData } from "./Model.mock";
-import { IModelData } from "./IModel";
+import { Model } from "../Model";
+import { FakeModel, IFakeModel, IFakeModelData } from "../Model.mock";
+import { IModelData } from "../IModel";
 
-import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "./FieldType";
+import { ArrayField, DateField, DateTimeField, NumberField, StringField, TimeField } from "../FieldType";
 
 import {
   fakeModelModule,
   initializeTestServices,
   seedService,
-} from "../TestUtils";
+} from "../../TestUtils";
 
 import {
   BaseService,
   DataService,
   registerService,
-} from "../Services";
+} from "../../Services";
 
-import { configure } from "../Configure";
+import { configure } from "../../Configure";
 
 import {
   attr,
   belongsTo,
   hasMany,
   required,
-} from "./Decorators";
+} from "../Decorators";
 
 declare var intern;
 const { describe, it, beforeEach, before } = intern.getPlugin("interface.bdd");
@@ -1047,138 +1047,6 @@ describe("Model", () => {
       registerService(exampleService);
       registerService(studentService);
       registerService(organizationService);
-    });
-
-    describe("Model#getRelated", () => {
-      it("returns undefined if the requested related field is not a property on the model", () => {
-        const model = new ExampleModelClass({ id, organizationId });
-        expect(model.getRelated("fakeField")).to.be.undefined;
-      });
-
-      it("returns a shadow for a belongsTo relationship if the current model is a shadow", () => {
-        const shadowModel = exampleService.getShadowObject();
-        expect(shadowModel.getRelated("organization")).to.have.property("isShadow").to.be.true;
-      });
-
-      it("returns undefined for a belongsTo relationship if the related id field is empty", () => {
-        const model = new ExampleModelClass({ id, organizationId: null });
-        expect(model.getRelated("organization")).to.be.undefined;
-      });
-
-      it("returns an empty array for a hasMany relationship if the related ids field is empty", () => {
-        const model = new ExampleModelClass({ id, studentIds: [] });
-        expect(model.getRelated("students")).to.be.an("array").that.is.empty;
-      });
-
-      it("uses the Observable returned from the DataService to get the related BelongsTo model", () => {
-        const organizationObservable = of$(new organizationService.ModelClass({ id: organizationId }));
-        stub(organizationService, "getById").returns(organizationObservable);
-
-        const model = new ExampleModelClass({ id, organizationId });
-        expect(model).to.have.property("organization").to.have.property("id").to.equal(organizationId);
-      });
-
-      it("uses the Observable returned from the DataService to get the related HasMany models", () => {
-        const studentIds = [random.number().toString(), random.number().toString()];
-        const students = studentIds.map((studentId) => new studentService.ModelClass({ id: studentId }));
-        const studentObservable = of$(students);
-        stub(studentService, "getByIds").returns(studentObservable);
-
-        const model = new ExampleModelClass({ id, studentIds });
-        expect(model).to.have.property("students").to.deep.equal(students);
-      });
-
-      it("dispatches a setRelationship action when the Observable updates more than once", () => {
-        const stubSetRelationship = stub(exampleService.actions, "setRelationship").returns({ invoke: spy() });
-        const organizationObservable = new Subject();
-        stub(organizationService, "getById").returns(organizationObservable.publishReplay(1).refCount());
-
-        const organization1 = new organizationService.ModelClass({ id: organizationId });
-        const organization2 = new organizationService.ModelClass({ id: organizationId });
-
-        const model = new ExampleModelClass({ id, organizationId });
-        model.getRelated("organization");
-
-        organizationObservable.next(organization1);
-        organizationObservable.next(organization2);
-
-        expect(stubSetRelationship.firstCall.args[0]).to.have.property("value").to.equal(organization2);
-      });
-
-      it("stops listening to new changes when the Model is being torn down", () => {
-        const organizationObservable = new Subject();
-        stub(organizationService, "getById").returns(organizationObservable.publishReplay(1).refCount());
-
-        const organization1 = new organizationService.ModelClass({ id: organizationId });
-        const organization2 = new organizationService.ModelClass({ id: organizationId });
-
-        const model = new ExampleModelClass({ id, organizationId });
-        model.getRelated("organization");
-
-        organizationObservable.next(organization1);
-        model.markForDestruction();
-
-        // note: model.markForDestruction() uses setTimeout to bump its execution to avoid a Redux issue.
-        // So, we need to return a promise from the test so we can use setTimeout here as well,
-        // such that the assertion occurs after the observable has been triggered
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            try {
-              organizationObservable.next(organization2);
-              expect(model).to.have.property("organization").to.equal(organization1).but.to.not.equal(organization2);
-              resolve();
-            } catch (e) {
-              reject(e);
-            }
-          }, 0);
-        });
-      });
-
-      it("will not subscribe to new changes when the Model is being torn down", () => {
-        const organization = new organizationService.ModelClass({ id: organizationId });
-        const organizationObservable = of$(organization);
-        stub(organizationService, "getById").returns(organizationObservable);
-
-        const model = new ExampleModelClass({ id, organizationId });
-        model.markForDestruction();
-        expect(model).to.have.property("organization").to.be.undefined;
-      });
-
-      it("will return the correct version of a relationship when its related id changes", () => {
-        const newOrganizationId = random.number().toString();
-        const organization = new organizationService.ModelClass({ id: organizationId });
-        const newOrganization = new organizationService.ModelClass({ id: newOrganizationId });
-
-        const getByIdStub = stub(organizationService, "getById").returns(of$(organization));
-
-        const model = new ExampleModelClass({ id, organizationId });
-        expect(model).to.have.property("organization").to.equal(organization);
-
-        getByIdStub.restore();
-        stub(organizationService, "getById").returns(of$(newOrganization));
-
-        const updatedModel = model.applyUpdates({ organizationId: newOrganizationId });
-
-        expect(updatedModel).to.have.property("organization").to.equal(newOrganization);
-      });
-
-      it("will not change the relationship of the current model instance when its related id changes", () => {
-        const organization = new organizationService.ModelClass({ id: organizationId });
-        const newOrganizationId = random.number().toString();
-        const newOrganization = new organizationService.ModelClass({ id: organizationId });
-
-        const getByIdStub = stub(organizationService, "getById").returns(of$(organization));
-
-        const model = new ExampleModelClass({ id, organizationId });
-        expect(model).to.have.property("organization").to.equal(organization);
-
-        getByIdStub.restore();
-        stub(organizationService, "getById").returns(of$(newOrganization));
-
-        model.applyUpdates({ organizationId: newOrganizationId });
-
-        expect(model).to.have.property("organization").to.equal(organization);
-      });
     });
 
     describe("Model#setRelated", () => {
