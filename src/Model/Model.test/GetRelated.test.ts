@@ -30,15 +30,15 @@ describe("Model.getRelated", () => {
 
   let exampleService;
   let studentService;
-  let studentService;
+  let organizationService;
   let ExampleModelClass;
   let id;
-  let studentId;
+  let organizationId;
 
   beforeEach(() => {
     initializeTestServices(fakeModelModule);
     id = random.number().toString();
-    studentId = random.number().toString();
+    organizationId = random.number().toString();
 
     BaseService.registerDispatch(spy());
 
@@ -47,11 +47,11 @@ describe("Model.getRelated", () => {
     }
 
     class Organization extends Model<IOrganization> {
-      public serviceName = "student";
+      public serviceName = "organization";
     }
 
     class OrganizationService extends DataService<IOrganization> {
-      public readonly name = "student";
+      public readonly name = "organization";
       public readonly ModelClass = Organization;
     }
 
@@ -69,7 +69,7 @@ describe("Model.getRelated", () => {
     }
 
     interface IExampleData extends IModelData {
-      studentId: string;
+      organizationId: string;
       studentIds: string[];
     }
 
@@ -77,13 +77,13 @@ describe("Model.getRelated", () => {
       public serviceName = "example";
 
       @attr(StringField)
-      public studentId: string;
+      public organizationId: string;
 
       @attr(ArrayField)
       public studentIds: string[];
 
       @belongsTo()
-      public student: IOrganization;
+      public organization: IOrganization;
 
       @hasMany()
       public students: IStudent[];
@@ -98,26 +98,26 @@ describe("Model.getRelated", () => {
 
     exampleService = new ExampleService();
     studentService = new StudentService();
-    studentService = new OrganizationService();
+    organizationService = new OrganizationService();
 
     registerService(exampleService);
     registerService(studentService);
-    registerService(studentService);
+    registerService(organizationService);
   });
 
   it("returns undefined if the requested related field is not a property on the model", () => {
-    const model = new ExampleModelClass({ id, studentId });
+    const model = new ExampleModelClass({ id, organizationId });
     expect(model.getRelated("fakeField")).to.be.undefined;
   });
 
   it("returns a shadow for a belongsTo relationship if the current model is a shadow", () => {
     const shadowModel = exampleService.getShadowObject();
-    expect(shadowModel.getRelated("student")).to.have.property("isShadow").to.be.true;
+    expect(shadowModel.getRelated("organization")).to.have.property("isShadow").to.be.true;
   });
 
   it("returns undefined for a belongsTo relationship if the related id field is empty", () => {
-    const model = new ExampleModelClass({ id, studentId: null });
-    expect(model.getRelated("student")).to.be.undefined;
+    const model = new ExampleModelClass({ id, organizationId: null });
+    expect(model.getRelated("organization")).to.be.undefined;
   });
 
   it("returns an empty array for a hasMany relationship if the related ids field is empty", () => {
@@ -126,11 +126,11 @@ describe("Model.getRelated", () => {
   });
 
   it("uses the Observable returned from the DataService to get the related BelongsTo model", () => {
-    const studentObservable = of$(new studentService.ModelClass({ id: studentId }));
-    stub(studentService, "getById").returns(studentObservable);
+    const organizationObservable = of$(new organizationService.ModelClass({ id: organizationId }));
+    stub(organizationService, "getById").returns(organizationObservable);
 
-    const model = new ExampleModelClass({ id, studentId });
-    expect(model).to.have.property("student").to.have.property("id").to.equal(studentId);
+    const model = new ExampleModelClass({ id, organizationId });
+    expect(model).to.have.property("organization").to.have.property("id").to.equal(organizationId);
   });
 
   it("uses the Observable returned from the DataService to get the related HasMany models", () => {
@@ -145,138 +145,136 @@ describe("Model.getRelated", () => {
 
   it("dispatches a setRelationship action when the Observable updates more than once", () => {
     const stubSetRelationship = stub(exampleService.actions, "setRelationship").returns({ invoke: spy() });
-    const studentObservable = new Subject();
-    stub(studentService, "getById").returns(studentObservable.publishReplay(1).refCount());
+    const organizationObservable = new Subject();
+    stub(organizationService, "getById").returns(organizationObservable.publishReplay(1).refCount());
 
-    const student1 = new studentService.ModelClass({ id: studentId });
-    const student2 = new studentService.ModelClass({ id: studentId });
+    const organization1 = new organizationService.ModelClass({ id: organizationId });
+    const organization2 = new organizationService.ModelClass({ id: organizationId });
 
-    const model = new ExampleModelClass({ id, studentId });
-    model.getRelated("student");
+    const model = new ExampleModelClass({ id, organizationId });
+    model.getRelated("organization");
 
-    studentObservable.next(student1);
-    studentObservable.next(student2);
+    organizationObservable.next(organization1);
+    organizationObservable.next(organization2);
 
-    expect(stubSetRelationship.firstCall.args[0]).to.have.property("value").to.equal(student2);
+    expect(stubSetRelationship.firstCall.args[0]).to.have.property("value").to.equal(organization2);
   });
 
-  describe("when model is being destroyed", () => {
-    it("stops listening to new changes when the Model is being torn down", () => {
-      const studentObservable = new Subject();
-      stub(studentService, "getById").returns(studentObservable.publishReplay(1).refCount());
+  it("stops listening to new changes when the Model is being torn down", () => {
+    const organizationObservable = new Subject();
+    stub(organizationService, "getById").returns(organizationObservable.publishReplay(1).refCount());
 
-      const student1 = new studentService.ModelClass({ id: studentId });
-      const student2 = new studentService.ModelClass({ id: studentId });
+    const organization1 = new organizationService.ModelClass({ id: organizationId });
+    const organization2 = new organizationService.ModelClass({ id: organizationId });
 
-      const model = new ExampleModelClass({ id, studentId });
-      model.getRelated("student");
+    const model = new ExampleModelClass({ id, organizationId });
+    model.getRelated("organization");
 
-      studentObservable.next(student1);
-      model.markForDestruction();
+    organizationObservable.next(organization1);
+    model.markForDestruction();
 
-      // note: model.markForDestruction() uses setTimeout to bump its execution to avoid a Redux issue.
-      // So, we need to return a promise from the test so we can use setTimeout here as well,
-      // such that the assertion occurs after the observable has been triggered
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          try {
-            studentObservable.next(student2);
-            expect(model).to.have.property("student").to.equal(student1).but.to.not.equal(student2);
-            resolve();
-          } catch (e) {
-            reject(e);
-          }
-        }, 0);
-      });
+    // note: model.markForDestruction() uses setTimeout to bump its execution to avoid a Redux issue.
+    // So, we need to return a promise from the test so we can use setTimeout here as well,
+    // such that the assertion occurs after the observable has been triggered
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        try {
+          organizationObservable.next(organization2);
+          expect(model).to.have.property("organization").to.equal(organization1).but.to.not.equal(organization2);
+          resolve();
+        } catch (e) {
+          reject(e);
+        }
+      }, 0);
     });
+  });
 
-    it("will not subscribe to new changes when the Model is being torn down", () => {
-      const student = new studentService.ModelClass({ id: studentId });
-      const studentObservable = of$(student);
-      stub(studentService, "getById").returns(studentObservable);
+  it("will not subscribe to new changes when the Model is being torn down", () => {
+    const organization = new organizationService.ModelClass({ id: organizationId });
+    const organizationObservable = of$(organization);
+    stub(organizationService, "getById").returns(organizationObservable);
 
-      const model = new ExampleModelClass({ id, studentId });
-      model.markForDestruction();
-      expect(model).to.have.property("student").to.be.undefined;
-    });
-
-    describe("setting existing related records as destroyed", () => {
-      it("sets related scalar value as destroyed", () => {
-        const studentObservable = new Subject();
-        stub(studentService, "getById").returns(studentObservable.publishReplay(1).refCount());
-
-        const student1 = new studentService.ModelClass({ id: studentId });
-        const student1DestroyStub = stub(student1, "markForDestruction").callThrough();
-
-        const model = new ExampleModelClass({ id, studentId });
-        model.getRelated("student");
-
-        studentObservable.next(student1);
-        const student2 = new studentService.ModelClass({ id: studentId });
-        studentObservable.next(student2);
-
-        expect(student1DestroyStub.calledOnce).to.be.true;
-      });
-
-      it("sets related array value as destroyed", () => {
-        const studentArrayCreator = () => [1, 2, 3].map(() =>
-          new studentService.ModelClass({ id: random.number.toString() })
-        );
-
-        const studentObservable = new Subject();
-        stub(studentService, "getByIds").returns(studentObservable.publishReplay(1).refCount());
-
-        const students1 = studentArrayCreator();
-        const students1DestroyStub = students1.map(student => stub(student, "markForDestruction").callThrough());
-
-        const model = new ExampleModelClass({ id, students1 });
-        model.getRelated("students");
-
-        studentObservable.next(students1);
-        const student2 =  studentArrayCreator();
-        studentObservable.next(student2);
-
-        expect(students1DestroyStub).not.to.be.empty;
-        students1DestroyStub.forEach((stub, index) =>
-          expect(stub.calledOnce).to.eq(true, `first student array, stub at position ${index} should be destroyed`)
-        );
-      });
-    });
+    const model = new ExampleModelClass({ id, organizationId });
+    model.markForDestruction();
+    expect(model).to.have.property("organization").to.be.undefined;
   });
 
   it("will return the correct version of a relationship when its related id changes", () => {
     const newOrganizationId = random.number().toString();
-    const student = new studentService.ModelClass({ id: studentId });
-    const newOrganization = new studentService.ModelClass({ id: newOrganizationId });
+    const organization = new organizationService.ModelClass({ id: organizationId });
+    const newOrganization = new organizationService.ModelClass({ id: newOrganizationId });
 
-    const getByIdStub = stub(studentService, "getById").returns(of$(student));
+    const getByIdStub = stub(organizationService, "getById").returns(of$(organization));
 
-    const model = new ExampleModelClass({ id, studentId });
-    expect(model).to.have.property("student").to.equal(student);
+    const model = new ExampleModelClass({ id, organizationId });
+    expect(model).to.have.property("organization").to.equal(organization);
 
     getByIdStub.restore();
-    stub(studentService, "getById").returns(of$(newOrganization));
+    stub(organizationService, "getById").returns(of$(newOrganization));
 
-    const updatedModel = model.applyUpdates({ studentId: newOrganizationId });
+    const updatedModel = model.applyUpdates({ organizationId: newOrganizationId });
 
-    expect(updatedModel).to.have.property("student").to.equal(newOrganization);
+    expect(updatedModel).to.have.property("organization").to.equal(newOrganization);
   });
 
   it("will not change the relationship of the current model instance when its related id changes", () => {
-    const student = new studentService.ModelClass({ id: studentId });
+    const organization = new organizationService.ModelClass({ id: organizationId });
     const newOrganizationId = random.number().toString();
-    const newOrganization = new studentService.ModelClass({ id: studentId });
+    const newOrganization = new organizationService.ModelClass({ id: organizationId });
 
-    const getByIdStub = stub(studentService, "getById").returns(of$(student));
+    const getByIdStub = stub(organizationService, "getById").returns(of$(organization));
 
-    const model = new ExampleModelClass({ id, studentId });
-    expect(model).to.have.property("student").to.equal(student);
+    const model = new ExampleModelClass({ id, organizationId });
+    expect(model).to.have.property("organization").to.equal(organization);
 
     getByIdStub.restore();
-    stub(studentService, "getById").returns(of$(newOrganization));
+    stub(organizationService, "getById").returns(of$(newOrganization));
 
-    model.applyUpdates({ studentId: newOrganizationId });
+    model.applyUpdates({ organizationId: newOrganizationId });
 
-    expect(model).to.have.property("student").to.equal(student);
+    expect(model).to.have.property("organization").to.equal(organization);
+  });
+
+  describe("setting existing related records as destroyed", () => {
+    it("sets related scalar value as destroyed", () => {
+      const organizationObservable = new Subject();
+      stub(organizationService, "getById").returns(organizationObservable.publishReplay(1).refCount());
+
+      const organization1 = new organizationService.ModelClass({ id: organizationId });
+      const organization1DestroyStub = stub(organization1, "markForDestruction").callThrough();
+
+      const model = new ExampleModelClass({ id, organizationId });
+      model.getRelated("organization");
+
+      organizationObservable.next(organization1);
+      const organization2 = new organizationService.ModelClass({ id: organizationId });
+      organizationObservable.next(organization2);
+
+      expect(organization1DestroyStub.calledOnce).to.be.true;
+    });
+
+    it("sets related array value as destroyed", () => {
+      const studentArrayCreator = () => [1, 2, 3].map(() =>
+        new studentService.ModelClass({ id: random.number().toString() })
+      );
+
+      const studentObservable = new Subject();
+      stub(studentService, "getByIds").returns(studentObservable.publishReplay(1).refCount());
+
+      const students1 = studentArrayCreator();
+      const students1DestroyStub = students1.map(student => stub(student, "markForDestruction").callThrough());
+
+      const model = new ExampleModelClass({ id, studentIds: students1.map(student => student.id) });
+      model.getRelated("students");
+
+      studentObservable.next(students1);
+      const students2 = studentArrayCreator();
+      studentObservable.next(students2);
+
+      expect(students1DestroyStub).not.to.be.empty;
+      students1DestroyStub.forEach((stub, index) =>
+        expect(stub.calledOnce).to.eq(true, `first student array, stub at position ${index} should be destroyed`)
+      );
+    });
   });
 });
