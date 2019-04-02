@@ -489,16 +489,31 @@ export class Model<T extends IModelData> implements IModel<T> {
     const service = getDataService(this.serviceName);
     observable
       .takeUntil(this.getWillDestroyObservable$())
-      .subscribe((value) => {
+      .subscribe(((updatedValue) => {
         if (!this.relatedModels.hasOwnProperty(fieldName)) {
-          this.relatedModels[fieldName] = value;
-        } else if (this.relatedModels[fieldName] !== value) {
-          service
-            .actions
-            .setRelationship({ id: this.id, fieldName, value })
-            .invoke();
+          this.relatedModels[fieldName] = updatedValue;
+        } else if (this.relatedModels[fieldName] !== updatedValue) {
+          const currentValue: Model<any> | Model<any>[] | any = this.relatedModels[fieldName];
+
+          if (currentValue instanceof Array && currentValue.some(related => !related.isDestroying)) {
+            currentValue.forEach(related =>
+              related.markForDestruction && related.markForDestruction(),
+            );
+            service
+              .actions
+              .setRelationship({ id: this.id, fieldName, updatedValue })
+              .invoke();
+          } else if (!currentValue.isDestroying) {
+            if (currentValue.markForDestruction) {
+              currentValue.markForDestruction();
+            }
+            service
+              .actions
+              .setRelationship({ id: this.id, fieldName, updatedValue })
+              .invoke();
+          }
         }
-      });
+      }) as any);
 
     return this.relatedModels[fieldName];
   }
