@@ -501,19 +501,15 @@ export class Model<T extends IModelData> implements IModel<T> {
                 // destroy model, so that the subscription above is canceled
                 related.markForDestruction(),
               );
-              service
-                .actions
-                .setRelationship({ id: this.id, fieldName, value: updatedValue })
-                .invoke();
             }
           } else if (!currentValue.isDestroying) {
             // destroy model, so that the subscription above is canceled
             currentValue.markForDestruction();
-            service
-              .actions
-              .setRelationship({ id: this.id, fieldName, value: updatedValue })
-              .invoke();
           }
+          service
+            .actions
+            .setRelationship({ id: this.id, fieldName, value: updatedValue })
+            .invoke();
         }
       }) as any);
 
