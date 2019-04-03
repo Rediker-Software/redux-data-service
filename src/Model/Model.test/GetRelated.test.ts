@@ -255,7 +255,7 @@ describe("Model.getRelated", () => {
 
     it("sets related array value as destroyed", () => {
       const studentArrayCreator = () => [1, 2, 3].map(() =>
-        new studentService.ModelClass({ id: random.number().toString() })
+        new studentService.ModelClass({ id: random.number().toString() }),
       );
 
       const studentObservable = new Subject();
@@ -273,7 +273,7 @@ describe("Model.getRelated", () => {
 
       expect(students1DestroyStub).not.to.be.empty;
       students1DestroyStub.forEach((stub, index) =>
-        expect(stub.calledOnce).to.eq(true, `first student array, stub at position ${index} should be destroyed`)
+        expect(stub.calledOnce).to.eq(true, `first student array, stub at position ${index} should be destroyed`),
       );
     });
   });
