@@ -498,7 +498,7 @@ export class Model<T extends IModelData> implements IModel<T> {
           if (currentValue instanceof Array && currentValue.some(related => !related.isDestroying)) {
             currentValue.forEach(related =>
               // destroy model, so that the subscription above is canceled
-              related.markForDestruction()
+              related.markForDestruction(),
             );
             service
               .actions
