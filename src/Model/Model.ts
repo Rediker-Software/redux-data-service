@@ -495,15 +495,17 @@ export class Model<T extends IModelData> implements IModel<T> {
         } else if (this.relatedModels[fieldName] !== updatedValue) {
           const currentValue: Model<any> | Model<any>[] | any = this.relatedModels[fieldName];
 
-          if (currentValue instanceof Array && currentValue.some(related => !related.isDestroying)) {
-            currentValue.forEach(related =>
-              // destroy model, so that the subscription above is canceled
-              related.markForDestruction()
-            );
-            service
-              .actions
-              .setRelationship({ id: this.id, fieldName, value: updatedValue })
-              .invoke();
+          if (currentValue instanceof Array) {
+            if (currentValue.some(related => !related.isDestroying)) {
+              currentValue.forEach(related =>
+                // destroy model, so that the subscription above is canceled
+                related.markForDestruction()
+              );
+              service
+                .actions
+                .setRelationship({ id: this.id, fieldName, value: updatedValue })
+                .invoke();
+            }
           } else if (!currentValue.isDestroying) {
             // destroy model, so that the subscription above is canceled
             currentValue.markForDestruction();
