@@ -496,20 +496,24 @@ export class Model<T extends IModelData> implements IModel<T> {
           const currentValue: Model<any> | Model<any>[] | any = this.relatedModels[fieldName];
 
           if (currentValue instanceof Array) {
-            if (currentValue.some(related => !related.isDestroying)) {
-              currentValue.forEach(related =>
+            currentValue.forEach(related => {
+              if (!related.isDestroying) {
                 // destroy model, so that the subscription above is canceled
-                related.markForDestruction(),
-              );
-            }
+                related.markForDestruction();
+              }
+            });
+            service
+              .actions
+              .setRelationship({ id: this.id, fieldName, value: updatedValue })
+              .invoke();
           } else if (!currentValue.isDestroying) {
             // destroy model, so that the subscription above is canceled
             currentValue.markForDestruction();
+            service
+              .actions
+              .setRelationship({ id: this.id, fieldName, value: updatedValue })
+              .invoke();
           }
-          service
-            .actions
-            .setRelationship({ id: this.id, fieldName, value: updatedValue })
-            .invoke();
         }
       }) as any);
 
