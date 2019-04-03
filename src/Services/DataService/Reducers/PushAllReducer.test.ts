@@ -35,4 +35,8 @@ describe("pushAllReducer", () => {
     ).to.deep.equal(items);
   });
 
+  it("calls markForDestruction on the old items when they are being replaced", () => {
+    expect(false).to.be.true;
+  });
+
 });

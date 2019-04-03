@@ -55,4 +55,8 @@ describe("pushRecordReducer", () => {
     ).to.equal(newItem);
   });
 
+  it("calls markForDestruction on the old item when it is being replaced with a new one", () => {
+    expect(false).to.be.true;
+  });
+
 });

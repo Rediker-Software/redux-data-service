@@ -752,6 +752,10 @@ describe("Model", () => {
         const model = service.createNew();
         expect(() => model.applyUpdates({ name: random.number() })).to.throw(TypeError, "invalid");
       });
+
+      it("calls markForDestruction if an id field has changed", () => {
+        expect(false).to.be.true;
+      });
     });
 
     describe("creates new instance by merging own data with new data", () => {

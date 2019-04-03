@@ -15,7 +15,13 @@ export function pushAllReducer<T extends IModelData>(
     ? (
       state.update("items", (items) => items.withMutations((itemsMap) => {
         action.payload.items.forEach((item) => {
-          itemsMap.update(item.id, () => item);
+          itemsMap.update(item.id, (oldItem: IModel<T>) => {
+            if (oldItem) {
+              oldItem.markForDestruction();
+            }
+
+            return item;
+          });
         });
       }))
     )

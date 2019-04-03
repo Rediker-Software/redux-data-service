@@ -7,6 +7,12 @@ export function pushRecordReducer<T extends IModelData>(state: IDataServiceState
   const item = action.payload;
 
   return state.update("items", items =>
-    items.update(item.id, () => item),
+    items.update(item.id, (oldItem: IModel<T>) => {
+      if (oldItem) {
+        oldItem.markForDestruction();
+      }
+
+      return item;
+    }),
   );
 }

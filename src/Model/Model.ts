@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscriber } from "rxjs/Subscriber";
 
 import { validate } from "validate.js";
-import { find, forEach, get, isEmpty, omit, set } from "lodash";
+import { forEach, get, isEmpty, omit, set, some } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
 import { DataService } from "../Services/DataService";
@@ -106,8 +106,6 @@ export class Model<T extends IModelData> implements IModel<T> {
   protected readonly modelData: Partial<T>;
   protected readonly meta: IModelMeta<T>;
   protected readonly relatedModels: IModelsMap;
-  protected _isDestroying: boolean = false;
-  protected _willDestroyObservable$: Subject<boolean>;
 
   constructor(modelData: Partial<T> & { id: string }, meta: Partial<IModelMeta<T>> = {}, relatedModels: IModelsMap = {}) {
     this.modelData = modelData;
@@ -349,15 +347,18 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public applyUpdates(changes: Partial<T> = {}, meta: Partial<IModelMeta<T>> = {}, relatedModels: any = {}): IModel<T> {
     relatedModels = { ...this.relatedModels, ...relatedModels };
+    let hasRelationship = false;
 
     if (!isEmpty(changes)) {
 
       // Validate the input, clear relatedModels whose ids may have just changed so they can be loaded again
       for (const key in changes) {
         this.checkFieldUpdateIsAllowed(key, changes[key]);
-        const relationship = find(this.relationships, { relatedFieldName: key });
-        if (relationship && relatedModels.hasOwnProperty(relationship.field)) {
-          delete relatedModels[relationship.field];
+        hasRelationship = some(this.relationships, { relatedFieldName: key });
+
+        if (hasRelationship) {
+          this.markForDestruction();
+          break;
         }
       }
 
@@ -367,7 +368,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     meta = { ...this.meta, ...meta };
 
     const service = getDataService(this.serviceName);
-    return new service.ModelClass(this.modelData, meta, relatedModels);
+    return new service.ModelClass(this.modelData, meta, hasRelationship ? {} : relatedModels);
   }
 
   /**
@@ -485,20 +486,24 @@ export class Model<T extends IModelData> implements IModel<T> {
       ? relatedService.getById(relatedIDorIDs)
       : relatedService.getByIds(relatedIDorIDs);
 
+    const { relatedModels = {}, id } = this;
+
+    function observableSubscription(value) {
+      if (relatedModels[fieldName] == null) {
+        relatedModels[fieldName] = value;
+      } else if (relatedModels[fieldName] !== value) {
+        service
+          .actions
+          .setRelationship({ id, fieldName, value })
+          .invoke();
+      }
+    }
+
     // Dispatch an action to update the Model's relationships when the Observable updates
     const service = getDataService(this.serviceName);
     observable
       .takeUntil(this.getWillDestroyObservable$())
-      .subscribe((value) => {
-        if (!this.relatedModels.hasOwnProperty(fieldName)) {
-          this.relatedModels[fieldName] = value;
-        } else if (this.relatedModels[fieldName] !== value) {
-          service
-            .actions
-            .setRelationship({ id: this.id, fieldName, value })
-            .invoke();
-        }
-      });
+      .subscribe(observableSubscription);
 
     return this.relatedModels[fieldName];
   }
@@ -557,8 +562,8 @@ export class Model<T extends IModelData> implements IModel<T> {
    * This is an internal method which will tell the WillDestroyObservable to emit a value
    */
   protected triggerWillDestroyObservable() {
-    if (this._willDestroyObservable$) {
-      this._willDestroyObservable$.next(true);
+    if (this.meta.willDestroyObservable$) {
+      this.meta.willDestroyObservable$.next(true);
     }
   }
 
@@ -568,7 +573,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    * in order to avoid a possible memory leak.
    */
   public markForDestruction(): void {
-    this._isDestroying = true;
+    this.meta.isDestroying = true;
 
     // Redux complains if we unsubscribe from the data store observable when a reducer is running
     // so, we use setTimeout to bump the execution to the next run cycle
@@ -584,7 +589,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    * @returns {boolean}
    */
   public get isDestroying() {
-    return this._isDestroying;
+    return this.meta.isDestroying;
   }
 
   /**
@@ -594,14 +599,14 @@ export class Model<T extends IModelData> implements IModel<T> {
    * @returns {Observable<boolean>}
    */
   public getWillDestroyObservable$(): Observable<boolean> {
-    if (!this._willDestroyObservable$) {
-      this._willDestroyObservable$ = new Subject();
+    if (!this.meta.willDestroyObservable$) {
+      this.meta.willDestroyObservable$ = new Subject();
       if (this.isDestroying) {
         this.triggerWillDestroyObservable();
       }
     }
 
-    return this._willDestroyObservable$;
+    return this.meta.willDestroyObservable$;
   }
 
   /**

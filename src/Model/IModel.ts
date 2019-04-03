@@ -3,6 +3,7 @@ import { Subscriber } from "rxjs/Subscriber";
 import { DataService } from "../Services/DataService/DataService";
 import { IRelationship } from "./Decorators/Relationship";
 import { IAttrs } from "./Decorators/Attr";
+import { Subject } from "rxjs";
 
 export type IModelKeys<T, U = any> = {[P in keyof T]?: U} | null;
 
@@ -24,6 +25,8 @@ export interface IModelMeta<T> {
   isLoading: boolean;
   changes?: Partial<T>;
   errors: IModelKeys<T>;
+  isDestroying?: boolean;
+  willDestroyObservable$?: Subject<boolean>;
 }
 
 export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData, IAttrs, IRelationship {
