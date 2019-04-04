@@ -18,5 +18,7 @@ export const configureStore: IConfigureStore = (reducers: IReducers<any>, epics:
     middleware = composeWithDevTools(middleware);
   }
 
+  reducers["DESTROY_ALL"] = (state, action) => ({});
+
   return createStore(combineReducers(reducers), middleware);
 };
