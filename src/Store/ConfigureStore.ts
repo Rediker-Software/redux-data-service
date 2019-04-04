@@ -10,7 +10,9 @@ export type IConfigureStore = (reducers: IReducers<any>, epics: IActionEpic[]) =
 export const configureStore: IConfigureStore = (reducers: IReducers<any>, epics: IActionEpic[]) => {
   const rootEpic = (action$, store, d) =>
     combineEpics(...epics)(action$, store, d)
-      .takeUntil(action$.ofType("DESTROY_ALL").do(() => { store.dispatch({ type: "CLEAR_STORE" }); }));
+      .takeUntil(action$.ofType("DESTROY_ALL").do(() => {
+        Object.keys(store.getState()).forEach(key => store.dispatch({ type: `${key}/UNLOAD_ALL` }));
+       }));
 
   let middleware = applyMiddleware(loggerMiddleware, createEpicMiddleware(rootEpic));
 
@@ -18,13 +20,5 @@ export const configureStore: IConfigureStore = (reducers: IReducers<any>, epics:
     middleware = composeWithDevTools(middleware);
   }
 
-  const rootReducer = (state, action) => {
-    if (action.type === "CLEAR_STORE") {
-      return undefined;
-    }
-
-    return combineReducers(reducers)(state, action);
-  };
-
-  return createStore(rootReducer, middleware);
+  return createStore(combineReducers(reducers), middleware);
 };
