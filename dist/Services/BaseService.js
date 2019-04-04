@@ -4,6 +4,10 @@ require("rxjs/add/operator/shareReplay");
 var BaseService = (function () {
     function BaseService() {
     }
+    BaseService.destroyState = function () {
+        this.state$ = null;
+        this.dispatch = null;
+    };
     BaseService.prototype.makeActionType = function (type) {
         return [this.name, type].join("/");
     };

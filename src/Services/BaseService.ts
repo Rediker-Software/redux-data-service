@@ -46,6 +46,11 @@ export abstract class BaseService<S> implements IService<S> {
   protected internalSelectors?: ISelectors;
   protected internalTypes: IActionTypes;
 
+  public static destroyState(): void {
+    this.state$ = null;
+    this.dispatch = null;
+  }
+
   /**
    * The default Redux state of the IService
    *

@@ -10,6 +10,7 @@ export declare abstract class BaseService<S> implements IService<S> {
     protected internalActions?: IActionCreators;
     protected internalSelectors?: ISelectors;
     protected internalTypes: IActionTypes;
+    static destroyState(): void;
     abstract getDefaultState(): S;
     makeActionType(type: string): string;
     static registerDispatch(dispatch: any): void;
