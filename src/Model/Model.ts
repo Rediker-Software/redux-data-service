@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscriber } from "rxjs/Subscriber";
 
 import { validate } from "validate.js";
-import { forEach, get, isEmpty, omit, set, some } from "lodash";
+import { forEach, get, isEmpty, omit, set, some, find } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
 import { DataService } from "../Services/DataService";
@@ -350,18 +350,15 @@ export class Model<T extends IModelData> implements IModel<T> {
    */
   public applyUpdates(changes: Partial<T> = {}, meta: Partial<IModelMeta<T>> = {}, relatedModels: any = {}): IModel<T> {
     relatedModels = { ...this.relatedModels, ...relatedModels };
-    let hasRelationship = false;
 
     if (!isEmpty(changes)) {
 
       // Validate the input, clear relatedModels whose ids may have just changed so they can be loaded again
       for (const key in changes) {
         this.checkFieldUpdateIsAllowed(key, changes[key]);
-        hasRelationship = some(this.relationships, { relatedFieldName: key });
-
-        if (hasRelationship) {
-          this.markForDestruction();
-          break;
+        const relationship = find(this.relationships, { relatedFieldName: key });
+        if (relationship && relatedModels.hasOwnProperty(relationship.field)) {
+          delete relatedModels[ relationship.field ];
         }
       }
 
@@ -371,7 +368,7 @@ export class Model<T extends IModelData> implements IModel<T> {
     meta = { ...this.meta, ...meta };
 
     const service = getDataService(this.serviceName);
-    return new service.ModelClass(this.modelData, meta, hasRelationship ? {} : relatedModels);
+    return new service.ModelClass(this.modelData, meta, relatedModels);
   }
 
   /**
@@ -722,7 +719,7 @@ export class Model<T extends IModelData> implements IModel<T> {
   /** Create a clone of the model without any of the unsaved changes */
   public original(): this {
     // const service = getDataService(this.serviceName);
-    // return new service.ModelClass(this.modelData) as this;
+    // return new service.ModelClass(this.modelData, { this.meta.isDestroying, this.meta.isDestroyingObservable }) as this;
     return this;
   }
 
