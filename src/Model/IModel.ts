@@ -34,7 +34,6 @@ export interface IModel<T extends IModelData> extends IModelMeta<T>, IModelData,
   readonly hasUnsavedChanges: boolean;
   readonly isNew: boolean;
   readonly serviceName: string;
-  parentModel: IModel<any>;
   parentModelId?: string;
   save(progressObserver?: Subscriber<any>): Promise<IModel<T>>;
   saveModel(progressObserver?: Subscriber<any>): Promise<IModel<T>>;

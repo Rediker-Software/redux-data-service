@@ -92,9 +92,6 @@ export class Model<T extends IModelData> implements IModel<T> {
   @attr(StringField, { serialize: false, defaultValue: (m) => `${m.parentServiceName}Id` })
   public parentIdFieldName: string;
 
-  @belongsTo({ serviceNameField: "parentServiceName" })
-  public parentModel: IModel<any>;
-
   public get parentModelId() {
     return get(this, this.parentIdFieldName);
   }
@@ -159,22 +156,28 @@ export class Model<T extends IModelData> implements IModel<T> {
    * @returns {Promise<IModel<T extends IModelData>>}
    */
   public saveModel(progressSubscriber?: Subscriber<any>): Promise<IModel<any>> {
-    if (this.serializeThroughParent) {
-      return this.parentModel.save();
-    }
-
     return new Promise((resolve, reject) => {
-      const service = getDataService(this.serviceName);
-      const action = (this.isNew)
-        ? service.actions.createRecord
-        : getConfiguration().preferPatchOverPut
-          ? service.actions.patchRecord
-          : service.actions.updateRecord;
+      if (this.serializeThroughParent) {
+        const parentDataService = getDataService(this.parentServiceName);
+        parentDataService
+          .getById(this.parentModelId)
+          .take(1)
+          .subscribe(parentModel =>
+            parentModel.save().then(resolve, reject)
+          );
+      } else {
+        const service = getDataService(this.serviceName);
+        const action = (this.isNew)
+          ? service.actions.createRecord
+          : getConfiguration().preferPatchOverPut
+            ? service.actions.patchRecord
+            : service.actions.updateRecord;
 
-      action({ id: this.id, progressSubscriber }, {
-        onSuccess: (model) => resolve(model),
-        onError: (error) => reject("xhr" in error ? error.xhr.response : error),
-      }).invoke();
+        action({ id: this.id, progressSubscriber }, {
+          onSuccess: (model) => resolve(model),
+          onError: (error) => reject("xhr" in error ? error.xhr.response : error),
+        }).invoke();
+      }
     });
   }
 
@@ -718,8 +721,9 @@ export class Model<T extends IModelData> implements IModel<T> {
 
   /** Create a clone of the model without any of the unsaved changes */
   public original(): this {
-    const service = getDataService(this.serviceName);
-    return new service.ModelClass(this.modelData) as this;
+    // const service = getDataService(this.serviceName);
+    // return new service.ModelClass(this.modelData) as this;
+    return this;
   }
 
   public getFieldError(fieldName) {
