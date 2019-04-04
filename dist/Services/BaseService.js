@@ -4,7 +4,7 @@ require("rxjs/add/operator/shareReplay");
 var BaseService = (function () {
     function BaseService() {
     }
-    BaseService.destroyState = function () {
+    BaseService.destroyStateObservable = function () {
         this.state$ = null;
         this.dispatch = null;
     };

@@ -46,7 +46,7 @@ export abstract class BaseService<S> implements IService<S> {
   protected internalSelectors?: ISelectors;
   protected internalTypes: IActionTypes;
 
-  public static destroyState(): void {
+  public static destroyStateObservable(): void {
     this.state$ = null;
     this.dispatch = null;
   }
