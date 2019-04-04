@@ -8,7 +8,9 @@ import { loggerMiddleware } from "./Middleware";
 export type IConfigureStore = (reducers: IReducers<any>, epics: IActionEpic[]) => Store<any>;
 
 export const configureStore: IConfigureStore = (reducers: IReducers<any>, epics: IActionEpic[]) => {
-  const rootEpic = combineEpics(...epics);
+  const rootEpic = (action$, store, d) =>
+    combineEpics(...epics)(action$, store, d)
+      .takeUntil(action$.ofType("DESTROY_ALL"));
 
   let middleware = applyMiddleware(loggerMiddleware, createEpicMiddleware(rootEpic));
 
