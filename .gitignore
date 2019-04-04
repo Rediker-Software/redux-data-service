@@ -14,4 +14,3 @@ junit-results.xml
 package-lock.json
 .vs
 yarn-error.log
-dist
