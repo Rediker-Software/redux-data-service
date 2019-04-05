@@ -1,3 +1,5 @@
+import "rxjs/add/operator/do";
+
 import { applyMiddleware, combineReducers, createStore, Store } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { combineEpics, createEpicMiddleware } from "redux-observable";
