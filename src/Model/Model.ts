@@ -92,9 +92,6 @@ export class Model<T extends IModelData> implements IModel<T> {
   @attr(StringField, { serialize: false, defaultValue: (m) => `${m.parentServiceName}Id` })
   public parentIdFieldName: string;
 
-  @belongsTo({ serviceNameField: "parentServiceName" })
-  public parentModel: IModel<any>;
-
   public get parentModelId() {
     return get(this, this.parentIdFieldName);
   }
@@ -106,8 +103,6 @@ export class Model<T extends IModelData> implements IModel<T> {
   protected readonly modelData: Partial<T>;
   protected readonly meta: IModelMeta<T>;
   protected readonly relatedModels: IModelsMap;
-  protected _isDestroying: boolean = false;
-  protected _willDestroyObservable$: Subject<boolean>;
 
   constructor(modelData: Partial<T> & { id: string }, meta: Partial<IModelMeta<T>> = {}, relatedModels: IModelsMap = {}) {
     this.modelData = modelData;
@@ -161,22 +156,28 @@ export class Model<T extends IModelData> implements IModel<T> {
    * @returns {Promise<IModel<T extends IModelData>>}
    */
   public saveModel(progressSubscriber?: Subscriber<any>): Promise<IModel<any>> {
-    if (this.serializeThroughParent) {
-      return this.parentModel.save();
-    }
-
     return new Promise((resolve, reject) => {
-      const service = getDataService(this.serviceName);
-      const action = (this.isNew)
-        ? service.actions.createRecord
-        : getConfiguration().preferPatchOverPut
-          ? service.actions.patchRecord
-          : service.actions.updateRecord;
+      if (this.serializeThroughParent) {
+        const parentDataService = getDataService(this.parentServiceName);
+        parentDataService
+          .getById(this.parentModelId)
+          .take(1)
+          .subscribe(parentModel =>
+            parentModel.save().then(resolve, reject),
+          );
+      } else {
+        const service = getDataService(this.serviceName);
+        const action = (this.isNew)
+          ? service.actions.createRecord
+          : getConfiguration().preferPatchOverPut
+            ? service.actions.patchRecord
+            : service.actions.updateRecord;
 
-      action({ id: this.id, progressSubscriber }, {
-        onSuccess: (model) => resolve(model),
-        onError: (error) => reject("xhr" in error ? error.xhr.response : error),
-      }).invoke();
+        action({ id: this.id, progressSubscriber }, {
+          onSuccess: (model) => resolve(model),
+          onError: (error) => reject("xhr" in error ? error.xhr.response : error),
+        }).invoke();
+      }
     });
   }
 
@@ -357,7 +358,7 @@ export class Model<T extends IModelData> implements IModel<T> {
         this.checkFieldUpdateIsAllowed(key, changes[key]);
         const relationship = find(this.relationships, { relatedFieldName: key });
         if (relationship && relatedModels.hasOwnProperty(relationship.field)) {
-          delete relatedModels[relationship.field];
+          delete relatedModels[ relationship.field ];
         }
       }
 
@@ -485,20 +486,24 @@ export class Model<T extends IModelData> implements IModel<T> {
       ? relatedService.getById(relatedIDorIDs)
       : relatedService.getByIds(relatedIDorIDs);
 
+    const { relatedModels = {}, id } = this;
+
+    function observableSubscription(value) {
+      if (relatedModels[fieldName] == null) {
+        relatedModels[fieldName] = value;
+      } else if (relatedModels[fieldName] !== value) {
+        service
+          .actions
+          .setRelationship({ id, fieldName, value })
+          .invoke();
+      }
+    }
+
     // Dispatch an action to update the Model's relationships when the Observable updates
     const service = getDataService(this.serviceName);
     observable
       .takeUntil(this.getWillDestroyObservable$())
-      .subscribe((value) => {
-        if (!this.relatedModels.hasOwnProperty(fieldName)) {
-          this.relatedModels[fieldName] = value;
-        } else if (this.relatedModels[fieldName] !== value) {
-          service
-            .actions
-            .setRelationship({ id: this.id, fieldName, value })
-            .invoke();
-        }
-      });
+      .subscribe(observableSubscription);
 
     return this.relatedModels[fieldName];
   }
@@ -557,8 +562,8 @@ export class Model<T extends IModelData> implements IModel<T> {
    * This is an internal method which will tell the WillDestroyObservable to emit a value
    */
   protected triggerWillDestroyObservable() {
-    if (this._willDestroyObservable$) {
-      this._willDestroyObservable$.next(true);
+    if (this.meta.willDestroyObservable$) {
+      this.meta.willDestroyObservable$.next(true);
     }
   }
 
@@ -568,7 +573,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    * in order to avoid a possible memory leak.
    */
   public markForDestruction(): void {
-    this._isDestroying = true;
+    this.meta.isDestroying = true;
 
     // Redux complains if we unsubscribe from the data store observable when a reducer is running
     // so, we use setTimeout to bump the execution to the next run cycle
@@ -584,7 +589,7 @@ export class Model<T extends IModelData> implements IModel<T> {
    * @returns {boolean}
    */
   public get isDestroying() {
-    return this._isDestroying;
+    return this.meta.isDestroying;
   }
 
   /**
@@ -594,14 +599,14 @@ export class Model<T extends IModelData> implements IModel<T> {
    * @returns {Observable<boolean>}
    */
   public getWillDestroyObservable$(): Observable<boolean> {
-    if (!this._willDestroyObservable$) {
-      this._willDestroyObservable$ = new Subject();
+    if (!this.meta.willDestroyObservable$) {
+      this.meta.willDestroyObservable$ = new Subject();
       if (this.isDestroying) {
         this.triggerWillDestroyObservable();
       }
     }
 
-    return this._willDestroyObservable$;
+    return this.meta.willDestroyObservable$;
   }
 
   /**
@@ -713,8 +718,9 @@ export class Model<T extends IModelData> implements IModel<T> {
 
   /** Create a clone of the model without any of the unsaved changes */
   public original(): this {
-    const service = getDataService(this.serviceName);
-    return new service.ModelClass(this.modelData) as this;
+    // const service = getDataService(this.serviceName);
+    // return new service.ModelClass(this.modelData, { this.meta.isDestroying, this.meta.isDestroyingObservable }) as this;
+    return this;
   }
 
   public getFieldError(fieldName) {
