@@ -753,9 +753,6 @@ describe("Model", () => {
         expect(() => model.applyUpdates({ name: random.number() })).to.throw(TypeError, "invalid");
       });
 
-      it("calls markForDestruction if an id field has changed", () => {
-        expect(false).to.be.true;
-      });
     });
 
     describe("creates new instance by merging own data with new data", () => {
@@ -1377,19 +1374,6 @@ describe("Model", () => {
       expect(model.parentIdFieldName).to.equal(expectedValue);
     });
 
-    it("returns the expected parent model", () => {
-      const relatedModel = seedService("fakeModel");
-
-      const model = seedService<IFakeModelData>("fakeModel", {
-        id: random.number().toString(),
-        parentIdFieldName: "fullText",
-        parentServiceName: "fakeModel",
-        fullText: relatedModel.id,
-      });
-
-      expect(model.parentModel).to.equal(relatedModel);
-    });
-
     it("attempting to save the nested model will save the parent model when serializeThroughParent = true", () => {
       const relatedModel = seedService("fakeModel");
 
@@ -1416,7 +1400,8 @@ describe("Model", () => {
       expect(model.original()).to.be.an.instanceOf(FakeModel);
     });
 
-    it("return the model without any updates", () => {
+    it("return the model without any updates", (test) => {
+      test.skip("This functionality was reverted to prevent a memory leak");
       const originalModel = seedService<IFakeModelData>("fakeModel") as IFakeModel;
       const updatedModel = originalModel.applyUpdates({ fullText: "newText" });
 

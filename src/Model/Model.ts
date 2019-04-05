@@ -163,7 +163,7 @@ export class Model<T extends IModelData> implements IModel<T> {
           .getById(this.parentModelId)
           .take(1)
           .subscribe(parentModel =>
-            parentModel.save().then(resolve, reject)
+            parentModel.save().then(resolve, reject),
           );
       } else {
         const service = getDataService(this.serviceName);
