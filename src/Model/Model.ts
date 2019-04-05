@@ -5,7 +5,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscriber } from "rxjs/Subscriber";
 
 import { validate } from "validate.js";
-import { forEach, get, isEmpty, omit, set, some, find } from "lodash";
+import { find, forEach, get, isEmpty, omit, set } from "lodash";
 import { assign, flow, mapValues, omitBy } from "lodash/fp";
 
 import { DataService } from "../Services/DataService";

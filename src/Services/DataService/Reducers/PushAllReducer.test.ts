@@ -2,14 +2,13 @@
 import "rxjs/add/observable/of";
 
 import { random } from "faker";
-import { Map, Record } from "immutable";
+import { Map } from "immutable";
 import { spy, stub } from "sinon";
 
 import { IModel } from "../../../Model/IModel";
 import { createMockFakeModels, IFakeModelData } from "../../../Model/Model.mock";
 import { DataServiceStateRecord } from "../DataServiceStateRecord";
 import { pushAllReducer } from "./PushAllReducer";
-import { IDataServiceState } from "../IDataServiceState";
 
 declare var intern;
 const { describe, it, beforeEach } = intern.getPlugin("interface.bdd");
