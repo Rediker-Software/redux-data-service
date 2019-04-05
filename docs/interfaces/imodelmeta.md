@@ -16,8 +16,10 @@
 
 * [changes](imodelmeta.md#changes)
 * [errors](imodelmeta.md#errors)
+* [isDestroying](imodelmeta.md#isdestroying)
 * [isLoading](imodelmeta.md#isloading)
 * [isShadow](imodelmeta.md#isshadow)
+* [willDestroyObservable$](imodelmeta.md#willdestroyobservable_)
 
 ---
 
@@ -29,7 +31,7 @@
 
 **● changes**: *`Partial`<`T`>*
 
-*Defined in [Model/IModel.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/b275c20/src/Model/IModel.ts#L25)*
+*Defined in [Model/IModel.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Model/IModel.ts#L26)*
 
 ___
 <a id="errors"></a>
@@ -38,7 +40,16 @@ ___
 
 **● errors**: *[IModelKeys](../#imodelkeys)<`T`>*
 
-*Defined in [Model/IModel.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/b275c20/src/Model/IModel.ts#L26)*
+*Defined in [Model/IModel.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Model/IModel.ts#L27)*
+
+___
+<a id="isdestroying"></a>
+
+### `<Optional>` isDestroying
+
+**● isDestroying**: *`boolean`*
+
+*Defined in [Model/IModel.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Model/IModel.ts#L28)*
 
 ___
 <a id="isloading"></a>
@@ -47,7 +58,7 @@ ___
 
 **● isLoading**: *`boolean`*
 
-*Defined in [Model/IModel.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/b275c20/src/Model/IModel.ts#L24)*
+*Defined in [Model/IModel.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Model/IModel.ts#L25)*
 
 ___
 <a id="isshadow"></a>
@@ -56,7 +67,16 @@ ___
 
 **● isShadow**: *`boolean`*
 
-*Defined in [Model/IModel.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/b275c20/src/Model/IModel.ts#L23)*
+*Defined in [Model/IModel.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Model/IModel.ts#L24)*
+
+___
+<a id="willdestroyobservable_"></a>
+
+### `<Optional>` willDestroyObservable$
+
+**● willDestroyObservable$**: *`Subject`<`boolean`>*
+
+*Defined in [Model/IModel.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Model/IModel.ts#L29)*
 
 ___
 
