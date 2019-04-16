@@ -73,7 +73,7 @@ describe("seedServiceList", () => {
     expect(setQueryResponseStub.firstCall.args[0])
       .to.have.property("query")
       .to.have.property("queryParams")
-      .to.deep.equal(queryParams);
+      .to.deep.include(queryParams);
   });
 
   it("dispatches a setQueryResponse action using the overrideValues by default if no query params given", () => {
@@ -92,7 +92,22 @@ describe("seedServiceList", () => {
     expect(setQueryResponseStub.firstCall.args[0])
       .to.have.property("query")
       .to.have.property("queryParams")
-      .to.deep.equal(overrideValues);
+      .to.deep.include(overrideValues);
+  });
+
+  it("dispatches a setQueryResponse action with page: 1 by default", () => {
+    const fakeService = getDataService("fakeModel");
+
+    const setQueryResponseStub = stub(fakeService.actions, "setQueryResponse").returns({
+      invoke: spy(),
+    });
+
+    seedServiceList<any>("fakeModel", 5);
+
+    expect(setQueryResponseStub.firstCall.args[0])
+      .to.have.property("query")
+      .to.have.property("queryParams")
+      .to.deep.include({ page: 1 });
   });
 
   it("dispatches a setQueryResponse action with the ids of the generated items", () => {

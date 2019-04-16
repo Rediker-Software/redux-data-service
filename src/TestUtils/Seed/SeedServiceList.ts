@@ -35,7 +35,10 @@ export function seedServiceList<T extends IModelData>(
   service
     .actions
     .setQueryResponse({
-      query: new QueryBuilder(serviceName, queryParams || overrideValues as any),
+      query: new QueryBuilder(serviceName, {
+        page: 1,
+        ...(options.queryParams || overrideValues as any),
+      }),
       response: createMockQueryResponse({
         ids: seededData.map(x => x.id),
         ...response,

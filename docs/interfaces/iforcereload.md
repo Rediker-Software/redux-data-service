@@ -24,7 +24,7 @@ Used in an action to indicate that a fetchAll or fetchRecord should force it to 
 
 **● forceReload**: *`boolean`*
 
-*Defined in [Services/DataService/IForceReload.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/95a67d9/src/Services/DataService/IForceReload.ts#L3)*
+*Defined in [Services/DataService/IForceReload.ts:3](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/IForceReload.ts#L3)*
 
 ___
 
