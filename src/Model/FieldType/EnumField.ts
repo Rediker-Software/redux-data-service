@@ -1,7 +1,7 @@
 import { includes } from "lodash";
 import { IFieldType } from "./IFieldType";
 
-export const createEnumField = (fieldEnum: any): IFieldType<any> => {
+export const createEnumField = (fieldEnum: any): IFieldType<any> & { fieldEnum: any} => {
   const enumValues = Object.values(fieldEnum);
 
   return {
@@ -13,6 +13,7 @@ export const createEnumField = (fieldEnum: any): IFieldType<any> => {
       },
     },
     defaultValue: null,
+    fieldEnum,
     isValidType: (value) => value == null || includes(fieldEnum, value),
     type: "enum",
     normalize: async (value) => value in fieldEnum ? fieldEnum[value] : null,

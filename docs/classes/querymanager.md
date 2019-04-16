@@ -49,7 +49,7 @@ Manages the data associated with a query. Holds immutable readonly fields for an
 
 ⊕ **new QueryManager**(query: *[IQueryBuilder](../interfaces/iquerybuilder.md)*, items?: *[IModel](../interfaces/imodel.md)<`T`>[]*, response?: *[IQueryResponse](../interfaces/iqueryresponse.md)*, meta?: *[IQueryManagerMeta](../interfaces/iquerymanagermeta.md)*): [QueryManager](querymanager.md)
 
-*Defined in [Query/QueryManager.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L31)*
+*Defined in [Query/QueryManager.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L31)*
 
 **Parameters:**
 
@@ -74,7 +74,7 @@ ___
 
 *Implementation of [IQueryManager](../interfaces/iquerymanager.md).[items](../interfaces/iquerymanager.md#items)*
 
-*Defined in [Query/QueryManager.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L29)*
+*Defined in [Query/QueryManager.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L29)*
 
 ___
 <a id="meta"></a>
@@ -83,7 +83,7 @@ ___
 
 **● meta**: *[IQueryManagerMeta](../interfaces/iquerymanagermeta.md)*
 
-*Defined in [Query/QueryManager.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L31)*
+*Defined in [Query/QueryManager.ts:31](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L31)*
 
 ___
 <a id="query"></a>
@@ -94,7 +94,7 @@ ___
 
 *Implementation of [IQueryManager](../interfaces/iquerymanager.md).[query](../interfaces/iquerymanager.md#query)*
 
-*Defined in [Query/QueryManager.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L28)*
+*Defined in [Query/QueryManager.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L28)*
 
 ___
 <a id="response"></a>
@@ -105,7 +105,7 @@ ___
 
 *Implementation of [IQueryManager](../interfaces/iquerymanager.md).[response](../interfaces/iquerymanager.md#response)*
 
-*Defined in [Query/QueryManager.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L30)*
+*Defined in [Query/QueryManager.ts:30](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L30)*
 
 ___
 
@@ -117,7 +117,7 @@ ___
 
 geterrors(): `any`
 
-*Defined in [Query/QueryManager.ts:48](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L48)*
+*Defined in [Query/QueryManager.ts:48](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L48)*
 
 **Returns:** `any`
 
@@ -128,7 +128,7 @@ ___
 
 getisLoading(): `boolean`
 
-*Defined in [Query/QueryManager.ts:40](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L40)*
+*Defined in [Query/QueryManager.ts:40](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L40)*
 
 **Returns:** `boolean`
 
@@ -142,7 +142,7 @@ ___
 
 ▸ **getNextPage**(): [IQueryBuilder](../interfaces/iquerybuilder.md)
 
-*Defined in [Query/QueryManager.ts:60](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L60)*
+*Defined in [Query/QueryManager.ts:60](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L60)*
 
 **Returns:** [IQueryBuilder](../interfaces/iquerybuilder.md)
 
@@ -153,7 +153,7 @@ ___
 
 ▸ **getPreviousPage**(): [IQueryBuilder](../interfaces/iquerybuilder.md)
 
-*Defined in [Query/QueryManager.ts:66](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L66)*
+*Defined in [Query/QueryManager.ts:66](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L66)*
 
 **Returns:** [IQueryBuilder](../interfaces/iquerybuilder.md)
 
@@ -164,7 +164,7 @@ ___
 
 ▸ **hasNextPage**(): `boolean`
 
-*Defined in [Query/QueryManager.ts:52](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L52)*
+*Defined in [Query/QueryManager.ts:52](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L52)*
 
 **Returns:** `boolean`
 
@@ -175,7 +175,7 @@ ___
 
 ▸ **hasPreviousPage**(): `boolean`
 
-*Defined in [Query/QueryManager.ts:56](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Query/QueryManager.ts#L56)*
+*Defined in [Query/QueryManager.ts:56](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Query/QueryManager.ts#L56)*
 
 **Returns:** `boolean`
 

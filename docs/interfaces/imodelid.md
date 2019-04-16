@@ -23,7 +23,7 @@
 
 **● id**: *`string`*
 
-*Defined in [Services/DataService/DataService.ts:70](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/DataService.ts#L70)*
+*Defined in [Services/DataService/DataService.ts:70](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Services/DataService/DataService.ts#L70)*
 
 ___
 <a id="progresssubscriber"></a>
@@ -32,7 +32,7 @@ ___
 
 **● progressSubscriber**: *`Subscriber`<`any`>*
 
-*Defined in [Services/DataService/DataService.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/DataService.ts#L71)*
+*Defined in [Services/DataService/DataService.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Services/DataService/DataService.ts#L71)*
 
 ___
 

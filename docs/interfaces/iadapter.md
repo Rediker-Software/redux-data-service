@@ -35,7 +35,7 @@
 
 **● createItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Adapters/IAdapter.ts#L7)*
+*Defined in [Adapters/IAdapter.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Adapters/IAdapter.ts#L7)*
 
 #### Type declaration
 ▸(item: *`T`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`T`>
@@ -56,7 +56,7 @@ ___
 
 **● deleteItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Adapters/IAdapter.ts#L10)*
+*Defined in [Adapters/IAdapter.ts:10](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Adapters/IAdapter.ts#L10)*
 
 #### Type declaration
 ▸(id: *`string`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`T`>
@@ -77,7 +77,7 @@ ___
 
 **● fetchAll**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Adapters/IAdapter.ts#L5)*
+*Defined in [Adapters/IAdapter.ts:5](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Adapters/IAdapter.ts#L5)*
 
 #### Type declaration
 ▸(requestParams?: *`any`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`object`>
@@ -98,7 +98,7 @@ ___
 
 **● fetchItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Adapters/IAdapter.ts#L6)*
+*Defined in [Adapters/IAdapter.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Adapters/IAdapter.ts#L6)*
 
 #### Type declaration
 ▸(id: *`string`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`T`>
@@ -119,7 +119,7 @@ ___
 
 **● patchItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Adapters/IAdapter.ts#L9)*
+*Defined in [Adapters/IAdapter.ts:9](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Adapters/IAdapter.ts#L9)*
 
 #### Type declaration
 ▸(id: *`string`*, item: *`T`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`T`>
@@ -141,7 +141,7 @@ ___
 
 **● updateItem**: *`function`*
 
-*Defined in [Adapters/IAdapter.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Adapters/IAdapter.ts#L8)*
+*Defined in [Adapters/IAdapter.ts:8](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Adapters/IAdapter.ts#L8)*
 
 #### Type declaration
 ▸(id: *`string`*, item: *`T`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`T`>

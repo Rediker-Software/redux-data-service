@@ -49,7 +49,7 @@ If the library configuration setting `coalesceFindRequests` is `true`, it will a
 
 ⊕ **new FetchRecordEpic**(context: *[IContext](../interfaces/icontext.md)*): [FetchRecordEpic](fetchrecordepic.md)
 
-*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/Epics/FetchRecordEpic.ts#L46)*
+*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Services/DataService/Epics/FetchRecordEpic.ts#L46)*
 
 **Parameters:**
 
@@ -69,7 +69,7 @@ ___
 
 **● bufferedObservable**: *`any`*
 
-*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/Epics/FetchRecordEpic.ts#L46)*
+*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:46](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Services/DataService/Epics/FetchRecordEpic.ts#L46)*
 
 ___
 <a id="context"></a>
@@ -78,7 +78,7 @@ ___
 
 **● context**: *[IContext](../interfaces/icontext.md)*
 
-*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:45](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/Epics/FetchRecordEpic.ts#L45)*
+*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:45](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Services/DataService/Epics/FetchRecordEpic.ts#L45)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 ▸ **createBufferObservable**(id: *`string`*): `Observable`<`any`>
 
-*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:72](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/Epics/FetchRecordEpic.ts#L72)*
+*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:72](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Services/DataService/Epics/FetchRecordEpic.ts#L72)*
 
 This method creates the buffer Observable for use in the `performBufferRequest` function. There is an N millisecond period over which results are coalesced if the `coalesceBufferTime` constant is specified in the configuration (its default is 50 ms). If there is only one item, the standard `loadRecord` function is called.
 
@@ -111,7 +111,7 @@ ___
 
 *Implementation of [IEpic](../interfaces/iepic.md).[execute](../interfaces/iepic.md#execute)*
 
-*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:103](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/Epics/FetchRecordEpic.ts#L103)*
+*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:103](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Services/DataService/Epics/FetchRecordEpic.ts#L103)*
 
 **Parameters:**
 
@@ -129,7 +129,7 @@ ___
 
 ▸ **loadRecord**(id: *`string`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<[IAction](../interfaces/iaction.md)<`any`>>
 
-*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:55](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/Epics/FetchRecordEpic.ts#L55)*
+*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:55](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Services/DataService/Epics/FetchRecordEpic.ts#L55)*
 
 Helper method that fetches, deserializes, and normalizes the item from the API
 
@@ -149,7 +149,7 @@ ___
 
 ▸ **performBufferedRequest**(id: *`string`*): `Observable`<`any`>
 
-*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:90](https://github.com/Rediker-Software/redux-data-service/blob/6c3666b/src/Services/DataService/Epics/FetchRecordEpic.ts#L90)*
+*Defined in [Services/DataService/Epics/FetchRecordEpic.ts:90](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Services/DataService/Epics/FetchRecordEpic.ts#L90)*
 
 Checks the cache for a buffered Observable that matches the context. If the buffer doesn't exist, it is created, and prepared to be disposed of at the end of its lifetime. Either the buffered Observable is returned or the current id is added to the given buffered Observable and the Observable is completed
 
