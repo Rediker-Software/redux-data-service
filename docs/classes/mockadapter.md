@@ -36,7 +36,7 @@
 
 *Implementation of [IAdapter](../interfaces/iadapter.md).[createItem](../interfaces/iadapter.md#createitem)*
 
-*Defined in [Adapters/MockAdapter.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Adapters/MockAdapter.ts#L7)*
+*Defined in [Adapters/MockAdapter.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/95a67d9/src/Adapters/MockAdapter.ts#L7)*
 
 ___
 <a id="deleteitem"></a>
@@ -50,7 +50,7 @@ ___
 
 *Implementation of [IAdapter](../interfaces/iadapter.md).[deleteItem](../interfaces/iadapter.md#deleteitem)*
 
-*Defined in [Adapters/MockAdapter.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Adapters/MockAdapter.ts#L12)*
+*Defined in [Adapters/MockAdapter.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/95a67d9/src/Adapters/MockAdapter.ts#L12)*
 
 ___
 <a id="fetchall"></a>
@@ -61,7 +61,7 @@ ___
 
 *Implementation of [IAdapter](../interfaces/iadapter.md).[fetchAll](../interfaces/iadapter.md#fetchall)*
 
-*Defined in [Adapters/MockAdapter.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Adapters/MockAdapter.ts#L17)*
+*Defined in [Adapters/MockAdapter.ts:17](https://github.com/Rediker-Software/redux-data-service/blob/95a67d9/src/Adapters/MockAdapter.ts#L17)*
 
 ___
 <a id="fetchitem"></a>
@@ -72,7 +72,7 @@ ___
 
 *Implementation of [IAdapter](../interfaces/iadapter.md).[fetchItem](../interfaces/iadapter.md#fetchitem)*
 
-*Defined in [Adapters/MockAdapter.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Adapters/MockAdapter.ts#L18)*
+*Defined in [Adapters/MockAdapter.ts:18](https://github.com/Rediker-Software/redux-data-service/blob/95a67d9/src/Adapters/MockAdapter.ts#L18)*
 
 ___
 <a id="patchitem"></a>
@@ -83,7 +83,7 @@ ___
 
 *Implementation of [IAdapter](../interfaces/iadapter.md).[patchItem](../interfaces/iadapter.md#patchitem)*
 
-*Defined in [Adapters/MockAdapter.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Adapters/MockAdapter.ts#L19)*
+*Defined in [Adapters/MockAdapter.ts:19](https://github.com/Rediker-Software/redux-data-service/blob/95a67d9/src/Adapters/MockAdapter.ts#L19)*
 
 ___
 <a id="updateitem"></a>
@@ -94,7 +94,7 @@ ___
 
 *Implementation of [IAdapter](../interfaces/iadapter.md).[updateItem](../interfaces/iadapter.md#updateitem)*
 
-*Defined in [Adapters/MockAdapter.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/0ef244e/src/Adapters/MockAdapter.ts#L20)*
+*Defined in [Adapters/MockAdapter.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/95a67d9/src/Adapters/MockAdapter.ts#L20)*
 
 ___
 

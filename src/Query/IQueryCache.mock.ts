@@ -5,14 +5,14 @@ import { IQueryResponse } from "./IQueryResponse";
 /** Creates a mock IQueryResponse object */
 export function createMockQueryResponse(overrideValues?: Partial<IQueryResponse>): IQueryResponse {
   return {
-    currentPage: random.number(),
-    totalPages: random.number(),
-    pageSize: random.number(),
-    totalCount: random.number(),
-    nextPage: random.number(),
-    previousPage: random.number(),
-    hasPrevious: random.boolean(),
-    hasNext: random.boolean(),
+    currentPage: 1,
+    totalPages: 1,
+    pageSize: 10,
+    totalCount: 10,
+    nextPage: null,
+    previousPage: null,
+    hasPrevious: false,
+    hasNext: false,
     ids: [
       random.uuid(),
       random.uuid(),
