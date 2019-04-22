@@ -31,7 +31,7 @@
 
 **● changes**: *`Partial`<`T`>*
 
-*Defined in [Model/IModel.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/IModel.ts#L26)*
+*Defined in [Model/IModel.ts:26](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/IModel.ts#L26)*
 
 ___
 <a id="errors"></a>
@@ -40,7 +40,7 @@ ___
 
 **● errors**: *[IModelKeys](../#imodelkeys)<`T`>*
 
-*Defined in [Model/IModel.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/IModel.ts#L27)*
+*Defined in [Model/IModel.ts:27](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/IModel.ts#L27)*
 
 ___
 <a id="isdestroying"></a>
@@ -49,7 +49,7 @@ ___
 
 **● isDestroying**: *`boolean`*
 
-*Defined in [Model/IModel.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/IModel.ts#L28)*
+*Defined in [Model/IModel.ts:28](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/IModel.ts#L28)*
 
 ___
 <a id="isloading"></a>
@@ -58,7 +58,7 @@ ___
 
 **● isLoading**: *`boolean`*
 
-*Defined in [Model/IModel.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/IModel.ts#L25)*
+*Defined in [Model/IModel.ts:25](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/IModel.ts#L25)*
 
 ___
 <a id="isshadow"></a>
@@ -67,7 +67,7 @@ ___
 
 **● isShadow**: *`boolean`*
 
-*Defined in [Model/IModel.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/IModel.ts#L24)*
+*Defined in [Model/IModel.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/IModel.ts#L24)*
 
 ___
 <a id="willdestroyobservable_"></a>
@@ -76,7 +76,7 @@ ___
 
 **● willDestroyObservable$**: *`Subject`<`boolean`>*
 
-*Defined in [Model/IModel.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/IModel.ts#L29)*
+*Defined in [Model/IModel.ts:29](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/IModel.ts#L29)*
 
 ___
 

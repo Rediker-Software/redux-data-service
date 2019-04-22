@@ -41,7 +41,7 @@ Classes which wish to use the `@attr` decorator should implement this interface.
 
 *Overrides [IFieldTypes](ifieldtypes.md).[fields](ifieldtypes.md#fields)*
 
-*Defined in [Model/Decorators/Attr.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/Decorators/Attr.ts#L11)*
+*Defined in [Model/Decorators/Attr.ts:11](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/Decorators/Attr.ts#L11)*
 
 ___
 <a id="validationrules"></a>
@@ -52,7 +52,7 @@ ___
 
 *Inherited from [IValidate](ivalidate.md).[validationRules](ivalidate.md#validationrules)*
 
-*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/Decorators/Validation.ts#L6)*
+*Defined in [Model/Decorators/Validation.ts:6](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/Decorators/Validation.ts#L6)*
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 ▸ **getField**(fieldName: *`any`*, defaultValue: *`any`*): `any`
 
-*Defined in [Model/Decorators/Attr.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/Decorators/Attr.ts#L12)*
+*Defined in [Model/Decorators/Attr.ts:12](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/Decorators/Attr.ts#L12)*
 
 **Parameters:**
 
@@ -82,7 +82,7 @@ ___
 
 ▸ **setField**(fieldName: *`any`*, value: *`any`*): `void`
 
-*Defined in [Model/Decorators/Attr.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/Decorators/Attr.ts#L13)*
+*Defined in [Model/Decorators/Attr.ts:13](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/Decorators/Attr.ts#L13)*
 
 **Parameters:**
 
@@ -102,7 +102,7 @@ ___
 
 *Inherited from [IValidate](ivalidate.md).[validate](ivalidate.md#validate)*
 
-*Defined in [Model/Decorators/Validation.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/ad33f93/src/Model/Decorators/Validation.ts#L7)*
+*Defined in [Model/Decorators/Validation.ts:7](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/Decorators/Validation.ts#L7)*
 
 **Returns:** [IModelKeys](../#imodelkeys)<`T`>
 

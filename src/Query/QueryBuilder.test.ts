@@ -24,7 +24,7 @@ describe("QueryBuilder", () => {
   });
 
   it("constructs a QueryBuilder instance", () => {
-    const queryParams = { x: random.number() };
+    const queryParams = { x: random.number(), page: 1 };
     expect(new QueryBuilder(serviceName, queryParams)).to.deep.contain({
       serviceName,
       queryParams,
@@ -74,6 +74,7 @@ describe("QueryBuilder", () => {
         [key]: value,
         [key2]: value2,
         [key3]: value3,
+        page: 1,
       });
     });
 
@@ -87,6 +88,7 @@ describe("QueryBuilder", () => {
     it("does not modify the current instance when filtering criteria is added", () => {
       const currentQueryParams = {
         [key]: value,
+        page: 1,
       };
 
       const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
@@ -166,6 +168,7 @@ describe("QueryBuilder", () => {
       const currentQueryParams = {
         [key]: value,
         [otherKey]: otherValue,
+        page: 1,
       };
 
       const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
@@ -239,6 +242,7 @@ describe("QueryBuilder", () => {
     it("does not modify the current instance when setting the page number", () => {
       const currentQueryParams = {
         [key]: value,
+        page: 1,
       };
 
       const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
@@ -279,6 +283,7 @@ describe("QueryBuilder", () => {
       query = query.pageSize(pageSize);
 
       expect(query.queryParams).to.deep.equal({
+        page: 1,
         pageSize,
         [key]: value,
       });
@@ -315,6 +320,7 @@ describe("QueryBuilder", () => {
     it("does not modify the current instance when setting the page size", () => {
       const currentQueryParams = {
         [key]: value,
+        page: 1,
       };
 
       const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
@@ -364,6 +370,7 @@ describe("QueryBuilder", () => {
         sort: [
          { key: sortKey, direction: "asc" },
         ],
+        page: 1,
       });
     });
 
@@ -398,6 +405,7 @@ describe("QueryBuilder", () => {
     it("does not modify the current instance when sorting criteria is added", () => {
       const currentQueryParams = {
         [key]: value,
+        page: 1,
       };
 
       const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);
@@ -624,6 +632,7 @@ describe("QueryBuilder", () => {
       const currentQueryParams = {
         [key]: value,
         [otherKey]: otherValue,
+        page: 1,
       };
 
       const query: IQueryBuilder = new QueryBuilder(serviceName, currentQueryParams);

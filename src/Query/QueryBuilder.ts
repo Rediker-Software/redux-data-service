@@ -93,7 +93,10 @@ export class QueryBuilder implements IQueryBuilder {
 
   public constructor(serviceName: string, queryParams: IQueryParams = {}) {
     this.serviceName = serviceName;
-    this.queryParams = queryParams;
+    this.queryParams = {
+      page: 1,
+      ...queryParams,
+    };
   }
 
   public filter(key: string, value: (FilterValue | FilterValue[])): IQueryBuilder {

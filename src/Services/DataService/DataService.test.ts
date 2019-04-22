@@ -383,7 +383,7 @@ describe("DataService", () => {
             try {
               expect(
                 serializeQueryParamsStub.firstCall.args[0],
-              ).to.equal(queryParams);
+              ).to.deep.equal(queryParams);
               resolve();
             } catch (e) {
               reject(e);
