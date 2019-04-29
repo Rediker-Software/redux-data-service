@@ -47,7 +47,7 @@ Outgoing item data should be serialized to a json string. The incoming data will
 
 ⊕ **new RestAdapter**(pathName: *`string`*, options?: *[IRestAdapterOptions](../interfaces/irestadapteroptions.md)*): [RestAdapter](restadapter.md)
 
-*Defined in [Adapters/RestAdapter.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L24)*
+*Defined in [Adapters/RestAdapter.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L24)*
 
 **Parameters:**
 
@@ -68,7 +68,7 @@ ___
 
 **● apiUrl**: *`string`*
 
-*Defined in [Adapters/RestAdapter.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L24)*
+*Defined in [Adapters/RestAdapter.ts:24](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L24)*
 
 ___
 <a id="pathname"></a>
@@ -77,7 +77,7 @@ ___
 
 **● pathName**: *`string`*
 
-*Defined in [Adapters/RestAdapter.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L23)*
+*Defined in [Adapters/RestAdapter.ts:23](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L23)*
 
 ___
 
@@ -89,7 +89,7 @@ ___
 
 ▸ **buildHeaders**(headers: *`any`*): `any`
 
-*Defined in [Adapters/RestAdapter.ts:141](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L141)*
+*Defined in [Adapters/RestAdapter.ts:141](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L141)*
 
 Create the list of headers to use when performing ajax requests.
 
@@ -108,7 +108,7 @@ ___
 
 ▸ **createItem**(item: *`string`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L71)*
+*Defined in [Adapters/RestAdapter.ts:71](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L71)*
 
 Perform a POST request to the API to create the given T item
 
@@ -128,7 +128,7 @@ ___
 
 ▸ **deleteItem**(id: *`any`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:103](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L103)*
+*Defined in [Adapters/RestAdapter.ts:103](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L103)*
 
 Perform a DELETE request to the API to update the given T item based on the given id.
 
@@ -148,7 +148,7 @@ ___
 
 ▸ **fetchAll**(requestParams?: *`any`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`object`>
 
-*Defined in [Adapters/RestAdapter.ts:51](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L51)*
+*Defined in [Adapters/RestAdapter.ts:51](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L51)*
 
 Perform a GET request to the REST endpoint, which should return an array of T items. Optionally pass in `requestParams` to define query params to send to the API for filtering the results.
 
@@ -168,7 +168,7 @@ ___
 
 ▸ **fetchItem**(id: *`string`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:61](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L61)*
+*Defined in [Adapters/RestAdapter.ts:61](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L61)*
 
 Perform a GET request to load a single T item from the API based on the given id.
 
@@ -188,7 +188,7 @@ ___
 
 ▸ **getRestURL**(id?: *`string`*): `string`
 
-*Defined in [Adapters/RestAdapter.ts:36](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L36)*
+*Defined in [Adapters/RestAdapter.ts:36](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L36)*
 
 Get the route to the REST endpoint.
 
@@ -207,7 +207,7 @@ ___
 
 ▸ **makeAjaxRequest**(method: *`string`*, url: *`string`*, payload?: *`string`*, progressSubscriber?: *`Subscriber`<`any`>*, headers?: *`any`*): `Observable`<`any`>
 
-*Defined in [Adapters/RestAdapter.ts:121](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L121)*
+*Defined in [Adapters/RestAdapter.ts:121](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L121)*
 
 Perform an ajax request to the given url, using the given http method.
 
@@ -234,7 +234,7 @@ ___
 
 ▸ **patchItem**(id: *`any`*, item: *`string`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:93](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L93)*
+*Defined in [Adapters/RestAdapter.ts:93](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L93)*
 
 Perform a PATCH request to the API to update the given T item based on the given id.
 
@@ -255,7 +255,7 @@ ___
 
 ▸ **updateItem**(id: *`any`*, item: *`string`*, progressSubscriber?: *`Subscriber`<`any`>*): `Observable`<`string`>
 
-*Defined in [Adapters/RestAdapter.ts:82](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Adapters/RestAdapter.ts#L82)*
+*Defined in [Adapters/RestAdapter.ts:82](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Adapters/RestAdapter.ts#L82)*
 
 Perform a PUT request to the API to update the given T item based on the given id.
 

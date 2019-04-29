@@ -22,7 +22,7 @@
 
 **● id**: *`string`*
 
-*Defined in [Model/IModel.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/73b0852/src/Model/IModel.ts#L20)*
+*Defined in [Model/IModel.ts:20](https://github.com/Rediker-Software/redux-data-service/blob/d8bc1de/src/Model/IModel.ts#L20)*
 
 ___
 
