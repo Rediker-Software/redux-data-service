@@ -104,10 +104,10 @@ export class FetchRecordEpic implements IEpic {
     return action$.ofType(this.context.types.FETCH_RECORD)
       .filter(action => shouldFetchItem(store.getState(), action))
       .map(action => action.payload.id as string)
-      .mergeMap(
+      .mergeMap(id =>
         getConfiguration().coalesceFindRequests
-          ? this.performBufferedRequest.bind(this)
-          : this.loadRecord.bind(this),
+          ? this.performBufferedRequest(id)
+          : this.loadRecord(id),
       );
   }
 
